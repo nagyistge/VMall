@@ -1,0 +1,153 @@
+/*css 全局变量*/
+.text-default {
+  color: #ccc; }
+
+.text-primary {
+  color: #2d6ca2; }
+
+.text-success {
+  color: #419641; }
+
+.text-success-light {
+  color: #dff0d8; }
+
+.text-info {
+  color: #2aabd2; }
+
+.text-info-light {
+  color: d9edf7; }
+
+.text-warning {
+  color: #eb9316; }
+
+.text-danger {
+  color: #c12e2a; }
+
+.text-danger-light {
+  color: #f2dede; }
+
+.text-link {
+  color: #428bca; }
+
+.text-meta {
+  color: #999; }
+
+.text-inverse {
+  color: #333; }
+
+.text-purple {
+  color: purple; }
+
+.text-grey {
+  color: #ccc; }
+
+/*实际上经常是 370，三星 420*/
+#container table div.l1 {
+  padding-left: 10px; }
+#container table div.l2 {
+  padding-left: 20px; }
+#container table div.l3 {
+  padding-left: 30px; }
+#container table div.l4 {
+  padding-left: 40px; }
+#container table div.l5 {
+  padding-left: 50px; }
+#container table div.l6 {
+  padding-left: 60px; }
+#container table div.l7 {
+  padding-left: 70px; }
+#container table div.l8 {
+  padding-left: 80px; }
+#container table div.l9 {
+  padding-left: 90px; }
+#container table div.l10 {
+  padding-left: 100px; }
+#container table div.l11 {
+  padding-left: 110px; }
+#container table div.l12 {
+  padding-left: 120px; }
+#container th, #container td {
+  white-space: nowrap;
+  padding: 0 6px;
+  line-height: 25px; }
+#container td.hasContenteditable {
+  padding: 0; }
+#container th {
+  border-bottom-width: 1px;
+  text-align: center; }
+#container td {
+  border-bottom-style: solid; }
+#container td div[contenteditable] {
+  background: #c6e08e;
+  cursor: pointer;
+  border: solid 2px transparent;
+  padding: 0 4px;
+  width: 6em;
+  overflow: hidden;
+  height: 29px; }
+  #container td div[contenteditable]:hover {
+    background: #419641;
+    color: #fff; }
+  #container td div[contenteditable]:focus {
+    background: #fff;
+    color: #333;
+    border-color: #419641;
+    outline: 0; }
+
+#container table div.l0, #container table div.l1, #container table div.l2, #container table div.l3, #container table div.l4, #container table div.l5, #container table div.l6 {
+  cursor: pointer; }
+  #container table div.l0:before, #container table div.l1:before, #container table div.l2:before, #container table div.l3:before, #container table div.l4:before, #container table div.l5:before, #container table div.l6:before {
+    content: '\f0fe';
+    content: '\f146';
+    font-family: fontAwesome;
+    display: inline-block;
+    margin-right: 5px;
+    color: #cccccc; }
+  #container table div.l0:hover, #container table div.l1:hover, #container table div.l2:hover, #container table div.l3:hover, #container table div.l4:hover, #container table div.l5:hover, #container table div.l6:hover {
+    color: #428bca; }
+    #container table div.l0:hover:before, #container table div.l1:hover:before, #container table div.l2:hover:before, #container table div.l3:hover:before, #container table div.l4:hover:before, #container table div.l5:hover:before, #container table div.l6:hover:before {
+      color: #428bca; }
+#container table div.closed:before {
+  content: '\f0fe'; }
+#container table div.leaf {
+  cursor: default; }
+  #container table div.leaf:before {
+    content: ' '; }
+  #container table div.leaf:hover {
+    color: #333333; }
+
+.dataTables_info {
+  display: none; }
+
+.DTFC_LeftBodyLiner {
+  overflow: hidden; }
+
+#container td, #container th {
+  border-color: rgba(0, 0, 0, 0.1); }
+
+#container td.total {
+  background: #094a24;
+  color: #fff; }
+
+.table-striped > tbody > tr:nth-child(odd) > td, .table-striped > tbody > tr:nth-child(odd) > th {
+  background: #f1f1f1; }
+
+#container td.last_year_num, #container td.next_year_num, #container td.this_year_num {
+  background: #40af5e; }
+#container td.total_percent, #container td.last_year_percent, #container td.next_year_percent, #container td.this_year_percent {
+  position: relative;
+  color: rgba(0, 0, 0, 0.5);
+  background: rgba(64, 175, 94, 0.65); }
+
+.gspecentBar {
+  position: absolute;
+  height: 100%;
+  margin-left: -4px;
+  width: 25px; }
+
+.percent {
+  display: inline-block;
+  padding-left: 26px; }
+
+#divajaxingMask {
+  background-color: rgba(255, 255, 255, 0.8); }

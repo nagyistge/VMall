@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>登录</title>
+    <link rel="shortcut icon" href="logo32.png">
+    <link rel="stylesheet" href="lib/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="lib/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/login.css">
+    <script src="lib/jquery-2.1.1.min.js"></script>
+    <link href="logo60.png" rel="apple-touch-icon">
+    <link href="logo76.png" rel="apple-touch-icon" sizes="76x76">
+    <link href="logo120.png" rel="apple-touch-icon" sizes="120x120">
+    <link href="logo152.png" rel="apple-touch-icon" sizes="152x152">
+  </head>
+  <body>
+    <div id="formContainer">
+      <form action="/prms/author/login.action" method="post" class="form-signin">
+       <h3>项目评审业务综合管理系统</h3>
+        <div id="qrcodeWrapper"></div>
+        <div id="formBlock">
+          <label class="user"><i class="fa fa-user"></i>
+            <input id="username" name="username" type="text" placeholder="用户名" autofocus class="form-control">
+          </label>
+          <label class="password"><i class="fa fa-key"></i>
+            <input id="password" name="password" type="password" placeholder="密码" class="form-control">
+          </label>
+          <label class="checkbox remember">
+            <input id="remember" type="checkbox" name="remember" value="1">记住密码
+          </label>
+          <button type="submit" class="btn btn-primary btn-block">登录</button>
+        </div>
+      </form>
+    </div>
+<script src="lib/qrcode.min.js"></script>
+</script>
+</body>
+</html>

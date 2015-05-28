@@ -1,0 +1,256 @@
+body {
+	font-family: arial, 'Microsoft Yahei', sans-serif
+}
+
+#choosedList:after, #chooseTab-title ul:after {
+	content: ' ';
+	clear: both;
+	display: table
+}
+
+#choosedList, #chooseTab-title ul, #contactLetters ul, #departmentTree ul,
+	.groupWrapper ul {
+	margin: 0;
+	padding: 0;
+	list-style: none
+}
+
+#choosedList {
+	min-height: 40px
+}
+
+#choosedList li {
+	line-height: 30px;
+	padding-left: 8px;
+	display: inline-block;
+	background: #419641;
+	color: #fff;
+	margin-bottom: 10px;
+	margin-right: 10px
+}
+
+#choosedList li .remove {
+	line-height: 30px;
+	width: 30px;
+	text-align: center;
+	cursor: pointer;
+	float: right;
+	margin-left: 8px;
+	font-size: 14px;
+	transition: all .2s ease
+}
+
+#choosedList li .remove:hover {
+	background: rgba(255, 255, 255, 0.3);
+	font-size: 18px;
+	transform: rotate(90deg)
+}
+
+#chooseTab-title ul {
+	border-bottom: solid 3px #ccc
+}
+
+#chooseTab-title ul li {
+	float: left;
+	padding: 0 15px;
+	position: relative;
+	top: 3px;
+	cursor: pointer;
+	line-height: 30px;
+	border-bottom: solid 3px #ccc
+}
+
+#chooseTab-title ul li:hover {
+	background: #f1f1f1;
+	color: #2d6ca2
+}
+
+#chooseTab-title ul li.active {
+	border-color: #2d6ca2;
+	color: #2d6ca2
+}
+
+#chooseTab-content {
+	padding-top: 10px
+}
+
+#chooseTab-content>.item {
+	display: none
+}
+
+#chooseTab-content>.item.active {
+	display: block
+}
+
+#contactLetters {
+	display: table;
+	width: 100%;
+	table-layout: fixed
+}
+
+#contactLetters ul {
+	display: table-row
+}
+
+#contactLetters li {
+	display: table-cell;
+	text-align: center;
+	line-height: 30px;
+	cursor: pointer;
+	white-space: nowrap;
+	font-size: 1em;
+	color: #999;
+	border: solid 1px #fff;
+	text-transform: capitalize
+}
+
+#contactLetters li:hover {
+	background: #def;
+	color: #2d6ca2;
+	border: solid 1px #2d6ca2
+}
+
+#contactLetters li.active {
+	background: #2d6ca2;
+	color: #fff
+}
+
+.toggle {
+	display: inline-block;
+	width: 20px;
+	line-height: 20px;
+	margin-top: 5px;
+	text-align: center;
+	margin-right: 5px;
+	margin-left: 5px;
+	font-size: 16px;
+	cursor: pointer;
+	user-select: none;
+	-webkit-user-select: none;
+	color: rgba(0, 0, 0, 0.5)
+}
+
+.toggle:before {
+	content: '\f105';
+	font-family: fontAwesome;
+	display: inline-block;
+	transition: transform .2s ease
+}
+
+.toggle:hover {
+	background: rgba(0, 0, 0, 0.1);
+	color: #000
+}
+
+#departmentTree ul ul {
+	padding-left: 20px
+}
+
+#departmentTree ul li {
+	line-height: 25px
+}
+
+#departmentTree ul li>ul {
+	max-height: 0;
+	overflow: hidden;
+	transition: max-height .3s ease
+}
+
+#departmentTree ul li .t {
+	cursor: pointer
+}
+
+#departmentTree ul li .t:hover {
+	color: #2d6ca2
+}
+
+#departmentTree ul li .toggle {
+	margin-top: 2px
+}
+
+#departmentTree ul li.active>.t {
+	color: #2d6ca2;
+	color: #c12e2a;
+	display: inline-block
+}
+
+#departmentTree ul li.leaf .toggle {
+	visibility: hidden
+}
+
+#departmentTree ul li.opened>.toggle:before {
+	transform: rotate(90deg)
+}
+
+#departmentTree ul li.opened>ul {
+	max-height: 9999px
+}
+
+.groupWrapper ul li {
+	font-size: 18px
+}
+
+.groupWrapper ul li .toggle:before {
+	transform: rotate(90deg)
+}
+
+.groupWrapper ul li.closed .toggle:before {
+	transform: rotate(0)
+}
+
+.groupWrapper ul li.closed table {
+	display: none
+}
+
+table.tablelist {
+	width: 100%;
+	font-size: 14px;
+	margin: 15px 0
+}
+
+table.tablelist thead th {
+	line-height: 30px;
+	font-weight: 500;
+	color: #999
+}
+
+table.tablelist tbody {
+	border-top: solid 2px #ccc;
+	cursor: pointer
+}
+
+table.tablelist tbody td {
+	border-bottom: solid 1px #eee;
+
+}
+
+table.tablelist tbody td:nth-child(2) {
+	font-size: 16px
+}
+
+table.tablelist tbody tr:hover {
+	background: #f4f4f4
+}
+
+table.tablelist tr td:nth-child(1), table.tablelist tr th:nth-child(1) {
+	width: 35px;
+	text-align: center;
+	cursor: pointer;
+	user-select: none;
+	-webkit-user-select: none
+}
+
+table.tablelist tr td:nth-child(1):before, table.tablelist tr th:nth-child(1):before
+	{
+	content: '\f0c8';
+	font-family: fontAwesome;
+	font-size: 16px;
+	width: 1em;
+	color: #ccc
+}
+
+table.tablelist tr.checked td:nth-child(1):before, table.tablelist tr.checked th:nth-child(1):before
+	{
+	content: '\f00c';
+	color: #419641
+}
