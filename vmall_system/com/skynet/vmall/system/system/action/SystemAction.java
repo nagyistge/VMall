@@ -28,4 +28,16 @@ public class SystemAction extends BaseAction
 		Daos.createTablesInPackage(organService.dao(), "com.skynet.app.dictionary.pojo", true);
 		return ro;
 	}
+
+	public OrganService getOrganService()
+	{
+		return organService;
+	}
+
+	public void setOrganService(OrganService organService)
+	{
+		this.organService = organService;
+	}
+	
+	
 }

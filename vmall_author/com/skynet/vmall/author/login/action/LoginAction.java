@@ -69,4 +69,36 @@ public class LoginAction extends BaseAction
 		return ro;
 	}
 
+	public OrganService getOrganService()
+	{
+		return organService;
+	}
+
+	public void setOrganService(OrganService organService)
+	{
+		this.organService = organService;
+	}
+
+	public UserService getUserService()
+	{
+		return userService;
+	}
+
+	public void setUserService(UserService userService)
+	{
+		this.userService = userService;
+	}
+
+	public GroupUserService getGroupuserService()
+	{
+		return groupuserService;
+	}
+
+	public void setGroupuserService(GroupUserService groupuserService)
+	{
+		this.groupuserService = groupuserService;
+	}
+	
+	
+
 }

@@ -19,17 +19,17 @@
   </head>
   <body>
     <div id="gsLayout">
-      <div id="gsSidebar"><a href="${base}/frame/home.action" class="home"><i class="fa fa-home"></i></a>
+      <div id="gsSidebar"><a href="about:blank" class="home"><i class="fa fa-home"></i></a>
         <div class="logo" style="color:#cc1c1e;font-size:8px;margin-left:10px;"><img src="${base}/css/img/logo-v2.png">&nbsp;&nbsp;</div>
         <div class="user"><a href="cog.html" class="gravatar"><img src="pics/guoshuang.png"></a>
           <div class="name">
-            <div class="t">${Session.sys_login_token.sys_login_username}<a href="${base}/login.html" target="top" class="quit">退出</a></div><a href="_home/msg.html" class="msg">你有3个消息</a>
+            <div class="t">${Session.sys_login_token.sys_login_username}<a href="${base}/login.html" target="top" class="quit">退出</a></div><a href="" class="msg">你有3个消息</a>
           </div>
         </div>
         <div id="leftNavi">
           <ul>
             <li>
-              <div title="我的工作" class="t"><i class="fa fa-home"></i> <a href="home.html">我的工作</a></div>
+              <div title="我的工作" class="t"><i class="fa fa-home"></i> <a href="about:blank">我的工作</a></div>
             </li>
             <li>
               <div title="现场评审" class="t"><i class="fa fa-calendar"></i> <a href="${base}/page/frame/group_scene.html">现场评审</a></div>
@@ -61,8 +61,8 @@
           <div id="gsToggleSidebar"><i class="fa fa-bars"></i></div>
           <div id="gsTopMenu">
             <ul>
-              <li class="home"><a href="${base}/frame/home.action" title="首页"><i class="fa fa-home"></i></a></li>
-              <li class="msg"><a href="_home/msg.html" title="系统消息"><i class="fa fa-comments"></i>
+              <li class="home"><a href="about:blank" title="首页"><i class="fa fa-home"></i></a></li>
+              <li class="msg"><a href="about:blank" title="系统消息"><i class="fa fa-comments"></i>
                   <div class="num">10</div></a></li>
             </ul><span class="user"><img src="pics/guoshuang.png">${Session.sys_login_token.sys_login_deptname}&nbsp;${Session.sys_login_token.sys_login_username}<i class="fa fa-angle-down"></i>
               <ul>
@@ -73,7 +73,7 @@
           </div>
         </div>
         <div id="gsBody">
-          <iframe src="${base}/frame/home.action" frameborder="0" name="mainFrame" allowtransparency="true"></iframe>
+          <iframe src="about:blank" frameborder="0" name="mainFrame" allowtransparency="true"></iframe>
         </div>
       </div>
     </div>
