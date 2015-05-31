@@ -14,6 +14,12 @@ public class Member extends Dealer
 	
 	@Column
 	private String internal; // 内部码
+	
+	@Column
+	private int level; // 级别
+
+	@Column
+	private String ctype; // 类型 (商城、总经销商、分销商、会员)
 
 	public String getMobile()
 	{
@@ -43,6 +49,26 @@ public class Member extends Dealer
 	public void setInternal(String internal)
 	{
 		this.internal = internal;
+	}
+
+	public int getLevel()
+	{
+		return level;
+	}
+
+	public void setLevel(int level)
+	{
+		this.level = level;
+	}
+
+	public String getCtype()
+	{
+		return ctype;
+	}
+
+	public void setCtype(String ctype)
+	{
+		this.ctype = ctype;
 	}
 	
 }
