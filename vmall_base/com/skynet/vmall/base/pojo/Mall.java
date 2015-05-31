@@ -40,7 +40,10 @@ public class Mall extends IdEntity
 	private String bankacountno; // 银行账号
 	
 	@Column
-	private String weixinno; // 微信号
+	private String wxopenid; // 微信标识
+	
+	@Column
+	private String wxnickname; // 微信昵称
 
 	public String getCname()
 	{
@@ -142,14 +145,24 @@ public class Mall extends IdEntity
 		this.bankacountno = bankacountno;
 	}
 
-	public String getWeixinno()
+	public String getWxopenid()
 	{
-		return weixinno;
+		return wxopenid;
 	}
 
-	public void setWeixinno(String weixinno)
+	public void setWxopenid(String wxopenid)
 	{
-		this.weixinno = weixinno;
+		this.wxopenid = wxopenid;
+	}
+
+	public String getWxnickname()
+	{
+		return wxnickname;
+	}
+
+	public void setWxnickname(String wxnickname)
+	{
+		this.wxnickname = wxnickname;
 	}
 
 }

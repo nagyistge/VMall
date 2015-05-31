@@ -3,8 +3,8 @@ package com.skynet.vmall.base.pojo;
 import org.nutz.dao.entity.annotation.Column;
 import org.nutz.dao.entity.annotation.Table;
 
-@Table("T_APP_DISTRIBUTOR")
-public class Distributor extends Dealer
+@Table("T_APP_MEMBER")
+public class Member extends Dealer
 {
 	@Column
 	private String mobile; // 手机号
