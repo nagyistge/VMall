@@ -1,4 +1,4 @@
-package com.skynet.vmall.system.system.action;
+package com.skynet.vmall.system.action;
 
 import java.util.Map;
 
