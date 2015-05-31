@@ -15,54 +15,44 @@
     <link href="logo152.png" rel="apple-touch-icon" sizes="152x152">
     <script src="${base}/lib/jquery-2.1.1.min.js"></script>
     <link rel="stylesheet" href="${base}/css/gs.css">
+    <link rel="stylesheet" href="${base}/css/choose.css">
     <base target="mainFrame">
   </head>
   <body>
     <div id="gsLayout">
-      <div id="gsSidebar"><a href="about:blank" class="home"><i class="fa fa-home"></i></a>
+      <div id="gsSidebar"><a href="${base}/frame/home.action" class="home"><i class="fa fa-home"></i></a>
         <div class="logo" style="color:#cc1c1e;font-size:8px;margin-left:10px;"><img src="${base}/css/img/logo-v2.png">&nbsp;&nbsp;</div>
         <div class="user"><a href="cog.html" class="gravatar"><img src="pics/guoshuang.png"></a>
           <div class="name">
-            <div class="t">${Session.sys_login_token.sys_login_username}<a href="${base}/login.html" target="top" class="quit">退出</a></div><a href="" class="msg">你有3个消息</a>
+            <div class="t">${Session.sys_login_token.sys_login_username}<a href="${base}/login.html" target="top" class="quit">退出</a></div><a href="_home/msg.html" class="msg">你有3个消息</a>
           </div>
         </div>
         <div id="leftNavi">
-          <ul>
-            <li>
-              <div title="我的工作" class="t"><i class="fa fa-home"></i> <a href="about:blank">我的工作</a></div>
-            </li>
-            <li>
-              <div title="现场评审" class="t"><i class="fa fa-calendar"></i> <a href="${base}/page/frame/group_scene.html">现场评审</a></div>
-            </li>            
-            <li>
-              <div title="项目管理" class="t"><i class="fa fa-calendar"></i> <a href="${base}/page/frame/group_project.html">项目管理</a></div>
-            </li>
-            <li>
-              <div title="专家管理" class="t"><i class="fa fa-list-alt"></i> <a href="${base}/page/frame/group_expert.html">专家库管理</a></div>
-            </li>
-            <li>
-              <div title="评审管理" class="t"><i class="fa fa-list-alt"></i> <a href="${base}/page/frame/group_review.html">评审管理</a></div>
-            </li>
-             <li>
-              <div title="模板管理" class="t"><i class="fa fa-list-alt"></i> <a href="${base}/page/frame/group_model.html">模板管理</a></div>
-            </li>           
-            <li>
-              <div title="综合查询统计" class="t"><i class="fa fa-bar-chart-o"></i> <a href="page/frame/group_report.html">综合查询统计</a></div>
-            </li>
-            <li>
-              <div title="系统管理" class="t"><i class="fa fa-cogs"></i> 系统管理</div>
-            </li>
-          </ul>
 
         </div>
       </div>
       <div id="gsMainpage">
         <div id="gsheader">
           <div id="gsToggleSidebar"><i class="fa fa-bars"></i></div>
+		  <div id="gsTab"> 	
+		    	<div id="chooseTab-title">
+				<ul>
+				  <li data-type="home" class="active" url="">首页</li>
+				  <li data-type="shop" url="">店铺</li>
+				  <li data-type="goods" url="${base}/frame/frame/menu_goods.action">商品</li>
+				  <li data-type="order" url="">订单</li>
+				  <li data-type="member" url="">会员</li>
+				  <li data-type="distributor" url="">分销商</li>
+				  <li data-type="finance" url="">财务</li>
+				  <li data-type="market" url="">营销</li>
+				  <li data-type="set" url="">设置</li>
+				</ul>
+				</div>
+		  </div>	
           <div id="gsTopMenu">
             <ul>
-              <li class="home"><a href="about:blank" title="首页"><i class="fa fa-home"></i></a></li>
-              <li class="msg"><a href="about:blank" title="系统消息"><i class="fa fa-comments"></i>
+              <li class="home"><a href="${base}/frame/home.action" title="首页"><i class="fa fa-home"></i></a></li>
+              <li class="msg"><a href="_home/msg.html" title="系统消息"><i class="fa fa-comments"></i>
                   <div class="num">10</div></a></li>
             </ul><span class="user"><img src="pics/guoshuang.png">${Session.sys_login_token.sys_login_deptname}&nbsp;${Session.sys_login_token.sys_login_username}<i class="fa fa-angle-down"></i>
               <ul>
@@ -117,6 +107,34 @@
     	return false;
     })
 
+	//切换标签页
+	$('#chooseTab-title').on('click', 'li', function() 
+	{
+		var li = $(this);
+		var oid = li.attr('data-type');
+		li.addClass('active').siblings().removeClass('active');
+		// $('#mainFrame').attr('src',li.attr('url'));
+		page_menu(li.attr('url'));
+	});
+	
+	function page_menu(url)
+	{
+		$.ajax({
+			type:'post',
+			url:url,
+			dataType: "html",
+			cache:false,
+			async:false,
+			success:function(data)
+			{
+				$("#leftNavi").html(data);
+			},
+			error:function(data)
+			{
+				console.log("执行异常");
+			}
+		})
+	}
 
     //////	
     })

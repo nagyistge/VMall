@@ -254,3 +254,9 @@ table.tablelist tr.checked td:nth-child(1):before, table.tablelist tr.checked th
 	content: '\f00c';
 	color: #419641
 }
+
+#gscontent #container #gsBody iframe {
+	border: 0;
+	width: 100%;
+	height: 100%
+}

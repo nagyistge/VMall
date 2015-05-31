@@ -108,7 +108,7 @@ body {
 #gsheader {
 	color: #a2afc0;
 	line-height: 40px;
-	text-shadow: -1px -1px 1px rgba(0, 0, 0, 0.5)
+	
 }
 
 #gsheader #gsToggleSidebar {
@@ -125,7 +125,14 @@ body {
 }
 
 #gsheader #gsTopMenu {
-	float: right
+
+	
+	position: absolute;
+	z-index: 1;
+	right: 20px;
+	bottom: 0;
+	overflow: hidden	
+	
 }
 
 #gsheader #gsTopMenu .user {
