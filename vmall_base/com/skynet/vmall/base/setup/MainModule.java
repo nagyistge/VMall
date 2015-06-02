@@ -5,9 +5,9 @@ import org.nutz.mvc.annotation.Modules;
 import org.nutz.mvc.ioc.provider.ComboIocProvider;
 
 @Modules(packages =
-{ "com.skynet.vmall", "com.skynet.app"}, scanPackage = true)
+{ "com.skynet.framework", "com.skynet.app", "com.skynet.vmall"}, scanPackage = true)
 @IocBy(type = ComboIocProvider.class, args =
-{ "*org.nutz.ioc.loader.json.JsonLoader", "ioc.js", "*org.nutz.ioc.loader.annotation.AnnotationIocLoader", "com.skynet.app", "com.skynet.vmall"})
+{ "*org.nutz.ioc.loader.json.JsonLoader", "ioc.js", "*org.nutz.ioc.loader.annotation.AnnotationIocLoader", "com.skynet.framework","com.skynet.app", "com.skynet.vmall"})
 public class MainModule
 {
 

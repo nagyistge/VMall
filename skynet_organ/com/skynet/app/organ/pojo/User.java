@@ -1,5 +1,7 @@
 package com.skynet.app.organ.pojo;
 
+import java.sql.Timestamp;
+
 import org.nutz.dao.entity.annotation.Column;
 import org.nutz.dao.entity.annotation.Table;
 
@@ -25,10 +27,19 @@ public class User extends IdEntity
 	private String ordernum; // 排序
 	
 	@Column
-	private String weixinno; // 微信号
+	private String wxcno; // 微信号
+	
+	@Column
+	private String wxopenid; // 微信标识
+	
+	@Column
+	private String wxnickname; // 微信昵称	
 	
 	@Column
 	private String mobile; // 手机号
+	
+	@Column
+	private Timestamp createtime; // 创建时间	
 
 	public String getLoginname()
 	{
@@ -80,14 +91,34 @@ public class User extends IdEntity
 		this.ordernum = ordernum;
 	}
 
-	public String getWeixinno()
+	public String getWxcno()
 	{
-		return weixinno;
+		return wxcno;
 	}
 
-	public void setWeixinno(String weixinno)
+	public void setWxcno(String wxcno)
 	{
-		this.weixinno = weixinno;
+		this.wxcno = wxcno;
+	}
+
+	public String getWxopenid()
+	{
+		return wxopenid;
+	}
+
+	public void setWxopenid(String wxopenid)
+	{
+		this.wxopenid = wxopenid;
+	}
+
+	public String getWxnickname()
+	{
+		return wxnickname;
+	}
+
+	public void setWxnickname(String wxnickname)
+	{
+		this.wxnickname = wxnickname;
 	}
 
 	public String getMobile()
@@ -99,4 +130,15 @@ public class User extends IdEntity
 	{
 		this.mobile = mobile;
 	}
+
+	public Timestamp getCreatetime()
+	{
+		return createtime;
+	}
+
+	public void setCreatetime(Timestamp createtime)
+	{
+		this.createtime = createtime;
+	}
+
 }

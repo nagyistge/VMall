@@ -18,9 +18,15 @@ public class Goods extends IdEntity
 
 	@Column
 	private String classid; // 商品分类标识
+	
+	@Column
+	private BigDecimal costprice; // 成本单价		
 
 	@Column
 	private BigDecimal saleprice; // 销售单价
+	
+	@Column
+	private BigDecimal promoteprice; // 促销单价
 
 	@Column
 	private BigDecimal rebate1; // 1级返利
@@ -70,6 +76,16 @@ public class Goods extends IdEntity
 		this.classid = classid;
 	}
 
+	public BigDecimal getCostprice()
+	{
+		return costprice;
+	}
+
+	public void setCostprice(BigDecimal costprice)
+	{
+		this.costprice = costprice;
+	}
+
 	public BigDecimal getSaleprice()
 	{
 		return saleprice;
@@ -78,6 +94,16 @@ public class Goods extends IdEntity
 	public void setSaleprice(BigDecimal saleprice)
 	{
 		this.saleprice = saleprice;
+	}
+
+	public BigDecimal getPromoteprice()
+	{
+		return promoteprice;
+	}
+
+	public void setPromoteprice(BigDecimal promoteprice)
+	{
+		this.promoteprice = promoteprice;
 	}
 
 	public BigDecimal getRebate1()

@@ -40,6 +40,9 @@ public class Mall extends IdEntity
 	private String bankacountno; // 银行账号
 	
 	@Column
+	private String wxcno; // 微信号	
+	
+	@Column
 	private String wxopenid; // 微信标识
 	
 	@Column
@@ -143,6 +146,16 @@ public class Mall extends IdEntity
 	public void setBankacountno(String bankacountno)
 	{
 		this.bankacountno = bankacountno;
+	}
+
+	public String getWxcno()
+	{
+		return wxcno;
+	}
+
+	public void setWxcno(String wxcno)
+	{
+		this.wxcno = wxcno;
 	}
 
 	public String getWxopenid()

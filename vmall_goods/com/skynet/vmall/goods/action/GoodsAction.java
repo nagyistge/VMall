@@ -15,24 +15,40 @@ import com.skynet.framework.services.db.dybeans.DynamicObject;
 import com.skynet.vmall.goods.service.GoodsService;
 
 @IocBean
-@At("/good/goods")
+@At("/goods/goods")
 public class GoodsAction extends BaseAction
 {
 	@Inject
 	private GoodsService goodsService;
 
 	@At("/browse")
-	@Ok("->:/page/goods/goodsclass/browse.ftl")
+	@Ok("->:/page/goods/goods/browse.ftl")
 	public Map browse(@Param("..") Map map, @Param("_page") String page, @Param("_pagesize") String pagesize) throws Exception
 	{
 		map.put("_page", Strings.sNull(page, "1"));
 		map.put("_pagesize", Strings.sNull(pagesize, "5"));
 		map.put("state", "新建");
-		List<DynamicObject> reviews = goodsService.browse(map);
-		ro.put("reviews", reviews);
+		List<DynamicObject> goods = goodsService.browse(map);
+		ro.put("goods", goods);
 		ro.put("_page", page);
 		ro.put("_pagesize", pagesize);
 
 		return ro;
 	}
+	
+	// 端商品浏览
+	@At("/show")
+	@Ok("->:/page/goods/goods/show.ftl")
+	public Map show(@Param("..") Map map, @Param("_page") String page, @Param("_pagesize") String pagesize) throws Exception
+	{
+		map.put("_page", Strings.sNull(page, "1"));
+		map.put("_pagesize", Strings.sNull(pagesize, "5"));
+		List<DynamicObject> goods = goodsService.browse(map);
+		ro.put("goods", goods);
+		ro.put("_page", page);
+		ro.put("_pagesize", pagesize);
+
+		return ro;
+	}
+	
 }
