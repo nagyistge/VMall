@@ -1,5 +1,6 @@
 package com.skynet.vmall.order.service;
 
+import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.List;
@@ -7,7 +8,6 @@ import java.util.Map;
 
 import org.nutz.dao.Cnd;
 import org.nutz.dao.Dao;
-import org.nutz.dao.entity.annotation.Column;
 import org.nutz.ioc.annotation.InjectName;
 import org.nutz.ioc.loader.annotation.IocBean;
 
@@ -18,10 +18,13 @@ import com.skynet.framework.services.db.dybeans.DynamicObject;
 import com.skynet.framework.services.function.Types;
 import com.skynet.framework.spec.GlobalConstants;
 import com.skynet.vmall.base.pojo.Goods;
+import com.skynet.vmall.base.pojo.Member;
 import com.skynet.vmall.base.pojo.Order;
 import com.skynet.vmall.base.pojo.OrderGoods;
+import com.skynet.vmall.base.pojo.OrderGoodsRebate;
 import com.skynet.vmall.base.pojo.ShopCart;
 import com.skynet.vmall.base.pojo.ShopCartGoods;
+import com.skynet.vmall.member.service.MemberService;
 
 @InjectName("shopcartService")
 @IocBean(args = { "refer:dao" }) 
@@ -133,19 +136,64 @@ public class ShopCartService extends SkynetNameEntityService<ShopCart>
 			order.setOrdertime(new Timestamp(System.currentTimeMillis()));
 			sdao().insert(order);
 			
+			
+			MemberService memberService = new MemberService(sdao(), Member.class);
+			List<DynamicObject> supmembers = memberService.findsupmembers(userid, MemberService.level_rebate);
+			
 			// 生成订单商品记录
 			OrderGoods ordergoods = new OrderGoods();
 			String ordergoodsid = UUIDGenerator.getInstance().getNextValue();
 			ordergoods.setId(ordergoodsid);
 			ordergoods.setOrderid(orderid);
-			ordergoods.setMemberid("");
-			ordergoods.setWxopenid("");
+			ordergoods.setMemberid(userid);
+			ordergoods.setWxopenid(userwxopenid);
 			ordergoods.setGoodsid(cartgoods.getGoodsid());
 			ordergoods.setGoodsname(cartgoods.getGoodsname());
 			ordergoods.setNums(cartgoods.getNums());
 			ordergoods.setSaleprice(goods.getSaleprice());
 			
+			for(int j=0;j<supmembers.size();j++)
+			{
+				DynamicObject supmember = supmembers.get(j);
+				int level = j + 1;
+				
+				Method mog_setrebate = OrderGoods.class.getMethod("setRebate"+level, BigDecimal.class);
+				Method mog_setsupwxopenid = OrderGoods.class.getMethod("setSupwxopenid"+level, String.class);
+				Method mog_setsupmemberid = OrderGoods.class.getMethod("setSupmemberid"+level, String.class);
+				
+				Method mg = Goods.class.getMethod("getRebate"+level);
+				mog_setrebate.invoke(ordergoods, mg.invoke(goods));
+				mog_setsupwxopenid.invoke(ordergoods, supmember.getFormatAttr("wxopenid"));
+				mog_setsupmemberid.invoke(ordergoods, supmember.getFormatAttr("id"));
+			}
+			
 			sdao().insert(ordergoods); 
+
+			for(int j=0;j<supmembers.size();j++)
+			{
+				String supmemberid = supmembers.get(j).getFormatAttr("id");
+				String supwxopenid = supmembers.get(j).getFormatAttr("wxopenid");
+				int level = j + 1;
+				
+				// 生成订单商品返利记录
+				OrderGoodsRebate orderrebate = new OrderGoodsRebate();
+				String orderrebateid = UUIDGenerator.getInstance().getNextValue();			
+				orderrebate.setId(orderrebateid);
+				// orderrebate.setOrdercno(order.getCno());
+				orderrebate.setOrdergoodsid(ordergoodsid);
+				orderrebate.setSupmemberid(supmemberid);
+				orderrebate.setSupwxopenid(supwxopenid);
+				orderrebate.setSubmemberid(userid);
+				orderrebate.setSubwxopenid(userwxopenid);
+				orderrebate.setLevel(level);
+				
+				Method m = Goods.class.getMethod("getRebate"+level);
+				orderrebate.setRebate((BigDecimal)m.invoke(goods));
+				orderrebate.setNums(ordergoods.getNums());
+				orderrebate.setScore(orderrebate.getRebate().multiply(new BigDecimal(ordergoods.getNums())));
+				orderrebate.setRebatetime(new Timestamp(System.currentTimeMillis()));
+				sdao().insert(orderrebate);
+			}
 			
 			// 清除购物车商品
 			sdao().delete(cartgoods);

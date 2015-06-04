@@ -9,6 +9,9 @@ import org.nutz.dao.entity.annotation.Table;
 public class GoodsChange extends Goods
 {
 	@Column
+	private String goodsid; // 商品标识
+	
+	@Column
 	private Timestamp changetime; // 变更时间
 	
 	@Column

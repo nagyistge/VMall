@@ -2,24 +2,13 @@ delete from t_app_goodsclass;
 delete from t_app_goods;
 delete from t_app_goodschange;
 
-drop function goods_test_data;
-
-create function goods_test_data(loop int)
-returns int 
-begin 
-
-insert into t_app_goods(id, cname, classid, costprice, saleprice, promoteprice) values(uuid(), '镂空时装水钻凉靴','fushi',370,370,168);
-
-return 0;
-end;
-
-insert into t_app_goods(id, cname, classid, costprice, saleprice, promoteprice) values(uuid(), '镂空时装水钻凉靴','fushi',370,370,168);
-insert into t_app_goods(id, cname, classid, costprice, saleprice, promoteprice) values(uuid(), '2015新品厚底凉鞋女夏坡跟松糕底凉鞋女中跟真皮休闲罗马凉鞋韩版','fushi',370,370,168);
-insert into t_app_goods(id, cname, classid, costprice, saleprice, promoteprice) values(uuid(), '夏季新款平底凉鞋女夏平跟韩国夹趾凉鞋坡跟复古罗马凉鞋2015新品','fushi',370,370,168);
-insert into t_app_goods(id, cname, classid, costprice, saleprice, promoteprice) values(uuid(), '2015新品凉鞋女夏坡跟真皮厚底鞋夏韩版罗马凉鞋女高跟鱼嘴鞋夏季','fushi',370,370,168);
-insert into t_app_goods(id, cname, classid, costprice, saleprice, promoteprice) values(uuid(), '2015新品夏性感包头高跟女鞋欧美黑白色真皮罗马细跟女式尖头凉鞋','fushi',370,370,168);
-insert into t_app_goods(id, cname, classid, costprice, saleprice, promoteprice) values(uuid(), '2015新品平底时尚凉鞋女夏真皮平跟凉靴休闲凉鞋欧美复古罗马凉鞋','fushi',370,370,168);
-insert into t_app_goods(id, cname, classid, costprice, saleprice, promoteprice) values(uuid(), '2015新品厚底坡跟凉鞋女夏真皮水钻高跟防水台凉鞋平底韩版新款潮','fushi',370,370,168);
-insert into t_app_goods(id, cname, classid, costprice, saleprice, promoteprice) values(uuid(), '2015新品女鞋厚底凉鞋夏女松糕底真皮罗马鞋学生凉鞋韩版潮学院风','fushi',370,370,168);
-insert into t_app_goods(id, cname, classid, costprice, saleprice, promoteprice) values(uuid(), '2015新品夏欧美鱼嘴中跟粗跟真皮皮带扣防水台罗马凉鞋妈妈凉鞋女','fushi',370,370,168);
-insert into t_app_goods(id, cname, classid, costprice, saleprice, promoteprice) values(uuid(), '2015年新品凉鞋女夏平底平跟时尚凉鞋女韩版休闲鞋复古罗马凉鞋','fushi',370,370,168);
+ insert into t_app_goods(id, cname, classid, costprice, saleprice, promoteprice, rebate1, rebate2, rebate3)  values(uuid(), '镂空时装水钻凉靴01','fushi',60,60,40,5,10,15);
+ insert into t_app_goods(id, cname, classid, costprice, saleprice, promoteprice, rebate1, rebate2, rebate3)  values(uuid(), '镂空时装水钻凉靴02','fushi',66,66,44,5,10,15);
+ insert into t_app_goods(id, cname, classid, costprice, saleprice, promoteprice, rebate1, rebate2, rebate3)  values(uuid(), '镂空时装水钻凉靴03','fushi',72,72,48,5,10,15);
+ insert into t_app_goods(id, cname, classid, costprice, saleprice, promoteprice, rebate1, rebate2, rebate3)  values(uuid(), '镂空时装水钻凉靴04','fushi',78,78,52,5,10,15);
+ insert into t_app_goods(id, cname, classid, costprice, saleprice, promoteprice, rebate1, rebate2, rebate3)  values(uuid(), '镂空时装水钻凉靴05','fushi',84,84,56,5,10,15);
+ insert into t_app_goods(id, cname, classid, costprice, saleprice, promoteprice, rebate1, rebate2, rebate3)  values(uuid(), '镂空时装水钻凉靴06','fushi',90,90,60,5,10,15);
+ insert into t_app_goods(id, cname, classid, costprice, saleprice, promoteprice, rebate1, rebate2, rebate3)  values(uuid(), '镂空时装水钻凉靴07','fushi',96,96,64,5,10,15);
+ insert into t_app_goods(id, cname, classid, costprice, saleprice, promoteprice, rebate1, rebate2, rebate3)  values(uuid(), '镂空时装水钻凉靴08','fushi',102,102,68,5,10,15);
+ insert into t_app_goods(id, cname, classid, costprice, saleprice, promoteprice, rebate1, rebate2, rebate3)  values(uuid(), '镂空时装水钻凉靴09','fushi',108,108,72,5,10,15);
+ insert into t_app_goods(id, cname, classid, costprice, saleprice, promoteprice, rebate1, rebate2, rebate3)  values(uuid(), '镂空时装水钻凉靴10','fushi',114,114,76,5,10,15);

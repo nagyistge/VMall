@@ -2,5 +2,20 @@
 <classpath>
 	<classpathentry kind="src" path=""/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/vmall"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/skynet_dictionary"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/skynet_framework"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/skynet_function"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/skynet_json"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/skynet_organ"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/skynet_tools"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/skynet_upload"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/vmall_author"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/vmall_base"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/vmall_frame"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/vmall_goods"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/vmall_member"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/vmall_order"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/vmall_system"/>
 	<classpathentry kind="output" path=""/>
 </classpath>

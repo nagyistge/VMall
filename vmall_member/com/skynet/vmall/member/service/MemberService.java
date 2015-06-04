@@ -2,8 +2,10 @@ package com.skynet.vmall.member.service;
 
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.nutz.dao.Cnd;
@@ -16,6 +18,8 @@ import com.skynet.app.organ.pojo.User;
 import com.skynet.framework.common.generator.UUIDGenerator;
 import com.skynet.framework.service.GeneratorService;
 import com.skynet.framework.service.SkynetNameEntityService;
+import com.skynet.framework.services.db.dybeans.DynamicObject;
+import com.skynet.framework.services.function.StringToolKit;
 import com.skynet.vmall.base.pojo.Follow;
 import com.skynet.vmall.base.pojo.Member;
 import com.skynet.vmall.base.pojo.TreeMember;
@@ -25,9 +29,11 @@ import com.skynet.vmall.base.pojo.TreeMember;
 { "refer:dao" })
 public class MemberService extends SkynetNameEntityService<Member>
 {
+	public static int level_rebate = 3; // 返利总计层级数
+	
 	@Inject
 	GeneratorService generatorService;
-	
+
 	public MemberService()
 	{
 		super();
@@ -52,31 +58,31 @@ public class MemberService extends SkynetNameEntityService<Member>
 		// 检查是否已经关注过目标微信用户
 		// 检查是否反向关注过源微信用户(不可反向关注)
 		// 未关注过，则建立关注
-		if(sdao().count(Member.class, Cnd.where("wxopenid", "=", swxopenid))>0)
+		if (sdao().count(Member.class, Cnd.where("wxopenid", "=", swxopenid)) > 0)
 		{
 			throw new Exception("当前用户已经是会员，不允许重复关注其它会员！");
 		}
-		
-		if(sdao().count(Member.class, Cnd.where("wxopenid", "=", dwxopenid))==0)
+
+		if (sdao().count(Member.class, Cnd.where("wxopenid", "=", dwxopenid)) == 0)
 		{
 			throw new Exception("要关注的用户不是会员，不允许关注！");
 		}
-		
-		if(sdao().count(Follow.class, Cnd.where("swxopenid", "=", swxopenid))>0)
+
+		if (sdao().count(Follow.class, Cnd.where("swxopenid", "=", swxopenid)) > 0)
 		{
 			throw new Exception("你已关注过其它用户，不允许再关注！");
 		}
 
-		if(sdao().count(Follow.class, Cnd.where("swxopenid", "=", swxopenid).and("dwxopenid", "=", dwxopenid))>0)
+		if (sdao().count(Follow.class, Cnd.where("swxopenid", "=", swxopenid).and("dwxopenid", "=", dwxopenid)) > 0)
 		{
 			throw new Exception("已关注过该用户，不允许重复关注！");
 		}
 
-		if(sdao().count(Follow.class, Cnd.where("swxopenid", "=", dwxopenid).and("dwxopenid", "=", swxopenid))>0)
+		if (sdao().count(Follow.class, Cnd.where("swxopenid", "=", dwxopenid).and("dwxopenid", "=", swxopenid)) > 0)
 		{
 			throw new Exception("该用户已关注过你，不允许再进行关注！");
 		}
-		
+
 		String id = UUIDGenerator.getInstance().getNextValue();
 		Date cdate = new Date();
 		User user = new User();
@@ -84,13 +90,13 @@ public class MemberService extends SkynetNameEntityService<Member>
 
 		SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");
 		String sdate = sf.format(cdate);
-		String sno = String.valueOf((Math.random() * 100000)/1);
+		String sno = String.valueOf((Math.random() * 100000) / 1);
 		user.setCname("用户_" + sdate + sno);
 		user.setWxopenid(swxopenid);
 		user.setWxnickname(swxnickname);
 		user.setCreatetime(new Timestamp(cdate.getTime()));
 		sdao().insert(user);
-		
+
 		Member supmember = sdao().fetch(Member.class, Cnd.where("wxopenid", "=", dwxopenid));
 
 		Member member = new Member();
@@ -101,19 +107,19 @@ public class MemberService extends SkynetNameEntityService<Member>
 		member.setInternal(supmember.getInternal() + TreeMember.single_internal);
 		member.setLevel(supmember.getLevel() + 1);
 		member.setSupid(supmember.getId());
-		
+
 		sdao().insert(member);
-		
+
 		Follow follow = new Follow();
 		String followid = UUIDGenerator.getInstance().getNextValue();
 		follow.setId(followid);
 		follow.setSwxopenid(swxopenid);
 		follow.setDwxopenid(dwxopenid);
 		follow.setFollowtime(new Timestamp(cdate.getTime()));
-		
+
 		sdao().insert(follow);
 	}
-	
+
 	// 生成会员内部编码
 	public String gen_internal(String supid) throws Exception
 	{
@@ -142,6 +148,30 @@ public class MemberService extends SkynetNameEntityService<Member>
 		map.put("express", express);
 
 		return generatorService.getNextValue(map);
-	}	
-	
+	}
+
+	// 查找给定层级数范围内上级会员
+	public List<DynamicObject> findsupmembers(String memberid, int findlevel) throws Exception
+	{
+		String internal = locate(memberid).getFormatAttr("internal");
+		List<DynamicObject> supmembers = new ArrayList<DynamicObject>();
+		int len = internal.length();
+		for (int i = 1; i <= findlevel; i++)
+		{
+			int last = len - (i * 4);
+			if(last>=0)
+			{
+				DynamicObject supmember = locateBy(Cnd.where("internal", "=", internal.substring(0, last)));
+				if(StringToolKit.isBlank(supmember.getFormatAttr("id")))
+				{
+					break;
+				}
+				else
+				{
+					supmembers.add(supmember);
+				}
+			}
+		}
+		return supmembers;
+	}
 }

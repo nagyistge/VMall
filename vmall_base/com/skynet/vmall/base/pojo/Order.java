@@ -12,7 +12,10 @@ import com.skynet.framework.pojo.IdEntity;
 public class Order extends IdEntity
 {
 	@Column
-	private String memberid; // 购买方会员标识、
+	private String cno; // 订单编号
+
+	@Column
+	private String memberid; // 购买方会员标识
 	
 	@Column
 	private String wxopenid; // 购买方会员微信标识	
@@ -22,6 +25,16 @@ public class Order extends IdEntity
 
 	@Column
 	private BigDecimal amount; // 订单总额
+
+	public String getCno()
+	{
+		return cno;
+	}
+
+	public void setCno(String cno)
+	{
+		this.cno = cno;
+	}
 
 	public String getMemberid()
 	{

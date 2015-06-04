@@ -45,6 +45,36 @@ public class OrderGoods extends IdEntity
 
 	@Column
 	private BigDecimal rebate5; // 5级返利
+	
+	@Column
+	private String supwxopenid1; // 1级收取返利会员微信标识		
+
+	@Column
+	private String supwxopenid2; // 2级收取返利会员微信标识	
+	
+	@Column
+	private String supwxopenid3; // 3级收取返利会员微信标识	
+	
+	@Column
+	private String supwxopenid4; // 4级收取返利会员微信标识	
+	
+	@Column
+	private String supwxopenid5; // 5级收取返利会员微信标识
+	
+	@Column
+	private String supmemberid1; // 1级收取返利会员标识	
+
+	@Column
+	private String supmemberid2; // 2级收取返利会员标识	
+	
+	@Column
+	private String supmemberid3; // 3级收取返利会员标识	
+	
+	@Column
+	private String supmemberid4; // 4级收取返利会员标识	
+	
+	@Column
+	private String supmemberid5; // 5级收取返利会员标识
 
 	public String getOrderid()
 	{
@@ -165,5 +195,104 @@ public class OrderGoods extends IdEntity
 	{
 		this.rebate5 = rebate5;
 	}
-	
+
+	public String getSupwxopenid1()
+	{
+		return supwxopenid1;
+	}
+
+	public void setSupwxopenid1(String supwxopenid1)
+	{
+		this.supwxopenid1 = supwxopenid1;
+	}
+
+	public String getSupwxopenid2()
+	{
+		return supwxopenid2;
+	}
+
+	public void setSupwxopenid2(String supwxopenid2)
+	{
+		this.supwxopenid2 = supwxopenid2;
+	}
+
+	public String getSupwxopenid3()
+	{
+		return supwxopenid3;
+	}
+
+	public void setSupwxopenid3(String supwxopenid3)
+	{
+		this.supwxopenid3 = supwxopenid3;
+	}
+
+	public String getSupwxopenid4()
+	{
+		return supwxopenid4;
+	}
+
+	public void setSupwxopenid4(String supwxopenid4)
+	{
+		this.supwxopenid4 = supwxopenid4;
+	}
+
+	public String getSupwxopenid5()
+	{
+		return supwxopenid5;
+	}
+
+	public void setSupwxopenid5(String supwxopenid5)
+	{
+		this.supwxopenid5 = supwxopenid5;
+	}
+
+	public String getSupmemberid1()
+	{
+		return supmemberid1;
+	}
+
+	public void setSupmemberid1(String supmemberid1)
+	{
+		this.supmemberid1 = supmemberid1;
+	}
+
+	public String getSupmemberid2()
+	{
+		return supmemberid2;
+	}
+
+	public void setSupmemberid2(String supmemberid2)
+	{
+		this.supmemberid2 = supmemberid2;
+	}
+
+	public String getSupmemberid3()
+	{
+		return supmemberid3;
+	}
+
+	public void setSupmemberid3(String supmemberid3)
+	{
+		this.supmemberid3 = supmemberid3;
+	}
+
+	public String getSupmemberid4()
+	{
+		return supmemberid4;
+	}
+
+	public void setSupmemberid4(String supmemberid4)
+	{
+		this.supmemberid4 = supmemberid4;
+	}
+
+	public String getSupmemberid5()
+	{
+		return supmemberid5;
+	}
+
+	public void setSupmemberid5(String supmemberid5)
+	{
+		this.supmemberid5 = supmemberid5;
+	}
 }

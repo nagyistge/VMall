@@ -20,7 +20,10 @@ public class Member extends Dealer
 
 	@Column
 	private String ctype; // 类型 (商城、总经销商、分销商、会员)
-
+	
+	@Column
+	private int score; // 累计积分
+	
 	public String getMobile()
 	{
 		return mobile;
@@ -69,6 +72,16 @@ public class Member extends Dealer
 	public void setCtype(String ctype)
 	{
 		this.ctype = ctype;
+	}
+
+	public int getScore()
+	{
+		return score;
+	}
+
+	public void setScore(int score)
+	{
+		this.score = score;
 	}
 	
 }

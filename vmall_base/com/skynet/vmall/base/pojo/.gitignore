@@ -13,3 +13,7 @@
 /TreeMember.class
 /ShopCartGoods.class
 /ShopCart.class
+/OrderReturnScore.class
+/OrderGoodsReturn.class
+/OrderGoodsRebate.class
+/GoodsRebate.class
