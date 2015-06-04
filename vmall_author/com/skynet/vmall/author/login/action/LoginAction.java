@@ -40,13 +40,16 @@ public class LoginAction extends BaseAction
 		HttpSession session = Mvcs.getHttpSession(true);
 		session.removeAttribute(GlobalConstants.sys_login_token);
 
-		DynamicObject user = userService.locateBy(Cnd.where("loginname", "=", loginname).and("password", "=", password));
-		if (StringToolKit.isBlank(user.getFormatAttr("id")))
+		int num = userService.count(Cnd.where("loginname", "=", loginname).and("password", "=", password));
+		
+		if (num==0)
 		{
 			session.removeAttribute(GlobalConstants.sys_login_token);
 			ro.put("status", "failed");
 			return ro;
 		}
+		
+		DynamicObject user = userService.locateBy(Cnd.where("loginname", "=", loginname).and("password", "=", password));
 
 		DynamicObject dept = userService.getPrimaryDept(loginname);
 		DynamicObject org = userService.getPrimaryOrg(loginname);
@@ -55,6 +58,7 @@ public class LoginAction extends BaseAction
 		obj.setAttr(GlobalConstants.sys_login_user, loginname);
 		obj.setAttr(GlobalConstants.sys_login_username, user.getFormatAttr("cname"));
 		obj.setAttr(GlobalConstants.sys_login_userid, user.getFormatAttr("id"));
+		obj.setAttr(GlobalConstants.sys_login_userwxopenid, user.getFormatAttr("wxopenid"));
 
 		obj.setAttr(GlobalConstants.sys_login_dept, dept.getFormatAttr("id"));
 		obj.setAttr(GlobalConstants.sys_login_deptname, dept.getFormatAttr("cname"));
@@ -68,6 +72,48 @@ public class LoginAction extends BaseAction
 
 		return ro;
 	}
+	
+	@At("/wxlogin")
+	@Ok(">>:/goods/goods/index.action")
+	public Map wxlogin(@Param("username") String loginname, String password) throws Exception
+	{
+		HttpSession session = Mvcs.getHttpSession(true);
+		session.removeAttribute(GlobalConstants.sys_login_token);
+
+		int num = userService.count(Cnd.where("loginname", "=", loginname).and("password", "=", password));
+		
+		if (num==0)
+		{
+			session.removeAttribute(GlobalConstants.sys_login_token);
+			ro.put("status", "failed");
+			return ro;
+		}
+		
+		DynamicObject user = userService.locateBy(Cnd.where("loginname", "=", loginname).and("password", "=", password));
+
+		DynamicObject dept = userService.getPrimaryDept(loginname);
+		DynamicObject org = userService.getPrimaryOrg(loginname);
+
+		DynamicObject obj = new DynamicObject();
+		obj.setAttr(GlobalConstants.sys_login_user, loginname);
+		obj.setAttr(GlobalConstants.sys_login_username, user.getFormatAttr("cname"));
+		obj.setAttr(GlobalConstants.sys_login_userid, user.getFormatAttr("id"));
+		obj.setAttr(GlobalConstants.sys_login_userwxopenid, user.getFormatAttr("wxopenid"));
+
+		obj.setAttr(GlobalConstants.sys_login_dept, dept.getFormatAttr("id"));
+		obj.setAttr(GlobalConstants.sys_login_deptname, dept.getFormatAttr("cname"));
+		obj.setAttr(GlobalConstants.sys_login_dept_internal, dept.getFormatAttr("internal"));
+
+		obj.setAttr(GlobalConstants.sys_login_org, org.getFormatAttr("id"));
+		obj.setAttr(GlobalConstants.sys_login_orgname, org.getFormatAttr("cname"));
+		obj.setAttr(GlobalConstants.sys_login_org_internal, org.getFormatAttr("internal"));
+
+		session.setAttribute(GlobalConstants.sys_login_token, obj);
+
+		return ro;
+	}
+	
+	
 
 	public OrganService getOrganService()
 	{

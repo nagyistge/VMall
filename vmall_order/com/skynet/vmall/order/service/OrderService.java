@@ -1,4 +1,4 @@
-package com.skynet.vmall.goods.service;
+package com.skynet.vmall.order.service;
 
 import java.util.List;
 import java.util.Map;
@@ -10,23 +10,23 @@ import org.nutz.ioc.loader.annotation.IocBean;
 import com.skynet.framework.service.SkynetNameEntityService;
 import com.skynet.framework.services.db.dybeans.DynamicObject;
 import com.skynet.framework.services.function.Types;
-import com.skynet.vmall.base.pojo.Goods;
+import com.skynet.vmall.base.pojo.Order;
 
-@InjectName("goodsService")
+@InjectName("orderService")
 @IocBean(args = { "refer:dao" }) 
-public class GoodsService extends SkynetNameEntityService<Goods>
+public class OrderService extends SkynetNameEntityService<Order>
 {
-	public GoodsService()
+	public OrderService()
 	{
 		super();
 	}
 	
-	public GoodsService(Dao dao)
+	public OrderService(Dao dao)
 	{
 		super(dao);
 	}	
 	
-	public GoodsService(Dao dao, Class<Goods> entityType)
+	public OrderService(Dao dao, Class<Order> entityType)
 	{
 		super(dao, entityType);
 	}
@@ -35,7 +35,7 @@ public class GoodsService extends SkynetNameEntityService<Goods>
 	public List<DynamicObject> browse(Map map) throws Exception
 	{
 		int page = Types.parseInt((String) map.get("_page"), 1);
-		int pagesize = Types.parseInt((String) map.get("_pagesize"), 10);
+		int pagesize = Types.parseInt((String) map.get("_pagesize"), 1);
 
 		int startindex = (page - 1) * pagesize;
 		int endindex = page * pagesize;

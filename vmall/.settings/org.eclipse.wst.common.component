@@ -4,6 +4,6 @@
         <wb-resource deploy-path="/" source-path="/WebContent" tag="defaultRootSource"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src"/>
         <property name="java-output-path" value="/vmall/build/classes"/>
-        <property name="context-root" value="gzh"/>
+        <property name="context-root" value="vmall"/>
     </wb-module>
 </project-modules>

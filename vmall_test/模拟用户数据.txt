@@ -85,6 +85,7 @@ insert into t_sys_user(id, loginname, cname) values('wangfp','wangfp','王凤萍
 
 -- update t_sys_user set password = 'b59c67bf196a4758191e42f76670ceba';
 update t_sys_user set password = '1111';
+update t_sys_user set wxopenid = concat_ws('wx', loginname);
 
 
 insert into t_sys_groupuser(id, groupname, groupid, grouptype, username, loginname, userid) values(uuid(),'商城','00000000','DEPT','刘予胜','liuys','liuys');

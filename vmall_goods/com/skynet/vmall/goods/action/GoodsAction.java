@@ -20,6 +20,15 @@ public class GoodsAction extends BaseAction
 {
 	@Inject
 	private GoodsService goodsService;
+	
+	@At("/index")
+	@Ok("->:/page/goods/goods/index.ftl")
+	public Map index(@Param("..") Map map) throws Exception
+	{
+		List<DynamicObject> goods = goodsService.browse(map);
+		ro.put("goods", goods);
+		return ro;
+	}
 
 	@At("/browse")
 	@Ok("->:/page/goods/goods/browse.ftl")
@@ -36,7 +45,7 @@ public class GoodsAction extends BaseAction
 		return ro;
 	}
 	
-	// 端商品浏览
+	// 商品浏览
 	@At("/show")
 	@Ok("->:/page/goods/goods/show.ftl")
 	public Map show(@Param("..") Map map, @Param("_page") String page, @Param("_pagesize") String pagesize) throws Exception
@@ -48,6 +57,17 @@ public class GoodsAction extends BaseAction
 		ro.put("_page", page);
 		ro.put("_pagesize", pagesize);
 
+		return ro;
+	}
+	
+	// 商品浏览
+	@At("/look")
+	@Ok("->:/page/goods/goods/look.ftl")
+	public Map look(@Param("..") Map map) throws Exception
+	{
+		String id = (String)map.get("id");
+		DynamicObject goods = goodsService.locate(id);
+		ro.put("goods", goods);
 		return ro;
 	}
 	

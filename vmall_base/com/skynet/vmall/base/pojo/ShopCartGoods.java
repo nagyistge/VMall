@@ -7,23 +7,23 @@ import org.nutz.dao.entity.annotation.Table;
 
 import com.skynet.framework.pojo.IdEntity;
 
-@Table("T_APP_ORDERGOODS")
-public class OrderGoods extends IdEntity
+@Table("T_APP_SHOPCARTGOODS")
+public class ShopCartGoods extends IdEntity
 {
 	@Column
-	private String orderid; // 订单标识
+	private String shopcartid; // 购物车标识
 	
 	@Column
 	private String memberid; // 销售方会员标识
 	
 	@Column
-	private String wxopenid; // 销售方会员微信标识	
+	private String wxopenid; // 销售方会员微信标识		
 
 	@Column
 	private String goodsid; // 商品标识
 	
 	@Column
-	private String goodsname; // 商品名称	
+	private String goodsname; // 商品名称
 	
 	@Column
 	private int nums ; // 数量
@@ -46,14 +46,14 @@ public class OrderGoods extends IdEntity
 	@Column
 	private BigDecimal rebate5; // 5级返利
 
-	public String getOrderid()
+	public String getShopcartid()
 	{
-		return orderid;
+		return shopcartid;
 	}
 
-	public void setOrderid(String orderid)
+	public void setShopcartid(String shopcartid)
 	{
-		this.orderid = orderid;
+		this.shopcartid = shopcartid;
 	}
 
 	public String getMemberid()
@@ -165,5 +165,6 @@ public class OrderGoods extends IdEntity
 	{
 		this.rebate5 = rebate5;
 	}
-	
+
+
 }

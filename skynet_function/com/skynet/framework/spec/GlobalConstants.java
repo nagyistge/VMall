@@ -31,6 +31,10 @@ public class GlobalConstants
 
 	public static String sys_login_orgname = "sys_login_orgname";
 	
+	public static String sys_login_userwxopenid = "sys_login_userwxopenid";
+	
+	public static String sys_login_wxnickname = "sys_login_wxnickname";
+	
 	// 通用查询参数声明
 	public static String spec_queryid = "spec_queryid";
 	

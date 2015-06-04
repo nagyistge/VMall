@@ -1,27 +1,26 @@
 package com.skynet.vmall.base.pojo;
 
 import java.math.BigDecimal;
-import java.sql.Timestamp;
 
 import org.nutz.dao.entity.annotation.Column;
 import org.nutz.dao.entity.annotation.Table;
 
 import com.skynet.framework.pojo.IdEntity;
 
-@Table("T_APP_ORDER")
-public class Order extends IdEntity
+@Table("T_APP_SHOPCART")
+public class ShopCart extends IdEntity
 {
 	@Column
-	private String memberid; // 购买方会员标识、
+	private String memberid; // 购买会员标识
 	
 	@Column
-	private String wxopenid; // 购买方会员微信标识	
+	private String wxopenid; // 购买会员微信标识	
 	
-	@Column	
-	private Timestamp ordertime; // 订单时间
+	@Column
+	private int nums; // 商品件数	
 
 	@Column
-	private BigDecimal amount; // 订单总额
+	private BigDecimal amount; // 商品总额
 
 	public String getMemberid()
 	{
@@ -43,14 +42,14 @@ public class Order extends IdEntity
 		this.wxopenid = wxopenid;
 	}
 
-	public Timestamp getOrdertime()
+	public int getNums()
 	{
-		return ordertime;
+		return nums;
 	}
 
-	public void setOrdertime(Timestamp ordertime)
+	public void setNums(int nums)
 	{
-		this.ordertime = ordertime;
+		this.nums = nums;
 	}
 
 	public BigDecimal getAmount()
@@ -62,5 +61,6 @@ public class Order extends IdEntity
 	{
 		this.amount = amount;
 	}
-	
+
+
 }
