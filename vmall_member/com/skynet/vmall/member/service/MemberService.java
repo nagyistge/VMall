@@ -174,4 +174,33 @@ public class MemberService extends SkynetNameEntityService<Member>
 		}
 		return supmembers;
 	}
+	
+	// 查找给定层级数范围内下级会员
+	public List<DynamicObject> findsubmembers(String memberid, int findlevel) throws Exception
+	{
+		String internal = locate(memberid).getFormatAttr("internal");
+		int len = internal.length();
+		int minlen = len + 4;
+		if(minlen<0)
+		{
+			minlen = 0;
+		}
+		int maxlen = len + (findlevel * 4);
+		if(maxlen<0)
+		{
+			maxlen = 0;
+		}
+		List<DynamicObject> submembers = new ArrayList<DynamicObject>();
+		StringBuffer sql = new StringBuffer();
+		sql.append(" select * from t_app_member ").append("\n");
+		sql.append("  where 1 = 1 ").append("\n");
+		sql.append("    and internal like '"+internal+"%' ").append("\n");
+		sql.append("    and length(internal) >= " + minlen).append("\n");
+		sql.append("    and length(internal) <= " + maxlen).append("\n");
+		sql.append("  order by internal ").append("\n");
+		
+		submembers = sdao().queryForList(sql.toString());
+		
+		return submembers;
+	}
 }

@@ -1,14 +1,20 @@
 package com.skynet.vmall.member.action;
 
+import java.util.List;
 import java.util.Map;
+
+import javax.servlet.http.HttpSession;
 
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
+import org.nutz.mvc.Mvcs;
 import org.nutz.mvc.annotation.At;
 import org.nutz.mvc.annotation.Ok;
 import org.nutz.mvc.annotation.Param;
 
 import com.skynet.framework.action.BaseAction;
+import com.skynet.framework.services.db.dybeans.DynamicObject;
+import com.skynet.framework.spec.GlobalConstants;
 import com.skynet.vmall.member.service.MemberService;
 
 @IocBean
@@ -42,4 +48,16 @@ public class MemberAction extends BaseAction
 		
 		return ro;
 	}
+	
+	@At("/group")
+	@Ok("->:/page/member/member/group.ftl")
+	public Map group(@Param("..") Map map) throws Exception
+	{
+		HttpSession session = Mvcs.getHttpSession(true);
+		DynamicObject login_token = (DynamicObject) session.getAttribute(GlobalConstants.sys_login_token);
+		String userid = login_token.getFormatAttr(GlobalConstants.sys_login_userid);
+		List<DynamicObject> members = memberService.findsubmembers(userid, 3);
+		ro.put("members", members);
+		return ro;
+	}	
 }
