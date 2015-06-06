@@ -11,6 +11,7 @@ import org.nutz.dao.Dao;
 import org.nutz.ioc.annotation.InjectName;
 import org.nutz.ioc.loader.annotation.IocBean;
 
+import com.skynet.framework.common.generator.SNGenerator;
 import com.skynet.framework.common.generator.UUIDGenerator;
 import com.skynet.framework.service.SkynetNameEntityService;
 import com.skynet.framework.services.db.SQLParser;
@@ -133,6 +134,7 @@ public class ShopCartService extends SkynetNameEntityService<ShopCart>
 			order.setId(orderid);
 			order.setMemberid(userid);
 			order.setWxopenid(userwxopenid);
+			order.setCno(SNGenerator.getValue(8));
 			order.setOrdertime(new Timestamp(System.currentTimeMillis()));
 			sdao().insert(order);
 			
@@ -179,7 +181,7 @@ public class ShopCartService extends SkynetNameEntityService<ShopCart>
 				OrderGoodsRebate orderrebate = new OrderGoodsRebate();
 				String orderrebateid = UUIDGenerator.getInstance().getNextValue();			
 				orderrebate.setId(orderrebateid);
-				// orderrebate.setOrdercno(order.getCno());
+				orderrebate.setOrdercno(order.getCno());
 				orderrebate.setOrdergoodsid(ordergoodsid);
 				orderrebate.setSupmemberid(supmemberid);
 				orderrebate.setSupwxopenid(supwxopenid);

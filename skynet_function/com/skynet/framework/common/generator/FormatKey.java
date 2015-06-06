@@ -23,5 +23,13 @@ public class FormatKey
 		fvalue = format(value, length);
 		return fvalue;
 	}
+	
+	public static String format(long intvalue, int length) 
+	{
+		String fvalue = "";
+		String value = String.valueOf(intvalue);
+		fvalue = format(value, length);
+		return fvalue;
+	}
 
 }

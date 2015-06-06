@@ -16,6 +16,8 @@ import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.repo.org.objectweb.asm.Opcodes;
 
+import com.skynet.framework.common.generator.RandomGenerator;
+import com.skynet.framework.common.generator.SNGenerator;
 import com.skynet.framework.common.generator.UUIDGenerator;
 import com.skynet.framework.service.GeneratorService;
 import com.skynet.framework.service.SkynetNameEntityService;
@@ -71,7 +73,7 @@ public class DrawCashService extends SkynetNameEntityService<DrawCash>
 	public String insert(DrawCash drawcash) throws Exception
 	{
 		String id = UUIDGenerator.getInstance().getNextValue();
-		String cno = gen_cno();
+		String cno = SNGenerator.getValue(8);
 	
 		// 检查是否有未提现的订单商品，如果没有可提现的订单商品，不生成提现申请单。
 		int nums = sdao().count(OrderGoodsRebate.class, Cnd.where("supmemberid", "=", drawcash.getMemberid()).and("supwxopenid", "=", drawcash.getMemberwxopenid()).and("drawcashid", "is", null).and("drawcashcno", "is", null).and("state", "is", null));
@@ -107,20 +109,4 @@ public class DrawCashService extends SkynetNameEntityService<DrawCash>
 		return id;
 	}
 	
-	public String gen_cno() throws Exception
-	{
-		SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");
-		Calendar calendar = Calendar.getInstance();
-		Date date = calendar.getTime();
-		String sysdate = sf.format(date);
-		String csql = " select substring(max(cno),length(max(cno))-3, 4) as cno from t_app_drawcash where date_format(applytime,'yyyy-mm-dd') = date_format('" + sysdate + "','yyyy-mm-dd')";
-		String express = "$yy$mm$dd####";
-
-		Map map = new HashMap();
-		map.put("csql", csql);
-		map.put("express", express);
-
-		return generatorService.getNextValue(map);
-	}
-
 }
