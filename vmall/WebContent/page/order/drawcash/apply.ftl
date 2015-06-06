@@ -20,6 +20,20 @@
 	webapp="im">
 <link rel="stylesheet" href="${base}/css/layout.min.css">
 <link rel="stylesheet" href="${base}/css/common.min.css">
+<link rel="stylesheet" href="${base}/css/main.css">
+
+
+<script src="${base}/lib/jquery-2.1.1.min.js"></script>
+<script src="${base}/lib/jquery-ui.min.js"></script>
+<script src="${base}/lib/bootstrap/js/bootstrap.min.js"></script>
+<script src="${base}/lib/moment.min.js"></script>
+<script src="${base}/lib/moment.zh-cn.js"></script>
+<script	src="${base}/lib/datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+<script src="${base}/lib/datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js"></script>
+<script src="${base}/lib/lodash.min.js"></script>
+<script src="${base}/lib/bootstrap-slider.js"></script>
+<script src="${base}/lib/bootstrap-switch/js/bootstrap-switch.min.js"></script>
+<script src="${base}/js/main.js"></script>
 </head>
 <body class="u-index">
 <div style="">
@@ -41,5 +55,42 @@
 
 </div>
 
+<div id="div_main">
+
+<button id="bt_submit">提交</button>
+
+<form id="form_draw" method="POST" action="${base}/order/drawcash/insert.action">
+
+
+<table id="tb_score" class="table personListTable hover">
+	<tbody>
+	    <tr>
+	      <td width="100">会员姓名</td>
+	      <td>${obj.member.cname}</td>
+	    </tr>
+	    <tr>
+	      <td width="100">手机号</td>
+	      <td>${obj.member.mobile}</td>
+	    </tr>	    
+	    <tr>
+	      <td width="100">开户银行</td>
+	      <td>${obj.member.cname}</td>
+	    </tr>	    
+	    <tr>
+	      <td width="100">银行账号</td>
+	      <td>${obj.member.cname}</td>
+	    </tr>
+	</tbody>	     
+</table>
+</form>
+</div>
+<script>
+$("#bt_submit").click(function() {page_submit()});
+function page_submit()
+{
+	$("#form_draw").submit();
+}
+</script>
 </body>
+
 </html>

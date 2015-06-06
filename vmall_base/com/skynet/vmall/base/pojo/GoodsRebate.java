@@ -7,7 +7,7 @@ import org.nutz.dao.entity.annotation.Table;
 
 import com.skynet.framework.pojo.IdEntity;
 
-@Table("T_APP_ORDERGOODSREBATE")
+@Table("T_APP_GOODSREBATE")
 public class GoodsRebate extends IdEntity
 {
 	@Column

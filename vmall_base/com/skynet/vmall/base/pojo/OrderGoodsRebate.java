@@ -42,7 +42,16 @@ public class OrderGoodsRebate extends IdEntity
 	private BigDecimal score; // 本次返利积分（元）
 	
 	@Column
-	private Timestamp rebatetime; // 返利时间
+	private Timestamp rebatetime; // 返利发生时间（订单时间）
+	
+	@Column
+	private String drawcashid; // 提现申请标识
+
+	@Column
+	private String drawcashcno; // 提现申请单号
+	
+	@Column
+	private Timestamp drawapplytime; // 提现申请时间	
 
 	public String getOrdercno()
 	{
@@ -153,4 +162,36 @@ public class OrderGoodsRebate extends IdEntity
 	{
 		this.rebatetime = rebatetime;
 	}
+
+	public String getDrawcashid()
+	{
+		return drawcashid;
+	}
+
+	public void setDrawcashid(String drawcashid)
+	{
+		this.drawcashid = drawcashid;
+	}
+
+	public String getDrawcashcno()
+	{
+		return drawcashcno;
+	}
+
+	public void setDrawcashcno(String drawcashcno)
+	{
+		this.drawcashcno = drawcashcno;
+	}
+
+	public Timestamp getDrawapplytime()
+	{
+		return drawapplytime;
+	}
+
+	public void setDrawapplytime(Timestamp drawapplytime)
+	{
+		this.drawapplytime = drawapplytime;
+	}
+
+
 }

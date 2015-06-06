@@ -55,8 +55,9 @@
 
 </div>
 
-<div id="div_shopcart">
-<form id="form_shopcart">
+<div id="div_main">
+<button id="bt_applydraw">申请提现</button>
+<form id="form_score">
 <table id="tb_score" class="table personListTable hover">
 	<thead>
 	    <tr>
@@ -71,8 +72,8 @@
 	</thead>	     
 <tbody>
 <#list obj.scores as score>
-      <tr>
-        <td><input type="hidden" name="id" value="${score.id}"></td>
+      <tr data-id="${score.id}">
+        <td class="check"><input type="hidden" name="id" value="${score.id}"></td>
         <td>${score.ordercno}</td>
         <td>${score.ordergoodsid}</td>        
         <td>${score.submemberid}</td>        
@@ -84,7 +85,13 @@
 </table>
 </form>
 </div>
-
+<script>
+$("#bt_applydraw").click(function() {page_applydraw()});
+function page_applydraw()
+{
+	window.location = "${base}/order/drawcash/apply.action";
+}
+</script>
 </body>
 
 </html>

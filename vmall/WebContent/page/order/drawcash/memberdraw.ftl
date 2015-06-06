@@ -20,6 +20,20 @@
 	webapp="im">
 <link rel="stylesheet" href="${base}/css/layout.min.css">
 <link rel="stylesheet" href="${base}/css/common.min.css">
+<link rel="stylesheet" href="${base}/css/main.css">
+
+
+<script src="${base}/lib/jquery-2.1.1.min.js"></script>
+<script src="${base}/lib/jquery-ui.min.js"></script>
+<script src="${base}/lib/bootstrap/js/bootstrap.min.js"></script>
+<script src="${base}/lib/moment.min.js"></script>
+<script src="${base}/lib/moment.zh-cn.js"></script>
+<script	src="${base}/lib/datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+<script src="${base}/lib/datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js"></script>
+<script src="${base}/lib/lodash.min.js"></script>
+<script src="${base}/lib/bootstrap-slider.js"></script>
+<script src="${base}/lib/bootstrap-switch/js/bootstrap-switch.min.js"></script>
+<script src="${base}/js/main.js"></script>
 </head>
 <body class="u-index">
 <div style="">
@@ -41,5 +55,41 @@
 
 </div>
 
+<div id="div_shopcart">
+<form id="form_shopcart">
+<table id="tb_score" class="table personListTable hover">
+	<thead>
+	    <tr>
+	      <th width="10" class="check min"></th>   
+	      <th width="300">流水号</th>
+	      <th width="50">会员</th>
+	      <th width="50">提现金额</th>	      
+	      <th width="50">状态</th>
+	      <th width="50">申请时间</th>
+	    </tr>
+	</thead>	     
+<tbody>
+<#list obj.drawcashs as draw>
+      <tr>
+        <td><input type="hidden" name="id" value="${draw.id}"></td>
+        <td>${draw.cno}</td>
+        <td>${draw.memberid}</td>        
+        <td>${draw.amount}</td>        
+        <td>${draw.state}</td>
+        <td>${draw.applytime}</td>        
+      </tr>     
+</#list>      
+</tbody>
+</table>
+</form>
+</div>
+<script>
+$("#bt_apply").click(function() {page_apply()});
+function page_apply()
+{
+	window.location = "${base}/order/drawcash/applydraw.action";
+}
+</script>
 </body>
+
 </html>

@@ -24,7 +24,7 @@ public class DrawCash extends IdEntity
 	private String memberwxopenid; // 会员微信标识
 
 	@Column
-	private BigDecimal amount; // 提现金额
+	private BigDecimal amount; // 提现总金额
 	
 	@Column
 	private String state; // 状态（申请、受理、审核、办理、确认、结束）

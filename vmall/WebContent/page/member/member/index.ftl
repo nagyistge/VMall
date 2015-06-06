@@ -43,7 +43,7 @@
 
 <p><a href="${base}/order/order/memberscore.action">积分</a></p>
 <p><a href="${base}/member/member/group.action">团队</a></p>
-<p><a href="${base}/draw/draw/memberdraw.action">提现</a></p>
+<p><a href="${base}/order/drawcash/memberdraw.action">提现</a></p>
 
 </body>
 </html>
