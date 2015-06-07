@@ -107,10 +107,19 @@ public class ShopCartService extends SkynetNameEntityService<ShopCart>
 		cartgoods.setNums(nums);
 
 		sdao().insert(cartgoods);
+		
+		StringBuffer sql = new StringBuffer();
+		sql.append(" select sum(cartgoods.nums) nums from t_app_shopcartgoods cartgoods, t_app_shopcart cart ");
+		sql.append(" where 1 = 1 ");
+		sql.append("   and cartgoods.shopcartid = cart.id ");
+		sql.append("   and cart.memberid = ").append(SQLParser.charValue(userid));
+		
+		int cartgoodsnums = Types.parseInt(sdao().queryForMap(sql.toString()).getFormatAttr("nums"), 0);
 				
 		Map map = new DynamicObject();
 		map.put("state", "success");
 		map.put("shopcart", cart);
+		map.put("cartgoodsnum", cartgoodsnums);
 		return map;
 	}
 	

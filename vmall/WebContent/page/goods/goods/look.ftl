@@ -12,7 +12,8 @@
 	content="0a8c6d28b570b218f78510c29be4529b" />
 	<meta name="360-site-verification"
 	content="8b6121969d78afda8caeb69053fa29d9" />
-
+	<script src="${base}/lib/jquery-2.1.1.min.js"></script>
+	<script src="${base}/lib/jquery-ui.min.js"></script>
 
 	<link rel="stylesheet" type="text/css" href="${base}/lib/jd/css/base2013.css" charset="gbk">
 	<link rel="stylesheet" type="text/css" href="${base}/lib/jd/css/goods.css" charset="gbk">	
@@ -20,7 +21,6 @@
 </head>
 <body id="body">
 	<header>
-
 		<div class="new-header">
 			<a href="javascript:pageBack();" class="new-a-back" id="backUrl"><span>返回</span></a>
 			<h2>商品详情</h2>
@@ -146,126 +146,23 @@
 						<h3 class="mible-title">猜你还喜欢：</h3>
 						<div id="guessing" class="jd-slider-wrapper">
 							<div class="jd-slider-container" style="width: 1224px; height: 298px;">
-								<a href="/product/1508348668.html?resourceType=recommend_productDetail&amp;csku=1539889025&amp;expid=0&amp;index=0&amp;rid=0&amp;sid=b92ff74dfab64b42d614b6243db2b908" class="jd-slider-item" style="width: 102px;">
-									<div class="pro-img"><span class="img"> <img width="80" height="80" alt="img" src="http://m.360buyimg.com/n7/jfs/t1084/187/827540238/683832/ab96f38/554d737dN2f98a8ba.png"></span>
-										<span class="pro-title">韩贝伊都2015夏装新款韩版修身显瘦 复古休闲简约牛仔短裤女HYDK54002 白色 M</span> <span class="pro-price">																					<span class="pro-price">¥69.00</span>
-									</span></div>
+
+								<#list obj.likegoodses as likegoods>
+
+								<a href="${base}/goods/goods/look.action?id=${likegoods.id}" class="jd-slider-item" style="width: 102px;">
+								<div class="pro-img">
+									<span class="img">
+									<img width="80" height="80" alt="img" src="http://m.360buyimg.com/n7/jfs/t1084/187/827540238/683832/ab96f38/554d737dN2f98a8ba.png"></span>
+									<span class="pro-title">${likegoods.cname}</span> 
+									<span class="pro-price"><span class="pro-price">¥${likegoods.promoteprice}</span>
+									</span>
+								</div>
 								</a>
-								<a href="/product/1490065713.html?resourceType=recommend_productDetail&amp;csku=1539889025&amp;expid=0&amp;index=0&amp;rid=0&amp;sid=b92ff74dfab64b42d614b6243db2b908" class="jd-slider-item" style="width: 102px;">
-									<div class="pro-img"><span class="img"> <img width="80" height="80" alt="img" src="http://m.360buyimg.com/n7/jfs/t1693/141/55339044/145373/90065e8c/556d3999N5fcf2429.jpg"></span>
-										<span class="pro-title">韩贝伊都2015夏季新款亚麻上衣民族风大码女装宽松印花棉麻短袖t恤女HT0001 8002图片色 M</span> <span class="pro-price">																					<span class="pro-price">¥79.00</span>
-									</span></div>
-								</a>
-								<a href="/product/1543264513.html?resourceType=recommend_productDetail&amp;csku=1539889025&amp;expid=0&amp;index=0&amp;rid=0&amp;sid=b92ff74dfab64b42d614b6243db2b908" class="jd-slider-item" style="width: 102px;">
-									<div class="pro-img"><span class="img"> <img width="80" height="80" alt="img" src="http://m.360buyimg.com/n7/jfs/t1258/201/723590502/496273/7c72432f/554d6857Nf25b3720.png"></span>
-										<span class="pro-title">韩贝伊都2015夏季韩版新款纯棉修身时尚吊带圆领背心女HYB5214 黑色 M</span> <span class="pro-price">																					<span class="pro-price">¥39.00</span>
-									</span></div>
-								</a>
-								<a href="/product/1541989310.html?resourceType=recommend_productDetail&amp;csku=1539889025&amp;expid=0&amp;index=0&amp;rid=0&amp;sid=b92ff74dfab64b42d614b6243db2b908" class="jd-slider-item" style="width: 102px;">
-									<div class="pro-img"><span class="img"> <img width="80" height="80" alt="img" src="http://m.360buyimg.com/n7/jfs/t1132/222/837013999/834736/583fb816/554d6d27N6c324b44.png"></span>
-										<span class="pro-title">韩贝伊都2015夏季新款雪纺拼接翻领短袖T恤女HYT5116 黑色 M</span> <span class="pro-price">																					<span class="pro-price">¥69.00</span>
-									</span></div>
-								</a>
-								<a href="/product/1539894829.html?resourceType=recommend_productDetail&amp;csku=1539889025&amp;expid=0&amp;index=0&amp;rid=0&amp;sid=b92ff74dfab64b42d614b6243db2b908" class="jd-slider-item" style="width: 102px;">
-									<div class="pro-img"><span class="img"> <img width="80" height="80" alt="img" src="http://m.360buyimg.com/n7/jfs/t1345/236/11232016/692548/7487d022/554c80ccNb78d4a3d.png"></span>
-										<span class="pro-title">韩贝伊都2015夏季韩版修身时尚字母印花圆领吊带背心女纯棉打底衫hb0001 白色 M</span> <span class="pro-price">																					<span class="pro-price">¥69.00</span>
-									</span></div>
-								</a>
-								<a href="/product/1481830185.html?resourceType=recommend_productDetail&amp;csku=1539889025&amp;expid=0&amp;index=0&amp;rid=0&amp;sid=b92ff74dfab64b42d614b6243db2b908" class="jd-slider-item" style="width: 102px;">
-									<div class="pro-img"><span class="img"> <img width="80" height="80" alt="img" src="http://m.360buyimg.com/n7/jfs/t1240/10/754202536/257819/29b31755/5544d962Na4f19d86.jpg"></span>
-										<span class="pro-title">DIDO 2015夏装新款韩版纯色蕾丝边吊带背心 T421白色 均码</span> <span class="pro-price">																					<span class="pro-price">¥59.00</span>
-									</span></div>
-								</a>
-								<a href="/product/1456874763.html?resourceType=recommend_productDetail&amp;csku=1539889025&amp;expid=0&amp;index=0&amp;rid=0&amp;sid=b92ff74dfab64b42d614b6243db2b908" class="jd-slider-item" style="width: 102px;">
-									<div class="pro-img"><span class="img"> <img width="80" height="80" alt="img" src="http://m.360buyimg.com/n7/jfs/t976/164/9630637/156131/26a220d0/54f702b5Nf2494383.jpg"></span>
-										<span class="pro-title">韩贝伊都2015春季韩版新款女装T恤女修身超舒适时尚个性拼接印花打底衫T4046 军绿色 M</span> <span class="pro-price">																					<span class="pro-price">¥79.00</span>
-									</span></div>
-								</a>
-								<a href="/product/1572156013.html?resourceType=recommend_productDetail&amp;csku=1539889025&amp;expid=0&amp;index=0&amp;rid=0&amp;sid=b92ff74dfab64b42d614b6243db2b908" class="jd-slider-item" style="width: 102px;">
-									<div class="pro-img"><span class="img"> <img width="80" height="80" alt="img" src="http://m.360buyimg.com/n7/jfs/t1480/67/148623742/183751/44ea8aa5/555e9d1aN37715eca.jpg"></span>
-										<span class="pro-title">韩贝伊都2015夏季新品韩范OL修身时尚娃娃领棉麻绣花短袖衬衫女HC0001 白色 M 90斤-100斤</span> <span class="pro-price">																					<span class="pro-price">¥89.00</span>
-									</span></div>
-								</a>
-								<a href="/product/1128124440.html?resourceType=recommend_productDetail&amp;csku=1539889025&amp;expid=0&amp;index=0&amp;rid=0&amp;sid=b92ff74dfab64b42d614b6243db2b908" class="jd-slider-item" style="width: 102px;">
-									<div class="pro-img"><span class="img"> <img width="80" height="80" alt="img" src="http://m.360buyimg.com/n7/jfs/t1087/221/632011396/282244/bffd961e/5535efc7N740cc8e8.jpg"></span>
-										<span class="pro-title">mineeor 2015夏季女士新款纯棉弹力无袖工字吊带小背心打底衫 B4002黑色 M</span> <span class="pro-price">																					<span class="pro-price">¥39.00</span>
-									</span></div>
-								</a>
-								<a href="/product/1367903664.html?resourceType=recommend_productDetail&amp;csku=1539889025&amp;expid=0&amp;index=0&amp;rid=0&amp;sid=b92ff74dfab64b42d614b6243db2b908" class="jd-slider-item" style="width: 102px;">
-									<div class="pro-img"><span class="img"> <img width="80" height="80" alt="img" src="http://m.360buyimg.com/n7/jfs/t1030/272/777982677/163202/d00b3a53/5548a174Nf5df106a.jpg"></span>
-										<span class="pro-title">mineeor2015夏装新款修身显瘦大码纯棉内搭无袖吊带小背心女夏外穿打底衫 B5002 黑色 M</span> <span class="pro-price">																					<span class="pro-price">¥49.00</span>
-									</span></div>
-								</a>
-								<a href="/product/1491181295.html?resourceType=recommend_productDetail&amp;csku=1539889025&amp;expid=0&amp;index=0&amp;rid=0&amp;sid=b92ff74dfab64b42d614b6243db2b908" class="jd-slider-item" style="width: 102px;">
-									<div class="pro-img"><span class="img"> <img width="80" height="80" alt="img" src="http://m.360buyimg.com/n7/jfs/t1330/238/79847859/207213/4685b218/554a0633N574b9cab.jpg"></span>
-										<span class="pro-title">韩贝伊都2015夏天女裙新款纯棉夏装包臀短裙全棉韩版修身夏款长款上衣吊带背心裙纯棉打底衫 粉红色 L</span> <span class="pro-price">																					<span class="pro-price">¥69.00</span>
-									</span></div>
-								</a>
-								<a href="/product/1521895309.html?resourceType=recommend_productDetail&amp;csku=1539889025&amp;expid=0&amp;index=0&amp;rid=0&amp;sid=b92ff74dfab64b42d614b6243db2b908" class="jd-slider-item" style="width: 102px;">
-									<div class="pro-img"><span class="img"> <img width="80" height="80" alt="img" src="http://m.360buyimg.com/n7/jfs/t772/91/1301711630/228044/c16c9b13/552e0252N3565116b.jpg"></span>
-										<span class="pro-title">简性 2015夏季女士新款纯棉弹力无袖工字吊带小背心女夏款宽松 B5009 黑色 L</span> <span class="pro-price">																					<span class="pro-price">¥49.00</span>
-									</span></div>
-								</a>
-								<a href="/product/1503021492.html?resourceType=recommend_productDetail&amp;csku=1539889025&amp;expid=0&amp;index=0&amp;rid=0&amp;sid=b92ff74dfab64b42d614b6243db2b908" class="jd-slider-item" style="width: 102px;">
-									<div class="pro-img"><span class="img"> <img width="80" height="80" alt="img" src="http://m.360buyimg.com/n7/jfs/t925/272/238947159/666685/fee70709/55196f31Na61bce63.jpg"></span>
-										<span class="pro-title">乐唯尔 吊带背心女2015新款春装韩版时尚潮款亮片显瘦打底背心女上衣 白色 XL</span> <span class="pro-price">																					<span class="pro-price">¥48.00</span>
-									</span></div>
-								</a>
-								<a href="/product/1505082219.html?resourceType=recommend_productDetail&amp;csku=1539889025&amp;expid=0&amp;index=0&amp;rid=0&amp;sid=b92ff74dfab64b42d614b6243db2b908" class="jd-slider-item" style="width: 102px;">
-									<div class="pro-img"><span class="img"> <img width="80" height="80" alt="img" src="http://m.360buyimg.com/n7/jfs/t1120/148/522430751/178897/cb7338cd/552b8866Nd19b00da.jpg"></span>
-										<span class="pro-title">声缎2015春夏新款女装宽松吊带背心亮片打底吊带衫 女 金色 XL</span> <span class="pro-price">																					<span class="pro-price">¥69.00</span>
-									</span></div>
-								</a>
-								<a href="/product/1534727240.html?resourceType=recommend_productDetail&amp;csku=1539889025&amp;expid=0&amp;index=0&amp;rid=0&amp;sid=b92ff74dfab64b42d614b6243db2b908" class="jd-slider-item" style="width: 102px;">
-									<div class="pro-img"><span class="img"> <img width="80" height="80" alt="img" src="http://m.360buyimg.com/n7/jfs/t973/256/814766674/389845/4a10db32/554b47c8N5e6ee22c.jpg"></span>
-										<span class="pro-title">韩贝伊都2015夏季新款韩版时尚百搭修身显瘦收腰包臀吊带背心裙女 纯棉B5206 蓝色 M</span> <span class="pro-price">																					<span class="pro-price">¥69.00</span>
-									</span></div>
-								</a>
-								<a href="/product/1500598986.html?resourceType=recommend_productDetail&amp;csku=1539889025&amp;expid=0&amp;index=0&amp;rid=0&amp;sid=b92ff74dfab64b42d614b6243db2b908" class="jd-slider-item" style="width: 102px;">
-									<div class="pro-img"><span class="img"> <img width="80" height="80" alt="img" src="http://m.360buyimg.com/n7/jfs/t937/242/497856227/207760/8e983074/552b2079N4debbc94.jpg"></span>
-										<span class="pro-title">姐弟恋2015夏装新款韩版修身显瘦无袖蕾丝打底内搭防走光露背打底抹胸吊带裹胸背心 女 白色  均码</span> <span class="pro-price">																					<span class="pro-price">¥49.00</span>
-									</span></div>
-								</a>
-								<a href="/product/1473267099.html?resourceType=recommend_productDetail&amp;csku=1539889025&amp;expid=0&amp;index=0&amp;rid=0&amp;sid=b92ff74dfab64b42d614b6243db2b908" class="jd-slider-item" style="width: 102px;">
-									<div class="pro-img"><span class="img"> <img width="80" height="80" alt="img" src="http://m.360buyimg.com/n7/jfs/t1276/16/957583829/228152/89cadcac/55682e7fNcef8c4b1.jpg"></span>
-										<span class="pro-title">韩贝伊都2015夏季新款韩版纯棉翻领POLO领修身短袖T恤女T5028 深灰色 M</span> <span class="pro-price">																					<span class="pro-price">¥69.00</span>
-									</span></div>
-								</a>
-								<a href="/product/1481249055.html?resourceType=recommend_productDetail&amp;csku=1539889025&amp;expid=0&amp;index=0&amp;rid=0&amp;sid=b92ff74dfab64b42d614b6243db2b908" class="jd-slider-item" style="width: 102px;">
-									<div class="pro-img"><span class="img"> <img width="80" height="80" alt="img" src="http://m.360buyimg.com/n7/jfs/t1141/194/839288224/648726/15ea1054/554dc9f7Nb65621a1.png"></span>
-										<span class="pro-title">韩贝伊都2015夏款新品吊带衫吊带显瘦打底小背心工字背心女夏纯棉无袖打底B4002 HYB5214白色 XL</span> <span class="pro-price">																					<span class="pro-price">¥39.00</span>
-									</span></div>
-								</a>
-								<a href="/product/1508514820.html?resourceType=recommend_productDetail&amp;csku=1539889025&amp;expid=0&amp;index=0&amp;rid=0&amp;sid=b92ff74dfab64b42d614b6243db2b908" class="jd-slider-item" style="width: 102px;">
-									<div class="pro-img"><span class="img"> <img width="80" height="80" alt="img" src="http://m.360buyimg.com/n7/jfs/t1231/61/428038723/135806/3f1b11e9/55250a2dN1808c073.jpg"></span>
-										<span class="pro-title">塔尼亞2015夏季新款时尚褶皱无袖背心吊带打底衫雪纺背心女 1036 白色亮片1036 M</span> <span class="pro-price">																					<span class="pro-price">¥79.00</span>
-									</span></div>
-								</a>
-								<a href="/product/1508033844.html?resourceType=recommend_productDetail&amp;csku=1539889025&amp;expid=0&amp;index=0&amp;rid=0&amp;sid=b92ff74dfab64b42d614b6243db2b908" class="jd-slider-item" style="width: 102px;">
-									<div class="pro-img"><span class="img"> <img width="80" height="80" alt="img" src="http://m.360buyimg.com/n7/jfs/t1111/38/962936235/170506/a38de796/5564586dN645b6dc0.jpg"></span>
-										<span class="pro-title">mineeor 2015夏款新品百搭宽松显瘦纯棉无袖打底衫女工字吊带背心T恤女 B5002 白色 L</span> <span class="pro-price">																					<span class="pro-price">¥49.00</span>
-									</span></div>
-								</a>
-								<a href="/product/1126924340.html?resourceType=recommend_productDetail&amp;csku=1539889025&amp;expid=0&amp;index=0&amp;rid=0&amp;sid=b92ff74dfab64b42d614b6243db2b908" class="jd-slider-item" style="width: 102px;">
-									<div class="pro-img"><span class="img"> <img width="80" height="80" alt="img" src="http://m.360buyimg.com/n7/jfs/t880/244/640608624/196673/e75095fd/5538a3e1N50398e77.jpg"></span>
-										<span class="pro-title">mineeor2015夏季新款显瘦无袖打底吊带工字小背心女士纯棉衫 B4002白色 M</span> <span class="pro-price">																					<span class="pro-price">¥39.00</span>
-									</span></div>
-								</a>
-								<a href="/product/1532551590.html?resourceType=recommend_productDetail&amp;csku=1539889025&amp;expid=0&amp;index=0&amp;rid=0&amp;sid=b92ff74dfab64b42d614b6243db2b908" class="jd-slider-item" style="width: 102px;">
-									<div class="pro-img"><span class="img"> <img width="80" height="80" alt="img" src="http://m.360buyimg.com/n7/jfs/t871/336/949348841/132261/45e08f39/55625be0Nad5620ff.jpg"></span>
-										<span class="pro-title">雯敏2015夏季新款抹胸碎花沙滩裙吊带裙610 616 均码</span> <span class="pro-price">																					<span class="pro-price">¥75.00</span>
-									</span></div>
-								</a>
-								<a href="/product/1513910469.html?resourceType=recommend_productDetail&amp;csku=1539889025&amp;expid=0&amp;index=0&amp;rid=0&amp;sid=b92ff74dfab64b42d614b6243db2b908" class="jd-slider-item" style="width: 102px;">
-									<div class="pro-img"><span class="img"> <img width="80" height="80" alt="img" src="http://m.360buyimg.com/n7/jfs/t1201/15/450450295/405717/d11ce840/5526126cN5c5cc53c.jpg"></span>
-										<span class="pro-title">莎玛琳娜2015夏吊带背心 女小性感背心 女外穿无袖上衣圆领宽松吊带衫蕾丝背心38537 白色 XL</span> <span class="pro-price">																					<span class="pro-price">¥39.00</span>
-									</span></div>
-								</a>
-								<a href="/product/1511392906.html?resourceType=recommend_productDetail&amp;csku=1539889025&amp;expid=0&amp;index=0&amp;rid=0&amp;sid=b92ff74dfab64b42d614b6243db2b908" class="jd-slider-item" style="width: 102px;">
-									<div class="pro-img"><span class="img"> <img width="80" height="80" alt="img" src="http://m.360buyimg.com/n7/jfs/t781/73/698351044/144098/8aae4372/553c9c48N56badee6.jpg"></span>
-										<span class="pro-title">mineeor 2015新款简约净色纯棉百搭双细带背部交叉大码打底小吊带背心女夏B5003 咖啡色 M</span> <span class="pro-price">																					<span class="pro-price">¥49.00</span>
-									</span></div>
-								</a>
+
+								</#list>	
+
+
+
 							</div>
 						</div>
 					</div>
@@ -273,13 +170,15 @@
 				<div id="cart1" class="cart-btns-fixed" style="display: table;">
 					<div class="cart-btns-fixed-box"> <a class="btn btn-buy" id="directorder">立即购买</a> <a class="btn btn-cart" id="add_cart">加入购物车</a> <a href="javascript:void(0)" id="toCart" class="btn cart-num"></a> </div>
 				</div>
+				
 				<div id="yuyuecart" style="width:100%;position:fixed;bottom:0;display:none">
-					<div class="tbl-type detail-tbn2">
-						<div class="tbl-cell">
-							<a class="btn-cart-1" id="cartyuyue"><span></span>加入购物车</a>
-						</div>
-					</div>
-				</div>
+			    	<div class="tbl-type detail-tbn2">
+			            <div class="tbl-cell">
+			                <a class="btn-cart-1" id="cartyuyue"><span></span>加入购物车</a>
+			            </div>
+			        </div>
+				</div>				
+
 				<div id="yuyueing" style="width:100%;position:fixed;bottom:0;display:none">
 					<div class="tbl-type detail-tbn2">
 						<div class="tbl-cell">
@@ -329,7 +228,7 @@
 					<div class="menu-fixed-mini"><a href="javascript:void(0)"></a></div>
 				</div>
 			</div>
-			<!--以下全部为新增部分 20150330-->
+			
 			<div class="menu_sidebar" id="puller">
 				<div class="list_content_mask" style="display: none;"></div>
 				<div class="sidebar-content" style="-webkit-transform-origin: 0px 0px; opacity: 1; -webkit-transform: scale(1, 1);display: none;">
@@ -353,33 +252,6 @@
 				</div>
 			</div>
 
-			<input type="hidden" id="currentWareId" value="1539889025">
-
-			<input type="hidden" id="onlineService" value="true">
-			<input type="hidden" id="newOrderServer" value="true">
-			<input type="hidden" id="sid" value="b92ff74dfab64b42d614b6243db2b908">
-			<input type="hidden" id="resourceType" value="unknown">
-			<input type="hidden" id="resourceValue" value="unknown">
-			<input type="hidden" id="stockFlag" value="true">
-			<input type="hidden" id="teamSign" value="0">
-			<input type="hidden" id="imgUrl" value="">
-			<input type="hidden" id="goodName" name="goodName" value="韩贝伊都2015夏季韩版修身时尚字母印花圆领吊带背心女纯棉打底衫hb0001 黑色 M">
-			<input type="hidden" id="jdPrice" name="jdPrice" value="59.00">
-			<input type="hidden" id="jshop" value="com.jd.m.server.domain.ware.MobileShopInfo@748ca822">
-			<input type="hidden" id="passportUse" value="true">
-			<input type="hidden" id="yuyueType" value="5">
-			<input type="hidden" id="onlineService" value="true">
-			<input type="hidden" id="cartFlag" value="true">
-			<input type="hidden" id="yuYueStartTime" value="-1">
-			<input type="hidden" id="yuYueEndTime" value="-1">
-			<input type="hidden" id="buyStartTime" value="-1">
-			<input type="hidden" id="buyEndTime" value="-1">
-			<input type="hidden" id="ybId">
-			<input type="hidden" id="pingUse" value="true">
-			<input type="hidden" id="wxIPhoneControul" value="">
-			<input type="hidden" id="type" value="">
-			<input type="hidden" id="cartJson" value="true">
-
 			<div class="login-area" id="footer" style="margin:0 auto 15px;">
 				<div class="login">
 					<a rel="nofollow" href="https://passport.m.jd.com/user/login.action?sid=b92ff74dfab64b42d614b6243db2b908">登录</a><span class="lg-bar">|</span><a rel="nofollow" href="https://passport.m.jd.com/user/mobileRegister.action?v=t&amp;sid=b92ff74dfab64b42d614b6243db2b908">注册</a>
@@ -393,153 +265,141 @@
 					</span>
 					<a href="javascript:void(0)" class="on">触屏版</a>
 					<a onclick="skip();" href="javascript:void(0);" id="toPcHome">电脑版</a>        	</div>
-					<div class="copyright">Copyright © 2012-2015 京东JD.com 版权所有 </div>
+					<div class="copyright">Copyright © 2012-2015 版权所有 </div>
+					<button id="bt_test" onclick="page_addtocart()">测试</button>
+					<button id="bt_test" onclick="page_addtocart()">测试1</button>
 				</div>
 
-				<div style="display:none;">
-					<img src="/ja.jsp?&amp;utmn=1079024362&amp;utmr=http%3A%2F%2Fm.jd.com%2F&amp;utmp=%2Fware%2Fview.action%3FwareId%3D1539889025&amp;guid=ON&amp;jav=html5&amp;pin=-&amp;utmac=MO-J2011-1&amp;provinceId=&amp;cityId=&amp;countryId=&amp;townId=&amp;skuId=1539889025&amp;skuPrice=59.00&amp;stockState=现货">
-				</div>
-
-				<script type="text/javascript" src="http://h5.m.jd.com/active/track/mping.min.js"></script>
-				<script type="text/javascript">
-					try{
-            var pv= new MPing.inputs.PV();   //构造pv 请求
-            var mping = new MPing();        //构造上报实例
-            mping.send(pv);                //上报pv
-        } catch (e){}
-    </script>
-
-
-
-    <script type="text/javascript">
-    	$("#unsupport").hide();
-if(!testLocalStorage()){ //not support html5
-	if(0!=0 && !$clearCart && !$teamId){
-		$("#html5_cart_num").text(0>0>0);
-	}
-}else{
-	updateToolBar('');
-}
-
-$("#html5_cart").click(function(){
-//	syncCart('b92ff74dfab64b42d614b6243db2b908',true);
-location.href='/cart/cart.action';
-});
-
-function reSearch(){
-	var depCity = window.sessionStorage.getItem("airline_depCityName");
-	if(testSessionStorage() && isNotBlank(depCity) && !/^\s*$/.test(depCity) && depCity!=""){
-		var airStr = '<form action="/airline/list.action" method="post" id="reseach">'
-		+'<input type="hidden" name="sid"  value="b92ff74dfab64b42d614b6243db2b908"/>'
-		+'<input type="hidden" name="depCity" value="'+ window.sessionStorage.getItem("airline_depCityName") +'"/>'
-		+'<input type="hidden" name="arrCity" value="'+ window.sessionStorage.getItem("airline_arrCityName") +'"/>'
-		+'<input type="hidden" name="depDate" value="'+ window.sessionStorage.getItem("airline_depDate") +'"/>'
-		+'<input type="hidden" name="depTime" value="'+ window.sessionStorage.getItem("airline_depTime") +'"/>'
-		+'<input type="hidden" name="classNo" value="'+ window.sessionStorage.getItem("airline_classNo") +'"/>'
-		+'</form>';
-		$("body").append(airStr);
-		$("#reseach").submit();
-	}else{
-		window.location.href='/airline/index.action?sid=b92ff74dfab64b42d614b6243db2b908';
-	}
-}
- //banner 关闭点击
- $('.div_banner_close').click(function(){
- 	$('#div_banner_header').unbind('click');
- 	jQuery.post('/index/addClientCookieVal.json',function(d){
- 		$('#div_banner_header').slideUp(500);
- 	});
- });
-    //banner 下载点击
-    $('.div_banner_download').click(function(){
-    	var downloadUrl = $(this).attr('url');
-    	jQuery.post('/index/addClientCookieVal.json',function(d){
-    		window.location.href=downloadUrl;
-    	});
-    });
-    window._clientVersion_ = '';
-    
-    $(document).ready(function(){
-    	var _loadScript = function(url, options,cb){
-    		var script = document.createElement("script");
-    		var def = {
-    			type: "text/javascript",
-    			charset:"utf-8"
-    		}
-    		options= options|| {
-    		}
-    		for(var i in options){
-    			def[i] = options[i];
-    		}
-    		script.src = url;
-
-    		for(var i in def){
-    			script.setAttribute(i,def[i]);
-    		}
-    		script.addEventListener("load",function(){
-    			cb && cb();
-    		},false)
-    		document.getElementsByTagName("head")[0].appendChild(script);
-    	}
-    	if($(".download-con").length || $("#clientArea").length){
-    		_loadScript("http://st.360buyimg.com/item/js/2013/installapp.js?v=jd201505191606it",{},function(){
-    			$("#clientArea").length && downcheck($("#clientArea"),false);
-    		});
-    	}
-
-    })
-    function skip(){
-    	addCookie('pcm', '1' ,1, '', 'jd.com');
-    	var localurl = 'http://item.jd.com/1539889025.html#m';
-    	if(localurl == 'http://www.jd.com/#m'){
-    		var localurl = document.location.href;
-    		if(localurl.indexOf('http://m.jd.com/sale/mall') == 0){
-    			var saleurl = localurl.replace('http://m.jd.com/sale/mall', 'http://sale.jd.com/mall');
-    			saleurl = saleurl+'#m'
-    			window.location.href = saleurl;
-    			return;
-    		}else if(localurl.indexOf('http://m.jd.com/sale/act') == 0){
-    			var saleurl = localurl.replace('http://m.jd.com/sale/act', 'http://sale.jd.com/act');
-    			saleurl = saleurl+'#m'
-    			window.location.href = saleurl;
-    			return;
-    		}else{
-    			window.location.href = 'http://www.jd.com/#m';
-    			return;
-    		}
-    	}
-    	window.location.href = localurl;
-    }
-
-    function addCookie(name, value, expires, path, domain){ 
-    	var str=name+"="+escape(value); 
-    	if(expires!=""){ 
-    		var date=new Date(); 
-            date.setTime(date.getTime()+expires*24*3600*1000);//expires单位为天 
-            str+=";expires="+date.toGMTString(); 
-        } 
-        if(path!=""){ 
-        	str+=";path="+path;//指定可访问cookie的目录 
-        } 
-        if(domain!=""){ 
-        	str+=";domain="+domain;//指定可访问cookie的域 
-        } 
-        document.cookie=str; 
-    } 
-    function search_new(){
-    	var a = $("#newkeyword").val();
-    	addSearchHistory(a);
-    	$('#searchForm').submit();
-    }
-
-    window.onload = function(){
-    	$('#close').downloadAppPlugInClose('down_app');
-    }
-</script>
-
-
+			</div>
+		</div>		
+	</div>		
 </div>
 
+
+
+<input type="hidden" id="goodsid" value="${obj.goods.id}">
+
+
+<script>
+
+function minus() {
+	var a = parseInt($("#number").val(), 10);
+	if (a <= 1) {
+		$("#number").val(1);
+		$("#amount").html("1\u4ef6")
+	} else {
+		a--;
+		$("#number").val(a);
+		$("#amount").html(a + "\u4ef6")
+	}
+}
+function plus() {
+	var a = parseInt($("#number").val(), 10);
+	if (a >= 999) {
+		$("#number").val(1);
+		$("#amount").html("1\u4ef6")
+	} else {
+		a++;
+		$("#number").val(a);
+		$("#amount").html(a + "\u4ef6")
+	}
+}
+function modify() {
+	var a = parseInt($("#number").val(), 10);
+	if ("" == $("#number").val()) {
+		$("#number").val(1);
+		$("#amount").html("1\u4ef6");
+		return
+	}
+	if (!isNaN(a)) {
+		if (1 > a || a > 999) {
+			$("#number").val(1);
+			$("#amount").html("1\u4ef6");
+			return
+		} else {
+			$("#number").val(a);
+			$("#amount").html(a + "\u4ef6");
+			return
+		}
+	} else {
+		$("#number").val(1);
+		$("#amount").html("1\u4ef6")
+	}
+}
+
+$("#add_cart").click(page_addtocart);
+// 添加至购物车
+var eTime;
+function page_addtocart() 
+{
+	eTime = new Date().getTime() / 1000 + 4;
+	var goodsid = $("#goodsid").val();
+	var nums = $("#number").val();
+	
+	$.ajax(
+	{
+		type:'post',
+		url:'${base}/order/shopcart/addtocart.action',
+		data:{"goodsid":goodsid,"nums":nums},
+		cache:false,
+		async:false,
+		success:function(data)
+		{
+			
+			console.log(data);
+			if(data=="")
+			{
+				alert("添加至购物车异常！");
+				return;
+			}
+			json = eval("(" + data + ")");
+			if(json.state=="success")
+			{
+			
+				if ($("#toCart i").length == 0) 
+				{
+					$("#toCart").prepend("<i></i>")
+				}
+				
+				$("#toCart i").text(json.cartgoodsnum);
+			
+				// 更新购物车数量等操作；
+				cartShow();
+			}
+			else
+			{
+				alert("添加至购物车失败！");
+			}
+		},
+		error:function(data)
+		{
+			console.log(data);
+			alert("请求异常！");
+		}
+	})
+};
+
+
+function cartShow() {
+
+	var a = new Date().getTime() / 1000;
+	var d = Math.floor(eTime - a);
+
+	if (d > 0) {
+		setTimeout("cartShow()", 1000);
+		var c = 100;
+		var b = window.pageYOffset || document.documentElement.scrollTop
+				|| document.body.scrollTop;
+		var e = document.documentElement.clientHeight
+				|| document.body.clientHeight;
+		document.getElementById("cart").style.bottom = "20px";
+		$("#cart").show();
+	} else {
+		$("#cart").hide();
+	}
+}
+
+</script>
 
 
 </body>

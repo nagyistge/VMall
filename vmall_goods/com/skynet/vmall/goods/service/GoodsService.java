@@ -73,5 +73,32 @@ public class GoodsService extends SkynetNameEntityService<Goods>
 
 		return datas;
 	}
+	
+	// 猜你喜欢商品
+	public List<DynamicObject> guestlike(Map map) throws Exception
+	{
+		int page = Types.parseInt((String) map.get("_page"), 1);
+		int pagesize = Types.parseInt((String) map.get("_pagesize"), 10);
+
+		int startindex = (page - 1) * pagesize;
+		int endindex = page * pagesize;
+		
+		String id = (String)map.get("id");
+		DynamicObject sgoods = locate(id);
+		String internal = sgoods.getFormatAttr("classinternal");
+		String saleprice = sgoods.getFormatAttr("saleprice");
+
+		StringBuffer sql = new StringBuffer();
+		sql.append(" select * from t_app_goods ").append("\n");
+		sql.append("  where 1 = 1 ").append("\n");
+		sql.append("    and classinternal like ").append(SQLParser.charLikeRightValue(internal));
+		sql.append("    and saleprice < " + saleprice + " * 1.1 ");
+		sql.append("    and saleprice > " + saleprice + " * 0.9 ");
+
+		// 增加查询过滤条件
+		List<DynamicObject> datas = sdao().queryForList(sql.toString(), startindex, endindex);
+
+		return datas;
+	}
 
 }

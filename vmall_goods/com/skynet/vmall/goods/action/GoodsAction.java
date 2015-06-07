@@ -111,12 +111,24 @@ public class GoodsAction extends BaseAction
 
 		String id = (String) map.get("id");
 		DynamicObject goods = goodsService.locate(id);
+		
+		List<DynamicObject> likegoodses = goodsService.guestlike(map);
+		ro.put("likegoodses", likegoodses);		
 
 		ro.put("member", member);
 		ro.put("goods", goods);
 		return ro;
 	}
 	
+	// 商品浏览
+	@At("/guestlike")
+	@Ok("json")
+	public Map guestlike(@Param("..") Map map) throws Exception
+	{
+		List<DynamicObject> likegoodses = goodsService.guestlike(map);
+		ro.put("likegoodses", likegoodses);
+		return ro;
+	}	
 	
 	// 商品详情
 	@At("/detail")
