@@ -1,7 +1,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no,minimum-scale=1,maximum-scale=1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-<title>项目评审管理</title>
+<title>微猫商城</title>
 <link rel="stylesheet" href="${base}/lib/bootstrap/css/bootstrap.min.css">
 <link rel="stylesheet" href="${base}/lib/font-awesome/css/font-awesome.min.css">
 <link rel="stylesheet" href="${base}/lib/datetimepicker/css/bootstrap-datetimepicker.min.css">

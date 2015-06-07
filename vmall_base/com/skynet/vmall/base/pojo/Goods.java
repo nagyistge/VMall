@@ -20,6 +20,9 @@ public class Goods extends IdEntity
 	private String classid; // 商品分类标识
 	
 	@Column
+	private String classinternal; // 商品分类	
+	
+	@Column
 	private BigDecimal costprice; // 成本单价		
 
 	@Column
@@ -74,6 +77,16 @@ public class Goods extends IdEntity
 	public void setClassid(String classid)
 	{
 		this.classid = classid;
+	}
+
+	public String getClassinternal()
+	{
+		return classinternal;
+	}
+
+	public void setClassinternal(String classinternal)
+	{
+		this.classinternal = classinternal;
 	}
 
 	public BigDecimal getCostprice()
@@ -165,5 +178,4 @@ public class Goods extends IdEntity
 	{
 		this.pic = pic;
 	}
-
 }

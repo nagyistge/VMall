@@ -74,7 +74,7 @@ public class LoginAction extends BaseAction
 	}
 	
 	@At("/wxlogin")
-	@Ok(">>:/goods/goods/index.action")
+	@Ok(">>:/mall/mall/index.action")
 	public Map wxlogin(@Param("username") String loginname, String password) throws Exception
 	{
 		HttpSession session = Mvcs.getHttpSession(true);

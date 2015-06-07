@@ -22,13 +22,16 @@ public class Mall extends IdEntity
 	private String phone; // 联系电话
 
 	@Column
-	private String state; // 省份
+	private String province; // 省份（直辖市）
 
 	@Column
-	private String city; // 地市
+	private String city; // 地市（直辖市区）
 
 	@Column
-	private String county; // 县区
+	private String county; // 县（直辖市街道）
+	
+	@Column
+	private String town; // 镇（直辖市街道）	
 
 	@Column
 	private String postcode; // 邮政编码
@@ -88,14 +91,14 @@ public class Mall extends IdEntity
 		this.phone = phone;
 	}
 
-	public String getState()
+	public String getProvince()
 	{
-		return state;
+		return province;
 	}
 
-	public void setState(String state)
+	public void setProvince(String province)
 	{
-		this.state = state;
+		this.province = province;
 	}
 
 	public String getCity()
@@ -116,6 +119,16 @@ public class Mall extends IdEntity
 	public void setCounty(String county)
 	{
 		this.county = county;
+	}
+
+	public String getTown()
+	{
+		return town;
+	}
+
+	public void setTown(String town)
+	{
+		this.town = town;
 	}
 
 	public String getPostcode()
