@@ -15,7 +15,7 @@
 
 		<div class="head-img">
 			<span class="my-img" style="background-image:url('${base}/css/img/default.png')"></span>
-			<p></p>
+			<p>${obj.member.cname}</p>
 			<p>铜牌用户</p>
 		</div>
 

@@ -1,20 +1,7 @@
+<!DOCTYPE html>
 <html>
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
-	<meta content="telephone=no" name="format-detection">
-	<meta name="baidu-site-verification" content="t7oDT96Amk" />
-	<title>微猫商城</title>
-	<meta content="微猫商城购物，正品商城，品牌特卖会" name="keywords">
-	<meta content="微猫商城购物，正品商城，品牌特卖会" name="description">
-	<meta name="sogou_site_verification" content="G7nmLR75yc" />
-	<meta name="baidu-tc-cerfication"
-	content="0a8c6d28b570b218f78510c29be4529b" />
-	<meta name="360-site-verification"
-	content="8b6121969d78afda8caeb69053fa29d9" />
-	<script src="${base}/lib/jquery-2.1.1.min.js"></script>
-	<script src="${base}/lib/jquery-ui.min.js"></script>
-
+	<#include "/decorator/include/header.ftl">
 	<link rel="stylesheet" type="text/css" href="${base}/lib/jd/order/css/base.css" charset="gbk">
 	<link rel="stylesheet" type="text/css" href="${base}/lib/jd/order/css/extend.css" charset="gbk">
 	
@@ -23,8 +10,11 @@
 	<link href="${base}/lib/jd/cart/css/checkbox.css" media="all" rel="stylesheet" type="text/css">
 	<link href="${base}/lib/jd/cart/css/spinner.css" media="all" rel="stylesheet" type="text/css">
 	<link href="${base}/lib/jd/cart/css/shopping-cart.css" media="all" rel="stylesheet" type="text/css">
+
 </head>
 <body id="body">
+	<#include "/decorator/include/navmain.ftl">
+
     <div id="notEmptyCart" style="display:block">
         <form id="formcart" method="post" action="${base}/order/shopcart/placeorder.action">
         <ul class="shp-cart-list">

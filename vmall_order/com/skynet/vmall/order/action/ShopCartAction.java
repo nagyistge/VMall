@@ -63,45 +63,17 @@ public class ShopCartAction extends BaseAction
 		return ro;
 	}
 
-	@At("/settlement")
-	@AdaptBy(type = JsonAdaptor.class)
-	@Ok("json")
-	public Map settlement(@Param("ids") List ids) throws Exception
-	{
-		HttpSession session = Mvcs.getHttpSession(true);
-		DynamicObject login_token = (DynamicObject) session.getAttribute(GlobalConstants.sys_login_token);
-		DynamicObject form = new DynamicObject();
-		form.setObj("ids", ids);
-		Map remap = shopcartService.settlement(form, login_token);
-		return remap;
-	}
-
 	// 填写订单
 	@At("/placeorder")
-	@Ok("->:/page/order/shopcart/placeorder.ftl")
+	@Ok(">>:/order/order/look.action?id=${obj.id}")
 	public Map placeorder(@Param("id") List<String> ids) throws Exception
 	{
 		HttpSession session = Mvcs.getHttpSession(true);
 		DynamicObject login_token = (DynamicObject) session.getAttribute(GlobalConstants.sys_login_token);
-		String userid = login_token.getFormatAttr(GlobalConstants.sys_login_userid);
-		Map map = new DynamicObject();
-		map.put("memberid", userid);
-		List<DynamicObject> shopcartgoodses = new ArrayList<DynamicObject>();
-		for (int i = 0; i < ids.size(); i++)
-		{
-			String id = ids.get(i);
-			if (StringToolKit.isBlank(id))
-			{
-				continue;
-			}
-			DynamicObject shopcartgoods = shopcartgoodsService.locate(id);
-			if (StringToolKit.isBlank(shopcartgoods.getFormatAttr("id")))
-			{
-				continue;
-			}
-			shopcartgoodses.add(shopcartgoods);
-		}
-		ro.put("shopcartgoodses", shopcartgoodses);
+		DynamicObject form = new DynamicObject();
+		form.setObj("ids", ids);		
+		String orderid = shopcartService.placeorder(form, login_token);
+		ro.put("id", orderid);
 		return ro;
 	}
 

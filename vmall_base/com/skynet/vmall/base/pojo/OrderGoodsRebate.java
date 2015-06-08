@@ -15,10 +15,16 @@ public class OrderGoodsRebate extends IdEntity
 	private String ordercno; // 返利订单编号
 	
 	@Column
-	private String ordergoodsid; // 订单商品明细标识
+	private String ordergoodsid; // 订单明细商品标识
+	
+	@Column
+	private String ordergoodsname; // 订单明细商品名称
 	
 	@Column
 	private String supmemberid; // 收取返利会员标识
+	
+	@Column
+	private String supmembercname; // 发放返利会员姓名	
 	
 	@Column
 	private String supwxopenid; // 收取返利会员微信标识
@@ -28,6 +34,9 @@ public class OrderGoodsRebate extends IdEntity
 	
 	@Column
 	private String subwxopenid; // 发放返利会员微信标识
+	
+	@Column
+	private String submembercname; // 发放返利会员姓名
 	
 	@Column
 	private int level; // 返利级别
@@ -73,6 +82,16 @@ public class OrderGoodsRebate extends IdEntity
 		this.ordergoodsid = ordergoodsid;
 	}
 
+	public String getOrdergoodsname()
+	{
+		return ordergoodsname;
+	}
+
+	public void setOrdergoodsname(String ordergoodsname)
+	{
+		this.ordergoodsname = ordergoodsname;
+	}
+
 	public String getSupmemberid()
 	{
 		return supmemberid;
@@ -81,6 +100,16 @@ public class OrderGoodsRebate extends IdEntity
 	public void setSupmemberid(String supmemberid)
 	{
 		this.supmemberid = supmemberid;
+	}
+
+	public String getSupmembercname()
+	{
+		return supmembercname;
+	}
+
+	public void setSupmembercname(String supmembercname)
+	{
+		this.supmembercname = supmembercname;
 	}
 
 	public String getSupwxopenid()
@@ -111,6 +140,16 @@ public class OrderGoodsRebate extends IdEntity
 	public void setSubwxopenid(String subwxopenid)
 	{
 		this.subwxopenid = subwxopenid;
+	}
+
+	public String getSubmembercname()
+	{
+		return submembercname;
+	}
+
+	public void setSubmembercname(String submembercname)
+	{
+		this.submembercname = submembercname;
 	}
 
 	public int getLevel()
@@ -192,6 +231,5 @@ public class OrderGoodsRebate extends IdEntity
 	{
 		this.drawapplytime = drawapplytime;
 	}
-
 
 }

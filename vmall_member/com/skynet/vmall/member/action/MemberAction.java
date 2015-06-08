@@ -28,6 +28,11 @@ public class MemberAction extends BaseAction
 	@Ok("->:/page/member/member/index.ftl")
 	public Map index(@Param("..") Map map) throws Exception
 	{
+		HttpSession session = Mvcs.getHttpSession(true);
+		DynamicObject login_token = (DynamicObject) session.getAttribute(GlobalConstants.sys_login_token);
+		String userid = login_token.getFormatAttr(GlobalConstants.sys_login_userid);
+		DynamicObject member = memberService.locate(userid);
+		ro.put("member", member);
 		return ro;
 	}	
 	

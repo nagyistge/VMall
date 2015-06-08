@@ -25,13 +25,13 @@
 		<link rel="stylesheet" href="${base}/lib/jd/order/misc/css/base.css?v=20150604">
 		<link rel="stylesheet" href="${base}/lib/jd/order/misc/css/pay.css?v=20150604">
 	
-		<form method="post" action="/norder/submit.action?sid=4d8f86754c44f93307cf2cca06789add" id="orderForm">
+		<form method="post" action="" id="formorder">
 	
 			<div class="common-wrapper">
 				<div class="w checkout" style="padding:0px;">
 					<div class="step1 border-1px">
 						<div class="m step1-in ">
-							<a href="/norder/address.action?sid=4d8f86754c44f93307cf2cca06789add" class="s-href">
+							<a href="" class="s-href">
 								<div class="mt_new">                      <div class="s1-name">
 									<i></i>蒲剑
 								</div>
@@ -183,7 +183,6 @@ function page_settlement()
 			if(json.state=="success")
 			{
 				alert("成功提交订单！");
-				window.location.reload();
 				// 更新购物车数量等操作；
 			}
 			else

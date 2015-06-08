@@ -128,10 +128,9 @@ public class ShopCartService extends SkynetNameEntityService<ShopCart>
 	}
 	
 	// 购物车结算。
-	public Map placeorder(DynamicObject form, DynamicObject login_token) throws Exception
+	public String placeorder(DynamicObject form, DynamicObject login_token) throws Exception
 	{
 		Map map = new HashMap();
-		
 		// 购物车
 		List<String> ids = (List<String>)form.get("ids");
 		
@@ -149,39 +148,36 @@ public class ShopCartService extends SkynetNameEntityService<ShopCart>
 			{
 				continue;
 			}
-			
-			sdao().update(ShopCartGoods.class, Chain.make("state", "结算").make("tempcno", SNGenerator.getValue(8)), Cnd.where("id", "=", id));
-	
 			shopcartgoodses.add(shopcartgoods);
-		}		
+		}
 		
-		return map;
-	}
-	
-	// 购物车结算，生成正式订单。
-	public Map settlement(DynamicObject form, DynamicObject login_token) throws Exception
-	{
+		for(int i=0;i<shopcartgoodses.size();i++)
+		{
+			
+		}
+		
 		String userid = login_token.getFormatAttr(GlobalConstants.sys_login_userid);
 		String userwxopenid = login_token.getFormatAttr(GlobalConstants.sys_login_userwxopenid);
-		// 购物车
-		List<String> ids = (List<String>)form.get("ids");
-		for(int i=0;i<ids.size();i++)
+		String username = login_token.getFormatAttr(GlobalConstants.sys_login_username);
+		
+		Order order = new Order();
+		String orderid = UUIDGenerator.getInstance().getNextValue();
+		order.setId(orderid);
+		order.setMemberid(userid);
+		order.setWxopenid(userwxopenid);
+		order.setMembercname(username);
+		order.setCno(SNGenerator.getValue(8));
+		order.setOrdertime(new Timestamp(System.currentTimeMillis()));
+		order.setState("下单");
+		sdao().insert(order);		
+		
+		for(int i=0;i<shopcartgoodses.size();i++)
 		{
-			// 生成订单
-			String id = ids.get(i);
-			ShopCartGoods cartgoods = sdao().fetch(ShopCartGoods.class, id);
+			// 生成订单明细
+			String cartgoodsid = shopcartgoodses.get(i).getFormatAttr("id");
+			ShopCartGoods cartgoods = sdao().fetch(ShopCartGoods.class, cartgoodsid);
 			Goods goods = sdao().fetch(Goods.class, cartgoods.getGoodsid());
 			String goodsclassid = goods.getClassid();
-			
-			Order order = new Order();
-			String orderid = UUIDGenerator.getInstance().getNextValue();
-			order.setId(orderid);
-			order.setMemberid(userid);
-			order.setWxopenid(userwxopenid);
-			order.setCno(SNGenerator.getValue(8));
-			order.setOrdertime(new Timestamp(System.currentTimeMillis()));
-			sdao().insert(order);
-			
 			
 			MemberService memberService = new MemberService(sdao(), Member.class);
 			List<DynamicObject> supmembers = memberService.findsupmembers(userid, MemberService.level_rebate);
@@ -197,6 +193,7 @@ public class ShopCartService extends SkynetNameEntityService<ShopCart>
 			ordergoods.setGoodsname(cartgoods.getGoodsname());
 			ordergoods.setNums(cartgoods.getNums());
 			ordergoods.setSaleprice(goods.getSaleprice());
+			ordergoods.setState("下单");
 			
 			for(int j=0;j<supmembers.size();j++)
 			{
@@ -219,6 +216,7 @@ public class ShopCartService extends SkynetNameEntityService<ShopCart>
 			{
 				String supmemberid = supmembers.get(j).getFormatAttr("id");
 				String supwxopenid = supmembers.get(j).getFormatAttr("wxopenid");
+				String supmembercname = supmembers.get(j).getFormatAttr("cname");
 				int level = j + 1;
 				
 				// 生成订单商品返利记录
@@ -227,10 +225,13 @@ public class ShopCartService extends SkynetNameEntityService<ShopCart>
 				orderrebate.setId(orderrebateid);
 				orderrebate.setOrdercno(order.getCno());
 				orderrebate.setOrdergoodsid(ordergoodsid);
+				orderrebate.setOrdergoodsname(cartgoods.getGoodsname());
 				orderrebate.setSupmemberid(supmemberid);
 				orderrebate.setSupwxopenid(supwxopenid);
+				orderrebate.setSupmembercname(supmembercname);
 				orderrebate.setSubmemberid(userid);
 				orderrebate.setSubwxopenid(userwxopenid);
+				orderrebate.setSubmembercname(username);
 				orderrebate.setLevel(level);
 				
 				Method m = Goods.class.getMethod("getRebate"+level);
@@ -245,11 +246,7 @@ public class ShopCartService extends SkynetNameEntityService<ShopCart>
 			sdao().delete(cartgoods);
 		}
 		
-		Map map = new DynamicObject();
-		map.put("state", "success");
-		
-		return map;
+		return orderid;
 	}
-	
 
 }
