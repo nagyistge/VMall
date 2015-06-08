@@ -11,3 +11,5 @@ insert into t_app_goods(id, cname, classid, costprice, saleprice, promoteprice, 
 insert into t_app_goods(id, cname, classid, costprice, saleprice, promoteprice, rebate1, rebate2, rebate3)  values(uuid(), '镂空时装水钻凉靴08','000100020007',102,102,68,5,10,15);
 insert into t_app_goods(id, cname, classid, costprice, saleprice, promoteprice, rebate1, rebate2, rebate3)  values(uuid(), '镂空时装水钻凉靴09','000100020007',108,108,72,5,10,15);
 insert into t_app_goods(id, cname, classid, costprice, saleprice, promoteprice, rebate1, rebate2, rebate3)  values(uuid(), '镂空时装水钻凉靴10','000100020007',114,114,76,5,10,15);
+
+update t_app_goods set classinternal = classid;

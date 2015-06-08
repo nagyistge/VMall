@@ -790,8 +790,5 @@ insert into t_app_member(id, wxopenid, wxnickname, cname, supid, internal, ctype
  insert into t_app_member(id, wxopenid, cname, supid, internal, level)   values('user0005000500050004','wx0005000500050004','用户0005000500050004', '000500050005', '0005000500050004', 6); 
  insert into t_app_member(id, wxopenid, cname, supid, internal, level)   values('user0005000500050005','wx0005000500050005','用户0005000500050005', '000500050005', '0005000500050005', 6); 
 
--- update t_app_member set password = 'b59c67bf196a4758191e42f76670ceba';
-
-delete from t_sys_user;
 insert into t_sys_user(id, cname, loginname, wxopenid) select id, cname, id, wxopenid from t_app_member;
 update t_sys_user set password = '1111';
