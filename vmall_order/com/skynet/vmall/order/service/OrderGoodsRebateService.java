@@ -1,5 +1,6 @@
 package com.skynet.vmall.order.service;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
@@ -43,6 +44,19 @@ public class OrderGoodsRebateService extends SkynetNameEntityService<OrderGoodsR
 		
 		List<DynamicObject> datas = sdao().queryForList(sql.toString());
 		return datas;
+	}
+	
+	public BigDecimal sumscore(Map map) throws Exception
+	{
+		String memberid = (String)map.get("memberid");
+		StringBuffer sql = new StringBuffer();
+		sql.append(" select sum(score) score from t_app_ordergoodsrebate rebate ").append("\n");
+		sql.append("  where 1 = 1 ").append("\n");
+		sql.append("    and rebate.supmemberid = ").append(SQLParser.charValue(memberid)).append("\n");
+		
+		BigDecimal score = new BigDecimal(queryForMap(sql.toString()).getFormatAttr("score")).setScale(2);
+		
+		return score;
 	}
 
 }

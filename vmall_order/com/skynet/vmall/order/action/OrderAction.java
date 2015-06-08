@@ -1,5 +1,6 @@
 package com.skynet.vmall.order.action;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
@@ -77,6 +78,9 @@ public class OrderAction extends BaseAction
 		String userid = login_token.getFormatAttr(GlobalConstants.sys_login_userid);
 		map.put("memberid", userid);
 		List<DynamicObject> scores = ordergoodsrebateService.memberscore(map);
+		BigDecimal sumscore = ordergoodsrebateService.sumscore(map);
+	
+		ro.put("sumscore", sumscore);
 		ro.put("scores", scores);
 		return ro;
 	}
