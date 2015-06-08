@@ -60,7 +60,10 @@ public class OrderGoodsRebate extends IdEntity
 	private String drawcashcno; // 提现申请单号
 	
 	@Column
-	private Timestamp drawapplytime; // 提现申请时间	
+	private Timestamp drawapplytime; // 提现申请时间
+	
+	@Column
+	private String state; // 提现申请单状态	
 
 	public String getOrdercno()
 	{
@@ -230,6 +233,16 @@ public class OrderGoodsRebate extends IdEntity
 	public void setDrawapplytime(Timestamp drawapplytime)
 	{
 		this.drawapplytime = drawapplytime;
+	}
+
+	public String getState()
+	{
+		return state;
+	}
+
+	public void setState(String state)
+	{
+		this.state = state;
 	}
 
 }
