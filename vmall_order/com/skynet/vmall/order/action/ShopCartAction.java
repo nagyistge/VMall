@@ -1,5 +1,6 @@
 package com.skynet.vmall.order.action;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -16,7 +17,9 @@ import org.nutz.mvc.annotation.Param;
 
 import com.skynet.framework.action.BaseAction;
 import com.skynet.framework.services.db.dybeans.DynamicObject;
+import com.skynet.framework.services.function.StringToolKit;
 import com.skynet.framework.spec.GlobalConstants;
+import com.skynet.vmall.order.service.ShopCartGoodsService;
 import com.skynet.vmall.order.service.ShopCartService;
 
 @IocBean
@@ -25,6 +28,9 @@ public class ShopCartAction extends BaseAction
 {
 	@Inject
 	private ShopCartService shopcartService;
+	
+	@Inject
+	private ShopCartGoodsService shopcartgoodsService;	
 
 	@At("/index")
 	@Ok("->:/page/order/shopcart/index.ftl")
@@ -38,27 +44,27 @@ public class ShopCartAction extends BaseAction
 		ro.put("shopcartgoods", shopcartgoods);
 		return ro;
 	}
-	
+
 	@At("/addtocart")
 	@Ok("json")
 	public Map addtocart(@Param("..") Map map) throws Exception
 	{
 		HttpSession session = Mvcs.getHttpSession(true);
 		DynamicObject login_token = (DynamicObject) session.getAttribute(GlobalConstants.sys_login_token);
-		
+
 		Map remap = shopcartService.addtocart(new DynamicObject(map), login_token);
 		return remap;
 	}
-	
+
 	@At("/delfromcart")
 	@Ok("json")
 	public Map delfromcart(@Param("..") Map map) throws Exception
 	{
 		return ro;
 	}
-	
+
 	@At("/settlement")
-	@AdaptBy(type=JsonAdaptor.class)
+	@AdaptBy(type = JsonAdaptor.class)
 	@Ok("json")
 	public Map settlement(@Param("ids") List ids) throws Exception
 	{
@@ -69,6 +75,34 @@ public class ShopCartAction extends BaseAction
 		Map remap = shopcartService.settlement(form, login_token);
 		return remap;
 	}
-	
-	
+
+	// 填写订单
+	@At("/placeorder")
+	@Ok("->:/page/order/shopcart/placeorder.ftl")
+	public Map placeorder(@Param("id") List<String> ids) throws Exception
+	{
+		HttpSession session = Mvcs.getHttpSession(true);
+		DynamicObject login_token = (DynamicObject) session.getAttribute(GlobalConstants.sys_login_token);
+		String userid = login_token.getFormatAttr(GlobalConstants.sys_login_userid);
+		Map map = new DynamicObject();
+		map.put("memberid", userid);
+		List<DynamicObject> shopcartgoodses = new ArrayList<DynamicObject>();
+		for (int i = 0; i < ids.size(); i++)
+		{
+			String id = ids.get(i);
+			if (StringToolKit.isBlank(id))
+			{
+				continue;
+			}
+			DynamicObject shopcartgoods = shopcartgoodsService.locate(id);
+			if (StringToolKit.isBlank(shopcartgoods.getFormatAttr("id")))
+			{
+				continue;
+			}
+			shopcartgoodses.add(shopcartgoods);
+		}
+		ro.put("shopcartgoodses", shopcartgoodses);
+		return ro;
+	}
+
 }

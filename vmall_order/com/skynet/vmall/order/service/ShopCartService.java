@@ -3,9 +3,12 @@ package com.skynet.vmall.order.service;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.nutz.dao.Chain;
 import org.nutz.dao.Cnd;
 import org.nutz.dao.Dao;
 import org.nutz.ioc.annotation.InjectName;
@@ -16,6 +19,7 @@ import com.skynet.framework.common.generator.UUIDGenerator;
 import com.skynet.framework.service.SkynetNameEntityService;
 import com.skynet.framework.services.db.SQLParser;
 import com.skynet.framework.services.db.dybeans.DynamicObject;
+import com.skynet.framework.services.function.StringToolKit;
 import com.skynet.framework.services.function.Types;
 import com.skynet.framework.spec.GlobalConstants;
 import com.skynet.vmall.base.pojo.Goods;
@@ -123,12 +127,43 @@ public class ShopCartService extends SkynetNameEntityService<ShopCart>
 		return map;
 	}
 	
+	// 购物车结算。
+	public Map placeorder(DynamicObject form, DynamicObject login_token) throws Exception
+	{
+		Map map = new HashMap();
+		
+		// 购物车
+		List<String> ids = (List<String>)form.get("ids");
+		
+		List<DynamicObject> shopcartgoodses = new ArrayList<DynamicObject>();
+		for (int i = 0; i < ids.size(); i++)
+		{
+			String id = ids.get(i);
+			if (StringToolKit.isBlank(id))
+			{
+				continue;
+			}
+			
+			DynamicObject shopcartgoods = sdao().locateBy("t_app_shopcartgoods", Cnd.where("id", "=", id));
+			if(StringToolKit.isBlank(shopcartgoods.getFormatAttr("id")))
+			{
+				continue;
+			}
+			
+			sdao().update(ShopCartGoods.class, Chain.make("state", "结算").make("tempcno", SNGenerator.getValue(8)), Cnd.where("id", "=", id));
+	
+			shopcartgoodses.add(shopcartgoods);
+		}		
+		
+		return map;
+	}
+	
 	// 购物车结算，生成正式订单。
 	public Map settlement(DynamicObject form, DynamicObject login_token) throws Exception
 	{
 		String userid = login_token.getFormatAttr(GlobalConstants.sys_login_userid);
 		String userwxopenid = login_token.getFormatAttr(GlobalConstants.sys_login_userwxopenid);
-		
+		// 购物车
 		List<String> ids = (List<String>)form.get("ids");
 		for(int i=0;i<ids.size();i++)
 		{

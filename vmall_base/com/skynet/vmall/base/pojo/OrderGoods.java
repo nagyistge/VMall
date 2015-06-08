@@ -27,9 +27,18 @@ public class OrderGoods extends IdEntity
 	
 	@Column
 	private int nums ; // 数量
+	
+	@Column
+	private String state; // 订单状态（下单、收款、发货、收货、结束）
 
 	@Column
 	private BigDecimal saleprice; // 销售单价
+	
+	@Column
+	private BigDecimal promoteprice; // 促销单价
+	
+	@Column
+	private BigDecimal realprice; // 实际订单购买价格	
 
 	@Column
 	private BigDecimal rebate1; // 1级返利
@@ -136,6 +145,16 @@ public class OrderGoods extends IdEntity
 		this.nums = nums;
 	}
 
+	public String getState()
+	{
+		return state;
+	}
+
+	public void setState(String state)
+	{
+		this.state = state;
+	}
+
 	public BigDecimal getSaleprice()
 	{
 		return saleprice;
@@ -144,6 +163,26 @@ public class OrderGoods extends IdEntity
 	public void setSaleprice(BigDecimal saleprice)
 	{
 		this.saleprice = saleprice;
+	}
+
+	public BigDecimal getPromoteprice()
+	{
+		return promoteprice;
+	}
+
+	public void setPromoteprice(BigDecimal promoteprice)
+	{
+		this.promoteprice = promoteprice;
+	}
+
+	public BigDecimal getRealprice()
+	{
+		return realprice;
+	}
+
+	public void setRealprice(BigDecimal realprice)
+	{
+		this.realprice = realprice;
 	}
 
 	public BigDecimal getRebate1()
@@ -295,4 +334,7 @@ public class OrderGoods extends IdEntity
 	{
 		this.supmemberid5 = supmemberid5;
 	}
+
+
+
 }

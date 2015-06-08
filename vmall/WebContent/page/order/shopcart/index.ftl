@@ -26,6 +26,7 @@
 </head>
 <body id="body">
     <div id="notEmptyCart" style="display:block">
+        <form id="formcart" method="post" action="${base}/order/shopcart/placeorder.action">
         <ul class="shp-cart-list">
         
         	<#assign allamount = 0>
@@ -43,7 +44,7 @@
                     </div>
                     <div class="shp-cart-item-core ">
                         <div class="cart-product-cell-3">
-                            <span class="shp-cart-item-price" id="price1833078471279196">￥${cartgoods.saleprice}</span>
+                            <span class="shp-cart-item-price" id="price${cartgoods.id}">￥${cartgoods.saleprice}</span>
                         </div>
                         <a class="cart-product-cell-1" href="${base}/goods/goods/look.action?id=${cartgoods.goodsid}">
                             <img class="cart-photo-thumb" alt="" src="http://img10.360buyimg.com/n7/jfs/t580/67/493022257/56071/c6721088/546d968aN87849b99.jpg!q70.jpg" onerror="http://misc.360buyimg.com/lib/skin/e/i/error-jd.gif">
@@ -67,6 +68,7 @@
             </li>
             </#list>
         </ul>
+        </form>
     </div>
     <div id="payment_p" style="display:block">
         <div id="paymentp"></div>
@@ -83,9 +85,9 @@
     </div>
     
 <script>
-$("#submit").click(function() {page_settlement()});
+$("#submit").click(function() {page_submit()});
 
-function page_settlement()
+function page_submit()
 {
 	var ids = [];
 	var fids = $('#notEmptyCart input[name="id"]');
@@ -95,44 +97,13 @@ function page_settlement()
 		return;
 	}
 
+    // 增加检查哪些购物车商品提交订单
 	for(i=0;i<fids.length;i++)
 	{
 		ids.push(fids[i].value);
 	}
 	
-	$.ajax({
-		type:'post',
-		url:'${base}/order/shopcart/settlement.action',
-		contentType: "application/json",
-		data:JSON.stringify({"ids":ids}),
-		cache:false,
-		async:false,
-		success:function(data)
-		{
-			console.log(data);
-			if(data=="")
-			{
-				alert("提交订单异常！");
-				return;
-			}
-			json = eval("(" + data + ")");
-			if(json.state=="success")
-			{
-				alert("成功提交订单！");
-				window.location.reload();
-				// 更新购物车数量等操作；
-			}
-			else
-			{
-				alert("提交订单失败！");
-			}
-		},
-		error:function(data)
-		{
-			console.log(data);
-			alert("服务请求异常！");
-		}
-	})
+    $("#formcart").submit();
 }
 
 </script>        
