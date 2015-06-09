@@ -250,4 +250,27 @@ public class MemberService extends SkynetNameEntityService<Member>
 		return datas;
 	}
 	
+	// 浏览我的提现
+	public List<DynamicObject> browsemydraw(Map map) throws Exception
+	{
+		int page = Types.parseInt((String) map.get("_page"), 1);
+		int pagesize = Types.parseInt((String) map.get("_pagesize"), 10);
+
+		int startindex = (page - 1) * pagesize;
+		int endindex = page * pagesize;
+		
+		String memberid = (String)map.get("memberid");
+
+		StringBuffer sql = new StringBuffer();
+		sql.append(" select * from t_app_drawcash ").append("\n");
+		sql.append("  where 1 = 1 ").append("\n");
+		sql.append("    and memberid = ").append(SQLParser.charValue(memberid)).append("\n");
+		// 增加查询过滤条件
+		sql.append("  order by applytime desc ").append("\n");
+		
+		List<DynamicObject> datas = sdao().queryForList(sql.toString(), startindex, endindex);
+
+		return datas;
+	}
+	
 }

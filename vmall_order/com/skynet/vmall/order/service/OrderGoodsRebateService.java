@@ -11,6 +11,7 @@ import org.nutz.ioc.loader.annotation.IocBean;
 import com.skynet.framework.service.SkynetNameEntityService;
 import com.skynet.framework.services.db.SQLParser;
 import com.skynet.framework.services.db.dybeans.DynamicObject;
+import com.skynet.framework.services.function.Types;
 import com.skynet.vmall.base.pojo.OrderGoodsRebate;
 
 @InjectName("ordergoodsrebateService")
@@ -54,9 +55,11 @@ public class OrderGoodsRebateService extends SkynetNameEntityService<OrderGoodsR
 		sql.append("  where 1 = 1 ").append("\n");
 		sql.append("    and rebate.supmemberid = ").append(SQLParser.charValue(memberid)).append("\n");
 		
-		BigDecimal score = new BigDecimal(queryForMap(sql.toString()).getFormatAttr("score")).setScale(2);
+		int score = Types.parseInt(queryForMap(sql.toString()).getFormatAttr("score"), 0);
 		
-		return score;
+		BigDecimal sumscore = new BigDecimal(score).setScale(2);
+		
+		return sumscore;
 	}
 
 }

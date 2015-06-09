@@ -59,14 +59,14 @@
 			</li>
 
 			<li>
-			<a href="${base}/order/drawcash/memberdraw.action">
+			<a href="${base}/member/member/mydraw.action">
 				<img src="http://img30.360buyimg.com/mobilecms/jfs/t475/327/686010649/2674/7cf56bb1/547bc6dbN3dabf32a.png" alt="">
 				<p>我的提现</p>
 			</a>
 			</li>
 			
 			<li>
-			<a href="${base}/member/member/group.action">
+			<a href="${base}/member/member/mygroup.action">
 				<img src="http://img30.360buyimg.com/mobilecms/jfs/t547/103/678884525/2510/c82066d7/547bc727Nde7da59c.png" alt="">
 				<p>我的团队</p>
 			</a>

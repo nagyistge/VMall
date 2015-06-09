@@ -26,7 +26,7 @@ function page_browse()
 {
 	$.ajax({
 		type:'post',
-		url:'${base}/member/member/browsemydraw.action',
+		url:'${base}/member/member/mydraw/browse.action',
 		data:{temp:'temp'},
 		cache:false,
 		async:false,

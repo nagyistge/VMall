@@ -26,15 +26,19 @@ function page_browse()
 {
 	$.ajax({
 		type:'post',
-		url:'${base}/member/member/browsemydraw.action',
+		url:'${base}/member/member/mygroup/show.action',
 		data:{temp:'temp'},
 		cache:false,
 		async:false,
 		success:function(data)
 		{
-			console.log(data);
-			$("#shp-cart-list").append(data);			
-			
+			$("#shp-cart-list").append(data);
+			var spans = $(".subcount");
+			for(var i=0;i<spans.length;i++)
+			{
+				var sid = spans[i].id.replace("subcount","");
+				page_subcount(sid);
+			}
 		},
 		error:function(data)
 		{
@@ -42,6 +46,32 @@ function page_browse()
 			alert("服务请求异常！");
 		}
 	})		
+}
+
+function page_subcount(id)
+{
+	$.ajax({
+		type:'post',
+		url:'${base}/member/member/mygroup/subcount.action',
+		data:{"id":id},
+		cache:false,
+		async:false,
+		success:function(data)
+		{
+			if(data=="")
+			{
+				return;
+			}
+			json = eval("(" + data + ")");
+			console.log("json:"+json);
+			$("#subcount"+json.id).html(json.nums);
+		},
+		error:function(data)
+		{
+			console.log(data);
+			alert("服务请求异常！");
+		}
+	})	
 }
 </script>
 </body>
