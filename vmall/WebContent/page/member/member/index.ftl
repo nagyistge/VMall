@@ -45,7 +45,7 @@
 
 		<ul class="menu-list">
 			<li>
-				<a href="/user/allOrders.action?functionId=quanbudingdan&amp;sid=b0ef5bb405ad55364ae07a3a85a51e00">
+				<a href="${base}/member/member/myorder.action">
 					<img src="http://img30.360buyimg.com/mobilecms/jfs/t604/33/677153327/2632/39dbca27/547bc6b5Ncc52a3b8.png" alt="">
 					<p>我的订单</p>
 				</a>

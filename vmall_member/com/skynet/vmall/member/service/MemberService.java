@@ -18,8 +18,10 @@ import com.skynet.app.organ.pojo.User;
 import com.skynet.framework.common.generator.UUIDGenerator;
 import com.skynet.framework.service.GeneratorService;
 import com.skynet.framework.service.SkynetNameEntityService;
+import com.skynet.framework.services.db.SQLParser;
 import com.skynet.framework.services.db.dybeans.DynamicObject;
 import com.skynet.framework.services.function.StringToolKit;
+import com.skynet.framework.services.function.Types;
 import com.skynet.vmall.base.pojo.Follow;
 import com.skynet.vmall.base.pojo.Member;
 import com.skynet.vmall.base.pojo.TreeMember;
@@ -203,4 +205,49 @@ public class MemberService extends SkynetNameEntityService<Member>
 		
 		return submembers;
 	}
+	
+	// 浏览我的订单
+	public List<DynamicObject> browsemyorder(Map map) throws Exception
+	{
+		int page = Types.parseInt((String) map.get("_page"), 1);
+		int pagesize = Types.parseInt((String) map.get("_pagesize"), 10);
+
+		int startindex = (page - 1) * pagesize;
+		int endindex = page * pagesize;
+		
+		String memberid = (String)map.get("memberid");
+
+		StringBuffer sql = new StringBuffer();
+		sql.append(" select * from t_app_order ").append("\n");
+		sql.append("  where 1 = 1 ").append("\n");
+		sql.append("    and memberid = ").append(SQLParser.charValue(memberid)).append("\n");
+		// 增加查询过滤条件
+		sql.append("  order by ordertime desc ").append("\n");
+		
+		List<DynamicObject> datas = sdao().queryForList(sql.toString(), startindex, endindex);
+
+		return datas;
+	}
+	
+	// 浏览我的订单商品明细
+	public List<DynamicObject> showmyordergoods(Map map) throws Exception
+	{
+		int page = Types.parseInt((String) map.get("_page"), 1);
+		int pagesize = Types.parseInt((String) map.get("_pagesize"), 10);
+
+		int startindex = (page - 1) * pagesize;
+		int endindex = page * pagesize;
+		
+		String id = (String)map.get("id");
+
+		StringBuffer sql = new StringBuffer();
+		sql.append(" select * from t_app_ordergoods ").append("\n");
+		sql.append("  where 1 = 1 ").append("\n");
+		sql.append("    and orderid = ").append(SQLParser.charValue(id)).append("\n");
+		// 增加查询过滤条件
+		List<DynamicObject> datas = sdao().queryForList(sql.toString());
+
+		return datas;
+	}
+	
 }

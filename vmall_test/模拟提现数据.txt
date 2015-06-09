@@ -1,0 +1,1 @@
+update t_app_ordergoodsrebate set drawcashid = null, drawcashcno = null, state = null;
