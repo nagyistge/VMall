@@ -13,7 +13,7 @@ public class MemberInit
 			String cno1 = FormatKey.format(i + 1, 4);
 			sql = new StringBuffer();
 			sql.append(" insert into t_app_member(id, wxopenid, cname, supid, internal, level)  ");
-			sql.append(" values('user" + cno1 + "','wx" + cno1 + "','用户" + cno1 + "', 'wph', '" + cno1 + "', 3); ");
+			sql.append(" values('" + cno1 + "','wx" + cno1 + "','用户" + cno1 + "', 'wph', '" + cno1 + "', 3); ");
 			System.out.println(sql.toString());
 
 			for (int j = 0; j < 5; j++)
@@ -22,7 +22,7 @@ public class MemberInit
 
 				sql = new StringBuffer();
 				sql.append(" insert into t_app_member(id, wxopenid, cname, supid, level)  ");
-				sql.append(" values('user" + cno2 + "','wx" + cno2 + "','用户" + cno2 + "', '" + cno1 + "', '" + cno2 + "', 4); ");
+				sql.append(" values('" + cno2 + "','wx" + cno2 + "','用户" + cno2 + "', '" + cno1 + "', '" + cno2 + "', 4); ");
 				System.out.println(sql.toString());
 
 				for (int k = 0; k < 5; k++)
@@ -31,7 +31,7 @@ public class MemberInit
 
 					sql = new StringBuffer();
 					sql.append(" insert into t_app_member(id, wxopenid, cname, supid, level)  ");
-					sql.append(" values('user" + cno3 + "','wx" + cno3 + "','用户" + cno3 + "', '" + cno2 + "', '" + cno3 + "', 5); ");
+					sql.append(" values('" + cno3 + "','wx" + cno3 + "','用户" + cno3 + "', '" + cno2 + "', '" + cno3 + "', 5); ");
 					System.out.println(sql.toString());
 					
 					for (int m = 0; m < 5; m++)
@@ -40,7 +40,7 @@ public class MemberInit
 
 						sql = new StringBuffer();
 						sql.append(" insert into t_app_member(id, wxopenid, cname, supid, level)  ");
-						sql.append(" values('user" + cno4 + "','wx" + cno4 + "','用户" + cno4 + "', '" + cno3 + "', '" + cno4 + "', 6); ");
+						sql.append(" values('" + cno4 + "','wx" + cno4 + "','用户" + cno4 + "', '" + cno3 + "', '" + cno4 + "', 6); ");
 						System.out.println(sql.toString());
 					}
 
