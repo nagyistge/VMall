@@ -57,4 +57,25 @@ public class MallAction extends BaseAction
 		ro.put("goodsclasses", goodsclasses);
 		return ro;
 	}
+	
+	// 非微信环境测试访问地址
+	@At("/index_test")
+	@Ok("->:/page/mall/mall/index_test.ftl")
+	public Map index_test(@Param("..") Map map) throws Exception
+	{
+		String[] classes = new String[]
+		{ "时尚女鞋", "流行男鞋", "面部护肤", "养生茶饮" };
+		
+		List<DynamicObject> goodsclasses = new ArrayList<DynamicObject>();
+		for (int i = 0; i < classes.length; i++)
+		{
+			DynamicObject goodsclass = goodsclassService.locateBy(Cnd.where("cname", "=", classes[i]));
+			List<DynamicObject> subgoodsclasses = goodsclassService.findByCond(Cnd.where("supid", "=", goodsclass.getFormatAttr("id")));
+			goodsclass.setObj("subgoodsclasses", subgoodsclasses);
+			goodsclasses.add(goodsclass);
+		}
+		
+		ro.put("goodsclasses", goodsclasses);
+		return ro;
+	}
 }
