@@ -18,6 +18,7 @@ import com.skynet.framework.action.BaseAction;
 import com.skynet.framework.services.db.dybeans.DynamicObject;
 import com.skynet.framework.spec.GlobalConstants;
 import com.skynet.vmall.goods.service.GoodsClassService;
+import com.skynet.vmall.goods.service.GoodsClassSpecService;
 import com.skynet.vmall.goods.service.GoodsService;
 import com.skynet.vmall.member.service.MemberService;
 
@@ -27,6 +28,9 @@ public class GoodsAction extends BaseAction
 {
 	@Inject
 	private MemberService memberService;
+	
+	@Inject
+	private GoodsClassSpecService goodsclassspecService;
 
 	@Inject
 	private GoodsClassService goodsclassService;
@@ -71,7 +75,8 @@ public class GoodsAction extends BaseAction
 		List<DynamicObject> subgoodsclasses = goodsclassService.findByCond(Cnd.where("supid", "=", classid));
 
 		map.put("_page", Strings.sNull(page, "1"));
-		map.put("_pagesize", Strings.sNull(pagesize, "10"));
+		map.put("_pagesize", Strings.sNull(pagesize, "100"));
+		map.put("ctype", "货品");
 		List<DynamicObject> goods = goodsService.channel(map);
 
 		ro.put("supgoodsclass", supgoodsclass);
@@ -112,11 +117,17 @@ public class GoodsAction extends BaseAction
 		String id = (String) map.get("id");
 		DynamicObject goods = goodsService.locate(id);
 		
+		List<DynamicObject> goodsclassspeces = goodsclassspecService.getGoodsClassSpeces(goods.getFormatAttr("classid"));
+		List<DynamicObject> goodsspecs = goodsService.findgoodsspec(goods.getFormatAttr("supid"));
+		
 		List<DynamicObject> likegoodses = goodsService.guestlike(map);
-		ro.put("likegoodses", likegoodses);		
-
+		
 		ro.put("member", member);
 		ro.put("goods", goods);
+		ro.put("goodsclassspeces", goodsclassspeces);
+		ro.put("goodsspecs", goodsspecs);
+		ro.put("likegoodses", likegoodses);		
+
 		return ro;
 	}
 	

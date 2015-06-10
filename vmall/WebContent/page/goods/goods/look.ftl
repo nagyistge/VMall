@@ -82,7 +82,26 @@
 					</dl>
 					<dl class="list-entry"> 
 						<dt class="row01"><span class="col01">规格：</span> <span class="col02" id="guige"> 黑色 M <span id="amount">1件<span></span><em class="icon-up"></em></span></span></dt>
+						
+						
 						<dd class="row02" style="diskplay:block">
+
+						<#list obj.goodsclassspeces as classspec>
+							<section class="select" id="proColor">
+								<p class="label">${classspec.specclass}</p>
+								<p class="option" id="color">
+								<#list obj.goodsspecs as spec>
+									<#if spec.specclass = classspec.specclass>
+									<a title="${spec.spec}" date="currentColor" class="link-check active" href="javascript:void(0)">${spec.spec}</a>&nbsp;
+									</#if>
+								</#list>
+								</p>
+							</section>							
+						</#list>
+
+
+
+
 							<section class="select" id="proColor">
 								<p class="label">颜色</p>
 								<p class="option" id="color"> <a title="黑色" date="currentColor" class="link-check active" href="javascript:void(0)">黑色</a>&nbsp;<a href="/product/1539894829.html?resourceType=unknown&amp;resourceValue=unknown&amp;sid=b92ff74dfab64b42d614b6243db2b908" title="白色" date="noCurrent" wareid="1539894829" class="link-check">白色</a>&nbsp; </p>

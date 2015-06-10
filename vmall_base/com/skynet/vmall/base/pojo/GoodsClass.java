@@ -18,7 +18,7 @@ public class GoodsClass extends IdEntity
 	private String internal; // 内部码
 
 	@Column
-	private String dealerid; // 厂商标识
+	private String dealerid; // 商家（会员）标识
 
 	public String getCname()
 	{

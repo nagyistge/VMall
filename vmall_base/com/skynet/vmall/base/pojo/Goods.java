@@ -11,16 +11,34 @@ import com.skynet.framework.pojo.IdEntity;
 public class Goods extends IdEntity
 {
 	@Column
-	private String cname; // 分类名称
-
-	@Column
-	private String code; // 商品代码
-
-	@Column
 	private String classid; // 商品分类标识
 	
 	@Column
-	private String classinternal; // 商品分类	
+	private String classinternal; // 商品分类内部码
+	
+	@Column
+	private String dealerid; // 商家（会员）标识	
+	
+	@Column
+	private String cname; // 商品名称
+	
+	@Column
+	private String supid; // 所属商品标识（商品分为商品、货品，货品作为商品的下级）
+	
+	@Column
+	private String code; // 商品代码	
+
+	@Column
+	private String brand; // 品牌
+	
+	@Column
+	private String ctype; // 类型（商品、货品）
+	
+	@Column
+	private String spec; // 规格（白色、公斤等）（合并后规格，冗余显示）
+	
+	@Column
+	private String specclass; // 规格类型（颜色、尺寸、重量等）（合并后规格分类，冗余显示）
 	
 	@Column
 	private BigDecimal costprice; // 成本单价		
@@ -49,26 +67,6 @@ public class Goods extends IdEntity
 	@Column
 	private String pic; // 商品图片（URL）
 
-	public String getCname()
-	{
-		return cname;
-	}
-
-	public void setCname(String cname)
-	{
-		this.cname = cname;
-	}
-
-	public String getCode()
-	{
-		return code;
-	}
-
-	public void setCode(String code)
-	{
-		this.code = code;
-	}
-
 	public String getClassid()
 	{
 		return classid;
@@ -87,6 +85,86 @@ public class Goods extends IdEntity
 	public void setClassinternal(String classinternal)
 	{
 		this.classinternal = classinternal;
+	}
+
+	public String getDealerid()
+	{
+		return dealerid;
+	}
+
+	public void setDealerid(String dealerid)
+	{
+		this.dealerid = dealerid;
+	}
+
+	public String getCname()
+	{
+		return cname;
+	}
+
+	public void setCname(String cname)
+	{
+		this.cname = cname;
+	}
+
+	public String getSupid()
+	{
+		return supid;
+	}
+
+	public void setSupid(String supid)
+	{
+		this.supid = supid;
+	}
+
+	public String getCode()
+	{
+		return code;
+	}
+
+	public void setCode(String code)
+	{
+		this.code = code;
+	}
+
+	public String getBrand()
+	{
+		return brand;
+	}
+
+	public void setBrand(String brand)
+	{
+		this.brand = brand;
+	}
+
+	public String getCtype()
+	{
+		return ctype;
+	}
+
+	public void setCtype(String ctype)
+	{
+		this.ctype = ctype;
+	}
+
+	public String getSpec()
+	{
+		return spec;
+	}
+
+	public void setSpec(String spec)
+	{
+		this.spec = spec;
+	}
+
+	public String getSpecclass()
+	{
+		return specclass;
+	}
+
+	public void setSpecclass(String specclass)
+	{
+		this.specclass = specclass;
 	}
 
 	public BigDecimal getCostprice()
@@ -178,4 +256,5 @@ public class Goods extends IdEntity
 	{
 		this.pic = pic;
 	}
+
 }
