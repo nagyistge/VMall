@@ -119,13 +119,15 @@ public class GoodsAction extends BaseAction
 		
 		List<DynamicObject> goodsclassspeces = goodsclassspecService.getGoodsClassSpeces(goods.getFormatAttr("classid"));
 		List<DynamicObject> goodsspecs = goodsService.findgoodsspec(goods.getFormatAttr("supid"));
-		
+		List<DynamicObject> currentgoodsspecs = goodsService.findgoodsspec(goods.getFormatAttr("id"));
+				
 		List<DynamicObject> likegoodses = goodsService.guestlike(map);
 		
 		ro.put("member", member);
 		ro.put("goods", goods);
 		ro.put("goodsclassspeces", goodsclassspeces);
 		ro.put("goodsspecs", goodsspecs);
+		ro.put("currentgoodsspecs", currentgoodsspecs);
 		ro.put("likegoodses", likegoodses);		
 
 		return ro;

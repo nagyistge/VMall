@@ -81,35 +81,33 @@
 						</dd>
 					</dl>
 					<dl class="list-entry"> 
-						<dt class="row01"><span class="col01">规格：</span> <span class="col02" id="guige"> 黑色 M <span id="amount">1件<span></span><em class="icon-up"></em></span></span></dt>
-						
-						
+						<dt class="row01">
+							<span class="col01">规格：<#list obj.currentgoodsspecs as currentspec>${currentspec.spec}&nbsp;</#list></span> 
+							<span class="col02" id="guige">
+								<span id="amount">1件<span></span><em class="icon-up"></em></span>
+							</span>
+						</dt>
 						<dd class="row02" style="diskplay:block">
-
-						<#list obj.goodsclassspeces as classspec>
+							<#list obj.goodsclassspeces as classspec>
 							<section class="select" id="proColor">
 								<p class="label">${classspec.specclass}</p>
 								<p class="option" id="color">
 								<#list obj.goodsspecs as spec>
 									<#if spec.specclass = classspec.specclass>
-									<a title="${spec.spec}" date="currentColor" class="link-check active" href="javascript:void(0)">${spec.spec}</a>&nbsp;
+										<#list obj.currentgoodsspecs as currentspec>
+											<#if currentspec.specclass==spec.specclass>
+												<#if currentspec.spec==spec.spec>
+													<a title="${spec.spec}" date="currentColor" class="link-check active" href="javascript:void(0)">${spec.spec}</a>&nbsp;
+												<#else>
+													<a href="javascript:void(0)" title="${spec.spec}" date="noCurrent" wareid="${obj.goods.id}" class="link-check">${spec.spec}</a>&nbsp;
+												</#if>
+											</#if>
+										</#list>								
 									</#if>
 								</#list>
 								</p>
 							</section>							
-						</#list>
-
-
-
-
-							<section class="select" id="proColor">
-								<p class="label">颜色</p>
-								<p class="option" id="color"> <a title="黑色" date="currentColor" class="link-check active" href="javascript:void(0)">黑色</a>&nbsp;<a href="/product/1539894829.html?resourceType=unknown&amp;resourceValue=unknown&amp;sid=b92ff74dfab64b42d614b6243db2b908" title="白色" date="noCurrent" wareid="1539894829" class="link-check">白色</a>&nbsp; </p>
-							</section>
-							<section class="select" id="proSize">
-								<p class="label">尺寸</p>
-								<p class="option" id="size"> <a title="S" href="/product/1539889024.html?resourceType=unknown&amp;resourceValue=unknown&amp;sid=b92ff74dfab64b42d614b6243db2b908" date="noCurrent" wareid="1539889024" class="link-check">S</a>&nbsp;<a title="M" class="link-check active" date="currentSize">M</a>&nbsp;<a title="L" href="/product/1539889026.html?resourceType=unknown&amp;resourceValue=unknown&amp;sid=b92ff74dfab64b42d614b6243db2b908" date="noCurrent" wareid="1539889026" class="link-check">L</a>&nbsp;<a title="XL" href="/product/1539889027.html?resourceType=unknown&amp;resourceValue=unknown&amp;sid=b92ff74dfab64b42d614b6243db2b908" date="noCurrent" wareid="1539889027" class="link-check">XL</a>&nbsp;<a title="XXL" href="/product/1570655526.html?resourceType=unknown&amp;resourceValue=unknown&amp;sid=b92ff74dfab64b42d614b6243db2b908" date="noCurrent" wareid="1570655526" class="link-check">XXL</a>&nbsp; </p>
-							</section>
+							</#list>
 							<section class="select">
 								<p class="label">数量</p>
 								<p class="option"><a class="btn-del" id="minus" onclick="minus();">-</a><input type="text" class="fm-txt" value="1" id="number" onblur="modify();"><a class="btn-add" id="plus" onclick="plus();">+</a></p>
