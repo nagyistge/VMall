@@ -4,15 +4,20 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
+
 import org.nutz.dao.Cnd;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
+import org.nutz.lang.util.NutMap;
+import org.nutz.mvc.Mvcs;
 import org.nutz.mvc.annotation.At;
 import org.nutz.mvc.annotation.Ok;
 import org.nutz.mvc.annotation.Param;
 
 import com.skynet.framework.action.BaseAction;
 import com.skynet.framework.services.db.dybeans.DynamicObject;
+import com.skynet.framework.spec.GlobalConstants;
 import com.skynet.vmall.goods.service.GoodsClassService;
 import com.skynet.vmall.goods.service.GoodsService;
 
@@ -30,6 +35,13 @@ public class MallAction extends BaseAction
 	@Ok("->:/page/mall/mall/index.ftl")
 	public Map index(@Param("..") Map map) throws Exception
 	{
+		// 系统微信配置信息
+		HttpSession session = Mvcs.getHttpSession(true);
+		NutMap wxconfig = (NutMap)session.getAttribute(GlobalConstants.sys_wxconfig);
+		ro.put("shareurl", wxconfig.get("shareurl"));
+		ro.put("openid", wxconfig.get("openid"));
+		ro.put("jscfg", wxconfig.get("jscfg"));
+		
 		String[] classes = new String[]
 		{ "时尚女鞋", "流行男鞋", "面部护肤", "养生茶饮" };
 		
@@ -41,6 +53,7 @@ public class MallAction extends BaseAction
 			goodsclass.setObj("subgoodsclasses", subgoodsclasses);
 			goodsclasses.add(goodsclass);
 		}
+		
 		ro.put("goodsclasses", goodsclasses);
 		return ro;
 	}
