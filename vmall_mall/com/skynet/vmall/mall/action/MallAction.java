@@ -59,7 +59,7 @@ public class MallAction extends BaseAction
 		}
 		
 		ro.put("jscfg", mapwx.get("jscfg"));
-		ro.put("shareurl", mapwx.get("jscfg"));
+		ro.put("shareurl", mapwx.get("shareurl"));
 		ro.put("openid", mapwx.get("openid"));
 		ro.put("recommender", mapwx.get("recommender"));
 		ro.put("goodsclasses", goodsclasses);
