@@ -38,6 +38,9 @@ public class Goods extends IdEntity
 	private String spec; // 规格（白色、公斤等）（合并后规格，冗余显示）
 	
 	@Column
+	private String speccode; // 规格 编码（合并后规格编码，用于检索查找）
+	
+	@Column
 	private String specclass; // 规格类型（颜色、尺寸、重量等）（合并后规格分类，冗余显示）
 	
 	@Column

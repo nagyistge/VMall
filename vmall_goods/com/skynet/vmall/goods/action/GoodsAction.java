@@ -1,5 +1,6 @@
 package com.skynet.vmall.goods.action;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -10,6 +11,8 @@ import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.lang.Strings;
 import org.nutz.mvc.Mvcs;
+import org.nutz.mvc.adaptor.JsonAdaptor;
+import org.nutz.mvc.annotation.AdaptBy;
 import org.nutz.mvc.annotation.At;
 import org.nutz.mvc.annotation.Ok;
 import org.nutz.mvc.annotation.Param;
@@ -160,5 +163,27 @@ public class GoodsAction extends BaseAction
 		ro.put("goods", goods);
 		return ro;
 	}
+	
+	// 商品浏览
+	@At("/getgoodsbyspec")
+	@AdaptBy(type = JsonAdaptor.class)
+	@Ok("json")
+	public Map getgoodsbyspec(@Param("..") Map map) throws Exception
+	{
+		String supgoodsid = (String)map.get("supgoodsid");
+		List<ArrayList<String>> specs = (List<ArrayList<String>>)map.get("specs");
+		
+		for(int i=0;i<specs.size();i++)
+		{
+			Object o = specs.get(i);
+			System.out.println(specs.get(i));
+			System.out.println(o);
+		}
+		
+		DynamicObject goods = goodsService.getgoodsbyspec(supgoodsid, specs);
+		
+		return goods;
+	}	
+
 
 }

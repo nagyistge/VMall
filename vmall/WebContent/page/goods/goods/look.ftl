@@ -97,9 +97,9 @@
 										<#list obj.currentgoodsspecs as currentspec>
 											<#if currentspec.specclass==spec.specclass>
 												<#if currentspec.spec==spec.spec>
-													<a title="${spec.spec}" date="currentColor" class="link-check active" href="javascript:void(0)">${spec.spec}</a>&nbsp;
+													<a title="${spec.spec}" date="currentColor" specclass="${spec.specclass}" spec="${spec.spec}" sel="Y" class="link-check active" href="javascript:void(0)">${spec.spec}</a>&nbsp;
 												<#else>
-													<a href="javascript:void(0)" title="${spec.spec}" date="noCurrent" wareid="${obj.goods.id}" class="link-check">${spec.spec}</a>&nbsp;
+													<a title="${spec.spec}" date="noCurrent" specclass="${spec.specclass}" spec="${spec.spec}" sel="N" class="link-check" href="javascript:void(0)" >${spec.spec}</a>&nbsp;
 												</#if>
 											</#if>
 										</#list>								
@@ -295,9 +295,74 @@
 
 
 <input type="hidden" id="goodsid" value="${obj.goods.id}">
-
+<input type="hidden" id="supgoodsid" value="${obj.goods.supid}">
 
 <script>
+$("#color a").click(page_selectspec);
+
+function page_selectspec()
+{
+	console.log($(this).attr("specclass"));
+	var specclass = $(this).attr("specclass");
+	
+	var spec_select = [];
+	
+	spec_select.push(new Array($(this).attr("specclass"), $(this).attr("spec")));
+	
+	$("#color a").each(function()
+	{
+		if($(this).attr("specclass")==specclass)
+		{
+			
+		}
+		else
+		{
+			if($(this).attr("sel")=="Y")
+			{
+				spec_select.push(new Array($(this).attr("specclass"), $(this).attr("spec")));
+			}
+		}
+	});
+	
+	console.log(spec_select);
+	
+	if(spec_select.length>0)
+	{
+		var supgoodsid = $("#supgoodsid").val();
+		$.ajax(
+		{
+			type:'POST',
+			url:'${base}/goods/goods/getgoodsbyspec.action',
+			contentType: "application/json",
+			data:JSON.stringify({"supgoodsid":supgoodsid, "specs":spec_select}),
+			cache:false,
+			async:false,
+			success:function(data)
+			{
+				console.log(data);
+				if(data=="")
+				{
+					return;
+				}
+				json = eval("(" + data + ")");
+				if(json.id!="")
+				{
+					console.log(json);
+					window.location = "${base}/goods/goods/look.action?id=" + json.id;
+				}
+				else
+				{
+					return;
+				}
+			},
+			error:function(data)
+			{
+				console.log(data);
+				console.log("服务请求异常！");
+			}
+		})
+	}
+}
 
 function minus() {
 	var a = parseInt($("#number").val(), 10);
@@ -355,7 +420,7 @@ function page_addtocart()
 	
 	$.ajax(
 	{
-		type:'post',
+		type:'POST',
 		url:'${base}/order/shopcart/addtocart.action',
 		data:{"goodsid":goodsid,"nums":nums},
 		cache:false,
@@ -415,6 +480,7 @@ function cartShow() {
 		$("#cart").hide();
 	}
 }
+
 
 </script>
 

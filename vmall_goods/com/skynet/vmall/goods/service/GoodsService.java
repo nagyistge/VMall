@@ -1,8 +1,10 @@
 package com.skynet.vmall.goods.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.nutz.dao.Cnd;
 import org.nutz.dao.Dao;
 import org.nutz.ioc.annotation.InjectName;
 import org.nutz.ioc.loader.annotation.IocBean;
@@ -13,6 +15,7 @@ import com.skynet.framework.services.db.dybeans.DynamicObject;
 import com.skynet.framework.services.function.StringToolKit;
 import com.skynet.framework.services.function.Types;
 import com.skynet.vmall.base.pojo.Goods;
+import com.skynet.vmall.base.pojo.GoodsSpec;
 
 @InjectName("goodsService")
 @IocBean(args = { "refer:dao" }) 
@@ -98,10 +101,14 @@ public class GoodsService extends SkynetNameEntityService<Goods>
 		StringBuffer sql = new StringBuffer();
 		sql.append(" select * from t_app_goods ").append("\n");
 		sql.append("  where 1 = 1 ").append("\n");
-		sql.append("    and classinternal like ").append(SQLParser.charLikeRightValue(internal));
-		sql.append("    and saleprice < " + saleprice + " * 1.1 ");
-		sql.append("    and saleprice > " + saleprice + " * 0.9 ");
-
+		sql.append("    and classinternal like ").append(SQLParser.charLikeRightValue(internal)).append("\n");
+		sql.append("    and ctype = '货品' ").append("\n");
+		
+		if(!StringToolKit.isBlank(saleprice))
+		{
+			sql.append("    and saleprice < " + saleprice + " * 1.1 ").append("\n");
+			sql.append("    and saleprice > " + saleprice + " * 0.9 ").append("\n");
+		}
 		// 增加查询过滤条件
 		List<DynamicObject> datas = sdao().queryForList(sql.toString(), startindex, endindex);
 
@@ -139,5 +146,33 @@ public class GoodsService extends SkynetNameEntityService<Goods>
 
 		return specs;
 	}
-
+	
+	// 查询指定规格的商品
+	public DynamicObject getgoodsbyspec(String supgoodsid, List<ArrayList<String>> specs) throws Exception
+	{
+		StringBuffer sql = new StringBuffer();
+		
+		List<DynamicObject> goodses = findByCond(Cnd.where("supid", "=", supgoodsid));
+		
+		String goodsid = new String();
+		for(int i=0;i<goodses.size();i++)
+		{
+			int nums = 0;
+			List<String> aspec = new ArrayList<String>();
+			for(int j=0;j<specs.size();j++)
+			{
+				sql = new StringBuffer();
+				aspec = specs.get(j);
+				
+				nums += sdao().count(GoodsSpec.class, Cnd.where("goodsid", "=", goodses.get(i).getFormatAttr("id")).and("specclass", "=", aspec.get(0)).and("spec", "=", aspec.get(1)));
+			}
+			if(nums==specs.size())
+			{
+				return goodses.get(i);
+			}
+		}
+		
+		return new DynamicObject();
+		
+	}
 }
