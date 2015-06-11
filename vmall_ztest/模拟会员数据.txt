@@ -1,6 +1,5 @@
 delete from t_app_member;
 
-
 insert into t_app_member(id, wxopenid, wxnickname, cname, supid, internal, ctype) values('vmall','vmall','微商城', '微商城', 'R0', '0001', '商城');
 insert into t_app_member(id, wxopenid, wxnickname, cname, supid, internal, ctype) values('wph','wph','唯品会', '唯品会', '0001', '00010001', '经销商');
 insert into t_app_member(id, wxopenid, wxnickname, cname, supid, internal, ctype) values('cyz','cyz','春雨竹', '春雨竹', '0001', '00010002', '经销商');

@@ -1,5 +1,7 @@
 package com.skynet.vmall.base.pojo;
 
+import java.sql.Timestamp;
+
 import org.nutz.dao.entity.annotation.Column;
 import org.nutz.dao.entity.annotation.Table;
 
@@ -8,9 +10,11 @@ import com.skynet.framework.pojo.IdEntity;
 @Table("T_APP_MALL")
 public class Mall extends IdEntity
 {
-
 	@Column
 	private String cname; // 名称
+	
+	@Column
+	private String cno; // 会员编号
 
 	@Column
 	private String addr; // 地址
@@ -50,6 +54,9 @@ public class Mall extends IdEntity
 	
 	@Column
 	private String wxnickname; // 微信昵称
+	
+	@Column
+	private Timestamp cratetime; // 创建时间	
 
 	public String getCname()
 	{
@@ -59,6 +66,16 @@ public class Mall extends IdEntity
 	public void setCname(String cname)
 	{
 		this.cname = cname;
+	}
+
+	public String getCno()
+	{
+		return cno;
+	}
+
+	public void setCno(String cno)
+	{
+		this.cno = cno;
 	}
 
 	public String getAddr()
@@ -189,6 +206,16 @@ public class Mall extends IdEntity
 	public void setWxnickname(String wxnickname)
 	{
 		this.wxnickname = wxnickname;
+	}
+
+	public Timestamp getCratetime()
+	{
+		return cratetime;
+	}
+
+	public void setCratetime(Timestamp cratetime)
+	{
+		this.cratetime = cratetime;
 	}
 
 }

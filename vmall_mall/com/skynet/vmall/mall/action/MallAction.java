@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.nutz.dao.Cnd;
@@ -20,11 +21,15 @@ import com.skynet.framework.services.db.dybeans.DynamicObject;
 import com.skynet.framework.spec.GlobalConstants;
 import com.skynet.vmall.goods.service.GoodsClassService;
 import com.skynet.vmall.goods.service.GoodsService;
+import com.skynet.vmall.wx.action.WXActionHelper;
 
 @IocBean
 @At("/mall/mall")
 public class MallAction extends BaseAction
 {
+	@Inject
+	WXActionHelper myWxHelper;
+	
 	@Inject
 	private GoodsClassService goodsclassService;
 
@@ -36,11 +41,10 @@ public class MallAction extends BaseAction
 	public Map index(@Param("..") Map map) throws Exception
 	{
 		// 系统微信配置信息
+		HttpServletRequest req = Mvcs.getReq();
 		HttpSession session = Mvcs.getHttpSession(true);
-		NutMap wxconfig = (NutMap)session.getAttribute(GlobalConstants.sys_wxconfig);
-		ro.put("shareurl", wxconfig.get("shareurl"));
-		ro.put("openid", wxconfig.get("openid"));
-		ro.put("jscfg", wxconfig.get("jscfg"));
+		String info = (String)session.getAttribute(GlobalConstants.sys_wxinfo);
+		NutMap mapwx = myWxHelper.wx_minfo(info, req);
 		
 		String[] classes = new String[]
 		{ "时尚女鞋", "流行男鞋", "面部护肤", "养生茶饮" };
@@ -54,6 +58,10 @@ public class MallAction extends BaseAction
 			goodsclasses.add(goodsclass);
 		}
 		
+		ro.put("jscfg", mapwx.get("jscfg"));
+		ro.put("shareurl", mapwx.get("jscfg"));
+		ro.put("openid", mapwx.get("openid"));
+		ro.put("recommender", mapwx.get("recommender"));
 		ro.put("goodsclasses", goodsclasses);
 		return ro;
 	}

@@ -15,6 +15,9 @@ import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
 
 import com.skynet.app.organ.pojo.User;
+import com.skynet.framework.common.generator.FormatKey;
+import com.skynet.framework.common.generator.RandomGenerator;
+import com.skynet.framework.common.generator.SNGenerator;
 import com.skynet.framework.common.generator.UUIDGenerator;
 import com.skynet.framework.service.GeneratorService;
 import com.skynet.framework.service.SkynetNameEntityService;
@@ -22,6 +25,7 @@ import com.skynet.framework.services.db.SQLParser;
 import com.skynet.framework.services.db.dybeans.DynamicObject;
 import com.skynet.framework.services.function.StringToolKit;
 import com.skynet.framework.services.function.Types;
+import com.skynet.framework.spec.GlobalConstants;
 import com.skynet.vmall.base.pojo.Follow;
 import com.skynet.vmall.base.pojo.Member;
 import com.skynet.vmall.base.pojo.TreeMember;
@@ -50,8 +54,58 @@ public class MemberService extends SkynetNameEntityService<Member>
 	{
 		super(dao, entityType);
 	}
+	
+	public DynamicObject newwxuser(String oldwxopenid, String newwxopenid) throws Exception
+	{
+		// 检查推荐人是否正常
+		Member oldmember = sdao().fetch(Member.class, Cnd.where("wxopenid", "=", oldwxopenid));
+		if(oldmember==null||StringToolKit.isBlank(oldmember.getId()))
+		{
+			return null;
+		}
+		
+		// 检查被推荐人是否新微信用户
+		Member newmember = sdao().fetch(Member.class, Cnd.where("wxopenid", "=", newwxopenid));
+		if(newmember==null||StringToolKit.isBlank(newmember.getId()))
+		{
+			User newuser = new User();
+			String newuserid = UUIDGenerator.getInstance().getNextValue();
+			newuser.setId(newuserid);
+			newuser.setWxopenid(newwxopenid);
+			newuser.setLoginname(newwxopenid);
+			newuser.setCreatetime(new Timestamp(System.currentTimeMillis()));
+			newuser.setPassword("1111"); // 上线前改为加密
+			sdao().insert(newuser);
+			
+			newmember = new Member();
+			newmember.setId(newuserid);
+			newmember.setSupid(oldmember.getId());
+			newmember.setInternal(oldmember.getInternal() + FormatKey.format(RandomGenerator.getValue(4), 4));
+			newmember.setLevel(oldmember.getLevel() + 1);
+			newmember.setWxopenid(newwxopenid);
+			newmember.setCno(SNGenerator.getValue(8));
+			newmember.setCratetime(newuser.getCreatetime());
+			newmember.setCtype("会员");
+			newmember.setScore(0);
+			sdao().insert(newmember);
+		}
+		
+		follow(newwxopenid, null, oldwxopenid, null); //记录关注信息
+		
+		DynamicObject user = sdao().locateBy("t_app_user", Cnd.where("id", "=", newmember.getId()));
+
+		DynamicObject obj = new DynamicObject();
+		obj.setAttr(GlobalConstants.sys_login_user, user.getFormatAttr("loginname"));
+		obj.setAttr(GlobalConstants.sys_login_username, user.getFormatAttr("cname"));
+		obj.setAttr(GlobalConstants.sys_login_userid, user.getFormatAttr("id"));
+		obj.setAttr(GlobalConstants.sys_login_userwxopenid, user.getFormatAttr("wxopenid"));
+		
+		return obj;
+	}
 
 	// 关注
+	// swxopenid 关注人微信标识（关注别人 新会员 粉丝）
+	// dwxopenid 被关注人微信标识（被别人关注 老会员 偶像）
 	public void follow(String swxopenid, String swxnickname, String dwxopenid, String dwxnickname) throws Exception
 	{
 		// 检查源微信用户是否还未成为会员，创建会员信息，会员不允许再关注。
@@ -62,62 +116,45 @@ public class MemberService extends SkynetNameEntityService<Member>
 		// 未关注过，则建立关注
 		if (sdao().count(Member.class, Cnd.where("wxopenid", "=", swxopenid)) > 0)
 		{
-			throw new Exception("当前用户已经是会员，不允许重复关注其它会员！");
+			// throw new Exception("当前用户已经是会员，不允许重复关注其它会员！");
+			return;
 		}
 
 		if (sdao().count(Member.class, Cnd.where("wxopenid", "=", dwxopenid)) == 0)
 		{
-			throw new Exception("要关注的用户不是会员，不允许关注！");
+			// throw new Exception("要关注的用户不是会员，不允许关注！");
+			return;
 		}
 
 		if (sdao().count(Follow.class, Cnd.where("swxopenid", "=", swxopenid)) > 0)
 		{
-			throw new Exception("你已关注过其它用户，不允许再关注！");
+			// throw new Exception("你已关注过其它用户，不允许再关注！");
+			return;
 		}
 
 		if (sdao().count(Follow.class, Cnd.where("swxopenid", "=", swxopenid).and("dwxopenid", "=", dwxopenid)) > 0)
 		{
-			throw new Exception("已关注过该用户，不允许重复关注！");
+			// throw new Exception("已关注过该用户，不允许重复关注！");
+			return;
 		}
 
 		if (sdao().count(Follow.class, Cnd.where("swxopenid", "=", dwxopenid).and("dwxopenid", "=", swxopenid)) > 0)
 		{
-			throw new Exception("该用户已关注过你，不允许再进行关注！");
+			// throw new Exception("该用户已关注过你，不允许再进行关注！");
+			return;
 		}
 
-		String id = UUIDGenerator.getInstance().getNextValue();
-		Date cdate = new Date();
-		User user = new User();
-		user.setId(id);
-
-		SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");
-		String sdate = sf.format(cdate);
-		String sno = String.valueOf((Math.random() * 100000) / 1);
-		user.setCname("用户_" + sdate + sno);
-		user.setWxopenid(swxopenid);
-		user.setWxnickname(swxnickname);
-		user.setCreatetime(new Timestamp(cdate.getTime()));
-		sdao().insert(user);
-
-		Member supmember = sdao().fetch(Member.class, Cnd.where("wxopenid", "=", dwxopenid));
-
-		Member member = new Member();
-		member.setId(id);
-		member.setCname(user.getCname());
-		member.setWxopenid(swxopenid);
-		member.setWxnickname(swxnickname);
-		member.setInternal(supmember.getInternal() + TreeMember.single_internal);
-		member.setLevel(supmember.getLevel() + 1);
-		member.setSupid(supmember.getId());
-
-		sdao().insert(member);
-
+		Member supmember = sdao().fetch(Member.class, Cnd.where("wxopenid", "=", dwxopenid)); // 老会员
+		Member submember = sdao().fetch(Member.class, Cnd.where("wxopenid", "=", swxopenid)); // 新会员
+		
 		Follow follow = new Follow();
 		String followid = UUIDGenerator.getInstance().getNextValue();
 		follow.setId(followid);
 		follow.setSwxopenid(swxopenid);
 		follow.setDwxopenid(dwxopenid);
-		follow.setFollowtime(new Timestamp(cdate.getTime()));
+		follow.setSmembercno(submember.getCno());
+		follow.setDmembercno(supmember.getCno());
+		follow.setFollowtime(new Timestamp(System.currentTimeMillis()));
 
 		sdao().insert(follow);
 	}

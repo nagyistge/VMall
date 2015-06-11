@@ -50,7 +50,7 @@
 					</div>
 					<div class="step2 border-1px">
 
-						<a href="/norder/payShipment.action?sid=4d8f86754c44f93307cf2cca06789add" class="s-href">
+						<a href="" class="s-href">
 							<div class="m s-item bdb-1px">
 								<div class="mt_new">
 									支付方式：在线支付
@@ -62,16 +62,16 @@
 							</div>
 						</a>
 
-
-						<a href="/norder/invoice.action?sid=4d8f86754c44f93307cf2cca06789add" class="s-href">
+						<#--	
+						<a href="" class="s-href">
 							<div class="m s-item">
 								<div class="mt_new">纸质发票:个人</div>
 								<div class="mc">非图书商品－不开发票</div>
 								<span class="s-point"></span>
 							</div>
 						</a>
+						-->
 					</div>
-
 
 					<div class="step3 border-1px step3-more">
 						<a href="" class="s-href">

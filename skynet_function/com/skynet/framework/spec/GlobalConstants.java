@@ -36,7 +36,7 @@ public class GlobalConstants
 	public static String sys_login_wxnickname = "sys_login_wxnickname";
 	
 	// 系统微信配置信息
-	public static String sys_wxconfig = "sys_wxconfig";	
+	public static String sys_wxinfo = "sys_wxinfo";	
 	
 	// 通用查询参数声明
 	public static String spec_queryid = "spec_queryid";

@@ -104,8 +104,8 @@ public class ShopCartService extends SkynetNameEntityService<ShopCart>
 		ShopCartGoods cartgoods = new ShopCartGoods();
 		cartgoods.setId(UUIDGenerator.getInstance().getNextValue());
 		cartgoods.setShopcartid(cart.getId());
-		cartgoods.setMemberid("");
-		cartgoods.setWxopenid("");		
+		cartgoods.setMemberid(""); // 商品经销商会员标识
+		cartgoods.setWxopenid(""); // 商品经销商会员微信标识
 		cartgoods.setGoodsid(goodsid);
 		cartgoods.setGoodsname(goods.getCname());
 		cartgoods.setNums(nums);

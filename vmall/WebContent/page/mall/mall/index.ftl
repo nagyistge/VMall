@@ -65,7 +65,7 @@
    wx.config({
 	      debug: true,
 	      appId: '${obj.jscfg.appId!}',
-	      timestamp: ${obj.jscfg.timestamp!},
+	      timestamp: '${obj.jscfg.timestamp!}',
 	      nonceStr: '${obj.jscfg.nonceStr!}',
 	      signature: '${obj.jscfg.signature!}',
 	      jsApiList: [

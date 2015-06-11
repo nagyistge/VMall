@@ -11,10 +11,16 @@ import com.skynet.framework.pojo.IdEntity;
 public class Follow extends IdEntity
 {
 	@Column
-	private String swxopenid; // 关注方微信标识
+	private String swxopenid; // 关注方微信标识（新会员）
+
+	@Column
+	private String smembercno; // 关注方会员编号	
 	
 	@Column
-	private String dwxopenid; // 被关注方微信标识
+	private String dwxopenid; // 被关注方微信标识（老会员）
+	
+	@Column
+	private String dmembercno; // 被关注方会员编号
 
 	@Column
 	private Timestamp followtime; // 关注时间
@@ -29,6 +35,16 @@ public class Follow extends IdEntity
 		this.swxopenid = swxopenid;
 	}
 
+	public String getSmembercno()
+	{
+		return smembercno;
+	}
+
+	public void setSmembercno(String smembercno)
+	{
+		this.smembercno = smembercno;
+	}
+
 	public String getDwxopenid()
 	{
 		return dwxopenid;
@@ -37,6 +53,16 @@ public class Follow extends IdEntity
 	public void setDwxopenid(String dwxopenid)
 	{
 		this.dwxopenid = dwxopenid;
+	}
+
+	public String getDmembercno()
+	{
+		return dmembercno;
+	}
+
+	public void setDmembercno(String dmembercno)
+	{
+		this.dmembercno = dmembercno;
 	}
 
 	public Timestamp getFollowtime()
@@ -48,5 +74,5 @@ public class Follow extends IdEntity
 	{
 		this.followtime = followtime;
 	}
-
+	
 }

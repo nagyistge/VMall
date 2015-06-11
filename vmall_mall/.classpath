@@ -14,5 +14,6 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/vmall_member"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/vmall_order"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/vmall"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/vmall_wx"/>
 	<classpathentry kind="output" path=""/>
 </classpath>
