@@ -1,30 +1,14 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
-	<meta content="telephone=no" name="format-detection">
-	<meta name="baidu-site-verification" content="t7oDT96Amk" />
-	<title>微猫商城</title>
-	<meta content="微猫商城购物，正品商城，品牌特卖会" name="keywords">
-	<meta content="微猫商城购物，正品商城，品牌特卖会" name="description">
-	<meta name="sogou_site_verification" content="G7nmLR75yc" />
-	<meta name="baidu-tc-cerfication"
-	content="0a8c6d28b570b218f78510c29be4529b" />
-	<meta name="360-site-verification"
-	content="8b6121969d78afda8caeb69053fa29d9" />
-	<script src="${base}/lib/jquery-2.1.1.min.js"></script>
-	<script src="${base}/lib/jquery-ui.min.js"></script>
-
+	<#include "/decorator/include/header.ftl">
 	<link rel="stylesheet" type="text/css" href="${base}/lib/jd/order/css/base.css" charset="gbk">
 	<link rel="stylesheet" type="text/css" href="${base}/lib/jd/order/css/extend.css" charset="gbk">
-	<link rel="stylesheet" type="text/css" href="${base}/lib/jd/order/css/hotel.css" charset="gbk">
-	<link rel="stylesheet" type="text/css" href="${base}/lib/jd/order/css/airline.css" charset="gbk">
-	
-	<body id="body">
-		<link rel="stylesheet" href="${base}/lib/jd/order/misc/css/base.css?v=20150604">
-		<link rel="stylesheet" href="${base}/lib/jd/order/misc/css/pay.css?v=20150604">
+	<link rel="stylesheet" href="${base}/lib/jd/order/misc/css/base.css?v=20150604">
+	<link rel="stylesheet" href="${base}/lib/jd/order/misc/css/pay.css?v=20150604">	
+</head>
 
+	<body id="body">
 		<form id="form_order" method="post" action="${base}/order/order/forward.action">
 			<input type="hidden" id="id" name="id" value="${obj.order.id}">
 			<input type="hidden" id="state" name="state" value="${obj.order.state}">
@@ -36,7 +20,7 @@
 							<a href="" class="s-href">
 								<div class="mt_new">                      
 									<div class="s1-name"><i></i>订购人：${obj.order.membercname}</div>
-									<div class="s1-phone"><i></i>联系电话：130****4107</div>
+									<div class="s1-phone"><i></i>联系电话：${obj.order.phone}</div>
 
 								</div>
 								<div class="mc step1-in-con">地址：${obj.order.takeaddress}</div>

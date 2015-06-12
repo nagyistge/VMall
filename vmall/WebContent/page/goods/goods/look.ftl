@@ -59,13 +59,15 @@
 							<div class="last-msg-txt" id="tips"></div>
 						</div>
 						<input type="hidden" value="http://m.360buyimg.com/n12/jfs/t1165/188/863038753/409368/70d475f5/554c80c4N3816fac9.png!q70.jpg,http://m.360buyimg.com/n12/jfs/t799/356/699872934/136169/3dc44d03/553efb72N64085327.jpg!q70.jpg,http://m.360buyimg.com/n12/jfs/t943/171/698073257/102904/1f851028/553efb73Neac712fd.jpg!q70.jpg,http://m.360buyimg.com/n12/jfs/t1042/244/718407082/114200/f188bf1d/553efb73Nd89903fa.jpg!q70.jpg,http://m.360buyimg.com/n12/jfs/t1078/238/721547497/141969/e1a159f/553efb74Nc2a36396.jpg!q70.jpg," id="imgs">
-						<div class="detail-price"> <span id="price" class="p-price">¥${obj.goods.saleprice?number?string("0.00")}  </span> <span id="imgpage" class="pagenum">1/5</span> <a id="attention" class="btn-sc"></a> </div>
+						<div class="detail-price"> <span id="price" class="p-price">¥${obj.goods.saleprice}</span> <span id="imgpage" class="pagenum">1/5</span> <a id="attention" class="btn-sc"></a> </div>
 					</div>
 				</div>
 				<div id="spinner1" class="spinner" style="left:50%;position: absolute;height:120px;margin-top:50px;z-index:1000"></div>
 				<div class="goodsinfo">
-					<h1 id="title" class="detail-title"> <a href="/detail/1539889025.html?sid=b92ff74dfab64b42d614b6243db2b908" class="dis-blk" id="wareName">${obj.goods.cname}|${obj.goods.code}| 黑色 M  </a></h1>
-					<p id="promotionInfo" class="subtitle">初夏特惠！手机下单更优惠！！</p> 							</div>
+					<h1 id="title" class="detail-title"> 
+					<a href="/detail/1539889025.html?sid=b92ff74dfab64b42d614b6243db2b908" class="dis-blk" id="wareName">${obj.goods.cname}<#if obj.goods.spec!="">|${obj.goods.spec}</#if>|<#if obj.goods.code!="">${obj.goods.code} </#if></a></h1>
+					<p id="promotionInfo" class="subtitle">初夏特惠！手机下单更优惠！！</p>
+					</div>
 				</div>
 				<span class="pop-attention" style="position:absolute;z-index:9999;display:none" id="save">
 					<span class="icon-succ" id="guanzhu">关注成功</span>
@@ -118,8 +120,18 @@
 						<dt class="row01">
 							<span class="col01">送至：</span>
 							<span class="col02" id="btn-select-region" region-data="1,72,4137,">
-								<div class="address address01"><span id="provinceName">${obj.member.province}</span><span id="cityName">${obj.member.city}</span><span id="countyName">${obj.member.county}</span> <span id="townName">${obj.member.town}</span><i class="icon icon-location"></i></div>
-								<p class="row01col03" id="stockStatus">现货</p>
+								<div class="address address01">
+								
+									<p>
+									<span id="provinceName">${obj.member.province}</span>
+									<span id="cityName">${obj.member.city}</span>
+									<span id="countyName">${obj.member.county}</span> 
+									<span id="townName">${obj.member.town}</span>
+									</p>
+									
+									<p><span id="address">${obj.member.addr}</span></p>
+									<i class="icon icon-location"></i>
+								</div>
 							</span>
 							<em class="icon-up"></em>
 						</dt>

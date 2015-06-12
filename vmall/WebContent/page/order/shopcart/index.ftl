@@ -38,7 +38,8 @@
                     <div class="shp-cart-item-core ">
                         <div class="cart-product-cell-3">
                             <span class="shp-cart-item-price" id="saleprice${cartgoods.id}">￥${cartgoods.saleprice}/</span>
-                            <span class="shp-cart-item-price" style="font-size:18px;color:#ff6666" id="promoteprice${cartgoods.id}">${cartgoods.promoteprice}</span>
+                            <span class="shp-cart-item-price" style="font-size:14px;color:#ff6666" id="promoteprice${cartgoods.id}">${cartgoods.promoteprice}</span>
+                            <span class="shp-cart-item-price" style="font-size:18px;color:#ff6666">/${cartgoods.amountpromote}</span>
                             
                         </div>
                         <a class="cart-product-cell-1" href="${base}/goods/goods/look.action?id=${cartgoods.goodsid}">

@@ -70,7 +70,7 @@ public class WXActionHelper
 		NutMap rowx = NutMap.NEW();
 
 		String redirecturl = ApiConfigKit.apiConfig.getServercontext() + "/oauth.action?info=";
-		String realurl = "/wxlogin.action?recommender=" + minfo.get("openid"); // minfo.get("openid")就是刚点进来链接的人;
+		String realurl = "/author/login/wxlogin.action?recommender=" + minfo.get("openid"); // minfo.get("openid")就是刚点进来链接的人;
 		realurl = BlueDes.encrypt(realurl);
 
 		redirecturl += realurl;

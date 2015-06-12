@@ -54,6 +54,8 @@
 	</#list>
 </div>
 
+<input type="text" value="${obj.shareurl!}">
+
 <script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
 <script>
 	//var targetUrl=location.href.split("#")[0];
@@ -65,7 +67,7 @@
    wx.config({
 	      debug: true,
 	      appId: '${obj.jscfg.appId!}',
-	      timestamp: '${obj.jscfg.timestamp!}',
+	      timestamp: ${obj.jscfg.timestamp!},
 	      nonceStr: '${obj.jscfg.nonceStr!}',
 	      signature: '${obj.jscfg.signature!}',
 	      jsApiList: [
