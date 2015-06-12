@@ -69,13 +69,16 @@ public class WXActionHelper
 	{
 		NutMap rowx = NutMap.NEW();
 
-		String redirecturl = ApiConfigKit.apiConfig.getServercontext() + "/oauth?info=";
+		String redirecturl = ApiConfigKit.apiConfig.getServercontext() + "/oauth.action?info=";
 		String realurl = "/wxlogin.action?recommender=" + minfo.get("openid"); // minfo.get("openid")就是刚点进来链接的人;
 		realurl = BlueDes.encrypt(realurl);
 
 		redirecturl += realurl;
 
 		String url = String.format(OAuthAccessTokenApi.oauthurl, ApiConfigKit.apiConfig.getAppId(), redirecturl);
+		
+		System.out.println("url:" + url);
+		System.out.println("redirecturl:" + redirecturl);
 		
 		return url;
 	}

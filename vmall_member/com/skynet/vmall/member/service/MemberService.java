@@ -57,6 +57,16 @@ public class MemberService extends SkynetNameEntityService<Member>
 	
 	public DynamicObject newwxuser(String oldwxopenid, String newwxopenid) throws Exception
 	{
+		// 如果没有推荐人，该用户直接加入至商城下账号
+		if(StringToolKit.isBlank(oldwxopenid))
+		{
+			Member vmall = sdao().fetch(Member.class, Cnd.where("supid", "=", "R0"));
+			if(vmall!=null)
+			{
+				oldwxopenid = vmall.getWxopenid();
+			}
+		}
+		
 		// 检查推荐人是否正常
 		Member oldmember = sdao().fetch(Member.class, Cnd.where("wxopenid", "=", oldwxopenid));
 		if(oldmember==null||StringToolKit.isBlank(oldmember.getId()))
@@ -92,7 +102,7 @@ public class MemberService extends SkynetNameEntityService<Member>
 		
 		follow(newwxopenid, null, oldwxopenid, null); //记录关注信息
 		
-		DynamicObject user = sdao().locateBy("t_app_user", Cnd.where("id", "=", newmember.getId()));
+		DynamicObject user = sdao().locateBy("t_sys_user", Cnd.where("id", "=", newmember.getId()));
 
 		DynamicObject obj = new DynamicObject();
 		obj.setAttr(GlobalConstants.sys_login_user, user.getFormatAttr("loginname"));
@@ -114,11 +124,11 @@ public class MemberService extends SkynetNameEntityService<Member>
 		// 检查是否已经关注过目标微信用户
 		// 检查是否反向关注过源微信用户(不可反向关注)
 		// 未关注过，则建立关注
-		if (sdao().count(Member.class, Cnd.where("wxopenid", "=", swxopenid)) > 0)
-		{
-			// throw new Exception("当前用户已经是会员，不允许重复关注其它会员！");
-			return;
-		}
+//		if (sdao().count(Member.class, Cnd.where("wxopenid", "=", swxopenid)) > 0)
+//		{
+//			// throw new Exception("当前用户已经是会员，不允许重复关注其它会员！");
+//			return;
+//		}
 
 		if (sdao().count(Member.class, Cnd.where("wxopenid", "=", dwxopenid)) == 0)
 		{

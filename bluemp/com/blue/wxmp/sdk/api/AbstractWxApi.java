@@ -1,11 +1,5 @@
 package com.blue.wxmp.sdk.api;
 
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.SortedMap;
-import java.util.TreeMap;
-
 import javax.servlet.http.HttpServletRequest;
 
 import org.nutz.http.Request;
@@ -28,7 +22,7 @@ public abstract class AbstractWxApi implements WxApi {
 	@Override
 	public String getCompleteUri(HttpServletRequest req) {
 		// TODO Auto-generated method stub
-		String uri = Mvcs.getRequestPath(req) + (req.getQueryString() != null ? "?" + req.getQueryString() : "");
+		String uri = Mvcs.getRequestPath(req) + ".action" + (req.getQueryString() != null ? "?" + req.getQueryString() : "");
 		return ApiConfigKit.apiConfig.getServercontext() + uri;
 	}
 
