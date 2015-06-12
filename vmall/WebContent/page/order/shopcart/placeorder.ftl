@@ -121,13 +121,6 @@
 						</div>
 					</div>
 				</div>
-	
-	
-	
-	
-	
-	
-	
 			</div>
 	
 			<div class="pay-bar" id="pay-bar">

@@ -109,7 +109,15 @@ public class ShopCartService extends SkynetNameEntityService<ShopCart>
 		cartgoods.setGoodsid(goodsid);
 		cartgoods.setGoodsname(goods.getCname());
 		cartgoods.setNums(nums);
-
+		cartgoods.setSaleprice(goods.getSaleprice()); // 销售价（原价）
+		cartgoods.setPromoteprice(goods.getPromoteprice()); // 促销价（促销价）
+		
+		BigDecimal amountsale = goods.getSaleprice().multiply(new BigDecimal(cartgoods.getNums()));
+		BigDecimal amountpromote = goods.getPromoteprice().multiply(new BigDecimal(cartgoods.getNums()));
+		
+		cartgoods.setAmountsale(amountsale);
+		cartgoods.setAmountpromote(amountpromote);
+		
 		sdao().insert(cartgoods);
 		
 		StringBuffer sql = new StringBuffer();

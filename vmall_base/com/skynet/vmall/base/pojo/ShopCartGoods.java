@@ -32,7 +32,13 @@ public class ShopCartGoods extends IdEntity
 	private BigDecimal saleprice; // 销售单价
 	
 	@Column
-	private BigDecimal promoteprice; // 促销单价	
+	private BigDecimal promoteprice; // 促销单价
+	
+	@Column
+	private BigDecimal amountsale; // 销售单价计算金额
+	
+	@Column
+	private BigDecimal amountpromote; // 销售单价计算金额
 
 	@Column
 	private BigDecimal rebate1; // 1级返利
@@ -127,6 +133,26 @@ public class ShopCartGoods extends IdEntity
 	public void setPromoteprice(BigDecimal promoteprice)
 	{
 		this.promoteprice = promoteprice;
+	}
+
+	public BigDecimal getAmountsale()
+	{
+		return amountsale;
+	}
+
+	public void setAmountsale(BigDecimal amountsale)
+	{
+		this.amountsale = amountsale;
+	}
+
+	public BigDecimal getAmountpromote()
+	{
+		return amountpromote;
+	}
+
+	public void setAmountpromote(BigDecimal amountpromote)
+	{
+		this.amountpromote = amountpromote;
 	}
 
 	public BigDecimal getRebate1()

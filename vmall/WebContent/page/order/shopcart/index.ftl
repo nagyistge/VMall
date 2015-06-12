@@ -19,12 +19,15 @@
         <form id="formcart" method="post" action="${base}/order/shopcart/placeorder.action">
         <ul class="shp-cart-list">
         
-        	<#assign allamount = 0>
+        	<#assign allamountsale = 0>
+        	<#assign allamountpromote = 0>
         	<#assign allgoodsnums = 0>
+
             <#list obj.shopcartgoods as cartgoods>
             
-            <#assign allamount = allamount + (((cartgoods.saleprice+0)?number)/10)>
-            <#assign allgoodsnums = allgoodsnums + (((cartgoods.nums+0)?number)/10)>
+            <#assign allamountsale = allamountsale + cartgoods.amountsale!?number>
+            <#assign allamountpromote = allamountpromote + cartgoods.amountpromote!?number>
+            <#assign allgoodsnums = allgoodsnums + cartgoods.nums!?number>
             <input type="hidden" name="id" value="${cartgoods.id}">
             <li id="product${cartgoods.id}">
                 <a id="shopping${cartgoods.id}" href="" class="shp-cart-conditions-link" style="display: none"></a>
@@ -34,7 +37,9 @@
                     </div>
                     <div class="shp-cart-item-core ">
                         <div class="cart-product-cell-3">
-                            <span class="shp-cart-item-price" id="price${cartgoods.id}">￥${cartgoods.saleprice}</span>
+                            <span class="shp-cart-item-price" id="saleprice${cartgoods.id}">￥${cartgoods.saleprice}/</span>
+                            <span class="shp-cart-item-price" style="font-size:18px;color:#ff6666" id="promoteprice${cartgoods.id}">${cartgoods.promoteprice}</span>
+                            
                         </div>
                         <a class="cart-product-cell-1" href="${base}/goods/goods/look.action?id=${cartgoods.goodsid}">
                             <img class="cart-photo-thumb" alt="" src="http://img10.360buyimg.com/n7/jfs/t580/67/493022257/56071/c6721088/546d968aN87849b99.jpg!q70.jpg" onerror="http://misc.360buyimg.com/lib/skin/e/i/error-jd.gif">
@@ -67,8 +72,10 @@
                 <span onclick="checkAllHandler();" class="cart-checkbox checked" id="checkIcon-1"></span>
             </div>
             <div class="shp-cart-info">
-                <strong class="shp-cart-total">总计:￥<span class="" id="cart_realPrice">${allamount}</span></strong>
-                <span class="sale-off">订单数:<span class="bottom-bar-price" id="cart_oriPrice"><b>${obj.shopcartgoods?size}</b></span><span class="sale-off">商品数:<span class="bottom-bar-price" id="cart_oriPrice"><b>${allgoodsnums}</b></span><span class="sale-off">商品总额:<b>￥<span class="bottom-bar-price" id="cart_oriPrice">${allamount}</span></b> 返现:<b>￥<span class="bottom-bar-price" id="cart_rePrice">0.00</span></b></span>
+                <strong class="shp-cart-total">总计：￥<span class="" id="cart_realPrice">${allamountpromote}</span></strong>
+                <span class="sale-off">原价总计：<b>￥<span class="bottom-bar-price" id="cart_oriPrice">${allamountsale}</b></span>
+                <span class="sale-off">明细单数：<span class="bottom-bar-price" id="cart_oriPrice"><b>${obj.shopcartgoods?size}</b></span>
+                <span class="sale-off">购买产品数量：<span class="bottom-bar-price" id="cart_oriPrice"><b>${allgoodsnums}</b></span>
             </div>
             <a class="btn-right-block" id="submit" style="background-color: rgb(192, 0, 0); background-position: initial initial; background-repeat: initial initial;">结算(<span id="checkedNum">${allgoodsnums}</span>)</a>
         </div>
