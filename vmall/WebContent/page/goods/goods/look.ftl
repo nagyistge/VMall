@@ -185,7 +185,11 @@
 					</div>
 				</div>
 				<div id="cart1" class="cart-btns-fixed" style="display: table;">
-					<div class="cart-btns-fixed-box"> <a class="btn btn-buy" id="directorder">立即购买</a> <a class="btn btn-cart" id="add_cart">加入购物车</a> <a href="javascript:void(0)" id="toCart" class="btn cart-num"></a> </div>
+					<div class="cart-btns-fixed-box"> 
+						<a class="btn btn-buy" id="directorder">立即购买</a> 
+						<a class="btn btn-cart" id="add_cart">加入购物车</a> 
+						<a href="javascript:void(0)" id="toCart" class="btn cart-num"></a> 
+					</div>
 				</div>
 				
 				<div id="yuyuecart" style="width:100%;position:fixed;bottom:0;display:none">
@@ -269,25 +273,6 @@
 				</div>
 			</div>
 
-			<div class="login-area" id="footer" style="margin:0 auto 15px;">
-				<div class="login">
-					<a rel="nofollow" href="https://passport.m.jd.com/user/login.action?sid=b92ff74dfab64b42d614b6243db2b908">登录</a><span class="lg-bar">|</span><a rel="nofollow" href="https://passport.m.jd.com/user/mobileRegister.action?v=t&amp;sid=b92ff74dfab64b42d614b6243db2b908">注册</a>
-					<span class="new-fr"><a rel="nofollow" href="/showvote.html?sid=b92ff74dfab64b42d614b6243db2b908">反馈</a><span class="lg-bar">|</span><a href="#top">回到顶部</a></span>
-				</div>
-
-				<div class="version">
-					<span id="clientArea" style="">
-						<a id="toClient" class="openJD" app_href="openApp.jdMobile://virtual?params={&quot;category&quot;:&quot;jump&quot;,&quot;des&quot;:&quot;productDetail&quot;,&quot;skuId&quot;:&quot;1539889025&quot;,&quot;sourceType&quot;:&quot;JSHOP_SOURCE_TYPE&quot;,&quot;sourceValue&quot;:&quot;JSHOP_SOURCE_VALUE&quot;}" href="http://h5.m.jd.com/active/download/download.html?channel=jd-m">客户端</a>
-						<a id="wxToClient" style="display:none;" href="openApp.jdMobile://virtual?params={&quot;category&quot;:&quot;jump&quot;,&quot;des&quot;:&quot;productDetail&quot;,&quot;skuId&quot;:&quot;1539889025&quot;,&quot;sourceType&quot;:&quot;MWEIXIN_SOURCE_TYPE&quot;,&quot;sourceValue&quot;:&quot;MWEIXIN_SOURCE_VALUE&quot;}"></a>
-					</span>
-					<a href="javascript:void(0)" class="on">触屏版</a>
-					<a onclick="skip();" href="javascript:void(0);" id="toPcHome">电脑版</a>        	</div>
-					<div class="copyright">Copyright © 2012-2015 版权所有 </div>
-					<button id="bt_test" onclick="page_addtocart()">测试</button>
-					<button id="bt_test" onclick="page_addtocart()">测试1</button>
-				</div>
-
-			</div>
 		</div>		
 	</div>		
 </div>
@@ -410,6 +395,8 @@ function modify() {
 }
 
 $("#add_cart").click(page_addtocart);
+$("#toCart").click(page_tocart);
+
 // 添加至购物车
 var eTime;
 function page_addtocart() 
@@ -479,6 +466,11 @@ function cartShow() {
 	} else {
 		$("#cart").hide();
 	}
+}
+
+function page_tocart() 
+{
+	window.location = "${base}/order/shopcart/index.action";
 }
 
 

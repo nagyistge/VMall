@@ -56,7 +56,7 @@ public class Mall extends IdEntity
 	private String wxnickname; // 微信昵称
 	
 	@Column
-	private Timestamp cratetime; // 创建时间	
+	private Timestamp createtime; // 创建时间	
 
 	public String getCname()
 	{
@@ -208,14 +208,14 @@ public class Mall extends IdEntity
 		this.wxnickname = wxnickname;
 	}
 
-	public Timestamp getCratetime()
+	public Timestamp getCreatetime()
 	{
-		return cratetime;
+		return createtime;
 	}
 
-	public void setCratetime(Timestamp cratetime)
+	public void setCreatetime(Timestamp createtime)
 	{
-		this.cratetime = cratetime;
+		this.createtime = createtime;
 	}
 
 }

@@ -78,11 +78,12 @@ public class MemberService extends SkynetNameEntityService<Member>
 		Member newmember = sdao().fetch(Member.class, Cnd.where("wxopenid", "=", newwxopenid));
 		if(newmember==null||StringToolKit.isBlank(newmember.getId()))
 		{
+			String cno = SNGenerator.getValue(8);
 			User newuser = new User();
 			String newuserid = UUIDGenerator.getInstance().getNextValue();
 			newuser.setId(newuserid);
 			newuser.setWxopenid(newwxopenid);
-			newuser.setLoginname(newwxopenid);
+			newuser.setLoginname(cno);
 			newuser.setCreatetime(new Timestamp(System.currentTimeMillis()));
 			newuser.setPassword("1111"); // 上线前改为加密
 			sdao().insert(newuser);
@@ -93,8 +94,8 @@ public class MemberService extends SkynetNameEntityService<Member>
 			newmember.setInternal(oldmember.getInternal() + FormatKey.format(RandomGenerator.getValue(4), 4));
 			newmember.setLevel(oldmember.getLevel() + 1);
 			newmember.setWxopenid(newwxopenid);
-			newmember.setCno(SNGenerator.getValue(8));
-			newmember.setCratetime(newuser.getCreatetime());
+			newmember.setCno(cno);
+			newmember.setCreatetime(newuser.getCreatetime());
 			newmember.setCtype("会员");
 			newmember.setScore(0);
 			sdao().insert(newmember);
