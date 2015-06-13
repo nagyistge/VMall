@@ -33,7 +33,13 @@ public class Order extends IdEntity
 	private Timestamp ordertime; // 订单时间
 
 	@Column
-	private BigDecimal amount; // 订单总额
+	private BigDecimal amountsale; // 订单销售单价总额
+	
+	@Column
+	private BigDecimal amountpromote; // 订单促销单价总额
+	
+	@Column
+	private BigDecimal amount; // 订单实际支付总额（一般为促销单价总额）	
 	
 	// 支付信息
 	@Column
@@ -141,6 +147,26 @@ public class Order extends IdEntity
 	public void setOrdertime(Timestamp ordertime)
 	{
 		this.ordertime = ordertime;
+	}
+
+	public BigDecimal getAmountsale()
+	{
+		return amountsale;
+	}
+
+	public void setAmountsale(BigDecimal amountsale)
+	{
+		this.amountsale = amountsale;
+	}
+
+	public BigDecimal getAmountpromote()
+	{
+		return amountpromote;
+	}
+
+	public void setAmountpromote(BigDecimal amountpromote)
+	{
+		this.amountpromote = amountpromote;
 	}
 
 	public BigDecimal getAmount()

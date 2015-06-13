@@ -11,6 +11,7 @@ import java.util.Map;
 import org.nutz.dao.Chain;
 import org.nutz.dao.Cnd;
 import org.nutz.dao.Dao;
+import org.nutz.dao.Sqls;
 import org.nutz.ioc.annotation.InjectName;
 import org.nutz.ioc.loader.annotation.IocBean;
 
@@ -169,16 +170,31 @@ public class ShopCartService extends SkynetNameEntityService<ShopCart>
 		String userwxopenid = login_token.getFormatAttr(GlobalConstants.sys_login_userwxopenid);
 		String username = login_token.getFormatAttr(GlobalConstants.sys_login_username);
 		
+		Member member = sdao().fetch(Member.class, userid);
+		
 		Order order = new Order();
 		String orderid = UUIDGenerator.getInstance().getNextValue();
+		// 购买人信息
 		order.setId(orderid);
 		order.setMemberid(userid);
 		order.setWxopenid(userwxopenid);
 		order.setMembercname(username);
+		order.setMembercno(member.getCno());
+		order.setPhone(member.getPhone());
+		// 收货人信息
+		order.setTakercname(member.getCname());
+		order.setTakermobile(member.getPhone());		
+		order.setTakeprovince(member.getProvince());
+		order.setTakecity(member.getCity());
+		order.setTakecounty(member.getCounty());
+		order.setTaketown(member.getTown());
+		order.setTakepostcode(member.getPostcode());
+		order.setTakeaddress(member.getAddr());
+		// 订单基本信息
 		order.setCno(SNGenerator.getValue(8));
 		order.setOrdertime(new Timestamp(System.currentTimeMillis()));
 		order.setState("下单");
-		sdao().insert(order);		
+		sdao().insert(order);
 		
 		for(int i=0;i<shopcartgoodses.size();i++)
 		{
@@ -202,6 +218,8 @@ public class ShopCartService extends SkynetNameEntityService<ShopCart>
 			ordergoods.setGoodsname(cartgoods.getGoodsname());
 			ordergoods.setNums(cartgoods.getNums());
 			ordergoods.setSaleprice(goods.getSaleprice());
+			ordergoods.setPromoteprice(goods.getPromoteprice());
+			ordergoods.setRealprice(goods.getPromoteprice());
 			ordergoods.setState("下单");
 			
 			for(int j=0;j<supmembers.size();j++)
@@ -251,8 +269,42 @@ public class ShopCartService extends SkynetNameEntityService<ShopCart>
 				sdao().insert(orderrebate);
 			}
 			
+			// 订单合计信息
+			StringBuffer sql = new StringBuffer();
+			sql.append(" update t_app_order ").append("\n");
+			sql.append("    set amountsale = ");
+			sql.append(" ( select sum(saleprice * nums) ");
+			sql.append("   from t_app_ordergoods ").append("\n");
+			sql.append("  where 1 = 1 ").append("\n");
+			sql.append("    and t_app_order.id = t_app_ordergoods.orderid ").append("\n");
+			sql.append("    and t_app_order.id = ").append(SQLParser.charValue(orderid)).append("\n");
+			sql.append(" ) ").append("\n");
+			sdao().execute(Sqls.create(sql.toString()));
+			
+			sql = new StringBuffer();
+			sql.append(" update t_app_order ").append("\n");
+			sql.append("    set amountpromote = ");
+			sql.append(" ( select sum(promoteprice * nums) ");
+			sql.append("   from t_app_ordergoods ").append("\n");
+			sql.append("  where 1 = 1 ").append("\n");
+			sql.append("    and t_app_order.id = t_app_ordergoods.orderid ").append("\n");
+			sql.append("    and t_app_order.id = ").append(SQLParser.charValue(orderid)).append("\n");
+			sql.append(" ) ").append("\n");
+			sdao().execute(Sqls.create(sql.toString()));
+			
+			sql = new StringBuffer();
+			sql.append(" update t_app_order ").append("\n");
+			sql.append("    set amount = ");
+			sql.append(" ( select sum(realprice * nums) ");
+			sql.append("   from t_app_ordergoods ").append("\n");
+			sql.append("  where 1 = 1 ").append("\n");
+			sql.append("    and t_app_order.id = t_app_ordergoods.orderid ").append("\n");
+			sql.append("    and t_app_order.id = ").append(SQLParser.charValue(orderid)).append("\n");
+			sql.append(" ) ").append("\n");
+			sdao().execute(Sqls.create(sql.toString()));
+			
 			// 清除购物车商品
-			sdao().delete(cartgoods);
+//			sdao().delete(cartgoods);
 		}
 		
 		return orderid;

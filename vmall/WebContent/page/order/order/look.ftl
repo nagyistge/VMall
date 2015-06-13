@@ -39,14 +39,7 @@
 					<a href="" class="s-href">
 						<div class="s-item">
 							<div class="sitem-l" id="goodslist">
-
-								<#assign allamount = 0>
-								<#assign allgoodsnums = 0>
-
 								<#list obj.ordergoodses as goods>
-
-								<#assign allamount = allamount + (((goods.promoteprice+0)?number)/10)>
-								<#assign allgoodsnums = allgoodsnums + (((goods.nums+0)?number)/10)>
 								<input type="hidden" name="ordergoodsid" value="${goods.id}">
 								<div class="sl-img">
 									<img src="http://img10.360buyimg.com/n4/jfs/t1249/100/386284951/341939/a2f205fb/551d0baaNf363954e.jpg">
@@ -54,7 +47,7 @@
 								</#list>	
 							</div>
 
-							<div class="sitem-r">共${obj.ordergoodses?size}件</div>
+							<div class="sitem-r" style="color:#cecece">明细单共${obj.ordergoodses?size}条</div>
 							<span class="s-point"></span>
 						</div>
 					</a>
@@ -83,9 +76,13 @@
 
 				<div class="step5 border-1px" id="carriage_info" style="margin-bottom: 3.125em;">
 					<div class="s-item">
-						<div class="sitem-l">商品金额：</div>
-						<div class="sitem-r">￥${allamount?string("0.00")}</div>
+						<div class="sitem-l">实付总额：</div>
+						<div class="sitem-r">￥${obj.order.amount?number}</div>
 					</div>
+				<div class="s-item">
+					<div class="sitem-l">原价总额/折扣价总额：</div>
+					<div class="sitem-r" style="color:#cecece">￥${obj.order.amountsale?number}/${obj.order.amountpromote?number}</div>
+				</div>					
 					<div class="s-item">
 						<div class="sitem-l">运费：</div>
 						<div class="sitem-r"></div>
@@ -95,7 +92,7 @@
 			</div>
 
 			<div class="pay-bar" id="pay-bar">
-				<div class="payb-con">实付款：<span id="payMoney">￥${allamount?string("0.00")}</span></div>
+				<div class="payb-con">实付款：<span id="payMoney">￥${obj.order.amount?number?string("0.00")}</span></div>
 				<a class="payb-btn" onclick="page_forward()" href="javascript:void(0);">提交订单</a>
 			</div>
 		</div>
