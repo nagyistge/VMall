@@ -26,7 +26,7 @@ function page_browse()
 {
 	$.ajax({
 		type:'post',
-		url:'${base}/member/member/browsemyorder.action',
+		url:'${base}/member/member/myorder/showorder.action',
 		data:{temp:'temp'},
 		cache:false,
 		async:false,
@@ -48,7 +48,7 @@ function page_loadordergoods(id)
 {
 	$.ajax({
 		type:'post',
-		url:'${base}/member/member/showordergoods.action',
+		url:'${base}/member/member/myorder/showordergoods.action',
 		data:{"id":id},
 		cache:false,
 		async:false,

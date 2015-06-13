@@ -56,7 +56,7 @@ public class MemberAction extends BaseAction
 	}
 
 	@At("/myorder")
-	@Ok("->:/page/member/member/myorder.ftl")
+	@Ok("->:/page/member/member/myorder/myorder.ftl")
 	public Map myorder(@Param("..") Map map) throws Exception
 	{
 		HttpSession session = Mvcs.getHttpSession(true);
@@ -66,29 +66,32 @@ public class MemberAction extends BaseAction
 		ro.put("member", member);
 		return ro;
 	}
-
-	@At("/browsemyorder")
-	@Ok("->:/page/member/member/myorderbrowse.ftl")
-	public Map browsemyorder(@Param("..") Map map) throws Exception
+	
+	@At("/myorder/showorder")
+	@Ok("->:/page/member/member/myorder/showorder.ftl")
+	public Map showmyorder(@Param("..") Map map) throws Exception
 	{
 		HttpSession session = Mvcs.getHttpSession(true);
 		DynamicObject login_token = (DynamicObject) session.getAttribute(GlobalConstants.sys_login_token);
 		String userid = login_token.getFormatAttr(GlobalConstants.sys_login_userid);
 		map.put("memberid", userid);
-		List<DynamicObject> orders = memberService.browsemyorder(map);
+		List<DynamicObject> orders = memberService.showmyorder(map);
 		ro.put("orders", orders);
 		return ro;
-	}
-
-	@At("/showordergoods")
-	@Ok("->:/page/member/member/showordergoods.ftl")
-	public Map showordergoods(@Param("..") Map map) throws Exception
+	}	
+	
+	@At("/myorder/showordergoods")
+	@Ok("->:/page/member/member/myorder/showordergoods.ftl")
+	public Map showmyordergoods(@Param("..") Map map) throws Exception
 	{
-		String id = (String) map.get("id");
+		HttpSession session = Mvcs.getHttpSession(true);
+		DynamicObject login_token = (DynamicObject) session.getAttribute(GlobalConstants.sys_login_token);
+		String userid = login_token.getFormatAttr(GlobalConstants.sys_login_userid);
+		map.put("memberid", userid);
 		List<DynamicObject> ordergoodses = memberService.showmyordergoods(map);
 		ro.put("ordergoodses", ordergoodses);
 		return ro;
-	}
+	}	
 
 	@At("/mydraw")
 	@Ok("->:/page/member/member/mydraw.ftl")

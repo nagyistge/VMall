@@ -8,10 +8,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.nutz.dao.Chain;
 import org.nutz.dao.Cnd;
 import org.nutz.dao.Dao;
-import org.nutz.dao.Sqls;
 import org.nutz.ioc.annotation.InjectName;
 import org.nutz.ioc.loader.annotation.IocBean;
 
@@ -271,40 +269,22 @@ public class ShopCartService extends SkynetNameEntityService<ShopCart>
 			
 			// 订单合计信息
 			StringBuffer sql = new StringBuffer();
-			sql.append(" update t_app_order ").append("\n");
-			sql.append("    set amountsale = ");
-			sql.append(" ( select sum(saleprice * nums) ");
-			sql.append("   from t_app_ordergoods ").append("\n");
+			sql.append(" select sum(saleprice * nums) amountsale, sum(promoteprice * nums) amountpromote, sum(realprice * nums) amount ");
+			sql.append("   from t_app_ordergoods goods ").append("\n");
 			sql.append("  where 1 = 1 ").append("\n");
-			sql.append("    and t_app_order.id = t_app_ordergoods.orderid ").append("\n");
-			sql.append("    and t_app_order.id = ").append(SQLParser.charValue(orderid)).append("\n");
-			sql.append(" ) ").append("\n");
-			sdao().execute(Sqls.create(sql.toString()));
+			sql.append("    and goods.orderid = ").append(SQLParser.charValue(orderid)).append("\n");
 			
-			sql = new StringBuffer();
-			sql.append(" update t_app_order ").append("\n");
-			sql.append("    set amountpromote = ");
-			sql.append(" ( select sum(promoteprice * nums) ");
-			sql.append("   from t_app_ordergoods ").append("\n");
-			sql.append("  where 1 = 1 ").append("\n");
-			sql.append("    and t_app_order.id = t_app_ordergoods.orderid ").append("\n");
-			sql.append("    and t_app_order.id = ").append(SQLParser.charValue(orderid)).append("\n");
-			sql.append(" ) ").append("\n");
-			sdao().execute(Sqls.create(sql.toString()));
-			
-			sql = new StringBuffer();
-			sql.append(" update t_app_order ").append("\n");
-			sql.append("    set amount = ");
-			sql.append(" ( select sum(realprice * nums) ");
-			sql.append("   from t_app_ordergoods ").append("\n");
-			sql.append("  where 1 = 1 ").append("\n");
-			sql.append("    and t_app_order.id = t_app_ordergoods.orderid ").append("\n");
-			sql.append("    and t_app_order.id = ").append(SQLParser.charValue(orderid)).append("\n");
-			sql.append(" ) ").append("\n");
-			sdao().execute(Sqls.create(sql.toString()));
+			DynamicObject amounts = sdao().queryForMap(sql.toString());
+			BigDecimal amountsale = new BigDecimal(Types.parseInt(amounts.getFormatAttr("amountsale"), 0));
+			BigDecimal amountpromote = new BigDecimal(Types.parseInt(amounts.getFormatAttr("amountpromote"), 0));
+			BigDecimal amount = new BigDecimal(Types.parseInt(amounts.getFormatAttr("amount"), 0));
+			order.setAmountsale(amountsale);
+			order.setAmountpromote(amountpromote);
+			order.setAmount(amount);
+			sdao().update(order);
 			
 			// 清除购物车商品
-//			sdao().delete(cartgoods);
+			sdao().delete(cartgoods);
 		}
 		
 		return orderid;
