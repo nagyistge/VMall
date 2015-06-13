@@ -142,6 +142,7 @@ public class ShopCartService extends SkynetNameEntityService<ShopCart>
 		// 购物车
 		List<String> ids = (List<String>)form.get("ids");
 		
+		// 
 		List<DynamicObject> shopcartgoodses = new ArrayList<DynamicObject>();
 		for (int i = 0; i < ids.size(); i++)
 		{

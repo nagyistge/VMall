@@ -1,5 +1,6 @@
 package com.skynet.vmall.order.service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -93,5 +94,123 @@ public class OrderService extends SkynetNameEntityService<Order>
 		map.put("flownextstate", flownextstate);
 		return map;
 	}
+	
+	public Map savetaker(Map map) throws Exception
+	{
+		Map remap = new HashMap();
+		String id =  (String)map.get("id");		
+		String takercname = (String)map.get("takercname");
+		String takermobile = (String)map.get("takermobile");
+		String takeprovince = (String)map.get("takeprovince");
+		String takecity = (String)map.get("takecity");
+		String takecounty = (String)map.get("takecounty");
+		String taketown = (String)map.get("taketown");
+		String takepostcode = (String)map.get("takepostcode");
+		String takeaddress = (String)map.get("takeaddress");
+
+		if(StringToolKit.isBlank(takercname))
+		{
+			remap.put("state", "error");
+			remap.put("error", "请填写收货人姓名。");
+			return remap;
+		}
+		
+		if(StringToolKit.isBlank(takermobile))
+		{
+			remap.put("state", "error");
+			remap.put("error", "请填写收货人联系电话。");
+			return remap;
+		}
+		
+		if(StringToolKit.isBlank(takeaddress))
+		{
+			remap.put("state", "error");
+			remap.put("error", "请填写收货地址。");	
+			return remap;
+		}
+		
+		Order order = sdao().fetch(Order.class, id);
+		if(order==null)
+		{
+			remap.put("state", "error");
+			remap.put("error", "订单信息异常，未找到当前订单。");	
+			return remap;			
+		}
+		
+		order.setTakercname(takercname);
+		order.setTakermobile(takermobile);
+		order.setTakeprovince(takeprovince);
+		order.setTakecity(takecity);
+		order.setTakecounty(takecounty);
+		order.setTaketown(taketown);
+		order.setTakepostcode(takepostcode);
+		order.setTakeaddress(takeaddress);		
+		
+		sdao().update(order);
+		
+		remap.put("state", "success");
+		remap.put("order", locate(id));
+		
+		return remap;	
+	}
+	
+	public Map savemember(Map map) throws Exception
+	{
+		Map remap = new HashMap();
+		String id =  (String)map.get("id");		
+		String memberid = (String)map.get("memberid");
+		String wxopenid = (String)map.get("wxopenid");
+		String membercno = (String)map.get("membercno");
+		String membercname = (String)map.get("membercname");
+		String phone = (String)map.get("phone");
+		
+		if(StringToolKit.isBlank(memberid))
+		{
+			remap.put("state", "error");
+			remap.put("error", "会员资料异常，请检查资料后，重新下单。");	
+			return remap;
+		}
+	
+		if(StringToolKit.isBlank(wxopenid))
+		{
+			remap.put("state", "error");
+			remap.put("error", "会员未注册微信账号，请检查资料后，重新下单。");	
+			return remap;
+		}
+		
+		if(StringToolKit.isBlank(membercname))
+		{
+			remap.put("state", "error");
+			remap.put("error", "未填写会员姓名，请检查个人资料后，重新下单。");
+			return remap;
+		}
+		
+		if(StringToolKit.isBlank(phone))
+		{
+			remap.put("state", "error");
+			remap.put("error", "请填写购买人联系电话。");
+			return remap;
+		}
+		
+		Order order = sdao().fetch(Order.class, id);
+		if(order==null)
+		{
+			remap.put("state", "error");
+			remap.put("error", "订单信息异常，未找到当前订单。");	
+			return remap;			
+		}
+		
+		order.setMembercname(membercname);
+		order.setPhone(phone);
+		
+		sdao().update(order);
+		
+		remap.put("state", "success");
+		remap.put("order", locate(id));
+		
+		return remap;	
+	}
+	
+	
 
 }

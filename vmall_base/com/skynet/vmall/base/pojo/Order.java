@@ -21,6 +21,9 @@ public class Order extends IdEntity
 	private String wxopenid; // 购买方会员微信标识
 	
 	@Column
+	private String membercno; // 购买方会员编号	
+	
+	@Column
 	private String membercname; // 购买方会员姓名	
 	
 	@Column
@@ -98,6 +101,16 @@ public class Order extends IdEntity
 	public void setWxopenid(String wxopenid)
 	{
 		this.wxopenid = wxopenid;
+	}
+
+	public String getMembercno()
+	{
+		return membercno;
+	}
+
+	public void setMembercno(String membercno)
+	{
+		this.membercno = membercno;
 	}
 
 	public String getMembercname()
@@ -259,4 +272,5 @@ public class Order extends IdEntity
 	{
 		this.state = state;
 	}
+
 }

@@ -85,4 +85,47 @@ public class OrderAction extends BaseAction
 		return ro;
 	}
 	
+	
+	@At("/edittaker")
+	@Ok("->:/page/order/order/edittaker.ftl")
+	public Map edittaker(@Param("..") Map map) throws Exception
+	{
+		String id = (String)map.get("id"); //订单编号
+		DynamicObject order = orderService.locate(id);
+		ro.put("order", order);
+		
+		return ro;
+	}
+	
+	@At("/savetaker")
+	@AdaptBy(type = JsonAdaptor.class)	
+	@Ok("json")
+	public Map savetaker(@Param("..") Map map) throws Exception
+	{
+		String id = (String)map.get("id"); //订单编号
+		Map remap = orderService.savetaker(map);
+		return remap;
+	}
+	
+	@At("/editmember")
+	@Ok("->:/page/order/order/editmember.ftl")
+	public Map editmember(@Param("..") Map map) throws Exception
+	{
+		String id = (String)map.get("id"); //订单编号
+		DynamicObject order = orderService.locate(id);
+		ro.put("order", order);
+		return ro;
+	}
+	
+	@At("/savemember")
+	@AdaptBy(type = JsonAdaptor.class)	
+	@Ok("json")
+	public Map savemember(@Param("..") Map map) throws Exception
+	{
+		String id = (String)map.get("id"); //订单编号
+		Map remap = orderService.savemember(map);
+		return remap;
+	}
+	
+	
 }
