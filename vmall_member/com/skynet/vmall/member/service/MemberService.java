@@ -1,9 +1,8 @@
 package com.skynet.vmall.member.service;
 
+import java.math.BigDecimal;
 import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,7 +27,6 @@ import com.skynet.framework.services.function.Types;
 import com.skynet.framework.spec.GlobalConstants;
 import com.skynet.vmall.base.pojo.Follow;
 import com.skynet.vmall.base.pojo.Member;
-import com.skynet.vmall.base.pojo.TreeMember;
 
 @InjectName("memberService")
 @IocBean(args =
@@ -320,5 +318,82 @@ public class MemberService extends SkynetNameEntityService<Member>
 
 		return datas;
 	}
+	
+	// 我的积分
+	public BigDecimal myrebateshowsum(Map map) throws Exception
+	{
+		String memberid = (String)map.get("memberid");
+		String rebatetimebegin = (String)map.get("rebatetimebegin");
+		String rebatetimeend = (String)map.get("rebatetimeend");
+		
+		StringBuffer sql = new StringBuffer();
+		sql.append(" select sum(score) score ").append("\n");
+		sql.append(" from t_app_ordergoodsrebate rebate ").append("\n");
+		sql.append("  where 1 = 1 ").append("\n");
+		sql.append("    and rebate.supmemberid = ").append(SQLParser.charValue(memberid)).append("\n");
+		if(!StringToolKit.isBlank(rebatetimebegin))
+		{
+			sql.append(" and rebate.rebatetime >= ").append(SQLParser.charValue(rebatetimebegin));
+		}
+		
+		if(!StringToolKit.isBlank(rebatetimeend))
+		{
+			sql.append(" and rebate.rebatetime < ").append(SQLParser.charValue(rebatetimeend));
+		}
+		
+		int score = Types.parseInt(queryForMap(sql.toString()).getFormatAttr("score"), 0);
+		BigDecimal sumscore = new BigDecimal(score).setScale(2);
+		return sumscore;		
+	}
+
+	public List<DynamicObject> myrebateshowbygroup(Map map) throws Exception
+	{
+		int page = Types.parseInt((String) map.get("_page"), 1);
+		int pagesize = Types.parseInt((String) map.get("_pagesize"), 10);
+
+		int startindex = (page - 1) * pagesize;
+		int endindex = page * pagesize;
+		
+		String memberid = (String)map.get("memberid");
+
+		StringBuffer sql = new StringBuffer();
+		sql.append(" select rebate.submemberid, member.cno, member.cname, sum(rebate.score) score ").append("\n");
+		sql.append("   from t_app_ordergoodsrebate rebate, t_app_member member ").append("\n");
+		sql.append("  where 1 = 1 ").append("\n");
+		sql.append("    and rebate.submemberid = member.id").append("\n");
+		sql.append("    and rebate.supmemberid = ").append(SQLParser.charValue(memberid)).append("\n");
+		sql.append("  group by rebate.submemberid, member.cno, member.cname ").append("\n");
+		sql.append("  order by member.cname, member.cno desc ").append("\n");
+		
+		List<DynamicObject> datas = sdao().queryForList(sql.toString(), startindex, endindex);
+
+		return datas;		
+	}
+	
+	public List<DynamicObject> myrebateshowbygoods(Map map) throws Exception
+	{
+		int page = Types.parseInt((String) map.get("_page"), 1);
+		int pagesize = Types.parseInt((String) map.get("_pagesize"), 10);
+
+		int startindex = (page - 1) * pagesize;
+		int endindex = page * pagesize;
+		
+		String memberid = (String)map.get("memberid");
+
+		StringBuffer sql = new StringBuffer();
+		sql.append(" select rebate.submemberid, goods.id goodsid, goods.cname, sum(rebate.score) score ").append("\n");
+		sql.append("   from t_app_ordergoodsrebate rebate, t_app_ordergoods ordergoods, t_app_goods goods ").append("\n");
+		sql.append("  where 1 = 1 ").append("\n");
+		sql.append("    and rebate.ordergoodsid = ordergoods.id ").append("\n");
+		sql.append("    and ordergoods.goodsid = goods.id ").append("\n");
+		sql.append("    and rebate.supmemberid = ").append(SQLParser.charValue(memberid)).append("\n");
+		sql.append("  group by rebate.submemberid, goods.id, goods.cname ").append("\n");
+		sql.append("  order by goods.cname desc ").append("\n");
+		
+		List<DynamicObject> datas = sdao().queryForList(sql.toString(), startindex, endindex);
+
+		return datas;		
+	}
+	
 	
 }

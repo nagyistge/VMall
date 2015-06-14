@@ -52,7 +52,7 @@
 			</li>
 			
 			<li>
-				<a href="${base}/order/order/memberscore.action">
+				<a href="${base}/member/member/myrebate.action">
 					<img src="http://img30.360buyimg.com/mobilecms/jfs/t535/111/664109451/3395/3c18f3cb/547bc6eaN6c97383c.png" alt="">
 					<p>我的积分</p>
 				</a>

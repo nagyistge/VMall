@@ -1,5 +1,6 @@
 package com.skynet.vmall.member.action;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
@@ -154,4 +155,57 @@ public class MemberAction extends BaseAction
 		ro.put("id", id);
 		return ro;
 	}
+	
+	@At("/myrebate")
+	@Ok("->:/page/member/member/myrebate/myrebate.ftl")
+	public Map myrebate(@Param("..") Map map) throws Exception
+	{
+		HttpSession session = Mvcs.getHttpSession(true);
+		DynamicObject login_token = (DynamicObject) session.getAttribute(GlobalConstants.sys_login_token);
+		String userid = login_token.getFormatAttr(GlobalConstants.sys_login_userid);
+		DynamicObject member = memberService.locate(userid);
+		ro.put("member", member);
+		return ro;
+	}
+	
+	@At("/myrebate/showbygroup")
+	@Ok("->:/page/member/member/myrebate/showbygroup.ftl")
+	public Map myrebateshowbygroup(@Param("..") Map map) throws Exception
+	{
+		HttpSession session = Mvcs.getHttpSession(true);
+		DynamicObject login_token = (DynamicObject) session.getAttribute(GlobalConstants.sys_login_token);
+		String userid = login_token.getFormatAttr(GlobalConstants.sys_login_userid);
+		map.put("memberid", userid);
+		List<DynamicObject> rebates = memberService.myrebateshowbygroup(map);
+		ro.put("rebates", rebates);
+		return ro;
+	}
+	
+	@At("/myrebate/showbygoods")
+	@Ok("->:/page/member/member/myrebate/showbygoods.ftl")
+	public Map myrebateshowbygoods(@Param("..") Map map) throws Exception
+	{
+		HttpSession session = Mvcs.getHttpSession(true);
+		DynamicObject login_token = (DynamicObject) session.getAttribute(GlobalConstants.sys_login_token);
+		String userid = login_token.getFormatAttr(GlobalConstants.sys_login_userid);
+		map.put("memberid", userid);
+		List<DynamicObject> rebates = memberService.myrebateshowbygoods(map);
+		ro.put("rebates", rebates);
+		return ro;
+	}
+	
+	@At("/myrebate/showsum")
+	@Ok("json")
+	public Map myrebateshowsum(@Param("..") Map map) throws Exception
+	{
+		HttpSession session = Mvcs.getHttpSession(true);
+		DynamicObject login_token = (DynamicObject) session.getAttribute(GlobalConstants.sys_login_token);
+		String userid = login_token.getFormatAttr(GlobalConstants.sys_login_userid);
+		map.put("memberid", userid);
+		BigDecimal score = memberService.myrebateshowsum(map);
+		Map remap = new DynamicObject();
+		remap.put("score", score);
+		return remap;
+	}
+	
 }
