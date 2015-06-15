@@ -419,4 +419,58 @@ public class MemberService extends SkynetNameEntityService<Member>
 
 		return datas;		
 	}
+	
+	public Map saveinfo(Member member, DynamicObject login_token) throws Exception
+	{
+		// 检查修改会员是否当前会员
+		String userid = login_token.getFormatAttr(GlobalConstants.sys_login_userid);
+		if(StringToolKit.isBlank(userid))
+		{
+			return new DynamicObject();
+		}
+		if(!userid.equals(member.getId()))
+		{
+			return null;
+		};
+		
+		if(StringToolKit.isBlank(member.getId()))
+		{
+			throw new Exception("会员数据异常，无法保存，请联系客服！");
+		}
+		
+		if(StringToolKit.isBlank(member.getCname()))
+		{
+			throw new Exception("姓名不允许为空，请填写完整！");
+		}
+
+		if(StringToolKit.isBlank(member.getPhone()))
+		{
+			throw new Exception("电话不允许为空，请填写完整！");
+		}
+
+		if(StringToolKit.isBlank(member.getAddr()))
+		{
+			throw new Exception("地址不允许为空，请填写完整！");
+		}		
+		
+		if(StringToolKit.isBlank(member.getOpenbank()))
+		{
+			throw new Exception("开户银行不允许为空，请填写完整！");
+		}
+
+		if(StringToolKit.isBlank(member.getBankaccountno()))
+		{
+			throw new Exception("银行卡号不允许为空，请填写完整！");
+		}
+		
+		if(StringToolKit.isBlank(member.getBankaccountcname()))
+		{
+			throw new Exception("账户名不允许为空，请填写完整！");
+		}
+		
+		sdao().update(member);
+		
+		return null;
+	}
+	
 }

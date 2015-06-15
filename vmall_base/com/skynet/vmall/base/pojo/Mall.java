@@ -24,6 +24,12 @@ public class Mall extends IdEntity
 
 	@Column
 	private String phone; // 联系电话
+	
+	@Column
+	private String qq; // QQ
+
+	@Column
+	private String email; // 电子邮件
 
 	@Column
 	private String province; // 省份（直辖市）
@@ -41,10 +47,19 @@ public class Mall extends IdEntity
 	private String postcode; // 邮政编码
 
 	@Column
-	private String bank; // 开户银行
+	private String bank; // 所属银行
 
 	@Column
-	private String bankacountno; // 银行账号
+	private String openbank; // 开户银行
+	
+	@Column
+	private String bankaccountno; // 银行账号
+	
+	@Column
+	private String bankaccountcname; // 银行名称
+	
+	@Column
+	private String bankaccountphone; // 银行账号关联电话
 	
 	@Column
 	private String wxcno; // 微信号	
@@ -108,6 +123,26 @@ public class Mall extends IdEntity
 		this.phone = phone;
 	}
 
+	public String getQq()
+	{
+		return qq;
+	}
+
+	public void setQq(String qq)
+	{
+		this.qq = qq;
+	}
+
+	public String getEmail()
+	{
+		return email;
+	}
+
+	public void setEmail(String email)
+	{
+		this.email = email;
+	}
+
 	public String getProvince()
 	{
 		return province;
@@ -168,14 +203,44 @@ public class Mall extends IdEntity
 		this.bank = bank;
 	}
 
-	public String getBankacountno()
+	public String getOpenbank()
 	{
-		return bankacountno;
+		return openbank;
 	}
 
-	public void setBankacountno(String bankacountno)
+	public void setOpenbank(String openbank)
 	{
-		this.bankacountno = bankacountno;
+		this.openbank = openbank;
+	}
+
+	public String getBankaccountno()
+	{
+		return bankaccountno;
+	}
+
+	public void setBankaccountno(String bankaccountno)
+	{
+		this.bankaccountno = bankaccountno;
+	}
+
+	public String getBankaccountcname()
+	{
+		return bankaccountcname;
+	}
+
+	public void setBankaccountcname(String bankaccountcname)
+	{
+		this.bankaccountcname = bankaccountcname;
+	}
+
+	public String getBankaccountphone()
+	{
+		return bankaccountphone;
+	}
+
+	public void setBankaccountphone(String bankaccountphone)
+	{
+		this.bankaccountphone = bankaccountphone;
 	}
 
 	public String getWxcno()

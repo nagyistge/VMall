@@ -17,6 +17,7 @@ import org.nutz.mvc.annotation.Param;
 import com.skynet.framework.action.BaseAction;
 import com.skynet.framework.services.db.dybeans.DynamicObject;
 import com.skynet.framework.spec.GlobalConstants;
+import com.skynet.vmall.base.pojo.Member;
 import com.skynet.vmall.member.service.MemberService;
 
 @IocBean
@@ -65,6 +66,28 @@ public class MemberAction extends BaseAction
 		String userid = login_token.getFormatAttr(GlobalConstants.sys_login_userid);
 		DynamicObject member = memberService.locate(userid);
 		ro.put("member", member);
+		return ro;
+	}
+	
+	@At("/myinfo/saveinfo")
+	@Ok("->:/page/member/member/myinfo/myinfo.ftl")
+	public Map saveinfo(@Param("..") Member member) throws Exception
+	{
+		HttpSession session = Mvcs.getHttpSession(true);
+		DynamicObject login_token = (DynamicObject) session.getAttribute(GlobalConstants.sys_login_token);
+		String userid = login_token.getFormatAttr(GlobalConstants.sys_login_userid);
+
+		try
+		{
+			memberService.saveinfo(member, login_token);
+			ro.put("state", "success");
+		}
+		catch (Exception e)
+		{
+			ro.put("state", "error");
+			ro.put("message", e.getMessage());
+		}
+		
 		return ro;
 	}
 
