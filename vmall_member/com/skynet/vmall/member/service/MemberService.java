@@ -395,5 +395,28 @@ public class MemberService extends SkynetNameEntityService<Member>
 		return datas;		
 	}
 	
-	
+	public List<DynamicObject> myrebateshowbyorder(Map map) throws Exception
+	{
+		int page = Types.parseInt((String) map.get("_page"), 1);
+		int pagesize = Types.parseInt((String) map.get("_pagesize"), 10);
+
+		int startindex = (page - 1) * pagesize;
+		int endindex = page * pagesize;
+		
+		String memberid = (String)map.get("memberid");
+
+		StringBuffer sql = new StringBuffer();
+		sql.append(" select rebate.submemberid, morder.id orderid, morder.cno, morder.ordertime, sum(rebate.score) score ").append("\n");
+		sql.append("   from t_app_ordergoodsrebate rebate, t_app_ordergoods ordergoods, t_app_order morder ").append("\n");
+		sql.append("  where 1 = 1 ").append("\n");
+		sql.append("    and rebate.ordergoodsid = ordergoods.id ").append("\n");
+		sql.append("    and ordergoods.orderid = morder.id ").append("\n");
+		sql.append("    and rebate.supmemberid = ").append(SQLParser.charValue(memberid)).append("\n");
+		sql.append("  group by rebate.submemberid, morder.id, morder.cno, morder.ordertime ").append("\n");
+		sql.append("  order by morder.ordertime desc ").append("\n");
+		
+		List<DynamicObject> datas = sdao().queryForList(sql.toString(), startindex, endindex);
+
+		return datas;		
+	}
 }

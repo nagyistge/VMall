@@ -194,6 +194,19 @@ public class MemberAction extends BaseAction
 		return ro;
 	}
 	
+	@At("/myrebate/showbyorder")
+	@Ok("->:/page/member/member/myrebate/showbyorder.ftl")
+	public Map myrebateshowbyorder(@Param("..") Map map) throws Exception
+	{
+		HttpSession session = Mvcs.getHttpSession(true);
+		DynamicObject login_token = (DynamicObject) session.getAttribute(GlobalConstants.sys_login_token);
+		String userid = login_token.getFormatAttr(GlobalConstants.sys_login_userid);
+		map.put("memberid", userid);
+		List<DynamicObject> rebates = memberService.myrebateshowbyorder(map);
+		ro.put("rebates", rebates);
+		return ro;
+	}	
+
 	@At("/myrebate/showsum")
 	@Ok("json")
 	public Map myrebateshowsum(@Param("..") Map map) throws Exception
@@ -206,6 +219,5 @@ public class MemberAction extends BaseAction
 		Map remap = new DynamicObject();
 		remap.put("score", score);
 		return remap;
-	}
-	
+	}		
 }
