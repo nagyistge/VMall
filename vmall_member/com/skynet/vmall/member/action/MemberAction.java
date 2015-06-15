@@ -56,6 +56,19 @@ public class MemberAction extends BaseAction
 		return ro;
 	}
 
+	@At("/myinfo")
+	@Ok("->:/page/member/member/myinfo/myinfo.ftl")
+	public Map myinfo(@Param("..") Map map) throws Exception
+	{
+		HttpSession session = Mvcs.getHttpSession(true);
+		DynamicObject login_token = (DynamicObject) session.getAttribute(GlobalConstants.sys_login_token);
+		String userid = login_token.getFormatAttr(GlobalConstants.sys_login_userid);
+		DynamicObject member = memberService.locate(userid);
+		ro.put("member", member);
+		return ro;
+	}
+
+	
 	@At("/myorder")
 	@Ok("->:/page/member/member/myorder/myorder.ftl")
 	public Map myorder(@Param("..") Map map) throws Exception
@@ -95,7 +108,7 @@ public class MemberAction extends BaseAction
 	}	
 
 	@At("/mydraw")
-	@Ok("->:/page/member/member/mydraw.ftl")
+	@Ok("->:/page/member/member/mydraw/mydraw.ftl")
 	public Map mydraw(@Param("..") Map map) throws Exception
 	{
 		HttpSession session = Mvcs.getHttpSession(true);
@@ -106,8 +119,8 @@ public class MemberAction extends BaseAction
 		return ro;
 	}
 
-	@At("/mydraw/browse")
-	@Ok("->:/page/member/member/mydrawbrowse.ftl")
+	@At("/mydraw/showdraw")
+	@Ok("->:/page/member/member/mydraw/showdraw.ftl")
 	public Map mydrawbrowse(@Param("..") Map map) throws Exception
 	{
 		HttpSession session = Mvcs.getHttpSession(true);

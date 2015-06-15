@@ -45,12 +45,12 @@
 
 		<ul class="menu-list">
 			<li>
-				<a href="${base}/member/member/myorder.action">
-					<img src="http://img30.360buyimg.com/mobilecms/jfs/t604/33/677153327/2632/39dbca27/547bc6b5Ncc52a3b8.png" alt="">
-					<p>我的订单</p>
+				<a href="${base}/member/member/myinfo.action">
+					<img src="http://img30.360buyimg.com/mobilecms/jfs/t448/16/669601077/3241/d50da28d/547bc742N95a14876.png" alt="">
+					<p>我的资料</p>
 				</a>
-			</li>
-			
+			</li>		
+		
 			<li>
 				<a href="${base}/member/member/myrebate.action">
 					<img src="http://img30.360buyimg.com/mobilecms/jfs/t535/111/664109451/3395/3c18f3cb/547bc6eaN6c97383c.png" alt="">
@@ -71,20 +71,11 @@
 				<p>我的团队</p>
 			</a>
 			</li>			
-			
-			<li>
-				<a href="/myJd/history/wareHistory.action?functionId=liulanjilu&amp;sid=b0ef5bb405ad55364ae07a3a85a51e00">
-					<img src="http://img30.360buyimg.com/mobilecms/jfs/t571/182/648860482/3266/f4f4ed01/547bc70aNf7e3462a.png" alt="">
-					<p>我的浏览</p>
-				</a>
-			</li>
-			
 
-			
 			<li>
-				<a href="/user/accountCenter.action?functionId=zhanghuguanli&amp;sid=b0ef5bb405ad55364ae07a3a85a51e00">
-					<img src="http://img30.360buyimg.com/mobilecms/jfs/t448/16/669601077/3241/d50da28d/547bc742N95a14876.png" alt="">
-					<p>我的资料</p>
+				<a href="${base}/member/member/myorder.action">
+					<img src="http://img30.360buyimg.com/mobilecms/jfs/t604/33/677153327/2632/39dbca27/547bc6b5Ncc52a3b8.png" alt="">
+					<p>我的订单</p>
 				</a>
 			</li>
 			
@@ -102,6 +93,13 @@
 				</a>
 			</li>
 			
+			<li>
+				<a href="/myJd/history/wareHistory.action?functionId=liulanjilu&amp;sid=b0ef5bb405ad55364ae07a3a85a51e00">
+					<img src="http://img30.360buyimg.com/mobilecms/jfs/t571/182/648860482/3266/f4f4ed01/547bc70aNf7e3462a.png" alt="">
+					<p>我的浏览</p>
+				</a>
+			</li>
+
 		</ul>
 
 	</div>
