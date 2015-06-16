@@ -420,57 +420,108 @@ public class MemberService extends SkynetNameEntityService<Member>
 		return datas;		
 	}
 	
-	public Map saveinfo(Member member, DynamicObject login_token) throws Exception
+	public Map saveinfo(Member newmember, DynamicObject login_token) throws Exception
 	{
+		Map remap = new DynamicObject();
+		
 		// 检查修改会员是否当前会员
 		String userid = login_token.getFormatAttr(GlobalConstants.sys_login_userid);
+		
 		if(StringToolKit.isBlank(userid))
 		{
-			return new DynamicObject();
+			remap.put("state", "error");
+			remap.put("message", "用户会话无效，请重新登录！");
+			return remap;
+			// throw new Exception("用户会话无效，请重新登录！");
 		}
-		if(!userid.equals(member.getId()))
+		if(!userid.equals(newmember.getId()))
 		{
-			return null;
+			remap.put("state", "error");
+			remap.put("message", "当前会员与要修改的会员不一致，不允许修改会员资料！");
+			return remap;
+			// throw new Exception("当前会员与要修改的会员不一致，不允许修改会员资料！");
 		};
 		
-		if(StringToolKit.isBlank(member.getId()))
+		if(StringToolKit.isBlank(newmember.getId()))
 		{
-			throw new Exception("会员数据异常，无法保存，请联系客服！");
+			remap.put("state", "error");
+			remap.put("message", "会员数据异常，无法保存，请联系客服！");
+			return remap;
+			// throw new Exception("会员数据异常，无法保存，请联系客服！");
 		}
 		
-		if(StringToolKit.isBlank(member.getCname()))
+		if(StringToolKit.isBlank(newmember.getCname()))
 		{
-			throw new Exception("姓名不允许为空，请填写完整！");
+			remap.put("state", "error");
+			remap.put("message", "姓名不允许为空，请填写完整！");	
+			return remap;
+			// throw new Exception("姓名不允许为空，请填写完整！");
 		}
 
-		if(StringToolKit.isBlank(member.getPhone()))
+		if(StringToolKit.isBlank(newmember.getPhone()))
 		{
-			throw new Exception("电话不允许为空，请填写完整！");
+			remap.put("state", "error");
+			remap.put("message", "电话不允许为空，请填写完整！");	
+			return remap;	
+			// throw new Exception("电话不允许为空，请填写完整！");
 		}
 
-		if(StringToolKit.isBlank(member.getAddr()))
+		if(StringToolKit.isBlank(newmember.getAddr()))
 		{
-			throw new Exception("地址不允许为空，请填写完整！");
+			remap.put("state", "error");
+			remap.put("message", "详细地址不允许为空，请填写完整！");	
+			return remap;
+			// throw new Exception("详细地址不允许为空，请填写完整！");
 		}		
 		
-		if(StringToolKit.isBlank(member.getOpenbank()))
+		if(StringToolKit.isBlank(newmember.getOpenbank()))
 		{
-			throw new Exception("开户银行不允许为空，请填写完整！");
+			remap.put("state", "error");
+			remap.put("message", "开户银行不允许为空，请填写完整！");	
+			return remap;
+			// throw new Exception("开户银行不允许为空，请填写完整！");
 		}
 
-		if(StringToolKit.isBlank(member.getBankaccountno()))
+		if(StringToolKit.isBlank(newmember.getBankaccountno()))
 		{
-			throw new Exception("银行卡号不允许为空，请填写完整！");
+			remap.put("state", "error");
+			remap.put("message", "银行卡号不允许为空，请填写完整！");	
+			return remap;
+			// throw new Exception("银行卡号不允许为空，请填写完整！");
 		}
 		
-		if(StringToolKit.isBlank(member.getBankaccountcname()))
+		if(StringToolKit.isBlank(newmember.getBankaccountcname()))
 		{
-			throw new Exception("账户名不允许为空，请填写完整！");
+			remap.put("state", "error");
+			remap.put("message", "账户名不允许为空，请填写完整！");	
+			return remap;
+			// throw new Exception("账户名不允许为空，请填写完整！");
 		}
+		
+		Member member = sdao().fetch(Member.class, userid);
+		member.setCname(newmember.getCname());
+		member.setPhone(newmember.getPhone());
+		member.setQq(newmember.getQq());
+		member.setEmail(newmember.getEmail());
+		
+		member.setProvince(newmember.getProvince());
+		member.setCity(newmember.getCity());
+		member.setCounty(newmember.getCounty());
+		member.setTown(newmember.getTown());
+		member.setAddr(newmember.getAddr());
+		member.setPostcode(newmember.getPostcode());
+
+		member.setBank(newmember.getBank());
+		member.setBankaccountno(newmember.getBankaccountno());
+		member.setBankaccountcname(newmember.getBankaccountcname());
+		member.setBankaccountphone(newmember.getBankaccountphone());
 		
 		sdao().update(member);
 		
-		return null;
+		remap.put("state", "success");
+		remap.put("member", locate(userid));
+		
+		return remap;
 	}
 	
 }

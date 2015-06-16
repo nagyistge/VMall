@@ -21,7 +21,6 @@
 
 <form action="${base}/member/member/save.action" method="POST" id="form_info">
 <input type="hidden" id="id" name="id" value="${obj.member.id}">
-<input type="hidden" id="cno" name="cno" value="${obj.member.cno}">
 
 <div class="info-detail sift-mg">
 <div class="sift-tab" style="height: 42px;">
@@ -40,7 +39,7 @@
 	    <div class="info pd">
 			<div class="tbl-type">
 		    	<span class="tbl-cell w70"><span>编号：</span></span>
-		    	<span class="tbl-cell"><span><input type="text" maxlength="50" class="new-input" name="cname" id="cname" value="${obj.member.cno}" readonly></span></span>
+		    	<span class="tbl-cell"><span><input type="text" maxlength="50" class="new-input" name="cno" id="cno" value="${obj.member.cno}" readonly></span></span>
 		    </div>
 	    </div>
 
@@ -283,6 +282,38 @@ function page_save()
 			}
 		}
 	}
+	
+	$.ajax({
+		type:'POST',
+		url:'${base}/member/member/myinfo/saveinfo.action',
+		data:$("#form_info").serialize(),
+		cache:false,
+		async:false,
+		success:function(data)
+		{
+			console.log(data);
+			if(data=="")
+			{
+				alert("保存个人资料异常，请检查后再试试！");
+				return;
+			}
+			json = eval("(" + data + ")");
+			if(json.state=="success")
+			{
+				alert("保存个人资料成功！")
+			}
+			else
+			{
+				alert("保存个人资料失败："+json.message);
+			}
+		},
+		error:function(data)
+		{
+			console.log(data);
+			alert("服务请求异常！");
+		}
+	})		
+	
 	
 }
 

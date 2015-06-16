@@ -1,6 +1,7 @@
 package com.skynet.vmall.member.action;
 
 import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -70,25 +71,24 @@ public class MemberAction extends BaseAction
 	}
 	
 	@At("/myinfo/saveinfo")
-	@Ok("->:/page/member/member/myinfo/myinfo.ftl")
-	public Map saveinfo(@Param("..") Member member) throws Exception
+	@Ok("json")
+	public Map saveinfo(@Param("..") Member newmember) throws Exception
 	{
 		HttpSession session = Mvcs.getHttpSession(true);
 		DynamicObject login_token = (DynamicObject) session.getAttribute(GlobalConstants.sys_login_token);
-		String userid = login_token.getFormatAttr(GlobalConstants.sys_login_userid);
 
+		Map remap = new DynamicObject();
 		try
 		{
-			memberService.saveinfo(member, login_token);
-			ro.put("state", "success");
+			remap = memberService.saveinfo(newmember, login_token);
 		}
 		catch (Exception e)
 		{
-			ro.put("state", "error");
-			ro.put("message", e.getMessage());
+			remap.put("state", "error");
+			remap.put("message", "保存个人资料异常，请稍候再试。");
 		}
 		
-		return ro;
+		return remap;
 	}
 
 	
