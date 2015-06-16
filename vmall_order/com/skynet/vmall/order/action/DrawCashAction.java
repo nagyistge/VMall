@@ -15,6 +15,7 @@ import org.nutz.mvc.annotation.Param;
 import com.skynet.framework.action.BaseAction;
 import com.skynet.framework.services.db.dybeans.DynamicObject;
 import com.skynet.framework.spec.GlobalConstants;
+import com.skynet.vmall.base.author.AuthorService;
 import com.skynet.vmall.base.pojo.DrawCash;
 import com.skynet.vmall.member.service.MemberService;
 import com.skynet.vmall.order.service.DrawCashService;
@@ -49,16 +50,20 @@ public class DrawCashAction extends BaseAction
 		HttpSession session = Mvcs.getHttpSession(true);
 		DynamicObject login_token = (DynamicObject) session.getAttribute(GlobalConstants.sys_login_token);
 		String userid = login_token.getFormatAttr(GlobalConstants.sys_login_userid);
-
+		
+		String userwxopenid = login_token.getFormatAttr(GlobalConstants.sys_login_userwxopenid);
+		String keysignature = AuthorService.encode(AuthorService.gentext(AuthorService.getip(Mvcs.getReq()), userwxopenid));
+		
 		DynamicObject member = memberService.locate(userid);
-		ro.put("member", member);
 
+		ro.put("member", member);
+		ro.put("keysignature", keysignature);
 		return ro;
 	}
 
 	@At("/insert")
 	@Ok("json")
-	public Map insert(@Param("..") DrawCash drawcash) throws Exception
+	public Map insert(@Param("..") DrawCash drawcash, String keysignature) throws Exception
 	{
 		HttpSession session = Mvcs.getHttpSession(true);
 		DynamicObject login_token = (DynamicObject) session.getAttribute(GlobalConstants.sys_login_token);
@@ -69,18 +74,26 @@ public class DrawCashAction extends BaseAction
 		drawcash.setMemberid(userid);
 		drawcash.setMembercname(username);
 		drawcash.setMemberwxopenid(userwxopenid);
-
+		
 		Map remap = new DynamicObject();
 
 		try
 		{
-			remap = drawcashService.insert(drawcash, login_token);
+			String decode = AuthorService.decode(keysignature);
+			String ip = AuthorService.getip(Mvcs.getReq());
+			remap = drawcashService.checksignature(decode, ip, userwxopenid);
+			if(!("success".equals(remap.get("state"))))
+			{
+				return remap;
+			}
+			
+			remap = drawcashService.insert(drawcash, login_token, decode);
 		}
 		catch (Exception e)
 		{
 			System.out.println(e);
 			remap.put("state", "error");
-			remap.put("message", "保存个人资料异常，请稍候再试。");
+			remap.put("message", "申请提现异常，请稍后再试。");
 		}
 
 		return remap;

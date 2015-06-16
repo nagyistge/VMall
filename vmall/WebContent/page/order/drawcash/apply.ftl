@@ -20,12 +20,7 @@
 </style>
 
 <form id="form_draw" method="POST" action="${base}/order/drawcash/insert.action">
-<input type="hidden" id="cname" name="cname" value="${obj.member.cname}">
-<input type="hidden" id="phone" name="phone" value="${obj.member.phone}">
-<input type="hidden" id="bank" name="bank" value="${obj.member.bank}">
-<input type="hidden" id="openbank" name="openbank" value="${obj.member.openbank}">
-<input type="hidden" id="bankaccountno" name="bankaccountno" value="${obj.member.bankaccountno}">
-
+<input type="hidden" id="keysignature" name="keysignature" value="${obj.keysignature}">
 
 <div class="detail" id="bybase" style="display: block;">
 

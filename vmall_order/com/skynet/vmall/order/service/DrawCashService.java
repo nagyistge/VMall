@@ -10,6 +10,7 @@ import org.nutz.dao.Sqls;
 import org.nutz.ioc.annotation.InjectName;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
+import org.nutz.mvc.Mvcs;
 
 import com.skynet.framework.common.generator.SNGenerator;
 import com.skynet.framework.common.generator.UUIDGenerator;
@@ -20,6 +21,7 @@ import com.skynet.framework.services.db.dybeans.DynamicObject;
 import com.skynet.framework.services.function.StringToolKit;
 import com.skynet.framework.services.function.Types;
 import com.skynet.framework.spec.GlobalConstants;
+import com.skynet.vmall.base.author.AuthorService;
 import com.skynet.vmall.base.pojo.DrawCash;
 import com.skynet.vmall.base.pojo.Member;
 import com.skynet.vmall.base.pojo.OrderGoodsRebate;
@@ -68,8 +70,29 @@ public class DrawCashService extends SkynetNameEntityService<DrawCash>
 		return datas;
 	}
 	
-	public Map insert(DrawCash drawcash, DynamicObject login_token) throws Exception
+	public Map checksignature(String decode, String ip, String userwxopenid)
 	{
+		Map remap = new DynamicObject();
+		String state = AuthorService.checksignature(decode, ip, userwxopenid);
+		remap.put("state", state);
+		if(state.equals("error"))
+		{
+			remap.put("message", "你的签名验证未通过，无法提现，请检查后重新申请提现。");
+			return remap;
+		}
+		if(state.equals("timeout"))
+		{
+			remap.put("message", "你的签名已过期，无法提现，请重新申请提现。");
+			return remap;
+		}
+		
+		return remap;
+	}
+	
+	public Map insert(DrawCash drawcash, DynamicObject login_token, String keysignature) throws Exception
+	{
+		// 检查签名正确性
+		
 		Map remap = new DynamicObject();
 
 		String userid = login_token.getFormatAttr(GlobalConstants.sys_login_userid);
@@ -83,13 +106,7 @@ public class DrawCashService extends SkynetNameEntityService<DrawCash>
 			return remap;
 		}
 		
-		// 检查表单信息是否完整，不完整不允许提交
 		remap.clear();
-		remap = checkinfo(drawcash, login_token);
-		if(!("success".equals(remap.get("state"))))
-		{
-			return remap;
-		}
 		
 		// 检查是否有未提现的订单商品，如果没有可提现的订单商品，不生成提现申请单。
 		int nums = sdao().count(OrderGoodsRebate.class, Cnd.where("supmemberid", "=", drawcash.getMemberid()).and("supwxopenid", "=", drawcash.getMemberwxopenid()).and("drawcashid", "is", null).and("drawcashcno", "is", null).and("state", "is", null));
@@ -102,6 +119,14 @@ public class DrawCashService extends SkynetNameEntityService<DrawCash>
 		
 		String id = UUIDGenerator.getInstance().getNextValue();
 		String cno = SNGenerator.getValue(8);
+
+		Member member = sdao().fetch(Member.class, userid);
+		
+		drawcash.setMemberphone(member.getPhone());
+		drawcash.setBank(member.getBank());
+		drawcash.setBankaccountno(member.getBankaccountno());
+		drawcash.setBankaccountcname(member.getBankaccountcname());
+		drawcash.setBankaccountphone(member.getBankaccountphone());
 		
 		drawcash.setId(id);
 		drawcash.setCno(cno);
