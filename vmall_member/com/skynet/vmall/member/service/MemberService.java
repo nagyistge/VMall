@@ -450,54 +450,14 @@ public class MemberService extends SkynetNameEntityService<Member>
 			// throw new Exception("会员数据异常，无法保存，请联系客服！");
 		}
 		
-		if(StringToolKit.isBlank(newmember.getCname()))
+		remap.clear();
+		remap = checkinfo(newmember, login_token);
+		if(!("success".equals(remap.get("state"))))
 		{
-			remap.put("state", "error");
-			remap.put("message", "姓名不允许为空，请填写完整！");	
 			return remap;
-			// throw new Exception("姓名不允许为空，请填写完整！");
-		}
-
-		if(StringToolKit.isBlank(newmember.getPhone()))
-		{
-			remap.put("state", "error");
-			remap.put("message", "电话不允许为空，请填写完整！");	
-			return remap;	
-			// throw new Exception("电话不允许为空，请填写完整！");
-		}
-
-		if(StringToolKit.isBlank(newmember.getAddr()))
-		{
-			remap.put("state", "error");
-			remap.put("message", "详细地址不允许为空，请填写完整！");	
-			return remap;
-			// throw new Exception("详细地址不允许为空，请填写完整！");
-		}		
-		
-		if(StringToolKit.isBlank(newmember.getOpenbank()))
-		{
-			remap.put("state", "error");
-			remap.put("message", "开户银行不允许为空，请填写完整！");	
-			return remap;
-			// throw new Exception("开户银行不允许为空，请填写完整！");
-		}
-
-		if(StringToolKit.isBlank(newmember.getBankaccountno()))
-		{
-			remap.put("state", "error");
-			remap.put("message", "银行卡号不允许为空，请填写完整！");	
-			return remap;
-			// throw new Exception("银行卡号不允许为空，请填写完整！");
 		}
 		
-		if(StringToolKit.isBlank(newmember.getBankaccountcname()))
-		{
-			remap.put("state", "error");
-			remap.put("message", "账户名不允许为空，请填写完整！");	
-			return remap;
-			// throw new Exception("账户名不允许为空，请填写完整！");
-		}
-		
+		remap.clear();
 		Member member = sdao().fetch(Member.class, userid);
 		member.setCname(newmember.getCname());
 		member.setPhone(newmember.getPhone());
@@ -518,6 +478,13 @@ public class MemberService extends SkynetNameEntityService<Member>
 		member.setBankaccountphone(newmember.getBankaccountphone());
 		
 		sdao().update(member);
+		
+		// 更新会员用户信息
+		User user = sdao().fetch(User.class, userid);
+		user.setCname(newmember.getCname());
+		user.setMobile(newmember.getPhone());
+		
+		sdao().update(user);
 		
 		remap.put("state", "success");
 		remap.put("member", locate(userid));
@@ -602,6 +569,8 @@ public class MemberService extends SkynetNameEntityService<Member>
 			return remap;
 			// throw new Exception("账户名不允许为空，请填写完整！");
 		}
+		
+		remap.put("state", "success");
 		return remap;
 	}
 	
