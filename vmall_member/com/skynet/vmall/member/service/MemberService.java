@@ -525,4 +525,84 @@ public class MemberService extends SkynetNameEntityService<Member>
 		return remap;
 	}
 	
+	public Map checkinfo(Member newmember, DynamicObject login_token) throws Exception
+	{
+		Map remap = new DynamicObject();
+		
+		// 检查修改会员是否当前会员
+		String userid = login_token.getFormatAttr(GlobalConstants.sys_login_userid);
+		
+		if(StringToolKit.isBlank(userid))
+		{
+			remap.put("state", "error");
+			remap.put("message", "用户会话无效，请重新登录！");
+			return remap;
+			// throw new Exception("用户会话无效，请重新登录！");
+		}
+		if(!userid.equals(newmember.getId()))
+		{
+			remap.put("state", "error");
+			remap.put("message", "当前会员与要修改的会员不一致，不允许修改会员资料！");
+			return remap;
+			// throw new Exception("当前会员与要修改的会员不一致，不允许修改会员资料！");
+		};
+		
+		if(StringToolKit.isBlank(newmember.getId()))
+		{
+			remap.put("state", "error");
+			remap.put("message", "会员数据异常，无法保存，请联系客服！");
+			return remap;
+			// throw new Exception("会员数据异常，无法保存，请联系客服！");
+		}
+		
+		if(StringToolKit.isBlank(newmember.getCname()))
+		{
+			remap.put("state", "error");
+			remap.put("message", "姓名不允许为空，请填写完整！");	
+			return remap;
+			// throw new Exception("姓名不允许为空，请填写完整！");
+		}
+
+		if(StringToolKit.isBlank(newmember.getPhone()))
+		{
+			remap.put("state", "error");
+			remap.put("message", "电话不允许为空，请填写完整！");	
+			return remap;	
+			// throw new Exception("电话不允许为空，请填写完整！");
+		}
+
+		if(StringToolKit.isBlank(newmember.getAddr()))
+		{
+			remap.put("state", "error");
+			remap.put("message", "详细地址不允许为空，请填写完整！");	
+			return remap;
+			// throw new Exception("详细地址不允许为空，请填写完整！");
+		}		
+		
+		if(StringToolKit.isBlank(newmember.getOpenbank()))
+		{
+			remap.put("state", "error");
+			remap.put("message", "开户银行不允许为空，请填写完整！");	
+			return remap;
+			// throw new Exception("开户银行不允许为空，请填写完整！");
+		}
+
+		if(StringToolKit.isBlank(newmember.getBankaccountno()))
+		{
+			remap.put("state", "error");
+			remap.put("message", "银行卡号不允许为空，请填写完整！");	
+			return remap;
+			// throw new Exception("银行卡号不允许为空，请填写完整！");
+		}
+		
+		if(StringToolKit.isBlank(newmember.getBankaccountcname()))
+		{
+			remap.put("state", "error");
+			remap.put("message", "账户名不允许为空，请填写完整！");	
+			return remap;
+			// throw new Exception("账户名不允许为空，请填写完整！");
+		}
+		return remap;
+	}
+	
 }

@@ -22,6 +22,24 @@ public class DrawCash extends IdEntity
 	
 	@Column
 	private String memberwxopenid; // 会员微信标识
+	
+	@Column
+	private String memberphone; // 会员联系电话	
+	
+	@Column
+	private String bank; // 所属银行
+
+	@Column
+	private String openbank; // 开户银行
+	
+	@Column
+	private String bankaccountno; // 银行账号
+	
+	@Column
+	private String bankaccountcname; // 银行名称
+	
+	@Column
+	private String bankaccountphone; // 银行账号关联电话
 
 	@Column
 	private BigDecimal amount; // 提现总金额
@@ -100,6 +118,66 @@ public class DrawCash extends IdEntity
 	public void setMemberwxopenid(String memberwxopenid)
 	{
 		this.memberwxopenid = memberwxopenid;
+	}
+
+	public String getMemberphone()
+	{
+		return memberphone;
+	}
+
+	public void setMemberphone(String memberphone)
+	{
+		this.memberphone = memberphone;
+	}
+
+	public String getBank()
+	{
+		return bank;
+	}
+
+	public void setBank(String bank)
+	{
+		this.bank = bank;
+	}
+
+	public String getOpenbank()
+	{
+		return openbank;
+	}
+
+	public void setOpenbank(String openbank)
+	{
+		this.openbank = openbank;
+	}
+
+	public String getBankaccountno()
+	{
+		return bankaccountno;
+	}
+
+	public void setBankaccountno(String bankaccountno)
+	{
+		this.bankaccountno = bankaccountno;
+	}
+
+	public String getBankaccountcname()
+	{
+		return bankaccountcname;
+	}
+
+	public void setBankaccountcname(String bankaccountcname)
+	{
+		this.bankaccountcname = bankaccountcname;
+	}
+
+	public String getBankaccountphone()
+	{
+		return bankaccountphone;
+	}
+
+	public void setBankaccountphone(String bankaccountphone)
+	{
+		this.bankaccountphone = bankaccountphone;
 	}
 
 	public BigDecimal getAmount()

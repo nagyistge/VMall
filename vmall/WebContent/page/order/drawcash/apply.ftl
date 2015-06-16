@@ -54,12 +54,13 @@
 
 	<div class="info pd">
 	<div class="tbl-type">
-    	<span class="tbl-cell w70"><span>所属银行：</span></span>
+	<span class="tbl-cell w70"><span>所属银行：</span></span>
         <span class="tbl-cell">
         	<span>
-            <select name="bank" id="bank" style="width:200px"><option selected="" id="option_add_1" value="1">中国工商银行</option><option id="option_add_2" value="2">中国建设银行</option><option id="option_add_3" value="3">中国交通银行</option><option id="option_add_4" value="4">中国农业银行</option></select>
+            <select name="bank" id="bank" style="width:200px" disabled><option selected="" id="option_add_1" value="1">中国工商银行</option><option id="option_add_2" value="2">中国建设银行</option><option id="option_add_3" value="3">中国交通银行</option><option id="option_add_4" value="4">中国农业银行</option></select>
             </span>
         </span>
+	    <span class="tbl-cell"><span><a href="${base}/member/member/myinfo.action" style="color:#0088ff">修改</a></span></span>
     </div>
     </div>
     
@@ -90,8 +91,8 @@
     <span class="tbl-cell"><span><input type="text" maxlength="50" class="new-input" name="bankaccountphone" id="bankaccountphone" value="${obj.member.bankaccountphone}1234"></span></span>
 </div>
 </div>
-    
-    
+<br/>    
+<p>亲，请你仔细核对申请提现的账户信息！</p>    
 </div>
 		
 	    
@@ -109,7 +110,7 @@
         <span onclick="checkAllHandler();" class="cart-checkbox checked" id="checkIcon-1"></span>
     </div>
     <div class="shp-cart-info">
-        <strong class="shp-cart-total">总计:￥<span class="" id="cart_realPrice"></span></strong>
+        <strong class="shp-cart-total">可提现总额:￥<span class="" id="cart_realPrice"></span></strong>
         <span class="sale-off">提现订单条目:
         </span>	
     </div>
