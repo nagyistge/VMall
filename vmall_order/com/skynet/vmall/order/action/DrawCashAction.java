@@ -25,10 +25,10 @@ public class DrawCashAction extends BaseAction
 {
 	@Inject
 	private DrawCashService drawcashService;
-	
+
 	@Inject
-	private MemberService memberService;	
-	
+	private MemberService memberService;
+
 	@At("/memberdraw")
 	@Ok("->:/page/order/drawcash/memberdraw.ftl")
 	public Map memberdraw(@Param("..") Map map) throws Exception
@@ -41,7 +41,7 @@ public class DrawCashAction extends BaseAction
 		ro.put("drawcashs", drawcashs);
 		return ro;
 	}
-	
+
 	@At("/apply")
 	@Ok("->:/page/order/drawcash/apply.ftl")
 	public Map apply(@Param("..") Map map) throws Exception
@@ -49,15 +49,15 @@ public class DrawCashAction extends BaseAction
 		HttpSession session = Mvcs.getHttpSession(true);
 		DynamicObject login_token = (DynamicObject) session.getAttribute(GlobalConstants.sys_login_token);
 		String userid = login_token.getFormatAttr(GlobalConstants.sys_login_userid);
-		
+
 		DynamicObject member = memberService.locate(userid);
 		ro.put("member", member);
-	
+
 		return ro;
-	}	
-	
+	}
+
 	@At("/insert")
-	@Ok(">>:locate.action?id=${obj.id}")
+	@Ok("json")
 	public Map insert(@Param("..") DrawCash drawcash) throws Exception
 	{
 		HttpSession session = Mvcs.getHttpSession(true);
@@ -65,18 +65,27 @@ public class DrawCashAction extends BaseAction
 		String userid = login_token.getFormatAttr(GlobalConstants.sys_login_userid);
 		String username = login_token.getFormatAttr(GlobalConstants.sys_login_username);
 		String userwxopenid = login_token.getFormatAttr(GlobalConstants.sys_login_userwxopenid);
-		
+
 		drawcash.setMemberid(userid);
 		drawcash.setMembercname(username);
 		drawcash.setMemberwxopenid(userwxopenid);
-		
-		String drawcashid = drawcashService.insert(drawcash);
-		
-		ro.put("id", drawcashid); 
-		
-		return ro;
-	}	
-	
+
+		Map remap = new DynamicObject();
+
+		try
+		{
+			remap = drawcashService.insert(drawcash, login_token);
+		}
+		catch (Exception e)
+		{
+			System.out.println(e);
+			remap.put("state", "error");
+			remap.put("message", "保存个人资料异常，请稍候再试。");
+		}
+
+		return remap;
+	}
+
 	@At("/locate")
 	@Ok("->:/page/order/drawcash/locate.ftl")
 	public Map locate(@Param("id") String id) throws Exception
@@ -85,5 +94,5 @@ public class DrawCashAction extends BaseAction
 		ro.put("drawcash", drawcash);
 		return ro;
 	}
-	
+
 }

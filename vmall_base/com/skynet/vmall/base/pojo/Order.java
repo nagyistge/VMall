@@ -49,7 +49,7 @@ public class Order extends IdEntity
 	private String paybank; // 支付卡开户银行
 
 	@Column
-	private String paybankacountno; // 支付卡银行账号
+	private String paybankaccountno; // 支付卡银行账号
 	
 	// 收货信息
 	@Column
@@ -199,14 +199,14 @@ public class Order extends IdEntity
 		this.paybank = paybank;
 	}
 
-	public String getPaybankacountno()
+	public String getPaybankaccountno()
 	{
-		return paybankacountno;
+		return paybankaccountno;
 	}
 
-	public void setPaybankacountno(String paybankacountno)
+	public void setPaybankaccountno(String paybankaccountno)
 	{
-		this.paybankacountno = paybankacountno;
+		this.paybankaccountno = paybankaccountno;
 	}
 
 	public String getTakercname()

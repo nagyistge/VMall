@@ -84,6 +84,7 @@ public class MemberAction extends BaseAction
 		}
 		catch (Exception e)
 		{
+			System.out.println(e);
 			remap.put("state", "error");
 			remap.put("message", "保存个人资料异常，请稍候再试。");
 		}

@@ -1,10 +1,6 @@
 package com.skynet.vmall.order.service;
 
 import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -14,9 +10,7 @@ import org.nutz.dao.Sqls;
 import org.nutz.ioc.annotation.InjectName;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
-import org.nutz.repo.org.objectweb.asm.Opcodes;
 
-import com.skynet.framework.common.generator.RandomGenerator;
 import com.skynet.framework.common.generator.SNGenerator;
 import com.skynet.framework.common.generator.UUIDGenerator;
 import com.skynet.framework.service.GeneratorService;
@@ -70,8 +64,10 @@ public class DrawCashService extends SkynetNameEntityService<DrawCash>
 		return datas;
 	}
 	
-	public String insert(DrawCash drawcash) throws Exception
+	public Map insert(DrawCash drawcash, DynamicObject login_token) throws Exception
 	{
+		Map remap = new DynamicObject();
+		
 		String id = UUIDGenerator.getInstance().getNextValue();
 		String cno = SNGenerator.getValue(8);
 	
@@ -79,7 +75,9 @@ public class DrawCashService extends SkynetNameEntityService<DrawCash>
 		int nums = sdao().count(OrderGoodsRebate.class, Cnd.where("supmemberid", "=", drawcash.getMemberid()).and("supwxopenid", "=", drawcash.getMemberwxopenid()).and("drawcashid", "is", null).and("drawcashcno", "is", null).and("state", "is", null));
 		if(nums==0)
 		{
-			throw new Exception("没有可提现积分，不能申请提现！");
+			remap.put("state", "error");
+			remap.put("message", "没有可提现积分，不能申请提现！");
+			return remap;
 		}
 		
 		drawcash.setId(id);
@@ -106,7 +104,10 @@ public class DrawCashService extends SkynetNameEntityService<DrawCash>
 		
 		sdao().execute(Sqls.create(sql.toString()));
 		
-		return id;
+		remap.put("state", "success");
+		remap.put("drawcash", drawcash);
+		
+		return remap;
 	}
 	
 }

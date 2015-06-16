@@ -512,6 +512,7 @@ public class MemberService extends SkynetNameEntityService<Member>
 		member.setPostcode(newmember.getPostcode());
 
 		member.setBank(newmember.getBank());
+		member.setOpenbank(newmember.getOpenbank());
 		member.setBankaccountno(newmember.getBankaccountno());
 		member.setBankaccountcname(newmember.getBankaccountcname());
 		member.setBankaccountphone(newmember.getBankaccountphone());
