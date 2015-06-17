@@ -1,26 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
-<meta content="telephone=no" name="format-detection">
-<meta name="baidu-site-verification" content="t7oDT96Amk" />
-<title>唯品会手机购物正品商城：一家专门做特卖的网站手机版</title>
-<meta content="唯品会手机购物，正品商城，品牌特卖会" name="keywords">
-<meta content="唯品会手机购物网以1-7折超低折扣对全球各大品牌进行限时特卖，商城内正品囊括服装、化妆品、家居、奢侈品等。100%正品、手机购物下单、货到付款、7天无条件退货。"
-	name="description">
-<meta name="sogou_site_verification" content="G7nmLR75yc" />
-<meta name="baidu-tc-cerfication"
-	content="0a8c6d28b570b218f78510c29be4529b" />
-<meta name="360-site-verification"
-	content="8b6121969d78afda8caeb69053fa29d9" />
-<link href="//ms2-m.vipstatic.com/apple-touch-icon.png/" rel="apple-touch-icon" />
-<link rel="stylesheet" type="text/css" href="/gzh/css/neat-min.css">
-<link rel="stylesheet" type="text/css" href="/gzh/css/ui-min.css">
-<link rel="stylesheet" type="text/css" href="/gzh/css/channel-min.css"
-	webapp="im">
-<link rel="stylesheet" href="/gzh/css/layout.min.css">
-<link rel="stylesheet" href="/gzh/css/common.min.css">
+<#include "/decorator/include/header.ftl">
 </head>
 <body class="u-index">
 <div style="">
