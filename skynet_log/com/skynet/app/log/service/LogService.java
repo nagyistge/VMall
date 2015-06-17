@@ -3,8 +3,8 @@ package com.skynet.app.log.service;
 import org.nutz.dao.Dao;
 import org.nutz.ioc.annotation.InjectName;
 import org.nutz.ioc.loader.annotation.IocBean;
-import org.nutz.log.Log;
 
+import com.skynet.app.log.pojo.Log;
 import com.skynet.framework.service.SkynetNameEntityService;
 
 @InjectName("logService")

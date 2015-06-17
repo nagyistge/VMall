@@ -9,13 +9,17 @@ import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.mvc.Mvcs;
 import org.nutz.mvc.annotation.At;
+import org.nutz.mvc.annotation.By;
+import org.nutz.mvc.annotation.Filters;
 import org.nutz.mvc.annotation.Ok;
 import org.nutz.mvc.annotation.Param;
+import org.nutz.mvc.filter.CheckSession;
 
 import com.skynet.framework.action.BaseAction;
 import com.skynet.framework.services.db.dybeans.DynamicObject;
 import com.skynet.framework.spec.GlobalConstants;
 import com.skynet.vmall.base.author.AuthorService;
+import com.skynet.vmall.base.filter.LogFilter;
 import com.skynet.vmall.base.pojo.DrawCash;
 import com.skynet.vmall.member.service.MemberService;
 import com.skynet.vmall.order.service.DrawCashService;
@@ -45,6 +49,7 @@ public class DrawCashAction extends BaseAction
 
 	@At("/apply")
 	@Ok("->:/page/order/drawcash/apply.ftl")
+	@Filters({@By(type=LogFilter.class, args={"提现申请"}), @By(type=CheckSession.class, args={"sys_login_token", "/checksession.html"})})	
 	public Map apply(@Param("..") Map map) throws Exception
 	{
 		HttpSession session = Mvcs.getHttpSession(true);
@@ -63,6 +68,7 @@ public class DrawCashAction extends BaseAction
 
 	@At("/insert")
 	@Ok("json")
+	@Filters({@By(type=LogFilter.class, args={"提现记录"}), @By(type=CheckSession.class, args={"sys_login_token", "/checksession.html"})})	
 	public Map insert(@Param("..") DrawCash drawcash, String keysignature) throws Exception
 	{
 		HttpSession session = Mvcs.getHttpSession(true);

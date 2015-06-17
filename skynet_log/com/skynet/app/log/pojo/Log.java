@@ -17,7 +17,16 @@ public class Log extends IdEntity
 	private String username; // 访问用户姓名
 	
 	@Column
+	private String loginname; // 访问用户账号
+	
+	@Column
+	private String wxopenid; // 访问用户微信标识
+	
+	@Column
 	private String actionname; // 日志动作名称	
+
+	@Column
+	private String uri; // 访问应用资源地址（相对）	
 	
 	@Column
 	private String url; // 访问应用资源地址
@@ -27,6 +36,9 @@ public class Log extends IdEntity
 	
 	@Column
 	private String cip; // 访问客户端IP
+	
+	@Column
+	private int sport; // 访问服务器端口
 	
 	@Column
 	private Timestamp logtime; // 日志记录时间
@@ -51,6 +63,26 @@ public class Log extends IdEntity
 		this.username = username;
 	}
 
+	public String getLoginname()
+	{
+		return loginname;
+	}
+
+	public void setLoginname(String loginname)
+	{
+		this.loginname = loginname;
+	}
+
+	public String getWxopenid()
+	{
+		return wxopenid;
+	}
+
+	public void setWxopenid(String wxopenid)
+	{
+		this.wxopenid = wxopenid;
+	}
+
 	public String getActionname()
 	{
 		return actionname;
@@ -59,6 +91,16 @@ public class Log extends IdEntity
 	public void setActionname(String actionname)
 	{
 		this.actionname = actionname;
+	}
+
+	public String getUri()
+	{
+		return uri;
+	}
+
+	public void setUri(String uri)
+	{
+		this.uri = uri;
 	}
 
 	public String getUrl()
@@ -91,6 +133,16 @@ public class Log extends IdEntity
 		this.cip = cip;
 	}
 
+	public int getSport()
+	{
+		return sport;
+	}
+
+	public void setSport(int sport)
+	{
+		this.sport = sport;
+	}
+
 	public Timestamp getLogtime()
 	{
 		return logtime;
@@ -100,5 +152,4 @@ public class Log extends IdEntity
 	{
 		this.logtime = logtime;
 	}
-	
 }

@@ -23,6 +23,7 @@ public class SystemAction extends BaseAction
 	public Map inittable() throws Exception
 	{
 		// 初始化表结构
+		Daos.createTablesInPackage(organService.dao(), "com.skynet.app.log.pojo", true);
 		Daos.createTablesInPackage(organService.dao(), "com.skynet.app.organ.pojo", true);
 		Daos.createTablesInPackage(organService.dao(), "com.skynet.vmall.base.pojo", true);
 		Daos.createTablesInPackage(organService.dao(), "com.skynet.app.dictionary.pojo", true);
