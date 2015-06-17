@@ -9,8 +9,11 @@ import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.mvc.Mvcs;
 import org.nutz.mvc.annotation.At;
+import org.nutz.mvc.annotation.By;
+import org.nutz.mvc.annotation.Filters;
 import org.nutz.mvc.annotation.Ok;
 import org.nutz.mvc.annotation.Param;
+import org.nutz.mvc.filter.CheckSession;
 
 import com.skynet.framework.action.BaseAction;
 import com.skynet.framework.services.db.dybeans.DynamicObject;
@@ -20,6 +23,7 @@ import com.skynet.vmall.order.service.ShopCartService;
 
 @IocBean
 @At("/order/shopcart")
+@Filters({@By(type=CheckSession.class, args={"sys_login_token", "/checksession.html"})})	
 public class ShopCartAction extends BaseAction
 {
 	@Inject

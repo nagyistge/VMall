@@ -13,12 +13,17 @@ import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.lang.util.NutMap;
 import org.nutz.mvc.Mvcs;
 import org.nutz.mvc.annotation.At;
+import org.nutz.mvc.annotation.By;
+import org.nutz.mvc.annotation.Filters;
 import org.nutz.mvc.annotation.Ok;
 import org.nutz.mvc.annotation.Param;
+import org.nutz.mvc.filter.CheckSession;
 
 import com.skynet.framework.action.BaseAction;
 import com.skynet.framework.services.db.dybeans.DynamicObject;
+import com.skynet.framework.services.function.StringToolKit;
 import com.skynet.framework.spec.GlobalConstants;
+import com.skynet.vmall.base.filter.LogFilter;
 import com.skynet.vmall.goods.service.GoodsClassService;
 import com.skynet.vmall.goods.service.GoodsService;
 import com.skynet.vmall.wx.action.WXActionHelper;
@@ -44,7 +49,14 @@ public class MallAction extends BaseAction
 		HttpServletRequest req = Mvcs.getReq();
 		HttpSession session = Mvcs.getHttpSession(true);
 		String info = (String)session.getAttribute(GlobalConstants.sys_wxinfo);
-		NutMap mapwx = myWxHelper.wx_minfo(info, req);
+		if(!StringToolKit.isBlank(info))
+		{
+			NutMap mapwx = myWxHelper.wx_minfo(info, req);
+			ro.put("jscfg", mapwx.get("jscfg"));
+			ro.put("shareurl", mapwx.get("shareurl"));
+			ro.put("openid", mapwx.get("openid"));
+			ro.put("recommender", mapwx.get("recommender"));		
+		}
 		
 		String[] classes = new String[]
 		{ "时尚女鞋", "流行男鞋", "面部护肤", "养生茶饮" };
@@ -57,11 +69,7 @@ public class MallAction extends BaseAction
 			goodsclass.setObj("subgoodsclasses", subgoodsclasses);
 			goodsclasses.add(goodsclass);
 		}
-		
-		ro.put("jscfg", mapwx.get("jscfg"));
-		ro.put("shareurl", mapwx.get("shareurl"));
-		ro.put("openid", mapwx.get("openid"));
-		ro.put("recommender", mapwx.get("recommender"));
+
 		ro.put("goodsclasses", goodsclasses);
 		return ro;
 	}

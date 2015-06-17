@@ -13,8 +13,11 @@ import org.nutz.mvc.Mvcs;
 import org.nutz.mvc.adaptor.JsonAdaptor;
 import org.nutz.mvc.annotation.AdaptBy;
 import org.nutz.mvc.annotation.At;
+import org.nutz.mvc.annotation.By;
+import org.nutz.mvc.annotation.Filters;
 import org.nutz.mvc.annotation.Ok;
 import org.nutz.mvc.annotation.Param;
+import org.nutz.mvc.filter.CheckSession;
 
 import com.skynet.framework.action.BaseAction;
 import com.skynet.framework.services.db.dybeans.DynamicObject;
@@ -25,6 +28,7 @@ import com.skynet.vmall.order.service.OrderService;
 
 @IocBean
 @At("/order/order")
+@Filters({@By(type=CheckSession.class, args={"sys_login_token", "/checksession.html"})})	
 public class OrderAction extends BaseAction
 {
 	@Inject

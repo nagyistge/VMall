@@ -26,6 +26,7 @@ import com.skynet.vmall.order.service.DrawCashService;
 
 @IocBean
 @At("/order/drawcash")
+@Filters({@By(type=CheckSession.class, args={"sys_login_token", "/checksession.html"})})	
 public class DrawCashAction extends BaseAction
 {
 	@Inject
