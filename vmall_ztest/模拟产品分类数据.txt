@@ -43,6 +43,7 @@ insert into t_app_goodsclass(id, cname, supid, internal, dealerid) values('00010
 insert into t_app_goodsclass(id, cname, supid, internal, dealerid) values('000100010008', '男靴', '00010001', '000100010008', 'vmall');
 insert into t_app_goodsclass(id, cname, supid, internal, dealerid) values('000100010009', '订制鞋', '00010001', '000100010009', 'vmall');
 
+
 insert into t_app_goodsclass(id, cname, supid, internal, dealerid) values('000100020001', '单鞋', '00010002', '000100020001', 'vmall');
 insert into t_app_goodsclass(id, cname, supid, internal, dealerid) values('000100020002', '休闲鞋', '00010002', '000100020002', 'vmall');
 insert into t_app_goodsclass(id, cname, supid, internal, dealerid) values('000100020003', '坡跟鞋', '00010002', '000100020003', 'vmall');
@@ -62,3 +63,5 @@ insert into t_app_goodsclass(id, cname, supid, internal, dealerid) values('00120
 insert into t_app_goodsclass(id, cname, supid, internal, dealerid) values('001200010007', '鹿茸', '00120001', '001200010007', 'vmall');
 insert into t_app_goodsclass(id, cname, supid, internal, dealerid) values('001200010008', '灵芝', '00120001', '001200010008', 'vmall');
 insert into t_app_goodsclass(id, cname, supid, internal, dealerid) values('001200010009', '药食同源', '00120001', '001200010009', 'vmall');
+
+update t_app_goodsclass set pic = concat_ws('image/goodsclass/', internal, '.jpg');

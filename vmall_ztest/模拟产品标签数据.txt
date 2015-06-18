@@ -7,7 +7,7 @@ insert into t_app_tag(id, title, ordernum, objclass, objid) values(uuid(), '首�
 
 insert into t_app_tag(id, title, ordernum, objclass, objid) values(uuid(), '首页海报3级分类', 1, 'GoodsClass', '000100020007');
 insert into t_app_tag(id, title, ordernum, objclass, objid) values(uuid(), '首页海报3级分类', 2, 'GoodsClass', '000100020002');
-insert into t_app_tag(id, title, ordernum, objclass, objid) values(uuid(), '首页海报3级分类', 3, 'GoodsClass', '000100020005');
+insert into t_app_tag(id, title, ordernum, objclass, objid) values(uuid(), '首页海报3级分类', 3, 'GoodsClass', '000100020006');
 
 insert into t_app_tag(id, title, ordernum, objclass, objid) values(uuid(), '首页3级分类', 1, 'GoodsClass', '000100020001');
 insert into t_app_tag(id, title, ordernum, objclass, objid) values(uuid(), '首页3级分类', 2, 'GoodsClass', '000100020002');

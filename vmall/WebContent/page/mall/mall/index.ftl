@@ -29,7 +29,7 @@
         		<#if goodsclass.subpostgoodsclasses?size &gt; 0>
         		<#assign subpostgoodsclass = goodsclass.subpostgoodsclasses[0]>
 			    <a href="${base}/goods/goods/channel.action?classid=${subpostgoodsclass.id}" target="_top" class="hot-key-main">
-				    <img style="width:92px;height:96px;display:block;" class="" src="${subpostgoodsclass.pic!}">
+				    <img style="width:92px;height:96px;display:block;" class="" src="${base}/${subpostgoodsclass.pic!}">
 				    <p>最新单凉鞋</p>
 				    <p>最适合这天气的鞋</p>
 			    </a>
@@ -38,14 +38,14 @@
 			    	<#if goodsclass.subpostgoodsclasses?size &gt; 1>
 			    	<#assign subpostgoodsclass = goodsclass.subpostgoodsclasses[1]>
 				    <a href="${base}/goods/goods/channel.action?classid=${subpostgoodsclass.id}" target="_top">
-				    <img style="width:44px;height:44px;display:block;" class="" src="${goodsclass.pic!}">
+				    <img style="width:44px;height:44px;display:block;" class="" src="${base}/${subpostgoodsclass.pic!}">
 				    <p>${subpostgoodsclass.cname}</p>
 				    </a>
 				    </#if>
 			    	<#if goodsclass.subpostgoodsclasses?size &gt; 2>
 			    	<#assign subpostgoodsclass = goodsclass.subpostgoodsclasses[2]>
 				    <a href="${base}/goods/goods/channel.action?classid=${subpostgoodsclass.id}" target="_top">
-				    <img style="width:44px;height:44px;display:block;" class="" src="${goodsclass.pic!}">
+				    <img style="width:44px;height:44px;display:block;" class="" src="${base}/${subpostgoodsclass.pic!}">
 				    <p>${subpostgoodsclass.cname}</p>
 				    </a>
 				    </#if>
