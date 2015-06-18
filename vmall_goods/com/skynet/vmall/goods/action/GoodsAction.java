@@ -68,7 +68,26 @@ public class GoodsAction extends BaseAction
 	// 浏览指定排名的商品
 	@At("/channel")
 	@Ok("->:/page/goods/goods/channel.ftl")
-	public Map channel(@Param("..") Map map, @Param("_page") String page, @Param("_pagesize") String pagesize) throws Exception
+	public Map channel(@Param("..") Map map) throws Exception
+	{
+		String classid = (String) map.get("classid");
+		DynamicObject goodsclass = goodsclassService.locate(classid);
+		DynamicObject supgoodsclass = goodsclassService.locateBy(Cnd.where("id", "=", goodsclass.getFormatAttr("supid")));
+		List<DynamicObject> subgoodsclasses = goodsclassService.findByCond(Cnd.where("supid", "=", classid));
+
+
+		ro.put("supgoodsclass", supgoodsclass);
+		ro.put("goodsclass", goodsclass);
+		ro.put("subgoodsclasses", subgoodsclasses);
+
+		return ro;
+	}
+	
+	// 商品浏览
+	@At("/channelshow")
+	@AdaptBy(type = JsonAdaptor.class)	
+	@Ok("json")
+	public Map channelshow(@Param("..") Map map, @Param("_page") String page, @Param("_pagesize") String pagesize) throws Exception
 	{
 		String classid = (String) map.get("classid");
 		DynamicObject goodsclass = goodsclassService.locate(classid);
@@ -78,18 +97,31 @@ public class GoodsAction extends BaseAction
 		List<DynamicObject> subgoodsclasses = goodsclassService.findByCond(Cnd.where("supid", "=", classid));
 
 		map.put("_page", Strings.sNull(page, "1"));
-		map.put("_pagesize", Strings.sNull(pagesize, "100"));
+		map.put("_pagesize", Strings.sNull(pagesize, "2"));
 		map.put("ctype", "货品");
-		List<DynamicObject> goods = goodsService.channel(map);
+		map.put("internal", goodsclass.getFormatAttr("internal"));
+		List<DynamicObject> goodses = goodsService.channel(map);
 
 		ro.put("supgoodsclass", supgoodsclass);
 		ro.put("goodsclass", goodsclass);
 		ro.put("subgoodsclasses", subgoodsclasses);
-		ro.put("goods", goods);
+		ro.put("goodses", goodses);
 		ro.put("_page", page);
 		ro.put("_pagesize", pagesize);
 
 		return ro;
+	}
+	
+	@At("/test")
+	@Ok("json")
+	public String[] test(@Param("..") Map map, @Param("_page") String page, @Param("_pagesize") String pagesize) throws Exception
+	{
+		String[] a = new String[100];
+		for(int i=0;i<100;i++)
+		{
+			a[i] = String.valueOf(i);
+		}
+		return a;
 	}
 
 	// 商品浏览
