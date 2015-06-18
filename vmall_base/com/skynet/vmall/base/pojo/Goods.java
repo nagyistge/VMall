@@ -69,7 +69,7 @@ public class Goods extends IdEntity
 
 	@Column
 	private String pic; // 商品图片（URL）
-
+	
 	public String getClassid()
 	{
 		return classid;

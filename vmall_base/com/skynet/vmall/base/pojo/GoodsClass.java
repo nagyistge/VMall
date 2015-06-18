@@ -19,6 +19,9 @@ public class GoodsClass extends IdEntity
 
 	@Column
 	private String dealerid; // 商家（会员）标识
+	
+	@Column
+	private String pic; // 分类图标地址
 
 	public String getCname()
 	{
@@ -59,7 +62,15 @@ public class GoodsClass extends IdEntity
 	{
 		this.dealerid = dealerid;
 	}
-	
-	
+
+	public String getPic()
+	{
+		return pic;
+	}
+
+	public void setPic(String pic)
+	{
+		this.pic = pic;
+	}
 
 }

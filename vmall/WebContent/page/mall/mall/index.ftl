@@ -21,29 +21,38 @@
 		</div>
 	</div>
 	
-	<#list obj.goodsclasses as class>
+	<#list obj.goodsclasses as goodsclass>
 	
-	<div data-spm="${class.internal}" class="floor">
-        <h3><a href="${base}/goods/goods/channel.action?classid=${class.id}&amp;internal=${class.internal}" target="_top"><span></span>${class.cname}<span>2015${class.cname}</span></a></h3>
-		    <div class="hot-key">
-			    <a href="/search.html?q=2015单凉鞋&amp;back=true" target="_top" class="hot-key-main">
-				    <img style="width:92px;height:96px;display:block;" class="" src="//gtms03.alicdn.com/tps/i3/TB1KND3HFXXXXbyXFXXPXbf0FXX-184-192.jpg">
+	<div data-spm="${goodsclass.internal}" class="floor">
+        <h3><a href="${base}/goods/goods/channel.action?classid=${goodsclass.id}&amp;internal=${goodsclass.internal}" target="_top"><span></span>${goodsclass.cname}<span>${goodsclass.cname}</span></a></h3>
+        	<div class="hot-key">
+        		<#if goodsclass.subpostgoodsclasses?size &gt; 0>
+        		<#assign subpostgoodsclass = goodsclass.subpostgoodsclasses[0]>
+			    <a href="${base}/goods/goods/channel.action?classid=${subpostgoodsclass.id}" target="_top" class="hot-key-main">
+				    <img style="width:92px;height:96px;display:block;" class="" src="${subpostgoodsclass.pic!}">
 				    <p>最新单凉鞋</p>
 				    <p>最适合这天气的鞋</p>
 			    </a>
+			    </#if>
 			    <div class="hot-key-sub">
-				    <a href="/search.html?q=罗马凉鞋&amp;back=true" target="_top">
-				    <img style="width:44px;height:44px;display:block;" class="" src="//gtms04.alicdn.com/tps/i4/TB1V.QtHFXXXXaIXVXXiDSbJFXX-88-88.png">
-				    <p>罗马凉鞋</p>
+			    	<#if goodsclass.subpostgoodsclasses?size &gt; 1>
+			    	<#assign subpostgoodsclass = goodsclass.subpostgoodsclasses[1]>
+				    <a href="${base}/goods/goods/channel.action?classid=${subpostgoodsclass.id}" target="_top">
+				    <img style="width:44px;height:44px;display:block;" class="" src="${goodsclass.pic!}">
+				    <p>${subpostgoodsclass.cname}</p>
 				    </a>
-				    <a href="/search.html?q=韩版运动鞋&amp;back=true" target="_top">
-				    <img style="width:44px;height:44px;display:block;" class="" src="//gtms01.alicdn.com/tps/i1/TB13QrTHFXXXXbmaXXXEDmbJFXX-88-88.jpg">
-				    <p>运动鞋</p>
+				    </#if>
+			    	<#if goodsclass.subpostgoodsclasses?size &gt; 2>
+			    	<#assign subpostgoodsclass = goodsclass.subpostgoodsclasses[2]>
+				    <a href="${base}/goods/goods/channel.action?classid=${subpostgoodsclass.id}" target="_top">
+				    <img style="width:44px;height:44px;display:block;" class="" src="${goodsclass.pic!}">
+				    <p>${subpostgoodsclass.cname}</p>
 				    </a>
+				    </#if>
 		    	</div>
 			</div>
-		    <div data-id="4" data-count="8" data-keys="最新单凉鞋,罗马凉鞋,运动鞋" style="height:90px" class="list-keys">
-		    	<#list class.subgoodsclasses as subclass>
+		    <div data-id="4" data-count="8" data-keys="" style="height:90px" class="list-keys">
+		    	<#list goodsclass.subgoodsclasses as subclass>
 		    		<#if subclass_index &lt; 8>
 			        <a href="${base}/goods/goods/channel.action?classid=${subclass.id}&amp;internal=${subclass.internal}" target="_top" extra="" class="item">${subclass.cname}</a>
 		    		</#if>

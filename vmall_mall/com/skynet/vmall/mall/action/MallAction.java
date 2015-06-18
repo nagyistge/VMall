@@ -13,17 +13,15 @@ import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.lang.util.NutMap;
 import org.nutz.mvc.Mvcs;
 import org.nutz.mvc.annotation.At;
-import org.nutz.mvc.annotation.By;
-import org.nutz.mvc.annotation.Filters;
 import org.nutz.mvc.annotation.Ok;
 import org.nutz.mvc.annotation.Param;
-import org.nutz.mvc.filter.CheckSession;
 
 import com.skynet.framework.action.BaseAction;
+import com.skynet.framework.services.db.SQLParser;
 import com.skynet.framework.services.db.dybeans.DynamicObject;
 import com.skynet.framework.services.function.StringToolKit;
 import com.skynet.framework.spec.GlobalConstants;
-import com.skynet.vmall.base.filter.LogFilter;
+import com.skynet.vmall.base.service.TagService;
 import com.skynet.vmall.goods.service.GoodsClassService;
 import com.skynet.vmall.goods.service.GoodsService;
 import com.skynet.vmall.wx.action.WXActionHelper;
@@ -40,6 +38,10 @@ public class MallAction extends BaseAction
 
 	@Inject
 	private GoodsService goodsService;
+	
+	@Inject
+	private TagService tagService;
+	
 
 	@At("/index")
 	@Ok("->:/page/mall/mall/index.ftl")
@@ -58,16 +60,49 @@ public class MallAction extends BaseAction
 			ro.put("recommender", mapwx.get("recommender"));		
 		}
 		
-		String[] classes = new String[]
-		{ "时尚女鞋", "流行男鞋", "面部护肤", "养生茶饮" };
+		// 查询首页海报2级分类
+		StringBuffer sql = new StringBuffer();
+		sql.append(" select goodsclass.* ").append("\n");
+		sql.append("   from t_app_goodsclass goodsclass, t_app_tag tag ").append("\n");
+		sql.append("  where 1 = 1 ").append("\n");
+		sql.append("    and goodsclass.id = tag.objid ").append("\n");
+		sql.append("    and tag.title = '首页海报2级分类' ").append("\n");
+		sql.append("    and tag.objclass = 'GoodsClass' ").append("\n");	
 		
-		List<DynamicObject> goodsclasses = new ArrayList<DynamicObject>();
-		for (int i = 0; i < classes.length; i++)
+		// 查询首页海报2级分类
+		List<DynamicObject> goodsclasses =  goodsclassService.sdao().queryForList(sql.toString());
+
+		for (int i = 0; i < goodsclasses.size(); i++)
 		{
-			DynamicObject goodsclass = goodsclassService.locateBy(Cnd.where("cname", "=", classes[i]));
-			List<DynamicObject> subgoodsclasses = goodsclassService.findByCond(Cnd.where("supid", "=", goodsclass.getFormatAttr("id")));
+			DynamicObject goodsclass = goodsclasses.get(i);
+			
+			// 查询首页海报3级分类
+			sql = new StringBuffer();
+			sql.append(" select goodsclass.* ").append("\n");
+			sql.append("   from t_app_goodsclass goodsclass, t_app_tag tag ").append("\n");
+			sql.append("  where 1 = 1 ").append("\n");
+			sql.append("    and goodsclass.supid = ").append(SQLParser.charValue(goodsclass.getFormatAttr("id"))).append("\n");
+			sql.append("    and goodsclass.id = tag.objid ").append("\n");
+			sql.append("    and tag.title = '首页海报3级分类' ").append("\n");
+			sql.append("    and tag.objclass = 'GoodsClass' ").append("\n");
+			
+			List<DynamicObject> subpostgoodsclasses = goodsclassService.sdao().queryForList(sql.toString());
+			
+			// 查询首页3级分类
+			sql = new StringBuffer();
+			sql.append(" select goodsclass.* ").append("\n");
+			sql.append("   from t_app_goodsclass goodsclass, t_app_tag tag ").append("\n");
+			sql.append("  where 1 = 1 ").append("\n");
+			sql.append("    and goodsclass.supid = ").append(SQLParser.charValue(goodsclass.getFormatAttr("id"))).append("\n");
+			sql.append("    and goodsclass.id = tag.objid ").append("\n");
+			sql.append("    and tag.title = '首页3级分类' ").append("\n");
+			sql.append("    and tag.objclass = 'GoodsClass' ").append("\n");
+			
+			List<DynamicObject> subgoodsclasses = goodsclassService.sdao().queryForList(sql.toString());
+			
+			// List<DynamicObject> subgoodsclasses = goodsclassService.findByCond(Cnd.where("supid", "=", goodsclass.getFormatAttr("id")));
+			goodsclass.setObj("subpostgoodsclasses", subpostgoodsclasses);
 			goodsclass.setObj("subgoodsclasses", subgoodsclasses);
-			goodsclasses.add(goodsclass);
 		}
 
 		ro.put("goodsclasses", goodsclasses);
@@ -79,16 +114,49 @@ public class MallAction extends BaseAction
 	@Ok("->:/page/mall/mall/index_test.ftl")
 	public Map index_test(@Param("..") Map map) throws Exception
 	{
-		String[] classes = new String[]
-		{ "时尚女鞋", "流行男鞋", "面部护肤", "养生茶饮" };
+		// 查询首页海报2级分类
+		StringBuffer sql = new StringBuffer();
+		sql.append(" select goodsclass.* ").append("\n");
+		sql.append("   from t_app_goodsclass goodsclass, t_app_tag tag ").append("\n");
+		sql.append("  where 1 = 1 ").append("\n");
+		sql.append("    and goodsclass.id = tag.objid ").append("\n");
+		sql.append("    and tag.title = '首页海报2级分类' ").append("\n");
+		sql.append("    and tag.objclass = 'GoodsClass' ").append("\n");	
 		
-		List<DynamicObject> goodsclasses = new ArrayList<DynamicObject>();
-		for (int i = 0; i < classes.length; i++)
+		// 查询首页海报2级分类
+		List<DynamicObject> goodsclasses =  goodsclassService.sdao().queryForList(sql.toString());
+
+		for (int i = 0; i < goodsclasses.size(); i++)
 		{
-			DynamicObject goodsclass = goodsclassService.locateBy(Cnd.where("cname", "=", classes[i]));
-			List<DynamicObject> subgoodsclasses = goodsclassService.findByCond(Cnd.where("supid", "=", goodsclass.getFormatAttr("id")));
+			DynamicObject goodsclass = goodsclasses.get(i);
+			
+			// 查询首页海报3级分类
+			sql = new StringBuffer();
+			sql.append(" select goodsclass.* ").append("\n");
+			sql.append("   from t_app_goodsclass goodsclass, t_app_tag tag ").append("\n");
+			sql.append("  where 1 = 1 ").append("\n");
+			sql.append("    and goodsclass.supid = ").append(SQLParser.charValue(goodsclass.getFormatAttr("id"))).append("\n");
+			sql.append("    and goodsclass.id = tag.objid ").append("\n");
+			sql.append("    and tag.title = '首页海报3级分类' ").append("\n");
+			sql.append("    and tag.objclass = 'GoodsClass' ").append("\n");
+			
+			List<DynamicObject> subpostgoodsclasses = goodsclassService.sdao().queryForList(sql.toString());
+			
+			// 查询首页3级分类
+			sql = new StringBuffer();
+			sql.append(" select goodsclass.* ").append("\n");
+			sql.append("   from t_app_goodsclass goodsclass, t_app_tag tag ").append("\n");
+			sql.append("  where 1 = 1 ").append("\n");
+			sql.append("    and goodsclass.supid = ").append(SQLParser.charValue(goodsclass.getFormatAttr("id"))).append("\n");
+			sql.append("    and goodsclass.id = tag.objid ").append("\n");
+			sql.append("    and tag.title = '首页3级分类' ").append("\n");
+			sql.append("    and tag.objclass = 'GoodsClass' ").append("\n");
+			
+			List<DynamicObject> subgoodsclasses = goodsclassService.sdao().queryForList(sql.toString());
+			
+			// List<DynamicObject> subgoodsclasses = goodsclassService.findByCond(Cnd.where("supid", "=", goodsclass.getFormatAttr("id")));
+			goodsclass.setObj("subpostgoodsclasses", subpostgoodsclasses);
 			goodsclass.setObj("subgoodsclasses", subgoodsclasses);
-			goodsclasses.add(goodsclass);
 		}
 		
 		ro.put("goodsclasses", goodsclasses);
