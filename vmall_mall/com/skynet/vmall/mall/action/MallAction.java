@@ -158,7 +158,7 @@ public class MallAction extends BaseAction
 			goodsclass.setObj("subpostgoodsclasses", subpostgoodsclasses);
 			goodsclass.setObj("subgoodsclasses", subgoodsclasses);
 		}
-		
+
 		ro.put("goodsclasses", goodsclasses);
 		return ro;
 	}

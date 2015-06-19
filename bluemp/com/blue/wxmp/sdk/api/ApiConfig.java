@@ -11,8 +11,11 @@ public class ApiConfig {
 	private String appSecret = null;
 	private String encodingAesKey = null;
 	private boolean messageEncrypt = false; // 消息加密与否
-	
+
 	private String servercontext = null;
+
+	private String mchid = null;
+	private String key = null;
 
 	public ApiConfig() {
 
@@ -102,5 +105,21 @@ public class ApiConfig {
 
 	public void setServercontext(String servercontext) {
 		this.servercontext = servercontext;
+	}
+
+	public String getMchid() {
+		return mchid;
+	}
+
+	public void setMchid(String mchid) {
+		this.mchid = mchid;
+	}
+
+	public String getKey() {
+		return key;
+	}
+
+	public void setKey(String key) {
+		this.key = key;
 	}
 }

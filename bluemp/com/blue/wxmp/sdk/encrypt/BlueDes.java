@@ -13,11 +13,11 @@ public class BlueDes {
     /** 加密算法,可用 DES,DESede,Blowfish. */  
     private final static String ALGORITHM = "DES";  
     public static void main(String[] args) throws Exception {  
-//        String content = "/index?recommender=8802023232";  
-//        String str = BlueDes.encrypt(content);  
-//        System.out.println("str: " + str);  
+        String content = "/author/login/wxlogin.action?v=1";  
+        String str = BlueDes.encrypt(content);  
+        System.out.println("str: " + str);  
         
-        String str = "2062DEA2677CF998BE84DC65D43AC5D2B45669A2731EA1328C6C04BA1AA5DA4B";
+//         str = "	";
         str = BlueDes.decrypt(str);  
         System.out.println("str: " + str);  
     }  

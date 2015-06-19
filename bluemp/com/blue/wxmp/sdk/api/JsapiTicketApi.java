@@ -6,6 +6,9 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import org.nutz.http.Http;
 import org.nutz.http.Response;
+import org.nutz.json.Json;
+import org.nutz.log.Log;
+import org.nutz.log.Logs;
 
 /**
  * 认证并获取 access_token API
@@ -15,6 +18,8 @@ public class JsapiTicketApi {
 
 	// "https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token=ACCESS_TOKEN&type=jsapi";
 	private static String url = "https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token=%s&type=jsapi";
+	
+	private static final Log log = Logs.getLog(JsapiTicketApi.class);
 
 	// 利用 appId 与 accessToken 建立关联，支持多账户
 	private static Map<String, JsapiTicket> map = new ConcurrentHashMap<String, JsapiTicket>();
@@ -44,7 +49,7 @@ public class JsapiTicketApi {
 			
 			Response rs = Http.get(String.format(url, AccessTokenApi.getAccessToken().getAccessToken()));
 			result = new JsapiTicket(rs.getContent());
-
+			log.debugf("get jsticket:%s", Json.toJson(result));
 			if (result.isAvailable())
 				break;
 		}

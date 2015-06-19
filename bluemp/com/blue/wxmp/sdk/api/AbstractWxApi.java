@@ -1,28 +1,49 @@
 package com.blue.wxmp.sdk.api;
 
-import javax.servlet.http.HttpServletRequest;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.util.Map;
+import java.util.SortedMap;
+import java.util.TreeMap;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.nutz.castor.Castors;
 import org.nutz.http.Request;
 import org.nutz.http.Request.METHOD;
 import org.nutz.http.Response;
 import org.nutz.http.Sender;
 import org.nutz.json.Json;
 import org.nutz.lang.Lang;
+import org.nutz.lang.Xmls;
 import org.nutz.lang.random.R;
 import org.nutz.lang.util.NutMap;
 import org.nutz.log.Log;
 import org.nutz.log.Logs;
 import org.nutz.mvc.Mvcs;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.xml.sax.SAXException;
+
+import com.blue.wxmp.sdk.bean.WxPrePay;
+import com.blue.wxmp.sdk.bean.WxPrepayIdResult;
+import com.blue.wxmp.sdk.util.WxUtils;
 
 public abstract class AbstractWxApi implements WxApi {
 	protected final static Log log = Logs.get();
 
 	private static String sendTemplateMsgUrl = "https://api.weixin.qq.com/cgi-bin/message/template/send";
 
+	private static String callUnifiedOrderUrl = "https://api.mch.weixin.qq.com/pay/unifiedorder";
+
 	@Override
 	public String getCompleteUri(HttpServletRequest req) {
 		// TODO Auto-generated method stub
-		String uri = Mvcs.getRequestPath(req) + ".action" + (req.getQueryString() != null ? "?" + req.getQueryString() : "");
+		String uri = Mvcs.getRequestPathObject(req).getUrl() + (req.getQueryString() != null ? "?" + req.getQueryString() : "");
+
+		log.debugf("getCompleteUri:%s", ApiConfigKit.apiConfig.getServercontext() + uri);
+
 		return ApiConfigKit.apiConfig.getServercontext() + uri;
 	}
 
@@ -85,70 +106,115 @@ public abstract class AbstractWxApi implements WxApi {
 		if (!resp.isOK())
 			throw new IllegalArgumentException("resp code=" + resp.getStatus());
 		return Json.fromJson(NutMap.class, resp.getReader());
-		
-	
 	}
 
-//	@Override
-//	public WxPrepayIdResult getPrepayId(String openId, String outTradeNo, double amt, String body, String tradeType, String ip, String callbackUrl) {
-//		String nonce_str = System.currentTimeMillis() + "";
-//
-	
-//		SortedMap<String, String> packageParams = new TreeMap<String, String>();
-//		packageParams.put("appid", wxMpConfigStorage.getAppId());
-//		packageParams.put("mch_id", wxMpConfigStorage.getPartnerId());
-//		packageParams.put("nonce_str", nonce_str);
-//		packageParams.put("body", body);
-//		packageParams.put("out_trade_no", outTradeNo);
-//
-//		packageParams.put("total_fee", (int) (amt * 100) + "");
-//		packageParams.put("spbill_create_ip", ip);
-//		packageParams.put("notify_url", callbackUrl);
-//		packageParams.put("trade_type", tradeType);
-//		packageParams.put("openid", openId);
-//
-//		String sign = WxCryptUtil.createSign(packageParams, wxMpConfigStorage.getPartnerKey());
-//		String xml = "<xml>" + "<appid>" + wxMpConfigStorage.getAppId() + "</appid>" + "<mch_id>" + wxMpConfigStorage.getPartnerId() + "</mch_id>" + "<nonce_str>" + nonce_str + "</nonce_str>" + "<sign>" + sign + "</sign>" + "<body><![CDATA[" + body + "]]></body>" + "<out_trade_no>" + outTradeNo + "</out_trade_no>" + "<total_fee>" + packageParams.get("total_fee") + "</total_fee>" + "<spbill_create_ip>" + ip + "</spbill_create_ip>" + "<notify_url>" + callbackUrl + "</notify_url>" + "<trade_type>" + tradeType + "</trade_type>" + "<openid>" + openId + "</openid>" + "</xml>";
-//
-//		HttpPost httpPost = new HttpPost("https://api.mch.weixin.qq.com/pay/unifiedorder");
-//		if (httpProxy != null) {
-//			RequestConfig config = RequestConfig.custom().setProxy(httpProxy).build();
-//			httpPost.setConfig(config);
-//		}
-//
-//		StringEntity entity = new StringEntity(xml, Consts.UTF_8);
-//		httpPost.setEntity(entity);
-//		try {
-//			CloseableHttpResponse response = httpClient.execute(httpPost);
-//			String responseContent = Utf8ResponseHandler.INSTANCE.handleResponse(response);
-//			XStream xstream = XStreamInitializer.getInstance();
-//			xstream.alias("xml", WxMpPrepayIdResult.class);
-//			WxMpPrepayIdResult wxMpPrepayIdResult = (WxMpPrepayIdResult) xstream.fromXML(responseContent);
-//			return wxMpPrepayIdResult;
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		}
-//		return new WxMpPrepayIdResult();
-//	}
-//
-//	@Override
-//	public Map<String, String> getJSSDKPayInfo(String openId, String outTradeNo, double amt, String body, String tradeType, String ip, String callbackUrl) {
-//		WxMpPrepayIdResult wxMpPrepayIdResult = getPrepayId(openId, outTradeNo, amt, body, tradeType, ip, callbackUrl);
-//		String prepayId = wxMpPrepayIdResult.getPrepay_id();
-//		if (prepayId == null || prepayId.equals("")) {
-//			throw new RuntimeException("get prepayid error");
-//		}
-//
-//		Map<String, String> payInfo = new HashMap<String, String>();
-//		payInfo.put("appId", wxMpConfigStorage.getAppId());
-//		// 支付签名时间戳，注意微信jssdk中的所有使用timestamp字段均为小写。但最新版的支付后台生成签名使用的timeStamp字段名需大写其中的S字符
-//		payInfo.put("timeStamp", String.valueOf(System.currentTimeMillis() / 1000));
-//		payInfo.put("nonceStr", System.currentTimeMillis() + "");
-//		payInfo.put("package", "prepay_id=" + prepayId);
-//		payInfo.put("signType", "MD5");
-//
-//		String finalSign = WxCryptUtil.createSign(payInfo, wxMpConfigStorage.getPartnerKey());
-//		payInfo.put("sign", finalSign);
-//		return payInfo;
-//	}
+	@Override
+	public String getPrepayId(String body, String notifyurl, String orderno, String mchid, String amt, String spbill_create_ip, String openId, String payKey) {
+		String nonceStr = R.UU64();
+		SortedMap<String, String> signParams = new TreeMap<String, String>();
+		signParams.put("appid", ApiConfigKit.apiConfig.getAppId());
+		signParams.put("body", body); // 商品描述
+		signParams.put("notify_url", notifyurl); // 通知地址
+		signParams.put("out_trade_no", orderno); // 商户订单号
+		signParams.put("mch_id", mchid); // 设置商户号
+		signParams.put("total_fee", amt); // 商品总金额,以分为单位
+		signParams.put("spbill_create_ip", spbill_create_ip); // 订单生成机器IP，指用户浏览器端IP
+		signParams.put("trade_type", "JSAPI");
+		signParams.put("nonce_str", nonceStr);
+		signParams.put("openid", openId);
+		String sign = "";
+		try {
+			sign = WxUtils.createSign(signParams, payKey);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		// 增加非参与签名的额外参数
+		// asUnifiedorder(signParams);
+
+		signParams.put("sign", sign);
+
+		Request req = Request.create(callUnifiedOrderUrl, METHOD.POST);
+		if (body != null)
+			req.setData(asUnifiedorderXML(signParams));
+		Response resp = Sender.create(req).send();
+		if (!resp.isOK())
+			throw new IllegalArgumentException("resp code=" + resp.getStatus());
+		String xmlstr = resp.getContent();
+
+		 Document doc = Xmls.xml(new ByteArrayInputStream(xmlstr.getBytes()));
+		 Element root = doc.getDocumentElement();
+		 Map wr = Xmls.asMap(root);
+		 
+		 SortedMap<String, String> sa = new TreeMap<String, String>();
+		 
+		 
+		 sa.put("appId",signParams.get("appid"));
+		 sa.put("timeStamp",String.valueOf(System.currentTimeMillis() / 1000));
+		 sa.put("nonceStr",signParams.get("nonce_str"));
+		 sa.put("package",String.format("prepay_id=%s", wr.get("prepay_id")));
+		 sa.put("signType","MD5");
+		 
+		 String paySign = WxUtils.createSign(sa, payKey);
+		 sa.put("paySign",paySign);
+		 
+		 wr.put("sa", sa);
+		 
+		 
+		/*
+		 * {
+   "return_code" :"SUCCESS",
+   "return_msg" :"OK",
+   "appid" :"wxd986013eeb54f390",
+   "mch_id" :"1247511701",
+   "nonce_str" :"mPhw0Oa85VYtcGsm",
+   "sign" :"1F4E5F28D879C9DD9B3AE2ECFFE14736",
+   "result_code" :"SUCCESS",
+   "prepay_id" :"wx20150618143949424399f9890214617868",
+   "trade_type" :"JSAPI"
+}
+		 * 
+		 */
+		 
+//		    string paysign = paysignReqHandler.CreateMd5Sign("key",Key);
+//		 
+//		    paysignReqHandler.SetParameter("", paysign);
+		
+
+		log.debugf("preycall result= \n %s",Json.toJson(wr));
+
+		return Json.toJson(wr);
+
+		// String prePayId = WxPayHelper.getPrePayId(reqPrePayUrl,
+		// signParams);// 预支付订单号
+	}
+
+	private static WxPrePay asUnifiedorder(SortedMap<String, String> signParams) {
+		return new WxPrePay(signParams.get("appid"), signParams.get("body"), signParams.get("mch_id"), signParams.get("nonce_str"), signParams.get("notify_url"), signParams.get("openid"), signParams.get("out_trade_no"), signParams.get("spbill_create_ip"), signParams.get("total_fee"), signParams.get("trade_type"), signParams.get("sign"));
+
+	}
+
+	private static String asUnifiedorderXML(SortedMap<String, String> signParams) {
+		StringBuffer str = new StringBuffer();
+		str.append("<xml>");
+		str.append("<appid>%s</appid>");
+		str.append("<body>%s</body>");
+		str.append("<mch_id>%s</mch_id>");
+		str.append("<nonce_str>%s</nonce_str>");
+		str.append("<notify_url>%s</notify_url>");
+		str.append("<openid>%s</openid>");
+		str.append("<out_trade_no>%s</out_trade_no>");
+		str.append("<spbill_create_ip>%s</spbill_create_ip>");
+		str.append("<total_fee>%s</total_fee>");
+		str.append("<trade_type>%s</trade_type>");
+		str.append("<sign>%s</sign>");
+		// str.append("<attach>%s</attach>");
+
+		str.append("</xml>");
+		String r = String.format(str.toString(), signParams.get("appid"), signParams.get("body"), signParams.get("mch_id"), signParams.get("nonce_str"), signParams.get("notify_url"), signParams.get("openid"), signParams.get("out_trade_no"), signParams.get("spbill_create_ip"), signParams.get("total_fee"), signParams.get("trade_type"), signParams.get("sign"));
+		log.debugf("xml contents is %s", r);
+
+		return r;
+
+	}
+
 }

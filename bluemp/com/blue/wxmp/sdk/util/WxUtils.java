@@ -4,13 +4,18 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
+import java.io.UnsupportedEncodingException;
 import java.io.Writer;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
+import java.util.SortedMap;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -25,6 +30,8 @@ import org.nutz.mvc.View;
 import org.nutz.mvc.view.HttpStatusView;
 import org.nutz.mvc.view.RawView;
 import org.nutz.mvc.view.ViewWrapper;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 import com.blue.wxmp.sdk.bean.WxArticle;
 import com.blue.wxmp.sdk.bean.WxEventType;
@@ -114,8 +121,6 @@ public class WxUtils {
 			out.setToUserName(to);
 		return out;
 	}
-
-	
 
 	public static String cdata(String str) {
 		if (Strings.isBlank(str))
@@ -423,11 +428,56 @@ public class WxUtils {
 	public static WxInMsg convert(String data) {
 		return convert(new ByteArrayInputStream(data.getBytes()));
 	}
-	
-	
-	
-	
 
+	public static void main(String[] args) throws UnsupportedEncodingException, NoSuchAlgorithmException {
 
+//		String myString = "appid=wxd986013eeb54f390&body=测试订单&mch_id=1247511701&nonce_str=FtPp34fiGWyesf5Jh4SD_-&notify_url=http://www.rbtalking.com/vmall/test&openid=ofcJis8jiU2TmU97p-sbOVZYtehs&out_trade_no=order00010000001&spbill_create_ip=10.0.0.1&total_fee=1&trade_type=JSAPI&key=arv2v6PHLmaVFDsXOH3vORzHvC7QcDvK";
+//
+//		byte[] bytesOfMessage = myString.getBytes("UTF-8");
+//
+//		MessageDigest md = MessageDigest.getInstance("MD5");
+//		byte[] array = md.digest(bytesOfMessage);
+//		StringBuffer sb = new StringBuffer();
+//		for (int i = 0; i < array.length; ++i) {
+//			sb.append(Integer.toHexString((array[i] & 0xFF) | 0x100).substring(1, 3));
+//		}
+//
+//		System.out.println(sb.toString());
+//		
+//		
+//		System.out.println(Lang.md5(myString));
+//		
+//		System.out.println(Md5.MD5Encode(myString));
+
+		
+		
+		
+		String xmlStr = "<xml><return_code><![CDATA[SUCCESS]]></return_code><return_msg><![CDATA[OK]]></return_msg><appid><![CDATA[wxd986013eeb54f390]]></appid><mch_id><![CDATA[1247511701]]></mch_id><nonce_str><![CDATA[yT7HM9b1RrZzCzkA]]></nonce_str><sign><![CDATA[6745BE7FB6DCB7CFC0B441EEE81161D2]]></sign><result_code><![CDATA[SUCCESS]]></result_code><prepay_id><![CDATA[wx201506181006189060ae01430185478398]]></prepay_id><trade_type><![CDATA[JSAPI]]></trade_type></xml>";
+        Document doc = Xmls.xml(new ByteArrayInputStream(xmlStr.getBytes()));
+        Element root = doc.getDocumentElement();
+        Map<String, Object> map = Xmls.asMap(root);
+        
+        log.debugf("a=%s", map);
+        
+	}
+
+	public static String createSign(SortedMap<String, String> packageParams, String paykey) {
+		StringBuffer sb = new StringBuffer();
+		Set es = packageParams.entrySet();
+		Iterator it = es.iterator();
+		while (it.hasNext()) {
+			Map.Entry entry = (Map.Entry) it.next();
+			String k = (String) entry.getKey();
+			String v = (String) entry.getValue();
+			if (null != v && !"".equals(v) && !"sign".equals(k) && !"key".equals(k)) {
+				sb.append(k + "=" + v + "&");
+			}
+		}
+		sb.append("key=" + paykey);
+
+		String sign = Lang.md5(sb.toString()).toUpperCase(); 
+		log.infof("paramsStr= %s \n sign=%s",sb.toString(),sign);														// "utf-8").toUpperCase();
+		return sign;
+	}
 
 }

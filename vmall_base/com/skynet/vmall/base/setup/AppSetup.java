@@ -35,6 +35,8 @@ public class AppSetup implements Setup
 		ac.setAppId(pp.get("weixin_appid"));
 		ac.setAppSecret(pp.get("weixin_appsecret"));
 		ac.setServercontext(pp.get("weixin_servercontext"));
+		ac.setMchid(pp.get("weixin_mchid"));
+		ac.setKey(pp.get("weixin_paykey"));
 		ApiConfigKit ack = new ApiConfigKit();
 		ack.setApiConfig(ac);
 
