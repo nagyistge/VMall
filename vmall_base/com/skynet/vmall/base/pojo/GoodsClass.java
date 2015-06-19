@@ -8,6 +8,7 @@ import com.skynet.framework.pojo.IdEntity;
 @Table("T_APP_GOODSCLASS")
 public class GoodsClass extends IdEntity
 {
+	// 基本信息
 	@Column
 	private String cname; // 分类名称	
 	
@@ -20,9 +21,13 @@ public class GoodsClass extends IdEntity
 	@Column
 	private String dealerid; // 商家（会员）标识
 	
+	// 样式信息
 	@Column
 	private String pic; // 分类图标地址
 
+	@Column
+	private String floorclass; // 首页分类样式
+	
 	public String getCname()
 	{
 		return cname;
@@ -71,6 +76,16 @@ public class GoodsClass extends IdEntity
 	public void setPic(String pic)
 	{
 		this.pic = pic;
+	}
+
+	public String getFloorclass()
+	{
+		return floorclass;
+	}
+
+	public void setFloorclass(String floorclass)
+	{
+		this.floorclass = floorclass;
 	}
 
 }

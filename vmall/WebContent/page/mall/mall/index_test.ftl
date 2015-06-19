@@ -23,7 +23,7 @@
 	
 	<#list obj.goodsclasses as goodsclass>
 	
-	<div data-spm="${goodsclass.internal}" class="floor">
+	<div data-spm="${goodsclass.internal}" class="floor floor-man">
         <h3><a href="${base}/goods/goods/channel.action?classid=${goodsclass.id}&amp;internal=${goodsclass.internal}" target="_top"><span></span>${goodsclass.cname}<span>${goodsclass.cname}</span></a></h3>
         	<div class="hot-key">
         		<#if goodsclass.subpostgoodsclasses?size &gt; 0>

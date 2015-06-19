@@ -114,16 +114,15 @@ public class MallAction extends BaseAction
 	@Ok("->:/page/mall/mall/index_test.ftl")
 	public Map index_test(@Param("..") Map map) throws Exception
 	{
-		// 查询首页海报2级分类
+		// 查询首页海报1级分类
 		StringBuffer sql = new StringBuffer();
 		sql.append(" select goodsclass.* ").append("\n");
 		sql.append("   from t_app_goodsclass goodsclass, t_app_tag tag ").append("\n");
 		sql.append("  where 1 = 1 ").append("\n");
 		sql.append("    and goodsclass.id = tag.objid ").append("\n");
-		sql.append("    and tag.title = '首页海报2级分类' ").append("\n");
+		sql.append("    and tag.title = '首页海报1级分类' ").append("\n");
 		sql.append("    and tag.objclass = 'GoodsClass' ").append("\n");	
 		
-		// 查询首页海报2级分类
 		List<DynamicObject> goodsclasses =  goodsclassService.sdao().queryForList(sql.toString());
 
 		for (int i = 0; i < goodsclasses.size(); i++)
@@ -135,7 +134,7 @@ public class MallAction extends BaseAction
 			sql.append(" select goodsclass.* ").append("\n");
 			sql.append("   from t_app_goodsclass goodsclass, t_app_tag tag ").append("\n");
 			sql.append("  where 1 = 1 ").append("\n");
-			sql.append("    and goodsclass.supid = ").append(SQLParser.charValue(goodsclass.getFormatAttr("id"))).append("\n");
+			sql.append("    and goodsclass.internal like ").append(SQLParser.charLikeRightValue(goodsclass.getFormatAttr("internal"))).append("\n");
 			sql.append("    and goodsclass.id = tag.objid ").append("\n");
 			sql.append("    and tag.title = '首页海报3级分类' ").append("\n");
 			sql.append("    and tag.objclass = 'GoodsClass' ").append("\n");
@@ -147,7 +146,7 @@ public class MallAction extends BaseAction
 			sql.append(" select goodsclass.* ").append("\n");
 			sql.append("   from t_app_goodsclass goodsclass, t_app_tag tag ").append("\n");
 			sql.append("  where 1 = 1 ").append("\n");
-			sql.append("    and goodsclass.supid = ").append(SQLParser.charValue(goodsclass.getFormatAttr("id"))).append("\n");
+			sql.append("    and goodsclass.internal like ").append(SQLParser.charLikeRightValue(goodsclass.getFormatAttr("internal"))).append("\n");
 			sql.append("    and goodsclass.id = tag.objid ").append("\n");
 			sql.append("    and tag.title = '首页3级分类' ").append("\n");
 			sql.append("    and tag.objclass = 'GoodsClass' ").append("\n");

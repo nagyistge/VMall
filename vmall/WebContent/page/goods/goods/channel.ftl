@@ -23,6 +23,29 @@
 		<section class="relate-collect hide"></section>
 		<section class="relate-style hide"></section>
 		<section class="waterfall">
+		
+		<nav data-spm="1006" class="tabs">
+	      
+	      
+	      <div data-sort="popular_desc" data-spm-click="gostr=/aitaobao.3;locaid=switchsort;index=0" class="tab-item popular_desc active" data-spm-anchor-id="a311n.7676424.1006.switchsort">
+	        人气
+	        
+	      </div>
+	      
+	      
+	      <div data-sort="sales_desc" data-spm-click="gostr=/aitaobao.3;locaid=switchsort;index=1" class="tab-item  sales_desc" data-spm-anchor-id="a311n.7676424.1006.switchsort">
+	        销量
+	        
+	      </div>
+	      
+	      
+	      <div data-sort="price_asc:price_desc" data-spm-click="gostr=/aitaobao.3;locaid=switchsort;index=2" class="tab-item sort-price price_asc" data-spm-anchor-id="a311n.7676424.1006.switchsort">
+	        价格
+	        <b class="asc arrow arrow-top"></b><b class="desc arrow arrow-bottom"></b>
+	      </div>
+	      
+	    </nav>		
+		
 		<div class="waterfall-list">
 			<div class="waterfall-column" style="width:50%;" id="waterfall-column1">
 			</div>
@@ -30,6 +53,7 @@
 			<div class="waterfall-column" style="width:50%;" id="waterfall-column2">
 			</div>			
 		</div>
+		</section>
 	</div>
     <div id="payment_p" style="display:block">
     <div id="paymentp"></div>
