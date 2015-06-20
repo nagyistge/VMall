@@ -25,25 +25,11 @@
 		<section class="waterfall">
 		
 		<nav data-spm="1006" class="tabs">
-	      
-	      
-	      <div data-sort="popular_desc" data-spm-click="gostr=/aitaobao.3;locaid=switchsort;index=0" class="tab-item popular_desc active" data-spm-anchor-id="a311n.7676424.1006.switchsort">
-	        人气
-	        
-	      </div>
-	      
-	      
-	      <div data-sort="sales_desc" data-spm-click="gostr=/aitaobao.3;locaid=switchsort;index=1" class="tab-item  sales_desc" data-spm-anchor-id="a311n.7676424.1006.switchsort">
-	        销量
-	        
-	      </div>
-	      
-	      
-	      <div data-sort="price_asc:price_desc" data-spm-click="gostr=/aitaobao.3;locaid=switchsort;index=2" class="tab-item sort-price price_asc" data-spm-anchor-id="a311n.7676424.1006.switchsort">
-	        价格
+			<div type="popular" data-sort="popular_desc" data-spm-click="" class="tab-item popular_desc active" data-spm-anchor-id="">人气</div>
+			<div type="sales" data-sort="sales_desc" data-spm-click="" class="tab-item  sales_desc" data-spm-anchor-id="">销量</div>
+			<div type="price" data-sort="price_asc:price_desc" data-spm-click="" class="tab-item sort-price price_asc" data-spm-anchor-id="">价格
 	        <b class="asc arrow arrow-top"></b><b class="desc arrow arrow-bottom"></b>
-	      </div>
-	      
+	        </div>
 	    </nav>		
 		
 		<div class="waterfall-list">
@@ -53,6 +39,7 @@
 			<div class="waterfall-column" style="width:50%;" id="waterfall-column2">
 			</div>			
 		</div>
+		
 		</section>
 	</div>
     <div id="payment_p" style="display:block">
@@ -74,19 +61,20 @@ var _page = 1;
 var _pagesize = 20;
 var _maxpage = "N";
 
-function pullUpAction () 
+function showgoods (type) 
 {
-	
 	if(_maxpage == "Y")
 	{
 		return;
 	}
 	
+	
+	
 	$.ajax({
 		type:'post',
 		url:'${base}/goods/goods/channelshow.action',
 		contentType: "application/json",
-		data:JSON.stringify({"classid":"${obj.goodsclass.id}","_page":_page,"_pagesize":_pagesize}),
+		data:JSON.stringify({"classid":"${obj.goodsclass.id}","_orderby":type,"_order":asc,"_page":_page,"_pagesize":_pagesize}),
 		cache:false,
 		async:true,
 		success:function(data)
@@ -160,9 +148,18 @@ function pullUpAction ()
 	})	
 }
 
-$("#submit").click(function() {pullUpAction()});
+$("#submit").click(function() {showgoods()});
+$(".tabs>div").click(function(){
+	
+	$(".tabs>div").removeClass("active");
+	$(this).addClass("active");
+	
+	var type=$(this).attr("type");
+	$("#"+id).show();
+	eval("page_show"+id+"();");
+});
 
-pullUpAction();
+showgoods("popular");
 
 </script>
 

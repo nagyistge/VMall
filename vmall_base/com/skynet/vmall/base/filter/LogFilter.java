@@ -5,7 +5,6 @@ import java.sql.Timestamp;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.mvc.ActionContext;
 import org.nutz.mvc.ActionFilter;
@@ -23,8 +22,7 @@ import com.skynet.framework.spec.GlobalConstants;
 @IocBean
 public class LogFilter implements ActionFilter
 {
-	@Inject
-	private LogService logService;
+
 
 	private String actionname;
 
@@ -68,6 +66,7 @@ public class LogFilter implements ActionFilter
 			log.setSport(sport);
 			log.setLogtime(logtime);
 
+			LogService logService = (LogService)Mvcs.getIoc().get(LogService.class, "logService");
 			logService.sdao().insert(log);
 		}
 		catch (Exception e)
