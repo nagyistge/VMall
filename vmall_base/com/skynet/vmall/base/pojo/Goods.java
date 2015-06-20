@@ -70,6 +70,18 @@ public class Goods extends IdEntity
 	@Column
 	private String pic; // 商品图片（URL）
 	
+	@Column
+	private int popular; // 人气（访问量）
+	
+	@Column
+	private int sales; // 销售量
+	
+	@Column
+	private int popularinit; // 人气（初始量）
+	
+	@Column
+	private int salesinit; // 销售量（初始量）	
+	
 	public String getClassid()
 	{
 		return classid;
@@ -258,6 +270,56 @@ public class Goods extends IdEntity
 	public void setPic(String pic)
 	{
 		this.pic = pic;
+	}
+
+	public String getSpeccode()
+	{
+		return speccode;
+	}
+
+	public void setSpeccode(String speccode)
+	{
+		this.speccode = speccode;
+	}
+
+	public int getPopular()
+	{
+		return popular;
+	}
+
+	public void setPopular(int popular)
+	{
+		this.popular = popular;
+	}
+
+	public int getSales()
+	{
+		return sales;
+	}
+
+	public void setSales(int sales)
+	{
+		this.sales = sales;
+	}
+
+	public int getPopularinit()
+	{
+		return popularinit;
+	}
+
+	public void setPopularinit(int popularinit)
+	{
+		this.popularinit = popularinit;
+	}
+
+	public int getSalesinit()
+	{
+		return salesinit;
+	}
+
+	public void setSalesinit(int salesinit)
+	{
+		this.salesinit = salesinit;
 	}
 
 }
