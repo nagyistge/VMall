@@ -1,51 +1,20 @@
 <html>
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
-	<meta content="telephone=no" name="format-detection">
-	<meta name="baidu-site-verification" content="t7oDT96Amk" />
-	<title>微猫商城</title>
-	<meta content="微猫商城购物，正品商城，品牌特卖会" name="keywords">
-	<meta content="微猫商城购物，正品商城，品牌特卖会" name="description">
-	<meta name="sogou_site_verification" content="G7nmLR75yc" />
-	<meta name="baidu-tc-cerfication"
-	content="0a8c6d28b570b218f78510c29be4529b" />
-	<meta name="360-site-verification"
-	content="8b6121969d78afda8caeb69053fa29d9" />
-	<script src="${base}/lib/jquery-2.1.1.min.js"></script>
-	<script src="${base}/lib/jquery-ui.min.js"></script>
-
-	<link rel="stylesheet" type="text/css" href="${base}/lib/jd/css/base2013.css" charset="gbk">
-	<link rel="stylesheet" type="text/css" href="${base}/lib/jd/css/goods.css" charset="gbk">	
-
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+<meta content="telephone=no" name="format-detection" />
+<link rel="stylesheet" type="text/css" href="${base}/lib/jd/css/base2013.css" charset="gbk">
+<link rel="stylesheet" type="text/css" href="${base}/lib/jd/css/goods.css" charset="gbk">	
+<script src="${base}/lib/jquery-2.1.1.min.js"></script>
+<script src="${base}/lib/jquery-ui.min.js"></script>
 </head>
 <body id="body">
-	<header>
-		<div class="new-header">
-			<a href="javascript:pageBack();" class="new-a-back" id="backUrl"><span>返回</span></a>
-			<h2>商品详情</h2>
-		</div>
-		<div class="new-jd-tab" style="display:none" id="jdkey">
-			<div class="new-tbl-type">
-				<a href="/index.html?sid=b92ff74dfab64b42d614b6243db2b908" class="new-tbl-cell">
-					<span class="icon">首页</span>
-					<p style="color:#6e6e6e;">首页</p>
-				</a>
-				<a href="http://m.jd.com/category/all.html?sid=b92ff74dfab64b42d614b6243db2b908" class="new-tbl-cell">
-					<span class="icon2">分类搜索</span>
-					<p style="color:#6e6e6e;">分类搜索</p>
-				</a>
-				<a href="javascript:void(0)" id="html5_cart" class="new-tbl-cell">
-					<span class="icon3">购物车</span>
-					<p style="color:#6e6e6e;">购物车</p>
-				</a>
-				<a href="http://home.m.jd.com/myJd/home.action?sid=b92ff74dfab64b42d614b6243db2b908" class="new-tbl-cell">
-					<span class="icon4">我的京东</span>
-					<p style="color:#6e6e6e;">我的京东</p>
-				</a>
-			</div>
-		</div>
-	</header>
+<header>
+	<div class="new-header">
+		<a href="javascript:pageBack();" class="new-a-back" id="backUrl"><span>返回</span></a>
+		<h2>商品详情</h2>
+	</div>
+</header>
 
 	<div id="mainLayout">
 		<div id="mainStay" class="new-wt">
@@ -54,42 +23,72 @@
 					<div class="detail-img">
 						<div id="_zoom" class="imgbox">
 							<div id="imgSlider" class="imgbox-i" style="position:relative;left:0px;"> 
-								<span class="tbl-cell"><img width="320" height="292" seq="0" src="http://m.360buyimg.com/n12/jfs/t1165/188/863038753/409368/70d475f5/554c80c4N3816fac9.png!q70.jpg"></span>
+								<span class="tbl-cell"><img width="320" height="292" seq="0" src="${base}/${obj.goods.pic}"></span>
 							</div>
 							<div class="last-msg-txt" id="tips"></div>
 						</div>
-						<input type="hidden" value="http://m.360buyimg.com/n12/jfs/t1165/188/863038753/409368/70d475f5/554c80c4N3816fac9.png!q70.jpg,http://m.360buyimg.com/n12/jfs/t799/356/699872934/136169/3dc44d03/553efb72N64085327.jpg!q70.jpg,http://m.360buyimg.com/n12/jfs/t943/171/698073257/102904/1f851028/553efb73Neac712fd.jpg!q70.jpg,http://m.360buyimg.com/n12/jfs/t1042/244/718407082/114200/f188bf1d/553efb73Nd89903fa.jpg!q70.jpg,http://m.360buyimg.com/n12/jfs/t1078/238/721547497/141969/e1a159f/553efb74Nc2a36396.jpg!q70.jpg," id="imgs">
-						<div class="detail-price"> <span id="price" class="p-price">¥${obj.goods.saleprice}</span> <span id="imgpage" class="pagenum">1/5</span> <a id="attention" class="btn-sc"></a> </div>
+						<input type="hidden" value="" id="imgs">
+						<div class="detail-price"> 
+							<span id="price" class="p-price">¥${obj.goods.saleprice}</span>
+							<span id="imgpage" class="pagenum">1/5</span> 
+							<a id="attention" class="btn-sc"></a> 
+						</div>
 					</div>
 				</div>
 				<div id="spinner1" class="spinner" style="left:50%;position: absolute;height:120px;margin-top:50px;z-index:1000"></div>
 				<div class="goodsinfo">
 					<h1 id="title" class="detail-title"> 
 					<a href="/detail/1539889025.html?sid=b92ff74dfab64b42d614b6243db2b908" class="dis-blk" id="wareName">${obj.goods.cname}<#if obj.goods.spec!="">|${obj.goods.spec}</#if>|<#if obj.goods.code!="">${obj.goods.code} </#if></a></h1>
-					<p id="promotionInfo" class="subtitle">初夏特惠！手机下单更优惠！！</p>
+					<p id="promotionInfo" class="subtitle">&nbsp;<#-- 初夏特惠！手机下单更优惠！！ 后期增加--></p>
 					</div>
 				</div>
 				<span class="pop-attention" style="position:absolute;z-index:9999;display:none" id="save">
-					<span class="icon-succ" id="guanzhu">关注成功</span>
+					<span class="icon-succ" id="guanzhu"><#--关注成功 --></span>
 				</span>
+				
 				<div class="saleinfo miblebox">
+				
 					<dl class="list-entry"> 
-						<dt class="row01" id="promotionitem">  <span class="col01">促销：</span> <span class="col02 reverse-cell" id="sale"> <i class="icon-bg02">赠券</i>  <i class="icon-bg02">多买优惠</i> </span><em class="icon-up"></em></dt>
+						<dt class="row01" id="promotionitem">
+							<span class="col01">促销：</span>
+
+							<span class="col02 reverse-cell" id="sale"> 
+								<i class="icon-bg02">赠券</i>  
+								<i class="icon-bg02">多买优惠</i> 
+							</span>
+							<em class="icon-up"></em>
+	
+						</dt>
+
 						<dd class="row02">
 							<ul class="list-saleinfo" id="saleInfo">
-								<li> <span class="col02"> <em class="icon-bg02">赠券</em> <span class="txt01">{赠券规则}</span> </span> </li>
-								<li> <span class="col02"> <em class="icon-bg02">多买优惠</em> <span class="txt01">{满2件，总价打9.0折；满3件，总价打8.5折；满4件，总价打8.0折；}</span> </span> </li>
+								<li>
+									<span class="col02"> 
+										<em class="icon-bg02">赠券</em>
+										<span class="txt01">满2件，总价打9.0折；满3件，总价打8.5折；满4件，总价打8.0折；</span>
+									</span>
+								</li>
+								<li>
+									<span class="col02">
+										<em class="icon-bg02">多买优惠</em> 
+										<span class="txt01">满2件，总价打9.0折；满3件，总价打8.5折；满4件，总价打8.0折；</span>
+									</span>
+								</li>
 							</ul>
 						</dd>
+
 					</dl>
+		
+					
 					<dl class="list-entry"> 
 						<dt class="row01">
-							<span class="col01">规格：<#list obj.currentgoodsspecs as currentspec>${currentspec.spec}&nbsp;</#list></span> 
+							<span class="col01">规格：</span> 
 							<span class="col02" id="guige">
+								<#list obj.currentgoodsspecs as currentspec>${currentspec.spec}&nbsp;</#list>
 								<span id="amount">1件<span></span><em class="icon-up"></em></span>
 							</span>
 						</dt>
-						<dd class="row02" style="diskplay:block">
+						<dd class="row02">
 							<#list obj.goodsclassspeces as classspec>
 							<section class="select" id="proColor">
 								<p class="label">${classspec.specclass}</p>
@@ -129,7 +128,7 @@
 									<span id="townName">${obj.member.town}</span>
 									</p>
 									
-									<p><span id="address">${obj.member.addr}</span></p>
+									<#-- <p><span id="address">${obj.member.addr}</span></p> -->
 									<i class="icon icon-location"></i>
 								</div>
 							</span>
@@ -181,7 +180,7 @@
 								<a href="${base}/goods/goods/look.action?id=${likegoods.id}" class="jd-slider-item" style="width: 102px;">
 								<div class="pro-img">
 									<span class="img">
-									<img width="80" height="80" alt="img" src="http://m.360buyimg.com/n7/jfs/t1084/187/827540238/683832/ab96f38/554d737dN2f98a8ba.png"></span>
+									<img width="80" height="80" alt="img" src="${base}/${likegoods.pic}"></span>
 									<span class="pro-title">${likegoods.cname}</span> 
 									<span class="pro-price"><span class="pro-price">¥${likegoods.promoteprice}</span>
 									</span>
@@ -189,8 +188,6 @@
 								</a>
 
 								</#list>	
-
-
 
 							</div>
 						</div>
@@ -487,7 +484,5 @@ function page_tocart()
 
 
 </script>
-
-
 </body>
 </html>

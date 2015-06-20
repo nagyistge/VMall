@@ -6,6 +6,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
+import org.nutz.dao.Chain;
 import org.nutz.dao.Cnd;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
@@ -19,7 +20,9 @@ import org.nutz.mvc.annotation.Param;
 
 import com.skynet.framework.action.BaseAction;
 import com.skynet.framework.services.db.dybeans.DynamicObject;
+import com.skynet.framework.services.function.Types;
 import com.skynet.framework.spec.GlobalConstants;
+import com.skynet.vmall.base.pojo.Goods;
 import com.skynet.vmall.goods.service.GoodsClassService;
 import com.skynet.vmall.goods.service.GoodsClassSpecService;
 import com.skynet.vmall.goods.service.GoodsService;
@@ -90,10 +93,9 @@ public class GoodsAction extends BaseAction
 	public Map channelshow(@Param("..") Map map, @Param("_page") String page, @Param("_pagesize") String pagesize) throws Exception
 	{
 		String classid = (String) map.get("classid");
+		
 		DynamicObject goodsclass = goodsclassService.locate(classid);
-
 		DynamicObject supgoodsclass = goodsclassService.locateBy(Cnd.where("id", "=", goodsclass.getFormatAttr("supid")));
-
 		List<DynamicObject> subgoodsclasses = goodsclassService.findByCond(Cnd.where("supid", "=", classid));
 
 		map.put("_page", Strings.sNull(page, "1"));
@@ -150,7 +152,10 @@ public class GoodsAction extends BaseAction
 		DynamicObject member = memberService.locate(userid);
 
 		String id = (String) map.get("id");
+		// 记录浏览人气值
 		DynamicObject goods = goodsService.locate(id);
+		
+		goodsService.sdao().update(Goods.class, Chain.make("popular", Types.parseInt(goods.getFormatAttr("popular"), 0)+1), Cnd.where("id","=",id));
 		
 		List<DynamicObject> goodsclassspeces = goodsclassspecService.getGoodsClassSpeces(goods.getFormatAttr("classid"));
 		List<DynamicObject> goodsspecs = goodsService.findgoodsspec(goods.getFormatAttr("supid"));

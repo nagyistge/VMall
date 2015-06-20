@@ -39,15 +39,17 @@ public class GoodsService extends SkynetNameEntityService<Goods>
 	// 浏览商品
 	public List<DynamicObject> channel(Map map) throws Exception
 	{
+		String internal = (String)map.get("internal");
+		String ctype = (String)map.get("ctype");
+		String _orderby = (String)map.get("_orderby");
+		String _order = StringToolKit.formatText((String)map.get("_order"),"asc");
+		
 		int page = Types.parseInt((String) map.get("_page"), 1);
 		int pagesize = Types.parseInt((String) map.get("_pagesize"), 10);
 
 		int startindex = (page - 1) * pagesize;
 		int endindex = page * pagesize;
 		
-		String internal = (String)map.get("internal");
-		String ctype = (String)map.get("ctype");
-
 		StringBuffer sql = new StringBuffer();
 		sql.append(" select * from t_app_goods goods").append("\n");
 		sql.append("  where 1 = 1 ").append("\n");
@@ -56,6 +58,13 @@ public class GoodsService extends SkynetNameEntityService<Goods>
 		if(!StringToolKit.isBlank(ctype))
 		{
 			sql.append("  and goods.ctype = ").append(SQLParser.charValue(ctype)).append("\n");
+		}
+		
+		// 排序条件
+		if(!StringToolKit.isBlank(_orderby))
+		{
+			sql.append("  order by ").append(_orderby);
+			sql.append(" ").append(_order);
 		}
 		
 		// sql.append("  order by goods.cname ").append("\n");
@@ -103,6 +112,7 @@ public class GoodsService extends SkynetNameEntityService<Goods>
 		sql.append("  where 1 = 1 ").append("\n");
 		sql.append("    and classinternal like ").append(SQLParser.charLikeRightValue(internal)).append("\n");
 		sql.append("    and ctype = '货品' ").append("\n");
+		sql.append("    and id <> ").append(SQLParser.charValue(id)).append("\n");
 		
 		if(!StringToolKit.isBlank(saleprice))
 		{

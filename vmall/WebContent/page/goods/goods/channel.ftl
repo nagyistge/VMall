@@ -106,7 +106,7 @@ function page_showgoods (type, asc)
 				
 				var html = '';
 				html += '<a href="/vmall/goods/goods/look.action?id='+goods1.id+'" class="waterfall-item auction">';
-				html += '<img style="display:block;" class="" src="/vmall/image/goods/demogoods1.jpg">';
+				html += '<img style="display:block;" class="" src="${base}/'+goods1.pic+'">';
 				html += '<h3>'+goods1.cname+'</h3>';
 				html += '<p>¥<span class="promote-price">'+goods1.promoteprice+'</span>¥<del class="cost-price">'+goods1.saleprice+'</del></p>';
 				html += '<p><span class="info-sum">人气：'+goods1.popular+'　　月销：'+goods1.sales+'</span><span class="info-freight">免运费</span></p>';
@@ -115,9 +115,10 @@ function page_showgoods (type, asc)
 				$('#waterfall-column1').append(html);
 				
 				goods2 = goodses[i+1];
+				
 				html = '';
 				html += '<a href="/vmall/goods/goods/look.action?id='+goods2.id+'" class="waterfall-item auction">';
-				html += '<img style="display:block;" class="" src="/vmall/image/goods/demogoods1.jpg">';
+				html += '<img style="display:block;" class="" src="${base}/'+goods2.pic+'">';
 				html += '<h3>'+goods2.cname+'</h3>';
 				html += '<p>¥<span class="promote-price">'+goods2.promoteprice+'</span>¥<del class="cost-price">'+goods2.saleprice+'</del></p>';
 				html += '<p><span class="info-sum">人气：'+goods2.popular+'　　月销：'+goods2.sales+'</span><span class="info-freight">免运费</span></p>';
