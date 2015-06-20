@@ -38,7 +38,7 @@
 				<div id="spinner1" class="spinner" style="left:50%;position: absolute;height:120px;margin-top:50px;z-index:1000"></div>
 				<div class="goodsinfo">
 					<h1 id="title" class="detail-title"> 
-					<a href="/detail/1539889025.html?sid=b92ff74dfab64b42d614b6243db2b908" class="dis-blk" id="wareName">${obj.goods.cname}<#if obj.goods.spec!="">|${obj.goods.spec}</#if>|<#if obj.goods.code!="">${obj.goods.code} </#if></a></h1>
+					<a href="${base}/goods/goods/detail.action?id=${obj.goods.id}" class="dis-blk" id="wareName">${obj.goods.cname}<#if obj.goods.spec!="">|${obj.goods.spec}</#if><#if obj.goods.code!="">|${obj.goods.code} </#if></a></h1>
 					<p id="promotionInfo" class="subtitle">&nbsp;<#-- 初夏特惠！手机下单更优惠！！ 后期增加--></p>
 					</div>
 				</div>
@@ -140,14 +140,17 @@
 						</dt> 
 						<dt class="row03">
 							<span class="col01">提示：</span>
-							<span class="col02" id="fareMoney"><img src="/images/2014/ware/7dayback.png" width="15" height="15" style="margin-bottom:-3px"></span>
+							<span class="col02" id="fareMoney"><#--<img src="" width="15" height="15" style="margin-bottom:-3px">--></span>
 						</dt> 
+						
 						<div class="promise-ico">
+						<#--
 							<span class="txt02">
-								<i class="icon-bg03"><img src="http://img30.360buyimg.com/mobilecms/g13/M06/10/11/rBEhUlLL13kIAAAAAAAEeT_oUHcAAHskQP_-boAAASR577.jpg" width="15" height="15">货到付款</i> 
+								<i class="icon-bg03"><img src="" width="15" height="15">货到付款</i> 
 								<span class="txt">支持送货上门后再收款，支持现金、POS机刷卡等方式</span>
 							</span>
 							<em class="icon-up"></em>
+						-->	
 						</div>
 					</dl>
 					<dl class="list-entry">
@@ -156,17 +159,43 @@
 				</div>
 
 				<div class="miblebox goodseval">
-					<div class="info"> <a id="btnAssess" href="/comments/1539889025.html?sid=b92ff74dfab64b42d614b6243db2b908"> <span class="text">商品评价</span> <span class="text-fr"> <em id="comments">591</em> 人评价 <em id="goods">99%</em> 好评 </span> </a> <i class="icon-arr"></i> </div>
+					<div class="info">
+						<a id="btnAssess" href="javascript:void(0)">
+						<span class="text">商品评价</span> 
+						<span class="text-fr"> 
+						<em id="comments">0</em> 人评价 
+						<em id="goods">%</em> 好评 </span> 
+						</a>
+						<i class="icon-arr"></i>
+					</div>
 					<div class="eval-box">
 						<div class="eval-box-i"> 
-							<a id="orderComment" class="btn-good" href="/orderComment/1539889025.html?resourceType=unknown&amp;resourceValue=unknown&amp;sid=b92ff74dfab64b42d614b6243db2b908"> <span class="icon icon-sd"></span> 商品晒单(3) </a> 
-							<a id="consultations" class="btn-ser" href="/consultations/1539889025.html?resourceType=unknown&amp;resourceValue=unknown&amp;sid=b92ff74dfab64b42d614b6243db2b908"> <span class="icon icon-cons"></span> 购买咨询(0) </a>
+							<a id="orderComment" class="btn-good" href="javascript:void(0)"> <span class="icon icon-sd"></span> 商品晒单(0) </a> 
+							<a id="consultations" class="btn-ser" href="javascript:void(0)"> <span class="icon icon-cons"></span> 购买咨询(0) </a>
 						</div>
 					</div>
 				</div>
 				<div class="miblebox brand-bar-box">
 					<dl class="list-entry">
-						<dt class="row01"> <a href="http://ok.jd.com/m/index-111647.htm" class="bran-bar-box-tit"> <span class="col01">鸿丹莹服饰专营店</span> <span class="brand-bar-box-level"> <span class="new-mu-heart"><span style="width:99.155%" class="new-mu-heartv"></span></span> <span class="txt02"></span> </span> </a><span class="icon-arr"></span></dt>                    				<dd class="row02" id="kefu" style="-webkit-transform-origin: 0px 0px; opacity: 1; -webkit-transform: scale(1, 1);"> <span class="jdong"><i class="icon-dong"></i> <a class="txt" id="im" href="http://im.m.jd.com/merchant/index?v=6&amp;sku=1539889025&amp;imgUrl=&amp;goodName=%25E9%259F%25A9%25E8%25B4%259D%25E4%25BC%258A%25E9%2583%25BD2015%25E5%25A4%258F%25E5%25AD%25A3%25E9%259F%25A9%25E7%2589%2588%25E4%25BF%25AE%25E8%25BA%25AB%25E6%2597%25B6%25E5%25B0%259A%25E5%25AD%2597%25E6%25AF%258D%25E5%258D%25B0%25E8%258A%25B1%25E5%259C%2586%25E9%25A2%2586%25E5%2590%258A%25E5%25B8%25A6%25E8%2583%258C%25E5%25BF%2583%25E5%25A5%25B3%25E7%25BA%25AF%25E6%25A3%2589%25E6%2589%2593%25E5%25BA%2595%25E8%25A1%25ABhb0001%2520%25E9%25BB%2591%25E8%2589%25B2%2520M&amp;jdPrice=59.00&amp;sid=b92ff74dfab64b42d614b6243db2b908">联系卖家</a></span> </dd>
+						<dt class="row01"> 
+							<a href="javascript:void(0)" class="bran-bar-box-tit"> 
+							<span class="col01"></span> 
+							<span class="brand-bar-box-level"> 
+							<span class="new-mu-heart">
+								<span style="width:99.155%" class="new-mu-heartv"></span>
+							</span> 
+							<span class="txt02">
+							</span> 
+							</span> 
+							</a>
+							<span class="icon-arr"></span>
+						</dt>                    				
+						<dd class="row02" id="kefu" style="-webkit-transform-origin: 0px 0px; opacity: 1; -webkit-transform: scale(1, 1);">
+							<span class="jdong">
+								<i class="icon-dong"></i>
+								<a class="txt" id="im" href="javascript:void(0)">联系卖家</a>
+							</span>
+						 </dd>
 					</dl>
 				</div>
 				<div class="miblebox img-list-border">
@@ -219,7 +248,7 @@
 				<div id="yuyuenow" style="width:100%;position:fixed;bottom:0;display:none">
 					<div class="tbl-type detail-tbn2">
 						<div class="tbl-cell">
-							<a class="btn-yuyue2" href="/yuyue/1539889025.html?sid=b92ff74dfab64b42d614b6243db2b908" id="nowyuyue"><span class="icon-clock"></span><span class="txt-yuyue" id="yuyuenowcontext"><span></span>立即预约</span></a>
+							<a class="btn-yuyue2" href="javascript:void(0)" id="nowyuyue"><span class="icon-clock"></span><span class="txt-yuyue" id="yuyuenowcontext"><span></span>立即预约</span></a>
 						</div>
 					</div>
 				</div>
@@ -248,15 +277,7 @@
 						<span class="cart-succ">商品已成功加入购物车</span>
 					</div>
 				</div>	
-				<div class="menu-fixed"> 
-					<ul class="menu-fixed-list">
-						<li class="fore01"><a href="/index.html?sid=b92ff74dfab64b42d614b6243db2b908">首页</a></li>
-						<li class="fore02"><a href="http://m.jd.com/category/all.html?sid=b92ff74dfab64b42d614b6243db2b908">搜索</a></li>
-						<li class="fore03"><a href="/cart/cart.action?sid=b92ff74dfab64b42d614b6243db2b908"> 购物车</a></li>
-						<li class="fore04"><a href="/user/home.action?sid=b92ff74dfab64b42d614b6243db2b908">我的京东</a></li>
-					</ul>
-					<div class="menu-fixed-mini"><a href="javascript:void(0)"></a></div>
-				</div>
+
 			</div>
 			
 			<div class="menu_sidebar" id="puller">
