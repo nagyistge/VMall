@@ -27,7 +27,7 @@
 		<nav data-spm="1006" class="tabs">
 			<div type="popular" data-sort="popular_desc" data-spm-click="" class="tab-item popular_desc active" data-spm-anchor-id="">人气</div>
 			<div type="sales" data-sort="sales_desc" data-spm-click="" class="tab-item  sales_desc" data-spm-anchor-id="">销量</div>
-			<div type="price" data-sort="price_asc:price_desc" data-spm-click="" class="tab-item sort-price price_asc" data-spm-anchor-id="">价格
+			<div type="saleprice" data-sort="price_asc:price_desc" data-spm-click="" class="tab-item sort-price price_asc" data-spm-anchor-id="">价格
 	        <b class="asc arrow arrow-top"></b><b class="desc arrow arrow-bottom"></b>
 	        </div>
 	    </nav>		
@@ -61,13 +61,12 @@ var _page = 1;
 var _pagesize = 20;
 var _maxpage = "N";
 
-function showgoods (type) 
+function page_showgoods (type, asc) 
 {
 	if(_maxpage == "Y")
 	{
 		return;
 	}
-	
 	
 	
 	$.ajax({
@@ -87,7 +86,6 @@ function showgoods (type)
 			json = eval("(" + data + ")");
 			
 			var goodses = json.goodses;
-			console.log(goodses);
 			
 			if(goodses.length==0)
 			{
@@ -101,36 +99,30 @@ function showgoods (type)
 			{
 				len = goodses.length - 1;
 			}
-			console.log("len:" + len);
-			console.log("goodes len:" + goodses.length);				
+
 			for(var i=0;i<len;i++)
 			{
 				goods1 = goodses[i];
 				
 				var html = '';
-				
-				html += '<a href="/vmall/goods/goods/look.action?id="'+goods1.id+'" class="waterfall-item auction">';
+				html += '<a href="/vmall/goods/goods/look.action?id='+goods1.id+'" class="waterfall-item auction">';
 				html += '<img style="display:block;" class="" src="/vmall/image/goods/demogoods1.jpg">';
 				html += '<h3>'+goods1.cname+'</h3>';
 				html += '<p>¥<span class="promote-price">'+goods1.promoteprice+'</span>¥<del class="cost-price">'+goods1.saleprice+'</del></p>';
-				html += '<p><span class="info-sum">月销：470</span><span class="info-freight">免运费</span></p>';
+				html += '<p><span class="info-sum">人气：'+goods1.popular+'　　月销：'+goods1.sales+'</span><span class="info-freight">免运费</span></p>';
 				html += '</a>';
 				
 				$('#waterfall-column1').append(html);
 				
-				
 				goods2 = goodses[i+1];
-				
 				html = '';
-				
-
-				html += '<a href="/vmall/goods/goods/look.action?id="'+goods2.id+'" class="waterfall-item auction">';
+				html += '<a href="/vmall/goods/goods/look.action?id='+goods2.id+'" class="waterfall-item auction">';
 				html += '<img style="display:block;" class="" src="/vmall/image/goods/demogoods1.jpg">';
 				html += '<h3>'+goods2.cname+'</h3>';
 				html += '<p>¥<span class="promote-price">'+goods2.promoteprice+'</span>¥<del class="cost-price">'+goods2.saleprice+'</del></p>';
-				html += '<p><span class="info-sum">月销：470</span><span class="info-freight">免运费</span></p>';
+				html += '<p><span class="info-sum">人气：'+goods2.popular+'　　月销：'+goods2.sales+'</span><span class="info-freight">免运费</span></p>';
 				html += '</a>';
-				
+
 				$('#waterfall-column2').append(html);
 				
 				i++;
@@ -148,18 +140,25 @@ function showgoods (type)
 	})	
 }
 
-$("#submit").click(function() {showgoods()});
+$("#submit").click(function() {page_showgoods()});
 $(".tabs>div").click(function(){
 	
 	$(".tabs>div").removeClass("active");
 	$(this).addClass("active");
+
+	$("#waterfall-column1").html("");
+	$("#waterfall-column2").html("");
+	
+	_page = 1;
+	_maxpage = "N";
 	
 	var type=$(this).attr("type");
-	$("#"+id).show();
-	eval("page_show"+id+"();");
+	var asc = "desc";	
+	
+	eval('page_showgoods("'+type+'","'+asc+'");');
 });
 
-showgoods("popular");
+page_showgoods("popular", "desc");
 
 </script>
 
