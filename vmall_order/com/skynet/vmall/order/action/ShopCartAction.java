@@ -66,12 +66,13 @@ public class ShopCartAction extends BaseAction
 	// 填写订单
 	@At("/placeorder")
 	@Ok(">>:/order/order/look.action?id=${obj.id}")
-	public Map placeorder(@Param("id") List<String> ids) throws Exception
+	public Map placeorder(@Param("id") List<String> ids, @Param("nums") List<String> numses) throws Exception
 	{
 		HttpSession session = Mvcs.getHttpSession(true);
 		DynamicObject login_token = (DynamicObject) session.getAttribute(GlobalConstants.sys_login_token);
 		DynamicObject form = new DynamicObject();
-		form.setObj("ids", ids);		
+		form.setObj("ids", ids);	
+		form.setObj("numses", numses);
 		String orderid = shopcartService.placeorder(form, login_token);
 		ro.put("id", orderid);
 		return ro;

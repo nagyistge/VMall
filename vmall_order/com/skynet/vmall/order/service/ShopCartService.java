@@ -165,28 +165,34 @@ public class ShopCartService extends SkynetNameEntityService<ShopCart>
 		Map map = new HashMap();
 		// 购物车
 		List<String> ids = (List<String>)form.get("ids");
-		
+		List<String> numses = (List<String>)form.get("numses");		
 		// 
 		List<DynamicObject> shopcartgoodses = new ArrayList<DynamicObject>();
 		for (int i = 0; i < ids.size(); i++)
 		{
 			String id = ids.get(i);
+			int nums = Types.parseInt(numses.get(i), 0);
+			
 			if (StringToolKit.isBlank(id))
 			{
 				continue;
 			}
+			
+			// 如果购买数量不大于0，不加入购买订单。
+			if(nums<=0)
+			{
+				continue;
+			}			
 			
 			DynamicObject shopcartgoods = sdao().locateBy("t_app_shopcartgoods", Cnd.where("id", "=", id));
 			if(StringToolKit.isBlank(shopcartgoods.getFormatAttr("id")))
 			{
 				continue;
 			}
-			shopcartgoodses.add(shopcartgoods);
-		}
-		
-		for(int i=0;i<shopcartgoodses.size();i++)
-		{
 			
+			shopcartgoods.setAttr("nums", nums);
+			
+			shopcartgoodses.add(shopcartgoods);
 		}
 		
 		String userid = login_token.getFormatAttr(GlobalConstants.sys_login_userid);
@@ -221,6 +227,13 @@ public class ShopCartService extends SkynetNameEntityService<ShopCart>
 		
 		for(int i=0;i<shopcartgoodses.size();i++)
 		{
+			// 再次检查数量，防止非法数量；	
+			int nums = Types.parseInt(shopcartgoodses.get(i).getFormatAttr("nums"),0);
+			if(nums<=0)
+			{
+				continue;
+			}
+			
 			// 生成订单明细
 			String cartgoodsid = shopcartgoodses.get(i).getFormatAttr("id");
 			ShopCartGoods cartgoods = sdao().fetch(ShopCartGoods.class, cartgoodsid);
@@ -229,7 +242,7 @@ public class ShopCartService extends SkynetNameEntityService<ShopCart>
 			
 			MemberService memberService = new MemberService(sdao(), Member.class);
 			List<DynamicObject> supmembers = memberService.findsupmembers(userid, MemberService.level_rebate);
-			
+
 			// 生成订单商品记录
 			OrderGoods ordergoods = new OrderGoods();
 			String ordergoodsid = UUIDGenerator.getInstance().getNextValue();
@@ -239,11 +252,20 @@ public class ShopCartService extends SkynetNameEntityService<ShopCart>
 			ordergoods.setWxopenid(userwxopenid);
 			ordergoods.setGoodsid(cartgoods.getGoodsid());
 			ordergoods.setGoodsname(cartgoods.getGoodsname());
-			ordergoods.setNums(cartgoods.getNums());
+
+			ordergoods.setNums(nums);
 			ordergoods.setSaleprice(goods.getSaleprice());
 			ordergoods.setPromoteprice(goods.getPromoteprice());
 			ordergoods.setRealprice(goods.getPromoteprice());
 			ordergoods.setState("下单");
+			
+			BigDecimal amountsale = goods.getSaleprice().multiply(new BigDecimal(ordergoods.getNums()));
+			BigDecimal amountpromote = goods.getPromoteprice().multiply(new BigDecimal(ordergoods.getNums()));
+			BigDecimal amountreal = goods.getPromoteprice().multiply(new BigDecimal(ordergoods.getNums()));				
+			
+			ordergoods.setAmountsale(amountsale);
+			ordergoods.setAmountpromote(amountpromote);
+			ordergoods.setAmountreal(amountreal);
 			
 			for(int j=0;j<supmembers.size();j++)
 			{
@@ -292,25 +314,25 @@ public class ShopCartService extends SkynetNameEntityService<ShopCart>
 				sdao().insert(orderrebate);
 			}
 			
-			// 订单合计信息
-			StringBuffer sql = new StringBuffer();
-			sql.append(" select sum(saleprice * nums) amountsale, sum(promoteprice * nums) amountpromote, sum(realprice * nums) amount ");
-			sql.append("   from t_app_ordergoods goods ").append("\n");
-			sql.append("  where 1 = 1 ").append("\n");
-			sql.append("    and goods.orderid = ").append(SQLParser.charValue(orderid)).append("\n");
-			
-			DynamicObject amounts = sdao().queryForMap(sql.toString());
-			BigDecimal amountsale = new BigDecimal(Types.parseInt(amounts.getFormatAttr("amountsale"), 0));
-			BigDecimal amountpromote = new BigDecimal(Types.parseInt(amounts.getFormatAttr("amountpromote"), 0));
-			BigDecimal amount = new BigDecimal(Types.parseInt(amounts.getFormatAttr("amount"), 0));
-			order.setAmountsale(amountsale);
-			order.setAmountpromote(amountpromote);
-			order.setAmount(amount);
-			sdao().update(order);
-			
 			// 清除购物车商品
 			sdao().delete(cartgoods);
 		}
+		
+		// 订单合计信息
+		StringBuffer sql = new StringBuffer();
+		sql.append(" select sum(saleprice * nums) amountsale, sum(promoteprice * nums) amountpromote, sum(realprice * nums) amount ");
+		sql.append("   from t_app_ordergoods goods ").append("\n");
+		sql.append("  where 1 = 1 ").append("\n");
+		sql.append("    and goods.orderid = ").append(SQLParser.charValue(orderid)).append("\n");
+		
+		DynamicObject amounts = sdao().queryForMap(sql.toString());
+		BigDecimal amountsale_all = new BigDecimal(Types.parseInt(amounts.getFormatAttr("amountsale"), 0));
+		BigDecimal amountpromote_all = new BigDecimal(Types.parseInt(amounts.getFormatAttr("amountpromote"), 0));
+		BigDecimal amount_all = new BigDecimal(Types.parseInt(amounts.getFormatAttr("amount"), 0));
+		order.setAmountsale(amountsale_all);
+		order.setAmountpromote(amountpromote_all);
+		order.setAmount(amount_all);
+		sdao().update(order);
 		
 		return orderid;
 	}

@@ -39,6 +39,15 @@ public class OrderGoods extends IdEntity
 	
 	@Column
 	private BigDecimal realprice; // 实际订单购买价格	
+	
+	@Column
+	private BigDecimal amountsale; // 销售单价计算金额
+	
+	@Column
+	private BigDecimal amountpromote; // 销售单价计算金额
+	
+	@Column
+	private BigDecimal amountreal; // 销售单价计算金额
 
 	@Column
 	private BigDecimal rebate1; // 1级返利
@@ -183,6 +192,36 @@ public class OrderGoods extends IdEntity
 	public void setRealprice(BigDecimal realprice)
 	{
 		this.realprice = realprice;
+	}
+
+	public BigDecimal getAmountsale()
+	{
+		return amountsale;
+	}
+
+	public void setAmountsale(BigDecimal amountsale)
+	{
+		this.amountsale = amountsale;
+	}
+
+	public BigDecimal getAmountpromote()
+	{
+		return amountpromote;
+	}
+
+	public void setAmountpromote(BigDecimal amountpromote)
+	{
+		this.amountpromote = amountpromote;
+	}
+
+	public BigDecimal getAmountreal()
+	{
+		return amountreal;
+	}
+
+	public void setAmountreal(BigDecimal amountreal)
+	{
+		this.amountreal = amountreal;
 	}
 
 	public BigDecimal getRebate1()
@@ -334,7 +373,5 @@ public class OrderGoods extends IdEntity
 	{
 		this.supmemberid5 = supmemberid5;
 	}
-
-
 
 }

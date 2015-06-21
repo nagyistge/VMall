@@ -46,7 +46,7 @@ public class OrderAction extends BaseAction
 	{
 		return ro;
 	}
-
+	
 	@At("/look")
 	@Ok("->:/page/order/order/look.ftl")
 	public Map look(@Param("..") Map map) throws Exception
@@ -56,13 +56,28 @@ public class OrderAction extends BaseAction
 		DynamicObject login_token = (DynamicObject) session.getAttribute(GlobalConstants.sys_login_token);
 
 		DynamicObject order = orderService.locate(id);
-		List<DynamicObject> ordergoodses = ordergoodsService.findByCond(Cnd.where("orderid", "=", id));
+		List<DynamicObject> ordergoodses = ordergoodsService.list(new DynamicObject("orderid", id));
 		
 		ro.put("order", order);
 		ro.put("ordergoodses", ordergoodses);
 
 		return ro;
 	}
+	
+	@At("/listordergoods")
+	@Ok("->:/page/order/order/listordergoods.ftl")
+	public Map listordergoods(@Param("..") Map map) throws Exception
+	{
+		String id = (String)map.get("id");
+		HttpSession session = Mvcs.getHttpSession(true);
+		DynamicObject login_token = (DynamicObject) session.getAttribute(GlobalConstants.sys_login_token);
+
+		List<DynamicObject> ordergoodses = ordergoodsService.list(new DynamicObject("orderid", id));
+		
+		ro.put("ordergoodses", ordergoodses);
+
+		return ro;
+	}	
 	
 	@At("/forward")
 	@AdaptBy(type = JsonAdaptor.class)

@@ -23,7 +23,7 @@
 				<div class="w checkout" style="padding:0px;">
 					<div class="step1 border-1px" id="taker_info">
 						<div class="m step1-in ">
-							<a href="javascript:void(0)" class="s-href" onclick="page_edittaker()">
+							<a href="javascript:void(0)" class="s-href" <#if obj.order.state=="下单">onclick="page_edittaker()"</#if>>
 								<div class="mt_new"><div class="mt_new"><span style="margin-right:20px">编号：${obj.order.cno}</span><span>状态：${obj.order.state}</span></div></div>
 								<div class="mt_new"><div class="mc">收货人：${obj.order.takercname}</div></div>
 								<div class="mt_new"><div class="mc">联系电话：${obj.order.takermobile}</div></div>
@@ -36,18 +36,18 @@
 					</div>
 					
 					<div class="step3 border-1px step3-more" id="goodses_info">
-					<a href="" class="s-href">
+					<a href="javascript:void(0)" class="s-href" onclick="page_listordergoods()">
 						<div class="s-item">
 							<div class="sitem-l" id="goodslist">
 								<#list obj.ordergoodses as goods>
 								<input type="hidden" name="ordergoodsid" value="${goods.id}">
 								<div class="sl-img">
-									<img src="http://img10.360buyimg.com/n4/jfs/t1249/100/386284951/341939/a2f205fb/551d0baaNf363954e.jpg">
+									<img src="${base}/${goods.goodspic}">
 								</div>
 								</#list>	
 							</div>
 
-							<div class="sitem-r" style="color:#cecece">明细单共${obj.ordergoodses?size}条</div>
+							<div class="sitem-r" style="color:#cecece">明细单数共${obj.ordergoodses?size}条</div>
 							<span class="s-point"></span>
 						</div>
 					</a>
@@ -55,8 +55,8 @@
 					
 				<div class="step1 border-1px" id="member_info">
 					<div class="m step1-in">
-					<a href="javascript:void(0)" class="s-href" onclick="page_editmember()">
-						<div class="mt_new"><div class="mc">购买人编号：${obj.order.membercno}</div></div>
+					<a href="javascript:void(0)" class="s-href" <#if obj.order.state=="下单">onclick="page_editmember()"</#if>>
+					<div class="mt_new"><div class="mc">购买人编号：${obj.order.membercno}</div></div>
 						<div class="mt_new"><div class="mc">姓名：${obj.order.membercname}</div></div>
 						<div class="mt_new"><div class="mc">联系电话：${obj.order.phone}</div></div>
 						<span class="s-point"></span>
@@ -93,17 +93,19 @@
 
 			<div class="pay-bar" id="pay-bar">
 				<div class="payb-con">实付款：<span id="payMoney">￥${obj.order.amount?number?string("0.00")}</span></div>
-				<a class="payb-btn" onclick="page_forward()" href="javascript:void(0);">提交订单</a>
+				<#if obj.order.state=="下单">
+				<a class="payb-btn" onclick="page_forward()" href="javascript:void(0);">订单付款</a>
+				<#else>
+				<a class="payb-btn" href="javascript:void(0);">&nbsp;</a>
+				</#if>
 			</div>
 		</div>
 	</form>
 	
 	
 <script>
-/**
- *   防止手机的enter键自动提交。
- * @returns {boolean}
- */
+
+// 防止手机的enter键自动提交
 document.onkeypress =function()
 {
     if(event.keyCode == 13)
@@ -150,6 +152,12 @@ function page_editmember()
 	window.location = "${base}/order/order/editmember.action?id=" + id;
 }
 
+function page_listordergoods()
+{
+	var id = $("#id").val();
+	window.location = "${base}/order/order/listordergoods.action?id=" + id;	
+}
+
 // 提交订单
 function page_forward()
 {
@@ -180,7 +188,7 @@ function page_forward()
 		}
 	}
 	
-	if(confirm("订单提交后无法修改，请您确认提交订单吗？"))
+	if(confirm("亲，你确定要订单付款吗？"))
 	{
 		$.ajax({
 			type:'post',
@@ -194,25 +202,25 @@ function page_forward()
 				console.log(data);
 				if(data=="")
 				{
-					alert("提交订单异常！");
+					alert("亲，对不起，提交订单有问题，检查一下再试试看！");
 					return;
 				}
 				json = eval("(" + data + ")");
 				if(json.state=="success")
 				{
-					alert("成功提交订单！");
+					alert("亲，你已成功提交了订单，我们会尽快受理你的订单！");
 					// 更新购物车数量等操作；
 					window.location.reload();
 				}
 				else
 				{
-					alert("提交订单失败！");
+					alert("亲，对不起，提交订单失败，检查一下再试试看，或者联系我们！");
 				}
 			},
 			error:function(data)
 			{
 				console.log(data);
-				alert("服务请求异常！");
+				alert("抱歉，服务请求异常，可能网络或服务器发生故障！");
 			}
 		})		
 	}

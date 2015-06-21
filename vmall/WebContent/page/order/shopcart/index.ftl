@@ -32,6 +32,8 @@
             <#assign allgoodsnums = allgoodsnums + cartgoods.nums!?number>
 
             <input type="hidden" name="id" value="${cartgoods.id}">
+            <input type="hidden" name="promoteprice" value="${cartgoods.promoteprice}">
+            <input type="hidden" name="saleprice" value="${cartgoods.saleprice}">
             
             <li id="product${cartgoods.id}">
                 <a id="shopping${cartgoods.id}" href="" class="shp-cart-conditions-link" style="display: none"></a>
@@ -51,7 +53,7 @@
 								<p>
 								<span>
 								<a class="btn-del" sid="${cartgoods.id}" id="minus${cartgoods.id}">-</a>
-								<input type="text" class="fm-txt" value="${cartgoods.nums}" id="nums${cartgoods.id}" onblur="modify();">
+								<input type="text" class="fm-txt" value="${cartgoods.nums}" id="nums${cartgoods.id}" name="nums" onblur="page_sum();">
 								<a class="btn-add" sid="${cartgoods.id}" id="plus${cartgoods.id}">+</a>
 								</span>
 								</p>
@@ -60,8 +62,8 @@
 	               		</div>
 	               		
 	               		<div class="cart-product-cell-3">
-	                		<p><span class="shp-cart-item-price" style="font-size:10px" id="saleprice${cartgoods.id}">￥${cartgoods.saleprice!?number?string("0.00")}/${cartgoods.promoteprice!?number?string("0.00")}</span>
-	                        <p><span class="shp-cart-item-price" style="font-size:14px;color:#ff6666">￥${cartgoods.amountpromote!?number?string("0.00")}</span>
+	                		<p><span class="shp-cart-item-price" style="font-size:10px">￥${cartgoods.saleprice!?number?string("0.00")}/${cartgoods.promoteprice!?number?string("0.00")}</span>
+	                        <p><span class="shp-cart-item-price" style="font-size:14px;color:#ff6666" id="amountpromote-${cartgoods_index}">￥${cartgoods.amountpromote!?number?string("0.00")}</span>
 	                		<p><span class="shp-cart-item-price"><a class="shp-cart-icon-remove" href="javascript:void(0)" onclick="page_delete('${cartgoods.id}')"></a></span></p>
 	                	</div>
 	                    
@@ -80,12 +82,12 @@
                 <span onclick="checkAllHandler();" class="cart-checkbox checked" id="checkIcon-1"></span>
             </div>
             <div class="shp-cart-info">
-                <strong class="shp-cart-total">总计：￥<span class="" id="cart_realPrice">${allamountpromote}</span></strong>
-                <span class="sale-off">原价总计：<b>￥<span class="bottom-bar-price" id="cart_oriPrice">${allamountsale}</b></span>
-                <span class="sale-off">明细单数：<span class="bottom-bar-price" id="cart_oriPrice"><b>${obj.shopcartgoods?size}</b></span>
-                <span class="sale-off">购买产品数量：<span class="bottom-bar-price" id="cart_oriPrice"><b>${allgoodsnums}</b></span>
+                <strong class="shp-cart-total">总计：￥<span class="" id="cart_promoteprice_all" style="font-weight:bolder">${allamountpromote}</span></strong>
+                <span class="sale-off">原价总计：￥<span class="bottom-bar-price" id="cart_saleprice_all" style="font-weight:bolder">${allamountsale}</span>
+                <span class="sale-off">明细单数：<span class="bottom-bar-price" id="cart_item_all" style="font-weight:bolder">${obj.shopcartgoods?size}</span>
+                <span class="sale-off">商品数量：<span class="bottom-bar-price" id="cart_goods_all" style="font-weight:bolder">${allgoodsnums}</span>
             </div>
-            <a class="btn-right-block" id="submit" style="background-color: rgb(192, 0, 0); background-position: initial initial; background-repeat: initial initial;">下单(<span id="checkedNum">${allgoodsnums}</span>)</a>
+            <a class="btn-right-block" id="submit" style="background-color: rgb(192, 0, 0); background-position: initial initial; background-repeat: initial initial;"><span>下单(</span><span id="checkedNum">${allgoodsnums}</span><span>)</span></a>
         </div>
     </div>
     
@@ -105,7 +107,10 @@ $(".btn-del").click(function() {
 		a--;
 		$("#nums"+sid).val(a);
 		$("#amount").html(a + "\u4ef6")
-	}	
+	}
+	
+	page_sum();
+		
 });
 
 $(".btn-add").click(function() {
@@ -121,8 +126,14 @@ $(".btn-add").click(function() {
 		$("#nums"+sid).val(a);
 		$("#amount").html(a + "\u4ef6")
 	}	
+	
+	page_sum();
 });
 
+$(".fm_txt").click(function() {
+	var sid = $(this).attr("sid");
+	console.log("sid:" + sid);
+});
 
 function page_submit()
 {
@@ -143,40 +154,7 @@ function page_submit()
     $("#formcart").submit();
 }
 
-function minus() {
-	console.log(this);
-	console.log($(this));
-	var sid = this.sid;
-	console.log("sid:" + sid);
-	return;
 
-	var a = parseInt($("#number").val(), 10);
-	if (a <= 1) {
-		$("#number").val(1);
-		$("#amount").html("1\u4ef6")
-	} else {
-		a--;
-		$("#number").val(a);
-		$("#amount").html(a + "\u4ef6")
-	}
-}
-function plus() {
-	console.log(this);
-		console.log($(this));
-	var sid = this.sid;
-	console.log("sid:" + sid);
-	return;
-
-	var a = parseInt($("#number").val(), 10);
-	if (a >= 999) {
-		$("#number").val(1);
-		$("#amount").html("1\u4ef6")
-	} else {
-		a++;
-		$("#number").val(a);
-		$("#amount").html(a + "\u4ef6")
-	}
-}
 function modify() {
 	var a = parseInt($("#number").val(), 10);
 	if ("" == $("#number").val()) {
@@ -197,6 +175,58 @@ function modify() {
 	} else {
 		$("#number").val(1);
 		$("#amount").html("1\u4ef6")
+	}
+}
+
+// 计算各项合计总计
+function page_sum()
+{
+	var nums_all = 0;
+	var promoteprice_all = 0;
+	var saleprice_all = 0;
+	
+	var fm_txts = $(".fm-txt");
+	var fpromoteprices = $('#notEmptyCart input[name="promoteprice"]');
+	var fsaleprices = $('#notEmptyCart input[name="saleprice"]');
+	
+	for(var i=0;i<fm_txts.length;i++)
+	{
+		var anum = parseInt(fm_txts[i].value, 10);
+		var apromoteprice = parseInt(fpromoteprices[i].value, 10);
+		var asaleprice = parseInt(fsaleprices[i].value, 10);	
+			
+		if(isNaN(apromoteprice))
+		{
+			continue;
+		}
+		
+		if(isNaN(asaleprice))
+		{
+			continue;
+		}
+			
+		if(isNaN(anum))
+		{
+			fm_txts[i].value=1;
+			nums_all = nums_all + 1;
+		}
+		else
+		{
+			nums_all = nums_all + anum;
+		}
+		
+		promoteprice_all = promoteprice_all + (apromoteprice * anum);
+		saleprice_all = saleprice_all + (asaleprice * anum);
+				
+		$("#checkedNum").html(nums_all);
+		$("#cart_item_all").html();
+		
+		$("#cart_goods_all").html(nums_all);
+		$("#cart_promoteprice_all").html(promoteprice_all);
+		$("#cart_saleprice_all").html(saleprice_all);
+		console.log($("#amountpromote"+i));
+		$("#amountpromote-"+i).html("￥"+(apromoteprice * anum));
+			
 	}
 }
 
