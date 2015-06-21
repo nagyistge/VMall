@@ -181,7 +181,6 @@ function page_submit()
 			json = eval("(" + data + ")");
 			if(json.state=="success")
 			{
-				alert("提交订单成功！");
 				window.location = "${base}/order/order/look.action?id=" + json.id;
 			}
 			else
