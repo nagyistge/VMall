@@ -61,10 +61,12 @@ public class ShopCartService extends SkynetNameEntityService<ShopCart>
 		String memberid = (String)map.get("memberid");
 
 		StringBuffer sql = new StringBuffer();
-		sql.append(" select cartgoods.* from t_app_shopcartgoods cartgoods, t_app_shopcart cart ").append("\n");
+		sql.append(" select cartgoods.*, goods.pic goodspic").append("\n");
+		sql.append("   from t_app_shopcartgoods cartgoods, t_app_shopcart cart, t_app_goods goods ").append("\n");
 		sql.append("  where 1 = 1 ").append("\n");
 		sql.append("    and cart.memberid = ").append(SQLParser.charValue(memberid)).append("\n");
 		sql.append("    and cart.id = cartgoods.shopcartid ").append("\n");
+		sql.append("    and goods.id = cartgoods.goodsid ").append("\n");
 		
 		// 增加查询过滤条件
 
@@ -100,24 +102,47 @@ public class ShopCartService extends SkynetNameEntityService<ShopCart>
 		
 		Goods goods = sdao().fetch(Goods.class, goodsid);
 		
+		
 		ShopCartGoods cartgoods = new ShopCartGoods();
-		cartgoods.setId(UUIDGenerator.getInstance().getNextValue());
-		cartgoods.setShopcartid(cart.getId());
-		cartgoods.setMemberid(""); // 商品经销商会员标识
-		cartgoods.setWxopenid(""); // 商品经销商会员微信标识
-		cartgoods.setGoodsid(goodsid);
-		cartgoods.setGoodsname(goods.getCname());
-		cartgoods.setNums(nums);
-		cartgoods.setSaleprice(goods.getSaleprice()); // 销售价（原价）
-		cartgoods.setPromoteprice(goods.getPromoteprice()); // 促销价（促销价）
 		
-		BigDecimal amountsale = goods.getSaleprice().multiply(new BigDecimal(cartgoods.getNums()));
-		BigDecimal amountpromote = goods.getPromoteprice().multiply(new BigDecimal(cartgoods.getNums()));
-		
-		cartgoods.setAmountsale(amountsale);
-		cartgoods.setAmountpromote(amountpromote);
-		
-		sdao().insert(cartgoods);
+		//检查是否已经有同款商品，如有，增加数量，否则，新增购物商品;
+		if(sdao().count(ShopCartGoods.class, Cnd.where("shopcartid","=",cart.getId()).and("goodsid", "=", goodsid))>0)
+		{
+			cartgoods = sdao().fetch(ShopCartGoods.class, Cnd.where("shopcartid","=",cart.getId()).and("goodsid", "=", goodsid));
+			cartgoods.setNums(cartgoods.getNums()+nums);
+			
+			// 同款商品不同时间购物，如未提交付款，价格按照最新价格重新更新
+			cartgoods.setSaleprice(goods.getSaleprice()); // 销售价（原价）
+			cartgoods.setPromoteprice(goods.getPromoteprice()); // 促销价（促销价）
+			
+			BigDecimal amountsale = goods.getSaleprice().multiply(new BigDecimal(cartgoods.getNums()));
+			BigDecimal amountpromote = goods.getPromoteprice().multiply(new BigDecimal(cartgoods.getNums()));
+			
+			cartgoods.setAmountsale(amountsale);
+			cartgoods.setAmountpromote(amountpromote);
+			
+			sdao().update(cartgoods);
+		}
+		else
+		{
+			cartgoods.setId(UUIDGenerator.getInstance().getNextValue());
+			cartgoods.setShopcartid(cart.getId());
+			cartgoods.setMemberid(""); // 商品经销商会员标识
+			cartgoods.setWxopenid(""); // 商品经销商会员微信标识
+			cartgoods.setGoodsid(goodsid);
+			cartgoods.setGoodsname(goods.getCname());
+			cartgoods.setNums(nums);			
+			cartgoods.setSaleprice(goods.getSaleprice()); // 销售价（原价）
+			cartgoods.setPromoteprice(goods.getPromoteprice()); // 促销价（促销价）
+			
+			BigDecimal amountsale = goods.getSaleprice().multiply(new BigDecimal(cartgoods.getNums()));
+			BigDecimal amountpromote = goods.getPromoteprice().multiply(new BigDecimal(cartgoods.getNums()));
+			
+			cartgoods.setAmountsale(amountsale);
+			cartgoods.setAmountpromote(amountpromote);
+			
+			sdao().insert(cartgoods);
+		}
 		
 		StringBuffer sql = new StringBuffer();
 		sql.append(" select sum(cartgoods.nums) nums from t_app_shopcartgoods cartgoods, t_app_shopcart cart ");
