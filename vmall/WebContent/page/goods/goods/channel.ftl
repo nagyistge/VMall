@@ -105,7 +105,7 @@ function page_showgoods (type, asc)
 				goods1 = goodses[i];
 				
 				var html = '';
-				html += '<a href="/vmall/goods/goods/look.action?id='+goods1.id+'" class="waterfall-item auction">';
+				html += '<a href="${base}/goods/goods/look.action?id='+goods1.id+'" class="waterfall-item auction">';
 				html += '<img style="display:block;" class="" src="${base}/'+goods1.pic+'">';
 				html += '<h3>'+goods1.cname+'</h3>';
 				html += '<p>¥<span class="promote-price">'+goods1.promoteprice+'</span>¥<del class="cost-price">'+goods1.saleprice+'</del></p>';
@@ -117,7 +117,7 @@ function page_showgoods (type, asc)
 				goods2 = goodses[i+1];
 				
 				html = '';
-				html += '<a href="/vmall/goods/goods/look.action?id='+goods2.id+'" class="waterfall-item auction">';
+				html += '<a href="${base}/goods/goods/look.action?id='+goods2.id+'" class="waterfall-item auction">';
 				html += '<img style="display:block;" class="" src="${base}/'+goods2.pic+'">';
 				html += '<h3>'+goods2.cname+'</h3>';
 				html += '<p>¥<span class="promote-price">'+goods2.promoteprice+'</span>¥<del class="cost-price">'+goods2.saleprice+'</del></p>';
