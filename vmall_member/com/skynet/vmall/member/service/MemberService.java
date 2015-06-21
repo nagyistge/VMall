@@ -25,6 +25,7 @@ import com.skynet.framework.services.db.dybeans.DynamicObject;
 import com.skynet.framework.services.function.StringToolKit;
 import com.skynet.framework.services.function.Types;
 import com.skynet.framework.spec.GlobalConstants;
+import com.skynet.vmall.base.constants.VMallConstants;
 import com.skynet.vmall.base.pojo.Follow;
 import com.skynet.vmall.base.pojo.Member;
 
@@ -34,7 +35,7 @@ import com.skynet.vmall.base.pojo.Member;
 public class MemberService extends SkynetNameEntityService<Member>
 {
 	public static int level_rebate = 3; // 返利总计层级数
-	
+
 	@Inject
 	GeneratorService generatorService;
 
@@ -52,29 +53,29 @@ public class MemberService extends SkynetNameEntityService<Member>
 	{
 		super(dao, entityType);
 	}
-	
+
 	public DynamicObject newwxuser(String oldwxopenid, String newwxopenid) throws Exception
 	{
 		// 如果没有推荐人，该用户直接加入至商城下账号
-		if(StringToolKit.isBlank(oldwxopenid))
+		if (StringToolKit.isBlank(oldwxopenid))
 		{
 			Member vmall = sdao().fetch(Member.class, Cnd.where("supid", "=", "R0"));
-			if(vmall!=null)
+			if (vmall != null)
 			{
 				oldwxopenid = vmall.getWxopenid();
 			}
 		}
-		
+
 		// 检查推荐人是否正常
 		Member oldmember = sdao().fetch(Member.class, Cnd.where("wxopenid", "=", oldwxopenid));
-		if(oldmember==null||StringToolKit.isBlank(oldmember.getId()))
+		if (oldmember == null || StringToolKit.isBlank(oldmember.getId()))
 		{
 			return null;
 		}
-		
+
 		// 检查被推荐人是否新微信用户
 		Member newmember = sdao().fetch(Member.class, Cnd.where("wxopenid", "=", newwxopenid));
-		if(newmember==null||StringToolKit.isBlank(newmember.getId()))
+		if (newmember == null || StringToolKit.isBlank(newmember.getId()))
 		{
 			String cno = SNGenerator.getValue(8);
 			User newuser = new User();
@@ -85,7 +86,7 @@ public class MemberService extends SkynetNameEntityService<Member>
 			newuser.setCreatetime(new Timestamp(System.currentTimeMillis()));
 			newuser.setPassword("1111"); // 上线前改为加密
 			sdao().insert(newuser);
-			
+
 			newmember = new Member();
 			newmember.setId(newuserid);
 			newmember.setSupid(oldmember.getId());
@@ -98,9 +99,9 @@ public class MemberService extends SkynetNameEntityService<Member>
 			newmember.setScore(0);
 			sdao().insert(newmember);
 		}
-		
-		follow(newwxopenid, null, oldwxopenid, null); //记录关注信息
-		
+
+		follow(newwxopenid, null, oldwxopenid, null); // 记录关注信息
+
 		DynamicObject user = sdao().locateBy("t_sys_user", Cnd.where("id", "=", newmember.getId()));
 
 		DynamicObject obj = new DynamicObject();
@@ -108,7 +109,7 @@ public class MemberService extends SkynetNameEntityService<Member>
 		obj.setAttr(GlobalConstants.sys_login_username, user.getFormatAttr("cname"));
 		obj.setAttr(GlobalConstants.sys_login_userid, user.getFormatAttr("id"));
 		obj.setAttr(GlobalConstants.sys_login_userwxopenid, user.getFormatAttr("wxopenid"));
-		
+
 		return obj;
 	}
 
@@ -123,11 +124,12 @@ public class MemberService extends SkynetNameEntityService<Member>
 		// 检查是否已经关注过目标微信用户
 		// 检查是否反向关注过源微信用户(不可反向关注)
 		// 未关注过，则建立关注
-//		if (sdao().count(Member.class, Cnd.where("wxopenid", "=", swxopenid)) > 0)
-//		{
-//			// throw new Exception("当前用户已经是会员，不允许重复关注其它会员！");
-//			return;
-//		}
+		// if (sdao().count(Member.class, Cnd.where("wxopenid", "=", swxopenid))
+		// > 0)
+		// {
+		// // throw new Exception("当前用户已经是会员，不允许重复关注其它会员！");
+		// return;
+		// }
 
 		if (sdao().count(Member.class, Cnd.where("wxopenid", "=", dwxopenid)) == 0)
 		{
@@ -155,7 +157,7 @@ public class MemberService extends SkynetNameEntityService<Member>
 
 		Member supmember = sdao().fetch(Member.class, Cnd.where("wxopenid", "=", dwxopenid)); // 老会员
 		Member submember = sdao().fetch(Member.class, Cnd.where("wxopenid", "=", swxopenid)); // 新会员
-		
+
 		Follow follow = new Follow();
 		String followid = UUIDGenerator.getInstance().getNextValue();
 		follow.setId(followid);
@@ -207,10 +209,10 @@ public class MemberService extends SkynetNameEntityService<Member>
 		for (int i = 1; i <= findlevel; i++)
 		{
 			int last = len - (i * 4);
-			if(last>=0)
+			if (last >= 0)
 			{
 				DynamicObject supmember = locateBy(Cnd.where("internal", "=", internal.substring(0, last)));
-				if(StringToolKit.isBlank(supmember.getFormatAttr("id")))
+				if (StringToolKit.isBlank(supmember.getFormatAttr("id")))
 				{
 					break;
 				}
@@ -222,19 +224,19 @@ public class MemberService extends SkynetNameEntityService<Member>
 		}
 		return supmembers;
 	}
-	
+
 	// 查找给定层级数范围内下级会员
 	public List<DynamicObject> findsubmembers(String memberid, int findlevel) throws Exception
 	{
 		String internal = locate(memberid).getFormatAttr("internal");
 		int len = internal.length();
 		int minlen = len + 4;
-		if(minlen<0)
+		if (minlen < 0)
 		{
 			minlen = 0;
 		}
 		int maxlen = len + (findlevel * 4);
-		if(maxlen<0)
+		if (maxlen < 0)
 		{
 			maxlen = 0;
 		}
@@ -242,16 +244,16 @@ public class MemberService extends SkynetNameEntityService<Member>
 		StringBuffer sql = new StringBuffer();
 		sql.append(" select * from t_app_member ").append("\n");
 		sql.append("  where 1 = 1 ").append("\n");
-		sql.append("    and internal like '"+internal+"%' ").append("\n");
+		sql.append("    and internal like '" + internal + "%' ").append("\n");
 		sql.append("    and length(internal) >= " + minlen).append("\n");
 		sql.append("    and length(internal) <= " + maxlen).append("\n");
 		sql.append("  order by internal ").append("\n");
-		
+
 		submembers = sdao().queryForList(sql.toString());
-		
+
 		return submembers;
 	}
-	
+
 	// 浏览我的订单
 	public List<DynamicObject> showmyorder(Map map) throws Exception
 	{
@@ -260,8 +262,8 @@ public class MemberService extends SkynetNameEntityService<Member>
 
 		int startindex = (page - 1) * pagesize;
 		int endindex = page * pagesize;
-		
-		String memberid = (String)map.get("memberid");
+
+		String memberid = (String) map.get("memberid");
 
 		StringBuffer sql = new StringBuffer();
 		sql.append(" select * from t_app_order ").append("\n");
@@ -269,12 +271,12 @@ public class MemberService extends SkynetNameEntityService<Member>
 		sql.append("    and memberid = ").append(SQLParser.charValue(memberid)).append("\n");
 		// 增加查询过滤条件
 		sql.append("  order by ordertime desc ").append("\n");
-		
+
 		List<DynamicObject> datas = sdao().queryForList(sql.toString(), startindex, endindex);
 
 		return datas;
 	}
-	
+
 	// 浏览我的订单商品明细
 	public List<DynamicObject> showmyordergoods(Map map) throws Exception
 	{
@@ -283,8 +285,8 @@ public class MemberService extends SkynetNameEntityService<Member>
 
 		int startindex = (page - 1) * pagesize;
 		int endindex = page * pagesize;
-		
-		String id = (String)map.get("id");
+
+		String id = (String) map.get("id");
 
 		StringBuffer sql = new StringBuffer();
 		sql.append(" select * from t_app_ordergoods ").append("\n");
@@ -295,7 +297,7 @@ public class MemberService extends SkynetNameEntityService<Member>
 
 		return datas;
 	}
-	
+
 	// 浏览我的提现
 	public List<DynamicObject> browsemydraw(Map map) throws Exception
 	{
@@ -304,8 +306,8 @@ public class MemberService extends SkynetNameEntityService<Member>
 
 		int startindex = (page - 1) * pagesize;
 		int endindex = page * pagesize;
-		
-		String memberid = (String)map.get("memberid");
+
+		String memberid = (String) map.get("memberid");
 
 		StringBuffer sql = new StringBuffer();
 		sql.append(" select * from t_app_drawcash ").append("\n");
@@ -313,37 +315,60 @@ public class MemberService extends SkynetNameEntityService<Member>
 		sql.append("    and memberid = ").append(SQLParser.charValue(memberid)).append("\n");
 		// 增加查询过滤条件
 		sql.append("  order by applytime desc ").append("\n");
-		
+
 		List<DynamicObject> datas = sdao().queryForList(sql.toString(), startindex, endindex);
 
 		return datas;
 	}
-	
+
 	// 我的积分
 	public BigDecimal myrebateshowsum(Map map) throws Exception
 	{
-		String memberid = (String)map.get("memberid");
-		String rebatetimebegin = (String)map.get("rebatetimebegin");
-		String rebatetimeend = (String)map.get("rebatetimeend");
-		
+		String memberid = (String) map.get("memberid");
+		String rebatetimebegin = (String) map.get("rebatetimebegin");
+		String rebatetimeend = (String) map.get("rebatetimeend");
+		String statebegin = (String) map.get("statebegin");
+		String stateend = (String) map.get("stateend");
+		String state = (String) map.get("state");
+
 		StringBuffer sql = new StringBuffer();
 		sql.append(" select sum(score) score ").append("\n");
-		sql.append(" from t_app_ordergoodsrebate rebate ").append("\n");
+		sql.append(" from t_app_ordergoodsrebate rebate, t_app_order morder ").append("\n");
 		sql.append("  where 1 = 1 ").append("\n");
+		sql.append("    and rebate.ordercno = morder.cno ").append("\n");
 		sql.append("    and rebate.supmemberid = ").append(SQLParser.charValue(memberid)).append("\n");
-		if(!StringToolKit.isBlank(rebatetimebegin))
+		if (!StringToolKit.isBlank(rebatetimebegin))
 		{
 			sql.append(" and rebate.rebatetime >= ").append(SQLParser.charValue(rebatetimebegin));
 		}
-		
-		if(!StringToolKit.isBlank(rebatetimeend))
+
+		if (!StringToolKit.isBlank(rebatetimeend))
 		{
 			sql.append(" and rebate.rebatetime < ").append(SQLParser.charValue(rebatetimeend));
 		}
 		
+		if (!StringToolKit.isBlank(state))
+		{
+			sql.append(" and morder.state = ").append(SQLParser.charValue(state));
+		}
+
+		int index_statebegin = 0;
+		int index_stateend = 0;
+		if (!(StringToolKit.isBlank(statebegin) || StringToolKit.isBlank(stateend)))
+		{
+			index_statebegin = StringToolKit.getTextInArrayIndex(VMallConstants.flow_order, statebegin);
+			index_stateend = StringToolKit.getTextInArrayIndex(VMallConstants.flow_order, stateend);
+			String[] nextstates = StringToolKit.subArray(VMallConstants.flow_order, "'", index_statebegin, index_stateend + 1);
+			String states = StringToolKit.jionArray(nextstates, ",");
+			if (!StringToolKit.isBlank(states))
+			{
+				sql.append(" and morder.state in (").append(states).append(")").append("\n");
+			}
+		}
+
 		int score = Types.parseInt(queryForMap(sql.toString()).getFormatAttr("score"), 0);
 		BigDecimal sumscore = new BigDecimal(score).setScale(2);
-		return sumscore;		
+		return sumscore;
 	}
 
 	public List<DynamicObject> myrebateshowbygroup(Map map) throws Exception
@@ -353,8 +378,8 @@ public class MemberService extends SkynetNameEntityService<Member>
 
 		int startindex = (page - 1) * pagesize;
 		int endindex = page * pagesize;
-		
-		String memberid = (String)map.get("memberid");
+
+		String memberid = (String) map.get("memberid");
 
 		StringBuffer sql = new StringBuffer();
 		sql.append(" select rebate.submemberid, member.cno, member.cname, sum(rebate.score) score ").append("\n");
@@ -364,12 +389,12 @@ public class MemberService extends SkynetNameEntityService<Member>
 		sql.append("    and rebate.supmemberid = ").append(SQLParser.charValue(memberid)).append("\n");
 		sql.append("  group by rebate.submemberid, member.cno, member.cname ").append("\n");
 		sql.append("  order by member.cname, member.cno desc ").append("\n");
-		
+
 		List<DynamicObject> datas = sdao().queryForList(sql.toString(), startindex, endindex);
 
-		return datas;		
+		return datas;
 	}
-	
+
 	public List<DynamicObject> myrebateshowbygoods(Map map) throws Exception
 	{
 		int page = Types.parseInt((String) map.get("_page"), 1);
@@ -377,8 +402,8 @@ public class MemberService extends SkynetNameEntityService<Member>
 
 		int startindex = (page - 1) * pagesize;
 		int endindex = page * pagesize;
-		
-		String memberid = (String)map.get("memberid");
+
+		String memberid = (String) map.get("memberid");
 
 		StringBuffer sql = new StringBuffer();
 		sql.append(" select rebate.submemberid, goods.id goodsid, goods.cname, sum(rebate.score) score ").append("\n");
@@ -389,12 +414,12 @@ public class MemberService extends SkynetNameEntityService<Member>
 		sql.append("    and rebate.supmemberid = ").append(SQLParser.charValue(memberid)).append("\n");
 		sql.append("  group by rebate.submemberid, goods.id, goods.cname ").append("\n");
 		sql.append("  order by goods.cname desc ").append("\n");
-		
+
 		List<DynamicObject> datas = sdao().queryForList(sql.toString(), startindex, endindex);
 
-		return datas;		
+		return datas;
 	}
-	
+
 	public List<DynamicObject> myrebateshowbyorder(Map map) throws Exception
 	{
 		int page = Types.parseInt((String) map.get("_page"), 1);
@@ -402,8 +427,8 @@ public class MemberService extends SkynetNameEntityService<Member>
 
 		int startindex = (page - 1) * pagesize;
 		int endindex = page * pagesize;
-		
-		String memberid = (String)map.get("memberid");
+
+		String memberid = (String) map.get("memberid");
 
 		StringBuffer sql = new StringBuffer();
 		sql.append(" select rebate.submemberid, morder.id orderid, morder.cno, morder.ordertime, sum(rebate.score) score ").append("\n");
@@ -414,60 +439,61 @@ public class MemberService extends SkynetNameEntityService<Member>
 		sql.append("    and rebate.supmemberid = ").append(SQLParser.charValue(memberid)).append("\n");
 		sql.append("  group by rebate.submemberid, morder.id, morder.cno, morder.ordertime ").append("\n");
 		sql.append("  order by morder.ordertime desc ").append("\n");
-		
+
 		List<DynamicObject> datas = sdao().queryForList(sql.toString(), startindex, endindex);
 
-		return datas;		
+		return datas;
 	}
-	
+
 	public Map saveinfo(Member newmember, DynamicObject login_token) throws Exception
 	{
 		Map remap = new DynamicObject();
-		
+
 		// 检查修改会员是否当前会员
 		String userid = login_token.getFormatAttr(GlobalConstants.sys_login_userid);
-		
-		if(StringToolKit.isBlank(userid))
+
+		if (StringToolKit.isBlank(userid))
 		{
 			remap.put("state", "error");
 			remap.put("message", "用户会话无效，请重新登录！");
 			return remap;
 			// throw new Exception("用户会话无效，请重新登录！");
 		}
-		if(!userid.equals(newmember.getId()))
+		if (!userid.equals(newmember.getId()))
 		{
 			remap.put("state", "error");
 			remap.put("message", "当前会员与要修改的会员不一致，不允许修改会员资料！");
 			return remap;
 			// throw new Exception("当前会员与要修改的会员不一致，不允许修改会员资料！");
-		};
-		
-		if(StringToolKit.isBlank(newmember.getId()))
+		}
+		;
+
+		if (StringToolKit.isBlank(newmember.getId()))
 		{
 			remap.put("state", "error");
 			remap.put("message", "会员数据异常，无法保存，请联系客服！");
 			return remap;
 			// throw new Exception("会员数据异常，无法保存，请联系客服！");
 		}
-		
+
 		remap.clear();
 		remap = checkinfo(newmember, login_token);
-		
-		//临时测试
+
+		// 临时测试
 		remap.put("state", "success");
-		
-		if(!("success".equals(remap.get("state"))))
+
+		if (!("success".equals(remap.get("state"))))
 		{
 			return remap;
 		}
-		
+
 		remap.clear();
 		Member member = sdao().fetch(Member.class, userid);
 		member.setCname(newmember.getCname());
 		member.setPhone(newmember.getPhone());
 		member.setQq(newmember.getQq());
 		member.setEmail(newmember.getEmail());
-		
+
 		member.setProvince(newmember.getProvince());
 		member.setCity(newmember.getCity());
 		member.setCounty(newmember.getCounty());
@@ -480,102 +506,103 @@ public class MemberService extends SkynetNameEntityService<Member>
 		member.setBankaccountno(newmember.getBankaccountno());
 		member.setBankaccountcname(newmember.getBankaccountcname());
 		member.setBankaccountphone(newmember.getBankaccountphone());
-		
+
 		sdao().update(member);
-		
+
 		// 更新会员用户信息
 		User user = sdao().fetch(User.class, userid);
 		user.setCname(newmember.getCname());
 		user.setMobile(newmember.getPhone());
-		
+
 		sdao().update(user);
-		
+
 		remap.put("state", "success");
 		remap.put("member", locate(userid));
-		
+
 		return remap;
 	}
-	
+
 	public Map checkinfo(Member newmember, DynamicObject login_token) throws Exception
 	{
 		Map remap = new DynamicObject();
-		
+
 		// 检查修改会员是否当前会员
 		String userid = login_token.getFormatAttr(GlobalConstants.sys_login_userid);
-		
-		if(StringToolKit.isBlank(userid))
+
+		if (StringToolKit.isBlank(userid))
 		{
 			remap.put("state", "error");
 			remap.put("message", "用户会话无效，请重新登录！");
 			return remap;
 			// throw new Exception("用户会话无效，请重新登录！");
 		}
-		if(!userid.equals(newmember.getId()))
+		if (!userid.equals(newmember.getId()))
 		{
 			remap.put("state", "error");
 			remap.put("message", "当前会员与要修改的会员不一致，不允许修改会员资料！");
 			return remap;
 			// throw new Exception("当前会员与要修改的会员不一致，不允许修改会员资料！");
-		};
-		
-		if(StringToolKit.isBlank(newmember.getId()))
+		}
+		;
+
+		if (StringToolKit.isBlank(newmember.getId()))
 		{
 			remap.put("state", "error");
 			remap.put("message", "会员数据异常，无法保存，请联系客服！");
 			return remap;
 			// throw new Exception("会员数据异常，无法保存，请联系客服！");
 		}
-		
-		if(StringToolKit.isBlank(newmember.getCname()))
+
+		if (StringToolKit.isBlank(newmember.getCname()))
 		{
 			remap.put("state", "error");
-			remap.put("message", "姓名不允许为空，请填写完整！");	
+			remap.put("message", "姓名不允许为空，请填写完整！");
 			return remap;
 			// throw new Exception("姓名不允许为空，请填写完整！");
 		}
 
-		if(StringToolKit.isBlank(newmember.getPhone()))
+		if (StringToolKit.isBlank(newmember.getPhone()))
 		{
 			remap.put("state", "error");
-			remap.put("message", "电话不允许为空，请填写完整！");	
-			return remap;	
+			remap.put("message", "电话不允许为空，请填写完整！");
+			return remap;
 			// throw new Exception("电话不允许为空，请填写完整！");
 		}
 
-		if(StringToolKit.isBlank(newmember.getAddr()))
+		if (StringToolKit.isBlank(newmember.getAddr()))
 		{
 			remap.put("state", "error");
-			remap.put("message", "详细地址不允许为空，请填写完整！");	
+			remap.put("message", "详细地址不允许为空，请填写完整！");
 			return remap;
 			// throw new Exception("详细地址不允许为空，请填写完整！");
-		}		
-		
-		if(StringToolKit.isBlank(newmember.getOpenbank()))
+		}
+
+		if (StringToolKit.isBlank(newmember.getOpenbank()))
 		{
 			remap.put("state", "error");
-			remap.put("message", "开户银行不允许为空，请填写完整！");	
+			remap.put("message", "开户银行不允许为空，请填写完整！");
 			return remap;
 			// throw new Exception("开户银行不允许为空，请填写完整！");
 		}
 
-		if(StringToolKit.isBlank(newmember.getBankaccountno()))
+		if (StringToolKit.isBlank(newmember.getBankaccountno()))
 		{
 			remap.put("state", "error");
-			remap.put("message", "银行卡号不允许为空，请填写完整！");	
+			remap.put("message", "银行卡号不允许为空，请填写完整！");
 			return remap;
 			// throw new Exception("银行卡号不允许为空，请填写完整！");
 		}
-		
-		if(StringToolKit.isBlank(newmember.getBankaccountcname()))
+
+		if (StringToolKit.isBlank(newmember.getBankaccountcname()))
 		{
 			remap.put("state", "error");
-			remap.put("message", "账户名不允许为空，请填写完整！");	
+			remap.put("message", "账户名不允许为空，请填写完整！");
 			return remap;
 			// throw new Exception("账户名不允许为空，请填写完整！");
 		}
-		
+
 		remap.put("state", "success");
 		return remap;
 	}
-	
+
 }

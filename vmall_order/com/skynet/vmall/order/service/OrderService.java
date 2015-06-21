@@ -14,6 +14,7 @@ import com.skynet.framework.service.SkynetNameEntityService;
 import com.skynet.framework.services.db.dybeans.DynamicObject;
 import com.skynet.framework.services.function.StringToolKit;
 import com.skynet.framework.services.function.Types;
+import com.skynet.vmall.base.constants.VMallConstants;
 import com.skynet.vmall.base.pojo.Order;
 
 @InjectName("orderService")
@@ -35,9 +36,6 @@ public class OrderService extends SkynetNameEntityService<Order>
 	{
 		super(dao, entityType);
 	}
-
-	public static String[] flow = new String[]
-	{ "下单", "收款", "发货", "收货", "结束" };
 
 	// 浏览商品
 	public List<DynamicObject> browse(Map map) throws Exception
@@ -75,7 +73,7 @@ public class OrderService extends SkynetNameEntityService<Order>
 
 		// 检查未找到当前流程状态异常
 		String flownextstate = flowstate;
-		int index = StringToolKit.getTextInArrayIndex(OrderService.flow, flowstate);
+		int index = StringToolKit.getTextInArrayIndex(VMallConstants.flow_order, flowstate);
 		if (index == -1)
 		{
 			map.put("state", "error");
@@ -83,9 +81,9 @@ public class OrderService extends SkynetNameEntityService<Order>
 			return map;
 		}
 
-		if (OrderService.flow.length > (index + 1))
+		if (VMallConstants.flow_order.length > (index + 1))
 		{
-			flownextstate = OrderService.flow[index + 1];
+			flownextstate = VMallConstants.flow_order[index + 1];
 		}
 
 		// 更新状态至下一环节

@@ -12,13 +12,17 @@
 	<#include "/decorator/include/header.ftl">
 </head>
 <body id="body" style="background:#ffffff">
+<style>
+.sum{height:30px;width:25%;float:left;font-size:10px;color:#dedede}
+</style>
 <#include "/decorator/include/navmain.ftl">
 
 <div data-spm="" class="content">
-	<div style="height:40px;width:100%">
-		<div style="margin-left:5%;height:30px;width:30%;background:#ff0000;float:left">总积分1：</div>
-		<div style="height:30px;width:30%;background:#00ff00;float:left">总积分2：</div>
-		<div style="height:30px;width:30%;background:#0000ff;float:left">总积分3：</div>
+	<div style="height:30px;width:100%">
+		<div class="sum"><span>已生效：<span id="score_rebate" style="color:#ff6666;font-size:18px"></span></div>
+		<div class="sum"><span>待生效：</span><span id="score_rebate_wait" style="font-size:18px"></span></div>
+		<div class="sum"><span>全部：</span><span id="score_rebate_all" style="font-size:18px"></span></div>		
+		<div class="sum"><span>潜在：</span><span id="score_rebate_latent" style="font-size:18px"></span></div>	
 	</div>
 	<nav data-spm="1006" class="tabs">
 		<div type="group" data-sort="" data-spm-click="" class="tab-item active" data-spm-anchor-id="">会员</div>
@@ -78,7 +82,12 @@ $(function(){
 		
 	});
 
-	page_showsum();
+	page_showsum_rebate_latent();
+	page_showsum_rebate_all();
+	page_showsum_rebate_wait();
+	page_showsum_rebate();
+	
+	
 	page_showbygroup();
 });
 
@@ -95,7 +104,7 @@ function page_showbygroup()
 		async:false,
 		success:function(data)
 		{
-			console.log(data);
+			//console.log(data);
 			$("#bygroup ul").html(data);
 		},
 		error:function(data)
@@ -104,33 +113,7 @@ function page_showbygroup()
 			alert("服务请求异常！");
 		}
 	})
-	
-	page_showsum();
-}
 
-function page_showsum()
-{
-	console.log("showsum");
-	
-	$.ajax({
-		type:'post',
-		url:'${base}/member/member/myrebate/showsum.action',
-		contentType: "application/json",
-		data:JSON.stringify({"temp":"temp"}),
-		cache:false,
-		async:false,
-		success:function(data)
-		{
-			console.log(data);
-			json = eval("(" + data + ")");
-			$("#sumscore").html(json.score);
-		},
-		error:function(data)
-		{
-			console.log(data);
-			alert("服务请求异常！");
-		}
-	})	
 }
 
 function page_showbygoods()
@@ -146,7 +129,7 @@ function page_showbygoods()
 		async:false,
 		success:function(data)
 		{
-			console.log(data);
+			//console.log(data);
 			$("#bygoods ul").html(data);
 		},
 		error:function(data)
@@ -155,8 +138,6 @@ function page_showbygoods()
 			alert("服务请求异常！");
 		}
 	})
-	
-	page_showsum();
 }
 
 function page_showbyorder()
@@ -172,7 +153,7 @@ function page_showbyorder()
 		async:false,
 		success:function(data)
 		{
-			console.log(data);
+			//console.log(data);
 			$("#byorder ul").html(data);
 		},
 		error:function(data)
@@ -181,11 +162,99 @@ function page_showbyorder()
 			alert("服务请求异常！");
 		}
 	})
-	
-	page_showsum();
 }
 
+function page_showsum_rebate_latent()
+{
+	$.ajax({
+		type:'POST',
+		url:'${base}/member/member/myrebate/showsum.action',
+		contentType: "application/json",
+		data:JSON.stringify({"state":"下单"}),
+		cache:false,
+		async:false,
+		success:function(data)
+		{
+			console.log(data);
+			json = eval("(" + data + ")");
+			$("#score_rebate_latent").html(json.score);
+		},
+		error:function(data)
+		{
+			console.log(data);
+			alert("服务请求异常！");
+		}
+	})	
+}
 
+function page_showsum_rebate_all()
+{
+	$.ajax({
+		type:'POST',
+		url:'${base}/member/member/myrebate/showsum.action',
+		contentType: "application/json",
+		data:JSON.stringify({"statebegin":"收款","stateend":"结束"}),
+		cache:false,
+		async:false,
+		success:function(data)
+		{
+			console.log(data);
+			json = eval("(" + data + ")");
+			$("#score_rebate_all").html(json.score);
+		},
+		error:function(data)
+		{
+			console.log(data);
+			alert("服务请求异常！");
+		}
+	})	
+}
+
+function page_showsum_rebate_wait()
+{
+	$.ajax({
+		type:'POST',
+		url:'${base}/member/member/myrebate/showsum.action',
+		contentType: "application/json",
+		data:JSON.stringify({"statebegin":"收款", "stateend":"结算"}),
+		cache:false,
+		async:false,
+		success:function(data)
+		{
+			console.log(data);
+			json = eval("(" + data + ")");
+			$("#score_rebate_wait").html(json.score);
+		},
+		error:function(data)
+		{
+			console.log(data);
+			alert("服务请求异常！");
+		}
+	})	
+}
+
+function page_showsum_rebate()
+{
+	$.ajax({
+		type:'POST',
+		url:'${base}/member/member/myrebate/showsum.action',
+		contentType: "application/json",
+		data:JSON.stringify({"state":"结束"}),
+		cache:false,
+		async:false,
+		success:function(data)
+		{
+			console.log(data);
+			json = eval("(" + data + ")");
+			$("#score_rebate").html(json.score);
+		},
+		error:function(data)
+		{
+			console.log(data);
+			alert("服务请求异常！");
+		}
+	})	
+}
 
 function page_applydraw()
 {

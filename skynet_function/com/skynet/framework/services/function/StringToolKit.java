@@ -441,6 +441,55 @@ public class StringToolKit
 			}
 		}
 		return pos;
+	}
+	
+	public static String[] subArray(String[] sarray, int startindex, int endindex)
+	{
+		String[] darray = new String[endindex-startindex];
+		
+		int index = 0;
+		for(int i=startindex;i<endindex;i++)
+		{
+			darray[index] = sarray[i];
+			index++;
+		}
+		
+		return darray;
+	}
+	
+	public static String[] subArray(String[] sarray, String comment, int startindex, int endindex)
+	{
+		String[] darray = new String[endindex-startindex];
+		
+		int index = 0;
+		for(int i=startindex;i<endindex;i++)
+		{
+			darray[index] = comment + sarray[i] + comment;
+			index++;
+		}
+		
+		return darray;
 	}	
+	
+	public static String jionArray(String[] sarray, String key)
+	{
+		String a = new String();
+		if(sarray==null||sarray.length==0)
+		{
+			return a;
+		}
+		for(int i=0;i<sarray.length;i++)
+		{
+			a = a + sarray[i];
+			if(i<sarray.length-1)
+			{
+				a = a + key;
+			}
+		}
+		
+		return a;
+	}
+	
+
 
 }

@@ -11,6 +11,8 @@ import org.nutz.dao.Cnd;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.mvc.Mvcs;
+import org.nutz.mvc.adaptor.JsonAdaptor;
+import org.nutz.mvc.annotation.AdaptBy;
 import org.nutz.mvc.annotation.At;
 import org.nutz.mvc.annotation.By;
 import org.nutz.mvc.annotation.Filters;
@@ -251,6 +253,7 @@ public class MemberAction extends BaseAction
 	}	
 
 	@At("/myrebate/showsum")
+	@AdaptBy(type = JsonAdaptor.class)	
 	@Ok("json")
 	public Map myrebateshowsum(@Param("..") Map map) throws Exception
 	{
@@ -262,5 +265,6 @@ public class MemberAction extends BaseAction
 		Map remap = new DynamicObject();
 		remap.put("score", score);
 		return remap;
-	}		
+	}
+	
 }
