@@ -8,6 +8,8 @@ import javax.servlet.http.HttpSession;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.mvc.Mvcs;
+import org.nutz.mvc.adaptor.JsonAdaptor;
+import org.nutz.mvc.annotation.AdaptBy;
 import org.nutz.mvc.annotation.At;
 import org.nutz.mvc.annotation.By;
 import org.nutz.mvc.annotation.Filters;
@@ -18,6 +20,9 @@ import org.nutz.mvc.filter.CheckSession;
 import com.skynet.framework.action.BaseAction;
 import com.skynet.framework.services.db.dybeans.DynamicObject;
 import com.skynet.framework.spec.GlobalConstants;
+import com.skynet.vmall.base.author.AuthorService;
+import com.skynet.vmall.base.filter.CheckSignatureFilter;
+import com.skynet.vmall.base.filter.LogFilter;
 import com.skynet.vmall.order.service.ShopCartGoodsService;
 import com.skynet.vmall.order.service.ShopCartService;
 
@@ -39,8 +44,13 @@ public class ShopCartAction extends BaseAction
 		HttpSession session = Mvcs.getHttpSession(true);
 		DynamicObject login_token = (DynamicObject) session.getAttribute(GlobalConstants.sys_login_token);
 		String userid = login_token.getFormatAttr(GlobalConstants.sys_login_userid);
+		String userwxopenid = login_token.getFormatAttr(GlobalConstants.sys_login_userwxopenid);
+		String keysignature = AuthorService.encode(AuthorService.gentext(AuthorService.getip(Mvcs.getReq()), userwxopenid));
+		
 		map.put("memberid", userid);
 		List<DynamicObject> shopcartgoods = shopcartService.browse(map);
+
+		ro.put("keysignature", keysignature);		
 		ro.put("shopcartgoods", shopcartgoods);
 		return ro;
 	}
@@ -65,17 +75,50 @@ public class ShopCartAction extends BaseAction
 
 	// 填写订单
 	@At("/placeorder")
-	@Ok(">>:/order/order/look.action?id=${obj.id}")
-	public Map placeorder(@Param("id") List<String> ids, @Param("nums") List<String> numses) throws Exception
+	@AdaptBy(type = JsonAdaptor.class)	
+	@Ok("json")
+	@Filters({@By(type=LogFilter.class, args={"订单下单"}),@By(type=CheckSession.class, args={"sys_login_token", "/checksession.html"})})	
+	public Map placeorder(@Param("..") Map map) throws Exception
 	{
+		List<String> ids = (List<String>)map.get("ids");
+		List<String> numses = (List<String>)map.get("numses");
+		String keysignature = (String)map.get("keysignature");
+
 		HttpSession session = Mvcs.getHttpSession(true);
 		DynamicObject login_token = (DynamicObject) session.getAttribute(GlobalConstants.sys_login_token);
+		String userid = login_token.getFormatAttr(GlobalConstants.sys_login_userid);
+		String userwxopenid = login_token.getFormatAttr(GlobalConstants.sys_login_userwxopenid);
+
+		String decode = AuthorService.decode(keysignature);
+		String ip = AuthorService.getip(Mvcs.getReq());
+		
 		DynamicObject form = new DynamicObject();
 		form.setObj("ids", ids);	
 		form.setObj("numses", numses);
-		String orderid = shopcartService.placeorder(form, login_token);
-		ro.put("id", orderid);
-		return ro;
+		
+		Map remap = new DynamicObject();
+		try
+		{
+			remap = AuthorService.common_checksignature(decode, ip, userwxopenid);
+			if(!("success".equals(remap.get("state"))))
+			{
+				return remap;
+			}
+			
+			String orderid = shopcartService.placeorder(form, login_token);
+			
+			remap.put("id", orderid);
+			
+			return remap;
+		}
+		catch (Exception e)
+		{
+			System.out.println(e);
+			remap.put("state", "error");
+			remap.put("message", "申请提现异常，请稍后再试。");
+		}
+		
+		return remap;
 	}
 
 }

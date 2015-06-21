@@ -10,6 +10,7 @@
 
 	<body id="body">
 		<form id="form_order" method="post" action="${base}/order/order/forward.action">
+			<input type="hidden" id="keysignature" name="keysignature" value="${obj.keysignature}">    		
 			<input type="hidden" id="id" name="id" value="${obj.order.id}" required>
 			<input type="hidden" id="cno" name="cno" value="${obj.order.cno}" required>
 			<input type="hidden" id="state" name="state" value="${obj.order.state}">
@@ -188,13 +189,15 @@ function page_forward()
 		}
 	}
 	
-	if(confirm("亲，你确定要订单付款吗？"))
+	var keysignature = $("#keysignature").val();
+	
+	if(confirm("亲，你是想要付款吗？"))
 	{
 		$.ajax({
-			type:'post',
+			type:'POST',
 			url:'${base}/order/order/forward.action',
 			contentType: "application/json",
-			data:JSON.stringify({"id":orderid}),
+			data:JSON.stringify({"id":orderid, "keysignature":keysignature}),
 			cache:false,
 			async:false,
 			success:function(data)
@@ -202,25 +205,25 @@ function page_forward()
 				console.log(data);
 				if(data=="")
 				{
-					alert("亲，对不起，提交订单有问题，检查一下再试试看！");
+					alert("亲，对不起，付款不成功，检查一下再试试看！");
 					return;
 				}
 				json = eval("(" + data + ")");
 				if(json.state=="success")
 				{
-					alert("亲，你已成功提交了订单，我们会尽快受理你的订单！");
+					alert("亲，你已成功付款，我们会尽快受理你的订单！");
 					// 更新购物车数量等操作；
 					window.location.reload();
 				}
 				else
 				{
-					alert("亲，对不起，提交订单失败，检查一下再试试看，或者联系我们！");
+					alert("订单付款失败："+json.message);
 				}
 			},
 			error:function(data)
 			{
 				console.log(data);
-				alert("抱歉，服务请求异常，可能网络或服务器发生故障！");
+				alert("抱歉，服务请求异常，可能网络有什么问题，稍后再试试看吧！");
 			}
 		})		
 	}

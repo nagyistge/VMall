@@ -17,7 +17,8 @@
 	<#include "/decorator/include/navmain.ftl">
 
     <div id="notEmptyCart" style="display:block">
-        <form id="formcart" method="post" action="${base}/order/shopcart/placeorder.action">
+        <form id="formcart" method="POST">
+		<input type="hidden" id="keysignature" name="keysignature" value="${obj.keysignature}">        
         
         <ul class="shp-cart-list">
         
@@ -138,7 +139,11 @@ $(".fm_txt").click(function() {
 function page_submit()
 {
 	var ids = [];
+	var numses = [];
 	var fids = $('#notEmptyCart input[name="id"]');
+	var fnums = $('#notEmptyCart input[name="nums"]');
+	var keysignature = $("#keysignature").val();
+	
 	if(fids.length==0)
 	{
 		alert("购物车是空的，没有需要结算的商品。");
@@ -149,33 +154,49 @@ function page_submit()
 	for(i=0;i<fids.length;i++)
 	{
 		ids.push(fids[i].value);
+		numses.push(fnums[i].value);
 	}
 	
-    $("#formcart").submit();
-}
-
-
-function modify() {
-	var a = parseInt($("#number").val(), 10);
-	if ("" == $("#number").val()) {
-		$("#number").val(1);
-		$("#amount").html("1\u4ef6");
-		return
+	if(ids.length==0)
+	{
+		alert("亲，无法下单，看看你是不是忘了选中购物车里的物品了？");
+		return;		
 	}
-	if (!isNaN(a)) {
-		if (1 > a || a > 999) {
-			$("#number").val(1);
-			$("#amount").html("1\u4ef6");
-			return
-		} else {
-			$("#number").val(a);
-			$("#amount").html(a + "\u4ef6");
-			return
+	
+	$.ajax({
+		type:'POST',
+		url:'${base}/order/shopcart/placeorder.action',
+		contentType: "application/json",
+		data:JSON.stringify({"ids":ids,"numses":numses,"keysignature":keysignature}),
+		cache:false,
+		async:false,
+		success:function(data)
+		{
+			console.log(data);
+			if(data=="")
+			{
+				alert("提交订单异常，请检查后再试试！");
+				return;
+			}
+			json = eval("(" + data + ")");
+			if(json.state=="success")
+			{
+				alert("提交订单成功！");
+				window.location = "${base}/order/order/look.action?id=" + json.id;
+			}
+			else
+			{
+				alert("提交订单失败："+json.message);
+			}
+		},
+		error:function(data)
+		{
+			console.log(data);
+			alert("服务请求异常！");
 		}
-	} else {
-		$("#number").val(1);
-		$("#amount").html("1\u4ef6")
-	}
+	})	
+	
+    
 }
 
 // 计算各项合计总计

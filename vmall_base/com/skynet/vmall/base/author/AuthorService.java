@@ -1,8 +1,11 @@
 package com.skynet.vmall.base.author;
 
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 
 import com.skynet.framework.common.encrypt.DES;
+import com.skynet.framework.services.db.dybeans.DynamicObject;
 import com.skynet.framework.services.function.HttpToolKit;
 import com.skynet.framework.services.function.StringToolKit;
 
@@ -74,6 +77,25 @@ public class AuthorService
 		{
 			return "error";
 		}
+	}
+	
+	public static Map common_checksignature(String decode, String ip, String wxopenid)
+	{
+		Map remap = new DynamicObject();
+		String state = checksignature(decode, ip, wxopenid);
+		remap.put("state", state);
+		if(state.equals("error"))
+		{
+			remap.put("message", "你的签名验证未通过，不能进行当前操作，请退出重试。");
+			return remap;
+		}
+		if(state.equals("timeout"))
+		{
+			remap.put("message", "你的签名已过期，不能进行当前操作，请退出重试。");
+			return remap;
+		}
+		
+		return remap;
 	}
 
 }
