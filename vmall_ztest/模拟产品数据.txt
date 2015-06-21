@@ -146,3 +146,15 @@ insert into t_app_goodsspec(id, goodsid, specclass, spec) values('127fadf0c0a801
 update t_app_goods set classinternal = classid;
 
 update t_app_goods set pic = concat('image/goods/', id, '-look-01.jpg');
+
+delete from t_app_goodsphoto;
+insert into t_app_goodsphoto(id, goodsid, sno, url, ctype)
+select uuid(), goods.id, 1, concat('image/goods/', goods.classinternal, '-detail-spjs-01.jpg'), '商品介绍' from t_app_goods goods where goods.ctype = '货品';
+insert into t_app_goodsphoto(id, goodsid, sno, url, ctype)
+select uuid(), goods.id, 2, concat('image/goods/', goods.classinternal, '-detail-spjs-02.jpg'), '商品介绍' from t_app_goods goods where goods.ctype = '货品';
+insert into t_app_goodsphoto(id, goodsid, sno, url, ctype)
+select uuid(), goods.id, 3, concat('image/goods/', goods.classinternal, '-detail-spjs-03.jpg'), '商品介绍' from t_app_goods goods where goods.ctype = '货品';
+insert into t_app_goodsphoto(id, goodsid, sno, url, ctype)
+select uuid(), goods.id, 4, concat('image/goods/', goods.classinternal, '-detail-spjs-04.jpg'), '商品介绍' from t_app_goods goods where goods.ctype = '货品';
+insert into t_app_goodsphoto(id, goodsid, sno, url, ctype)
+select uuid(), goods.id, 5, concat('image/goods/', goods.classinternal, '-detail-spjs-05.jpg'), '商品介绍' from t_app_goods goods where goods.ctype = '货品';
