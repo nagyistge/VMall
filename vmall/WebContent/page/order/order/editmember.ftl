@@ -14,7 +14,7 @@
 </head>
 <body id="body">
 
-<form action="${base}/order/order/savetaker.action" method="POST" id="form_edittaker">
+<form method="POST" id="form_editmember">
 <input type="hidden" id="id" name="id" value="${obj.order.id}">
 <input type="hidden" id="cno" name="cno" value="${obj.order.cno}">
 <input type="hidden" id="state" name="state" value="${obj.order.state}">
@@ -58,11 +58,6 @@
             </div>
         </div>
     </div>
-		<div class="info pd" id="takeaddress_error" style="display:none">
-        	<div class="tbl-type">
-            	<span class="tbl-cell w80"><span style="color:red">收货地址不能为空。</span></span>
-            </div>
-        </div>
     <!--[D] 默认时加  new-abtn-default 把a标签换成span-->
     <span class="new-abtn-type mgn" onclick="page_submiteditform()">保存</span>	
 </div>
@@ -98,7 +93,7 @@ function page_submiteditform()
 	
 	$.ajax({
 		type:'POST',
-		url:'${base}/order/order/savetaker.action',
+		url:'${base}/order/order/savemember.action',
 		contentType: "application/json",
 		data:JSON.stringify({"id":id,"membercname":membercname,"phone":phone}),
 		cache:false,

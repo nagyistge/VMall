@@ -158,25 +158,8 @@ public class OrderService extends SkynetNameEntityService<Order>
 	{
 		Map remap = new HashMap();
 		String id =  (String)map.get("id");		
-		String memberid = (String)map.get("memberid");
-		String wxopenid = (String)map.get("wxopenid");
-		String membercno = (String)map.get("membercno");
 		String membercname = (String)map.get("membercname");
 		String phone = (String)map.get("phone");
-		
-		if(StringToolKit.isBlank(memberid))
-		{
-			remap.put("state", "error");
-			remap.put("error", "会员资料异常，请检查资料后，重新下单。");	
-			return remap;
-		}
-	
-		if(StringToolKit.isBlank(wxopenid))
-		{
-			remap.put("state", "error");
-			remap.put("error", "会员未注册微信账号，请检查资料后，重新下单。");	
-			return remap;
-		}
 		
 		if(StringToolKit.isBlank(membercname))
 		{
@@ -191,13 +174,31 @@ public class OrderService extends SkynetNameEntityService<Order>
 			remap.put("error", "请填写购买人联系电话。");
 			return remap;
 		}
-		
+
 		Order order = sdao().fetch(Order.class, id);
+		
 		if(order==null)
 		{
 			remap.put("state", "error");
 			remap.put("error", "订单信息异常，未找到当前订单。");	
 			return remap;			
+		}
+		
+		String memberid = order.getMemberid();
+		String wxopenid = order.getWxopenid();
+		
+		if(StringToolKit.isBlank(memberid))
+		{
+			remap.put("state", "error");
+			remap.put("error", "会员资料异常，请检查资料后，重新下单。");	
+			return remap;
+		}
+	
+		if(StringToolKit.isBlank(wxopenid))
+		{
+			remap.put("state", "error");
+			remap.put("error", "会员未注册微信账号，请检查资料后，重新下单。");	
+			return remap;
 		}
 		
 		order.setMembercname(membercname);

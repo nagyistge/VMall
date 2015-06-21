@@ -105,9 +105,7 @@ public class ShopCartAction extends BaseAction
 				return remap;
 			}
 			
-			String orderid = shopcartService.placeorder(form, login_token);
-			
-			remap.put("id", orderid);
+			remap = shopcartService.placeorder(form, login_token);
 			
 			return remap;
 		}

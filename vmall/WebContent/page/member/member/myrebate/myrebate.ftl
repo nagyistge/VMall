@@ -11,19 +11,21 @@
 	<link href="${base}/lib/jd/cart/css/shopping-cart.css" media="all" rel="stylesheet" type="text/css">
 	<#include "/decorator/include/header.ftl">
 </head>
-<body id="body">
-
+<body id="body" style="background:#ffffff">
 <#include "/decorator/include/navmain.ftl">
-<div class="good-detail sift-mg">
-	<div class="sift-tab" style="height: 42px;">
-		<div id="fixed" class="sift-tab" style="height: 42px; width: 439px;">
-		<ul class="tab-lst">
-			<li><a href="javascript:void(0)" value="bygroup" class="on">人员</a></li>
-			<li><a href="javascript:void(0)" value="bygoods" class=""><span class="bar"></span>商品</a></li>
-			<li><a href="javascript:void(0)" value="byorder" class=""><span class="bar"></span>订单</a></li>
-		</ul>
-		</div>
+
+<div data-spm="" class="content">
+	<div style="height:40px;width:100%">
+		<div style="margin-left:5%;height:30px;width:30%;background:#ff0000;float:left">总积分1：</div>
+		<div style="height:30px;width:30%;background:#00ff00;float:left">总积分2：</div>
+		<div style="height:30px;width:30%;background:#0000ff;float:left">总积分3：</div>
 	</div>
+	<nav data-spm="1006" class="tabs">
+		<div type="group" data-sort="" data-spm-click="" class="tab-item active" data-spm-anchor-id="">会员</div>
+		<div type="goods" data-sort="" data-spm-click="" class="tab-item" data-spm-anchor-id="">商品</div>
+		<div type="order" data-sort="" data-spm-click="" class="tab-item" data-spm-anchor-id="">订单</div>
+	</nav>
+	
 	<div class="detail" id="bygroup" style="display: block;">
 		<ul>
 		</ul>
@@ -36,6 +38,8 @@
 		<ul>
 		</ul>
 	</div>
+	
+	
 </div>
 
 <div id="payment_p" style="display:block">
@@ -48,7 +52,7 @@
         <strong class="shp-cart-total">本周累计：￥<span class="" id="cart_realPrice"></span></strong>
         <span class="sale-off">本月累计：<b>￥<span class="bottom-bar-price" id="cart_oriPrice"></b></span>
     </div>
-    <a class="btn-right-block" id="submit" style="width:150px;background-color: rgb(192, 0, 0); background-position: initial initial; background-repeat: initial initial;">累计积分：￥<span id="sumscore"></span></a>
+    <a class="btn-right-block" id="submit" style="width:150px;background-color: rgb(192, 0, 0); background-position: initial initial; background-repeat: initial initial;">申请提现：￥<span id="sumscore"></span></a>
 </div>
 </div>
 
@@ -56,19 +60,24 @@
 $(function(){
 	
 	$("#submit").click(function() {page_applydraw()});
-	
 	$("#bygroup").show();
-	$("li>a").click(function(){
-		if($('#fixed').has('nav-fixed')){
-			$('#fixed').removeClass('nav-fixed');
-		}
-		$(".detail").hide();
-		$("li>a").removeClass("on");
-		$(this).addClass("on");
-		var id=$(this).attr("value");
-		$("#"+id).show();
-		eval("page_show"+id+"();");
+
+	$(".tabs>div").click(function(){
+		$(".detail").each(function(){
+			$(this).hide();
+		});
+		
+		$(".tabs>div").removeClass("active");
+		$(this).addClass("active");
+
+		var type = $(this).attr("type");
+		
+		document.getElementById("by"+type).style.display="block";
+		
+		eval("page_showby"+type+"();");
+		
 	});
+
 	page_showsum();
 	page_showbygroup();
 });

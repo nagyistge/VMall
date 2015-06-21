@@ -160,9 +160,21 @@ public class ShopCartService extends SkynetNameEntityService<ShopCart>
 	}
 	
 	// 购物车结算。
-	public String placeorder(DynamicObject form, DynamicObject login_token) throws Exception
+	public Map placeorder(DynamicObject form, DynamicObject login_token) throws Exception
 	{
-		Map map = new HashMap();
+		String userid = login_token.getFormatAttr(GlobalConstants.sys_login_userid);
+		String userwxopenid = login_token.getFormatAttr(GlobalConstants.sys_login_userwxopenid);
+		String username = login_token.getFormatAttr(GlobalConstants.sys_login_username);
+		
+		// 当前用户姓名未填写，不允许下单
+		if(StringToolKit.isBlank(username))
+		{
+			Map remap = new DynamicObject();
+			remap.put("state", "error");
+			remap.put("message", "亲，我们还不知道你的姓名，无法下单，快去个人中心填写你的资料吧。");
+			return remap;
+		}
+		
 		// 购物车
 		List<String> ids = (List<String>)form.get("ids");
 		List<String> numses = (List<String>)form.get("numses");		
@@ -194,10 +206,6 @@ public class ShopCartService extends SkynetNameEntityService<ShopCart>
 			
 			shopcartgoodses.add(shopcartgoods);
 		}
-		
-		String userid = login_token.getFormatAttr(GlobalConstants.sys_login_userid);
-		String userwxopenid = login_token.getFormatAttr(GlobalConstants.sys_login_userwxopenid);
-		String username = login_token.getFormatAttr(GlobalConstants.sys_login_username);
 		
 		Member member = sdao().fetch(Member.class, userid);
 		
@@ -334,7 +342,11 @@ public class ShopCartService extends SkynetNameEntityService<ShopCart>
 		order.setAmount(amount_all);
 		sdao().update(order);
 		
-		return orderid;
+		Map remap = new DynamicObject();
+		remap.put("state", "success");
+		remap.put("id", orderid);
+		
+		return remap;
 	}
 
 }

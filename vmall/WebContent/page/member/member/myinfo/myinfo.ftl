@@ -3,36 +3,27 @@
 <head>
 <link rel="stylesheet" type="text/css" href="${base}/lib/jd/order/css/base.css" charset="gbk">
 <link rel="stylesheet" type="text/css" href="${base}/lib/jd/order/css/order.css" charset="gbk">
-
-<link rel="stylesheet" type="text/css" href="${base}/lib/jd/order/css/extend.css" charset="gbk">
-<link rel="stylesheet" type="text/css" href="${base}/lib/jd/order/css/hotel.css" charset="gbk">
-<link rel="stylesheet" type="text/css" href="${base}/lib/jd/order/css/airline.css" charset="gbk">
-	
 <link rel="stylesheet" href="${base}/lib/jd/order/misc/css/base.css?v=20150604">
 <link rel="stylesheet" href="${base}/lib/jd/order/misc/css/pay.css?v=20150604">
 <link href="${base}/lib/jd/cart/css/shopping-cart.css" media="all" rel="stylesheet" type="text/css">
-
-
-	<#include "/decorator/include/header.ftl">
+<#include "/decorator/include/header.ftl">
 </head>
-<body id="body">
+<body id="body" style="background:#ffffff">
 
 <#include "/decorator/include/navmain.ftl">
 
 <form action="${base}/member/member/save.action" method="POST" id="form_info">
 <input type="hidden" id="id" name="id" value="${obj.member.id}">
 
-<div class="info-detail sift-mg">
-<div class="sift-tab" style="height: 42px;">
-	<div id="fixed" class="sift-tab" style="height: 42px; width: 439px;">
-	<ul class="tab-lst">
-		<li><a href="javascript:void(0)" value="bybase" class="on">基本信息</a></li>
-		<li><a href="javascript:void(0)" value="byaddr" class=""><span class="bar"></span>地址信息</a></li>
-		<li><a href="javascript:void(0)" value="bybank" class=""><span class="bar"></span>账号信息</a></li>
-	</ul>
-	</div>
-</div>
-<div class="detail" id="bybase" style="display: block;">
+<div data-spm="" class="content">
+	<p style="font-size:10px;color:#aeaeae;height:30px;"></p>
+	<nav data-spm="1006" class="tabs">
+		<div type="base" data-sort="" data-spm-click="" class="tab-item active" data-spm-anchor-id="">个人</div>
+		<div type="addr" data-sort="" data-spm-click="" class="tab-item" data-spm-anchor-id="">地址</div>
+		<div type="bank" data-sort="" data-spm-click="" class="tab-item" data-spm-anchor-id="">账号</div>
+	</nav>
+	
+	<div class="detail" id="bybase" style="display: block;">
 
     <div class="info-list">
     
@@ -137,7 +128,7 @@
 		<div class="tbl-type">
 			<span class="tbl-cell w70"><span>详细地址：</span></span>
 		    <span class="tbl-cell"><span><label id="address_label"></label>
-		    <textarea rows="2" style="height:auto;width:100%;" type="text" class="new-input" name="addr" id="addr" title="详细地址" required>${obj.member.addr}</textarea></span></span>
+		    <textarea rows="5" style="height:auto;width:100%;" type="text" class="new-input" name="addr" id="addr" title="详细地址" required>${obj.member.addr}</textarea></span></span>
 		</div>
 		</div>
 
@@ -159,7 +150,12 @@
 		    	<span class="tbl-cell w70"><span>所属银行：</span></span>
                 <span class="tbl-cell">
 	            	<span>
-	                <select name="bank" id="bank" style="width:200px"><option selected="" id="option_add_1" value="1">中国工商银行</option><option id="option_add_2" value="2">中国建设银行</option><option id="option_add_3" value="3">中国交通银行</option><option id="option_add_4" value="4">中国农业银行</option></select>
+	                <select name="bank" id="bank" style="width:200px">
+	                <option selected="" id="option_add_1" value="1">中国工商银行</option>
+	                <option id="option_add_2" value="2">中国建设银行</option>
+	                <option id="option_add_3" value="3">中国交通银行</option>
+	                <option id="option_add_4" value="4">中国农业银行</option>
+	                </select>
 	                </span>
                 </span>
 		    </div>
@@ -216,6 +212,12 @@
 	</div>
 
 </div>
+
+</div>
+
+
+
+
 </form>
 
 
@@ -272,9 +274,9 @@ function page_save()
 		{
 			if(fields[i].value=='')
 			{
-				alert(fields[i].title+"不能为空。");
-				// eval(fields[i].name+'_error.style.display="block";');
-				return;
+				//alert(fields[i].title+"不能为空。");
+				//eval(fields[i].name+'_error.style.display="block";');
+				//return;
 			}
 			else
 			{
@@ -316,6 +318,23 @@ function page_save()
 	
 	
 }
+
+</script>
+
+<script>	
+$(".tabs>div").click(function(){
+	$(".detail").each(function(){
+		$(this).hide();
+	});
+	
+	$(".tabs>div").removeClass("active");
+	$(this).addClass("active");
+
+	var type = $(this).attr("type");
+	
+	document.getElementById("by"+type).style.display="block";
+});
+
 
 </script>
 

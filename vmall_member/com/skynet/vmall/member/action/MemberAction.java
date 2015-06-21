@@ -85,6 +85,8 @@ public class MemberAction extends BaseAction
 		try
 		{
 			remap = memberService.saveinfo(newmember, login_token);
+			// 更新当前用户会话姓名信息
+			login_token.setAttr(GlobalConstants.sys_login_username, newmember.getCname());
 		}
 		catch (Exception e)
 		{
