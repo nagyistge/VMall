@@ -99,7 +99,6 @@ public class MemberAction extends BaseAction
 		
 		return remap;
 	}
-
 	
 	@At("/myorder")
 	@Ok("->:/page/member/member/myorder/myorder.ftl")
@@ -200,6 +199,16 @@ public class MemberAction extends BaseAction
 		ro.put("id", id);
 		return ro;
 	}
+	
+	@At("/mygroup/lookother")
+	@Ok("->:/page/member/member/mygroup/lookother.ftl")
+	public Map lookother(@Param("..") Map map) throws Exception
+	{
+		String userid = (String)map.get("id");
+		DynamicObject member = memberService.locate(userid);
+		ro.put("member", member);
+		return ro;
+	}	
 	
 	@At("/myrebate")
 	@Ok("->:/page/member/member/myrebate/myrebate.ftl")

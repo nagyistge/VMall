@@ -1,4 +1,40 @@
 <#list obj.orders as order>
+
+<li id="order${order.id}">
+    <div class="items" id="items${order.id}" name="item">
+		<div class="check-wrapper">
+			<span style="color:#dedede">
+	            <p>&nbsp;</p>
+	            <p>${order_index+1}</p>
+	            <p>&nbsp;</p>	
+			</span>
+        </div>
+        <div class="shp-cart-item-core">
+        
+        	<div class="cart-product-cell-2">
+                <div class="cart-product-name">
+                    <p><span><a href="${base}/order/order/look.action?id=${order.id}" style="font-size:14px;color:#aeaede">${order.cno}</a></span><sapn>&nbsp;&nbsp;</span><span style="font-size:10px;color:#dedede">${order.membercname}</span></p>
+                    <p><span>&nbsp;</span></p>
+                    <p><span style="font-size:14px;color:#dedede">${order.takeaddress}</span></p>
+           		</div>
+       		</div>
+       		
+			<div class="cart-product-cell-3">
+        		<p>￥<span style="font-size:18px;color:#ff6666">${order.amount?number?string("0.00")}</span></p>
+        		<p><span style="font-size:12px;color:#aeaede">${order.state}</span></p>
+	       	</div>       		
+        </div>
+	</div>           
+</li>
+</#list>
+
+
+
+
+
+
+<#--
+<#list obj.orders as order>
 <li id="order${order.cno}">
 <div class="items">
     <div class="check-wrapper">
@@ -17,3 +53,4 @@
 </div>
 </li>
 </#list>
+-->

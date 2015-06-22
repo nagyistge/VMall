@@ -11,7 +11,7 @@
 <link href="${base}/lib/jd/cart/css/shopping-cart.css" media="all" rel="stylesheet" type="text/css">
 <#include "/decorator/include/header.ftl">
 </head>
-<body id="body">
+<body id="body" style="background:#ffffff">
 <#include "/decorator/include/navmain.ftl">
 <div id="notEmptyCart" style="display:block">
 	<form id="form_browse" method="POST">
