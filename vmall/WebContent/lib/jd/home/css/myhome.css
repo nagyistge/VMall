@@ -92,7 +92,7 @@ img {
 .head-img {
 	height: 7.18em;
 	width: 100%;
-	background: url(http://static.m.jd.com/home/images/myJd/headbg.png);
+	background: #ec9575;
 	background-size: cover;
 	text-align: center;
 	color: #FFF
