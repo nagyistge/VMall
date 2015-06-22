@@ -31,15 +31,15 @@
 	</nav>
 	
 	<div class="detail" id="bygroup" style="display: block;">
-		<ul>
+		<ul class="shp-cart-list">
 		</ul>
 	</div>
 	<div class="detail" id="bygoods" style="display: none;">
-		<ul>
+		<ul class="shp-cart-list">
 		</ul>	
 	</div>
 	<div class="detail" id="byorder" style="display: none;">
-		<ul>
+		<ul class="shp-cart-list">
 		</ul>
 	</div>
 	
@@ -53,10 +53,10 @@
         <span onclick="checkAllHandler();" class="cart-checkbox checked" id="checkIcon-1"></span>
     </div>
     <div class="shp-cart-info">
-        <strong class="shp-cart-total">本周累计：￥<span class="" id="cart_realPrice"></span></strong>
-        <span class="sale-off">本月累计：<b>￥<span class="bottom-bar-price" id="cart_oriPrice"></b></span>
+        <strong class="shp-cart-total">本周累计：￥<span class="" id="sum_week"></span></strong>
+        <span class="sale-off">本月累计：<b>￥<span class="bottom-bar-price" id="sum_month"></b></span>
     </div>
-    <a class="btn-right-block" id="submit" style="width:150px;background-color: rgb(192, 0, 0); background-position: initial initial; background-repeat: initial initial;">申请提现：￥<span id="sumscore"></span></a>
+    <a class="btn-right-block" id="submit" style="width:150px;background-color: rgb(192, 0, 0); background-position: initial initial; background-repeat: initial initial;">申请提现：￥<span id="sum_apply"></span></a>
 </div>
 </div>
 
@@ -99,7 +99,7 @@ function page_showbygroup()
 		type:'post',
 		url:'${base}/member/member/myrebate/showbygroup.action',
 		contentType: "application/json",
-		data:JSON.stringify({"temp":"temp"}),
+		data:JSON.stringify({"orderstate":"结束"}),
 		cache:false,
 		async:false,
 		success:function(data)
@@ -124,7 +124,7 @@ function page_showbygoods()
 		type:'post',
 		url:'${base}/member/member/myrebate/showbygoods.action',
 		contentType: "application/json",
-		data:JSON.stringify({"temp":"temp"}),
+		data:JSON.stringify({"orderstate":"结束"}),
 		cache:false,
 		async:false,
 		success:function(data)
@@ -148,7 +148,7 @@ function page_showbyorder()
 		type:'post',
 		url:'${base}/member/member/myrebate/showbyorder.action',
 		contentType: "application/json",
-		data:JSON.stringify({"temp":"temp"}),
+		data:JSON.stringify({"orderstate":"结束"}),
 		cache:false,
 		async:false,
 		success:function(data)
@@ -170,7 +170,7 @@ function page_showsum_rebate_latent()
 		type:'POST',
 		url:'${base}/member/member/myrebate/showsum.action',
 		contentType: "application/json",
-		data:JSON.stringify({"state":"下单"}),
+		data:JSON.stringify({"orderstate":"下单"}),
 		cache:false,
 		async:false,
 		success:function(data)
@@ -193,7 +193,7 @@ function page_showsum_rebate_all()
 		type:'POST',
 		url:'${base}/member/member/myrebate/showsum.action',
 		contentType: "application/json",
-		data:JSON.stringify({"statebegin":"收款","stateend":"结束"}),
+		data:JSON.stringify({"orderstatebegin":"收款","orderstateend":"结束"}),
 		cache:false,
 		async:false,
 		success:function(data)
@@ -216,7 +216,7 @@ function page_showsum_rebate_wait()
 		type:'POST',
 		url:'${base}/member/member/myrebate/showsum.action',
 		contentType: "application/json",
-		data:JSON.stringify({"statebegin":"收款", "stateend":"结算"}),
+		data:JSON.stringify({"orderstatebegin":"收款", "orderstateend":"结算"}),
 		cache:false,
 		async:false,
 		success:function(data)
@@ -239,7 +239,7 @@ function page_showsum_rebate()
 		type:'POST',
 		url:'${base}/member/member/myrebate/showsum.action',
 		contentType: "application/json",
-		data:JSON.stringify({"state":"结束"}),
+		data:JSON.stringify({"orderstate":"结束"}),
 		cache:false,
 		async:false,
 		success:function(data)
@@ -247,6 +247,7 @@ function page_showsum_rebate()
 			console.log(data);
 			json = eval("(" + data + ")");
 			$("#score_rebate").html(json.score);
+			$("#sum_apply").html(json.score);
 		},
 		error:function(data)
 		{

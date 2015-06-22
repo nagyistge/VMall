@@ -19,10 +19,10 @@
 
 <div data-spm="" class="content">
 	<div style="height:30px;width:100%">
-		<div class="sum"><span>已提现：<span id="score_rebate" style="color:#ff6666;font-size:18px"></span></div>
-		<div class="sum"><span>待提现：</span><span id="score_rebate_wait" style="font-size:18px"></span></div>
-		<div class="sum"><span>全部提现：</span><span id="score_rebate_all" style="font-size:18px"></span></div>		
-		<div class="sum"><span>可提现积分：</span><span id="score_rebate_latent" style="font-size:18px"></span></div>	
+		<div class="sum"><span>已生效：<span id="score_rebate" style="color:#ff6666;font-size:18px"></span></div>
+		<div class="sum"><span>待生效：</span><span id="score_rebate_wait" style="font-size:18px"></span></div>
+		<div class="sum"><span>全部：</span><span id="score_rebate_all" style="font-size:18px"></span></div>		
+		<div class="sum"><span>潜在：</span><span id="score_rebate_latent" style="font-size:18px"></span></div>	
 	</div>
 	<nav data-spm="1006" class="tabs">
 		<div type="group" data-sort="" data-spm-click="" class="tab-item active" data-spm-anchor-id="">会员</div>
@@ -44,6 +44,20 @@
 	</div>
 	
 	
+</div>
+
+<div id="payment_p" style="display:block">
+<div id="paymentp"></div>
+<div class="payment-total-bar" id="payment">
+    <div class="shp-chk">
+        <span onclick="checkAllHandler();" class="cart-checkbox checked" id="checkIcon-1"></span>
+    </div>
+    <div class="shp-cart-info">
+        <strong class="shp-cart-total">本周累计：￥<span class="" id="sum_week"></span></strong>
+        <span class="sale-off">本月累计：<b>￥<span class="bottom-bar-price" id="sum_month"></b></span>
+    </div>
+    <a class="btn-right-block" id="submit" style="width:150px;background-color: rgb(192, 0, 0); background-position: initial initial; background-repeat: initial initial;">申请提现：￥<span id="sum_apply"></span></a>
+</div>
 </div>
 
 <script type="text/javascript">
@@ -85,7 +99,7 @@ function page_showbygroup()
 		type:'post',
 		url:'${base}/member/member/myrebate/showbygroup.action',
 		contentType: "application/json",
-		data:JSON.stringify({"orderstate":"结束","drawstate":"结束"}),
+		data:JSON.stringify({"state":"结束"}),
 		cache:false,
 		async:false,
 		success:function(data)
@@ -110,7 +124,7 @@ function page_showbygoods()
 		type:'post',
 		url:'${base}/member/member/myrebate/showbygoods.action',
 		contentType: "application/json",
-		data:JSON.stringify({"orderstate":"结束","drawstate":"结束"}),
+		data:JSON.stringify({"state":"结束"}),
 		cache:false,
 		async:false,
 		success:function(data)
@@ -134,7 +148,7 @@ function page_showbyorder()
 		type:'post',
 		url:'${base}/member/member/myrebate/showbyorder.action',
 		contentType: "application/json",
-		data:JSON.stringify({"orderstate":"结束","drawstate":"结束"}),
+		data:JSON.stringify({"state":"结束"}),
 		cache:false,
 		async:false,
 		success:function(data)
@@ -156,7 +170,7 @@ function page_showsum_rebate_latent()
 		type:'POST',
 		url:'${base}/member/member/myrebate/showsum.action',
 		contentType: "application/json",
-		data:JSON.stringify({"orderstate":"结束","drawstate":"NULL"}),
+		data:JSON.stringify({"state":"下单"}),
 		cache:false,
 		async:false,
 		success:function(data)
@@ -179,7 +193,7 @@ function page_showsum_rebate_all()
 		type:'POST',
 		url:'${base}/member/member/myrebate/showsum.action',
 		contentType: "application/json",
-		data:JSON.stringify({"orderstate":"结束","drawstatebegin":"申请","drawstateend":"结束"}),
+		data:JSON.stringify({"statebegin":"收款","stateend":"结束"}),
 		cache:false,
 		async:false,
 		success:function(data)
@@ -202,7 +216,7 @@ function page_showsum_rebate_wait()
 		type:'POST',
 		url:'${base}/member/member/myrebate/showsum.action',
 		contentType: "application/json",
-		data:JSON.stringify({"orderstate":"结束", "drawstatebegin":"申请","drawstateend":"收款"}),
+		data:JSON.stringify({"statebegin":"收款", "stateend":"结算"}),
 		cache:false,
 		async:false,
 		success:function(data)
@@ -225,7 +239,7 @@ function page_showsum_rebate()
 		type:'POST',
 		url:'${base}/member/member/myrebate/showsum.action',
 		contentType: "application/json",
-		data:JSON.stringify({"orderstate":"结束","drawstate":"结束"}),
+		data:JSON.stringify({"state":"结束"}),
 		cache:false,
 		async:false,
 		success:function(data)
@@ -233,6 +247,7 @@ function page_showsum_rebate()
 			console.log(data);
 			json = eval("(" + data + ")");
 			$("#score_rebate").html(json.score);
+			$("#sum_apply").html(json.score);
 		},
 		error:function(data)
 		{
@@ -240,6 +255,11 @@ function page_showsum_rebate()
 			alert("服务请求异常！");
 		}
 	})	
+}
+
+function page_applydraw()
+{
+	window.location = "${base}/order/drawcash/apply.action";
 }
 
 </script>

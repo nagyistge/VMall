@@ -13,12 +13,8 @@
 <link href="${base}/lib/jd/cart/css/shopping-cart.css" media="all" rel="stylesheet" type="text/css">
 <#include "/decorator/include/header.ftl">
 </head>
-<body id="body">
+<body id="body" style="background:#ffffff">
 <#include "/decorator/include/navmain.ftl">
-<style>
-.new-title {font-size:12px;color:#aeaeae}
-</style>
-
 <form id="form_draw" method="POST" action="${base}/order/drawcash/insert.action">
 <input type="hidden" id="keysignature" name="keysignature" value="${obj.keysignature}">
 
@@ -105,11 +101,10 @@
         <span onclick="checkAllHandler();" class="cart-checkbox checked" id="checkIcon-1"></span>
     </div>
     <div class="shp-cart-info">
-        <strong class="shp-cart-total">可提现总额:￥<span class="" id="cart_realPrice"></span></strong>
-        <span class="sale-off">提现订单条目:
-        </span>	
+        <strong class="shp-cart-total"><#--可提现总额:￥<span class="" id="cart_realPrice"></span>--></strong>
+        <span class="sale-off"><#--提现订单条目:--></span>	
     </div>
-    <a class="btn-right-block" id="submit" style="background-color: rgb(192, 0, 0); background-position: initial initial; background-repeat: initial initial;">申请(<span id="checkedNum"></span>)</a>
+    <a class="btn-right-block" id="submit" style="width:150px;background-color: rgb(192, 0, 0); background-position: initial initial; background-repeat: initial initial;">提交申请<span id="checkedNum"></span></a>
 </div>
 </div>
 

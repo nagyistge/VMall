@@ -214,6 +214,7 @@ public class MemberAction extends BaseAction
 	}
 	
 	@At("/myrebate/showbygroup")
+	@AdaptBy(type = JsonAdaptor.class)		
 	@Ok("->:/page/member/member/myrebate/showbygroup.ftl")
 	public Map myrebateshowbygroup(@Param("..") Map map) throws Exception
 	{
@@ -227,6 +228,7 @@ public class MemberAction extends BaseAction
 	}
 	
 	@At("/myrebate/showbygoods")
+	@AdaptBy(type = JsonAdaptor.class)		
 	@Ok("->:/page/member/member/myrebate/showbygoods.ftl")
 	public Map myrebateshowbygoods(@Param("..") Map map) throws Exception
 	{
@@ -240,6 +242,7 @@ public class MemberAction extends BaseAction
 	}
 	
 	@At("/myrebate/showbyorder")
+	@AdaptBy(type = JsonAdaptor.class)		
 	@Ok("->:/page/member/member/myrebate/showbyorder.ftl")
 	public Map myrebateshowbyorder(@Param("..") Map map) throws Exception
 	{

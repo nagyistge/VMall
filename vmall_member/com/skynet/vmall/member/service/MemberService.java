@@ -336,35 +336,8 @@ public class MemberService extends SkynetNameEntityService<Member>
 		sql.append(" from t_app_ordergoodsrebate rebate, t_app_order morder ").append("\n");
 		sql.append("  where 1 = 1 ").append("\n");
 		sql.append("    and rebate.ordercno = morder.cno ").append("\n");
-		sql.append("    and rebate.supmemberid = ").append(SQLParser.charValue(memberid)).append("\n");
-		if (!StringToolKit.isBlank(rebatetimebegin))
-		{
-			sql.append(" and rebate.rebatetime >= ").append(SQLParser.charValue(rebatetimebegin));
-		}
-
-		if (!StringToolKit.isBlank(rebatetimeend))
-		{
-			sql.append(" and rebate.rebatetime < ").append(SQLParser.charValue(rebatetimeend));
-		}
 		
-		if (!StringToolKit.isBlank(state))
-		{
-			sql.append(" and morder.state = ").append(SQLParser.charValue(state));
-		}
-
-		int index_statebegin = 0;
-		int index_stateend = 0;
-		if (!(StringToolKit.isBlank(statebegin) || StringToolKit.isBlank(stateend)))
-		{
-			index_statebegin = StringToolKit.getTextInArrayIndex(VMallConstants.flow_order, statebegin);
-			index_stateend = StringToolKit.getTextInArrayIndex(VMallConstants.flow_order, stateend);
-			String[] nextstates = StringToolKit.subArray(VMallConstants.flow_order, "'", index_statebegin, index_stateend + 1);
-			String states = StringToolKit.jionArray(nextstates, ",");
-			if (!StringToolKit.isBlank(states))
-			{
-				sql.append(" and morder.state in (").append(states).append(")").append("\n");
-			}
-		}
+		sql.append(where_sum(map));
 
 		int score = Types.parseInt(queryForMap(sql.toString()).getFormatAttr("score"), 0);
 		BigDecimal sumscore = new BigDecimal(score).setScale(2);
@@ -379,14 +352,15 @@ public class MemberService extends SkynetNameEntityService<Member>
 		int startindex = (page - 1) * pagesize;
 		int endindex = page * pagesize;
 
-		String memberid = (String) map.get("memberid");
-
 		StringBuffer sql = new StringBuffer();
 		sql.append(" select rebate.submemberid, member.cno, member.cname, sum(rebate.score) score ").append("\n");
-		sql.append("   from t_app_ordergoodsrebate rebate, t_app_member member ").append("\n");
+		sql.append("   from t_app_ordergoodsrebate rebate, t_app_member member, t_app_order morder ").append("\n");
 		sql.append("  where 1 = 1 ").append("\n");
 		sql.append("    and rebate.submemberid = member.id").append("\n");
-		sql.append("    and rebate.supmemberid = ").append(SQLParser.charValue(memberid)).append("\n");
+		sql.append("    and rebate.ordercno = morder.cno").append("\n");
+
+		sql.append(where_sum(map));
+		
 		sql.append("  group by rebate.submemberid, member.cno, member.cname ").append("\n");
 		sql.append("  order by member.cname, member.cno desc ").append("\n");
 
@@ -403,16 +377,17 @@ public class MemberService extends SkynetNameEntityService<Member>
 		int startindex = (page - 1) * pagesize;
 		int endindex = page * pagesize;
 
-		String memberid = (String) map.get("memberid");
-
 		StringBuffer sql = new StringBuffer();
-		sql.append(" select rebate.submemberid, goods.id goodsid, goods.cname, sum(rebate.score) score ").append("\n");
-		sql.append("   from t_app_ordergoodsrebate rebate, t_app_ordergoods ordergoods, t_app_goods goods ").append("\n");
+		sql.append(" select goods.id goodsid, goods.cname, goods.pic, sum(rebate.score) score ").append("\n");
+		sql.append("   from t_app_ordergoodsrebate rebate, t_app_order morder, t_app_ordergoods ordergoods, t_app_goods goods ").append("\n");
 		sql.append("  where 1 = 1 ").append("\n");
 		sql.append("    and rebate.ordergoodsid = ordergoods.id ").append("\n");
 		sql.append("    and ordergoods.goodsid = goods.id ").append("\n");
-		sql.append("    and rebate.supmemberid = ").append(SQLParser.charValue(memberid)).append("\n");
-		sql.append("  group by rebate.submemberid, goods.id, goods.cname ").append("\n");
+		sql.append("    and rebate.ordercno = morder.cno ").append("\n");
+		
+		sql.append(where_sum(map));		
+		
+		sql.append("  group by goods.id, goods.cname, goods.pic ").append("\n");
 		sql.append("  order by goods.cname desc ").append("\n");
 
 		List<DynamicObject> datas = sdao().queryForList(sql.toString(), startindex, endindex);
@@ -428,21 +403,103 @@ public class MemberService extends SkynetNameEntityService<Member>
 		int startindex = (page - 1) * pagesize;
 		int endindex = page * pagesize;
 
-		String memberid = (String) map.get("memberid");
-
 		StringBuffer sql = new StringBuffer();
-		sql.append(" select rebate.submemberid, morder.id orderid, morder.cno, morder.ordertime, sum(rebate.score) score ").append("\n");
+		sql.append(" select morder.id orderid, morder.cno, morder.membercname, morder.ordertime, sum(rebate.score) score ").append("\n");
 		sql.append("   from t_app_ordergoodsrebate rebate, t_app_ordergoods ordergoods, t_app_order morder ").append("\n");
 		sql.append("  where 1 = 1 ").append("\n");
 		sql.append("    and rebate.ordergoodsid = ordergoods.id ").append("\n");
 		sql.append("    and ordergoods.orderid = morder.id ").append("\n");
-		sql.append("    and rebate.supmemberid = ").append(SQLParser.charValue(memberid)).append("\n");
-		sql.append("  group by rebate.submemberid, morder.id, morder.cno, morder.ordertime ").append("\n");
+		
+		sql.append(where_sum(map));				
+
+		sql.append("  group by morder.id, morder.cno, morder.membercname, morder.ordertime ").append("\n");
 		sql.append("  order by morder.ordertime desc ").append("\n");
 
 		List<DynamicObject> datas = sdao().queryForList(sql.toString(), startindex, endindex);
 
 		return datas;
+	}
+	
+	private String where_sum(Map map)
+	{
+		int page = Types.parseInt((String) map.get("_page"), 1);
+		int pagesize = Types.parseInt((String) map.get("_pagesize"), 10);
+
+		int startindex = (page - 1) * pagesize;
+		int endindex = page * pagesize;
+
+		String memberid = (String) map.get("memberid");
+		String rebatetimebegin = (String) map.get("rebatetimebegin");
+		String rebatetimeend = (String) map.get("rebatetimeend");
+		
+		String orderstatebegin = (String) map.get("orderstatebegin");
+		String orderstateend = (String) map.get("orderstateend");
+		String orderstate = (String) map.get("orderstate");
+		
+		String drawstatebegin = (String) map.get("drawstatebegin");		
+		String drawstateend = (String) map.get("drawstateend");
+		String drawstate = (String) map.get("drawstate");		
+
+		StringBuffer sql = new StringBuffer();
+		
+		sql.append("    and rebate.supmemberid = ").append(SQLParser.charValue(memberid)).append("\n");
+		
+		if (!StringToolKit.isBlank(rebatetimebegin))
+		{
+			sql.append(" and rebate.rebatetime >= ").append(SQLParser.charValue(rebatetimebegin)).append("\n");
+		}
+
+		if (!StringToolKit.isBlank(rebatetimeend))
+		{
+			sql.append(" and rebate.rebatetime < ").append(SQLParser.charValue(rebatetimeend)).append("\n");
+		}
+		
+		if (!StringToolKit.isBlank(orderstate))
+		{
+			sql.append(" and morder.state = ").append(SQLParser.charValue(orderstate)).append("\n");
+		}
+
+		int index_orderstatebegin = 0;
+		int index_orderstateend = 0;
+		if (!(StringToolKit.isBlank(orderstatebegin) || StringToolKit.isBlank(orderstateend)))
+		{
+			index_orderstatebegin = StringToolKit.getTextInArrayIndex(VMallConstants.flow_order, orderstatebegin);
+			index_orderstateend = StringToolKit.getTextInArrayIndex(VMallConstants.flow_order, orderstateend);
+			String[] nextstates = StringToolKit.subArray(VMallConstants.flow_order, "'", index_orderstatebegin, index_orderstateend + 1);
+			String states = StringToolKit.jionArray(nextstates, ",");
+			if (!StringToolKit.isBlank(states))
+			{
+				sql.append(" and morder.state in (").append(states).append(")").append("\n");
+			}
+		}
+		
+		if (!StringToolKit.isBlank(drawstate))
+		{
+			if("NULL".equals(drawstate))
+			{
+				sql.append(" and rebate.state is null").append("\n");
+			}
+			else
+			{
+				sql.append(" and rebate.state = ").append(SQLParser.charValue(drawstate)).append("\n");
+			}
+		}
+
+		int index_drawstatebegin = 0;
+		int index_drawstateend = 0;
+		if (!(StringToolKit.isBlank(drawstatebegin) || StringToolKit.isBlank(drawstateend)))
+		{
+			index_drawstatebegin = StringToolKit.getTextInArrayIndex(VMallConstants.flow_drawcash, drawstatebegin);
+			index_drawstateend = StringToolKit.getTextInArrayIndex(VMallConstants.flow_drawcash, drawstateend);
+			String[] nextstates = StringToolKit.subArray(VMallConstants.flow_drawcash, "'", index_drawstatebegin, index_drawstateend + 1);
+			String states = StringToolKit.jionArray(nextstates, ",");
+			if (!StringToolKit.isBlank(states))
+			{
+				sql.append(" and rebate.state in (").append(states).append(")").append("\n").append("\n");
+			}
+		}
+		
+		return sql.toString();
 	}
 
 	public Map saveinfo(Member newmember, DynamicObject login_token) throws Exception
