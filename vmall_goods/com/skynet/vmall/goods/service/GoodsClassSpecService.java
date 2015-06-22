@@ -36,8 +36,9 @@ public class GoodsClassSpecService extends SkynetNameEntityService<GoodsClassSpe
 		sql.append(" select classspec.* ");
 		sql.append("   from t_app_goodsclassspec classspec, t_app_goodsclass supclass, t_app_goodsclass class ").append("\n");
 		sql.append("  where 1 = 1").append("\n");
-		sql.append("    and supclass.internal like concat_ws(class.internal, '%')").append("\n");
 		sql.append("    and supclass.id = classspec.goodsclassid ").append("\n");
+		// sql.append("    and supclass.internal like concat(class.internal, '%')").append("\n");
+		sql.append("    and supclass.id = class.supid ").append("\n");
 		sql.append("    and class.id = ").append(SQLParser.charValue(goodclassid)).append("\n");
 
 		List<DynamicObject> specs = sdao().queryForList(sql.toString());	
