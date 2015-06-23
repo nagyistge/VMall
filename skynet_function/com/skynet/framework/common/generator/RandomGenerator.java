@@ -13,12 +13,12 @@ public class RandomGenerator
 			max = max * 10;
 		}
 		
-		int r = random(max);
+		int r = random(max, length);
 		
 		return r;
 	}
 	
-	public static int random(int max)
+	public static int random(int max, int length)
 	{
 		Random ran = new Random();
 		int r = 0;
@@ -26,7 +26,7 @@ public class RandomGenerator
 		{
 			int n = ran.nextInt(max);
 			r = n;
-			int[] bs = new int[4];
+			int[] bs = new int[length];
 			for (int i = 0; i < bs.length; i++)
 			{
 				bs[i] = n % 10;
