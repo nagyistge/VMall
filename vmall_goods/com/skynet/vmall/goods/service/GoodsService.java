@@ -116,8 +116,8 @@ public class GoodsService extends SkynetNameEntityService<Goods>
 		
 		if(!StringToolKit.isBlank(saleprice))
 		{
-			sql.append("    and saleprice < " + saleprice + " * 1.1 ").append("\n");
-			sql.append("    and saleprice > " + saleprice + " * 0.9 ").append("\n");
+			sql.append("    and saleprice < " + saleprice + " * 1.2 ").append("\n");
+			sql.append("    and saleprice > " + saleprice + " * 0.8 ").append("\n");
 		}
 		// 增加查询过滤条件
 		List<DynamicObject> datas = sdao().queryForList(sql.toString(), startindex, endindex);
