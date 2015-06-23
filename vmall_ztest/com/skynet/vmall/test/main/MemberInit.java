@@ -7,10 +7,12 @@ public class MemberInit
 
 	public static void main(String[] args)
 	{
+		String cno = "000163507124";
+		
 		StringBuffer sql = new StringBuffer();
 		for (int i = 0; i < 3; i++)
 		{
-			String cno1 = FormatKey.format(i + 1, 4);
+			String cno1 = cno + FormatKey.format(i + 1, 4);
 			sql = new StringBuffer();
 			sql.append(" insert into t_app_member(id, wxopenid, cname, supid, internal, level)  ");
 			sql.append(" values('" + cno1 + "','wx" + cno1 + "','用户" + cno1 + "', 'fanbingbing', '" + cno1 + "', 3); ");

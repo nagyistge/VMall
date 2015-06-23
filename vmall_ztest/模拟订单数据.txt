@@ -1,0 +1,30 @@
+delete from t_app_order;
+delete from t_app_ordergoods;
+delete from t_app_ordergoodsrebate;
+
+
+update t_app_order, t_app_member
+      set t_app_order.wxopenid = t_app_member.wxopenid
+  where 1 = 1
+      and t_app_order.memberid = t_app_member.id;
+
+update t_app_ordergoods, t_app_goods
+      set t_app_ordergoods.goodsname = t_app_goods.cname,
+	    t_app_ordergoods.saleprice = t_app_goods.saleprice,   
+            t_app_ordergoods.promoteprice = t_app_goods.promoteprice,
+	    t_app_ordergoods.realprice = t_app_goods.promoteprice
+  where 1 = 1
+      and t_app_ordergoods.goodsid = t_app_goods.id;
+      
+   update t_app_ordergoods, t_app_goods
+      set t_app_ordergoods.rebate1 = t_app_goods.rebate1,
+          t_app_ordergoods.rebate2 = t_app_goods.rebate2,
+          t_app_ordergoods.rebate3 = t_app_goods.rebate3,
+          t_app_ordergoods.rebate4 = t_app_goods.rebate4,
+          t_app_ordergoods.rebate5 = t_app_goods.rebate5   
+  where 1 = 1
+      and t_app_ordergoods.goodsid = t_app_goods.id;
+
+
+update t_app_ordergoods set amountsale = saleprice * nums, amountpromote = promoteprice * nums, amountreal = realprice * nums;
+
