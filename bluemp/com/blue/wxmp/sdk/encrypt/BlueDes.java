@@ -7,12 +7,17 @@ import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.DESKeySpec;
 
+import com.blue.wxmp.sdk.bean.WxMsgType;
+
 public class BlueDes {
 	/** 加密、解密key. */  
     private static final String PASSWORD_CRYPT_KEY = "ps!see(5tl)";  
     /** 加密算法,可用 DES,DESede,Blowfish. */  
     private final static String ALGORITHM = "DES";  
     public static void main(String[] args) throws Exception {  
+    	
+    	
+    	System.out.println(WxMsgType.news);
         String content = "/author/login/wxlogin.action?v=1";  
         String str = BlueDes.encrypt(content);  
         System.out.println("str: " + str);  

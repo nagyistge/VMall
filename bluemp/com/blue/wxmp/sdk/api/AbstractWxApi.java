@@ -1,13 +1,11 @@
 package com.blue.wxmp.sdk.api;
 
 import java.io.ByteArrayInputStream;
-import java.io.IOException;
 import java.util.Map;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.xml.parsers.ParserConfigurationException;
 
 import org.nutz.castor.Castors;
 import org.nutz.http.Request;
@@ -24,10 +22,9 @@ import org.nutz.log.Logs;
 import org.nutz.mvc.Mvcs;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.xml.sax.SAXException;
 
+import com.blue.wxmp.sdk.bean.WxOutMsg;
 import com.blue.wxmp.sdk.bean.WxPrePay;
-import com.blue.wxmp.sdk.bean.WxPrepayIdResult;
 import com.blue.wxmp.sdk.util.WxUtils;
 
 public abstract class AbstractWxApi implements WxApi {
@@ -36,6 +33,8 @@ public abstract class AbstractWxApi implements WxApi {
 	private static String sendTemplateMsgUrl = "https://api.weixin.qq.com/cgi-bin/message/template/send";
 
 	private static String callUnifiedOrderUrl = "https://api.mch.weixin.qq.com/pay/unifiedorder";
+
+	private static String sendCustomeUrl = "https://api.weixin.qq.com/cgi-bin/message/custom/send";
 
 	@Override
 	public String getCompleteUri(HttpServletRequest req) {
@@ -141,46 +140,36 @@ public abstract class AbstractWxApi implements WxApi {
 			throw new IllegalArgumentException("resp code=" + resp.getStatus());
 		String xmlstr = resp.getContent();
 
-		 Document doc = Xmls.xml(new ByteArrayInputStream(xmlstr.getBytes()));
-		 Element root = doc.getDocumentElement();
-		 Map wr = Xmls.asMap(root);
-		 
-		 SortedMap<String, String> sa = new TreeMap<String, String>();
-		 
-		 
-		 sa.put("appId",signParams.get("appid"));
-		 sa.put("timeStamp",String.valueOf(System.currentTimeMillis() / 1000));
-		 sa.put("nonceStr",signParams.get("nonce_str"));
-		 sa.put("package",String.format("prepay_id=%s", wr.get("prepay_id")));
-		 sa.put("signType","MD5");
-		 
-		 String paySign = WxUtils.createSign(sa, payKey);
-		 sa.put("paySign",paySign);
-		 
-		 wr.put("sa", sa);
-		 
-		 
-		/*
-		 * {
-   "return_code" :"SUCCESS",
-   "return_msg" :"OK",
-   "appid" :"wxd986013eeb54f390",
-   "mch_id" :"1247511701",
-   "nonce_str" :"mPhw0Oa85VYtcGsm",
-   "sign" :"1F4E5F28D879C9DD9B3AE2ECFFE14736",
-   "result_code" :"SUCCESS",
-   "prepay_id" :"wx20150618143949424399f9890214617868",
-   "trade_type" :"JSAPI"
-}
-		 * 
-		 */
-		 
-//		    string paysign = paysignReqHandler.CreateMd5Sign("key",Key);
-//		 
-//		    paysignReqHandler.SetParameter("", paysign);
-		
+		Document doc = Xmls.xml(new ByteArrayInputStream(xmlstr.getBytes()));
+		Element root = doc.getDocumentElement();
+		Map wr = Xmls.asMap(root);
 
-		log.debugf("preycall result= \n %s",Json.toJson(wr));
+		SortedMap<String, String> sa = new TreeMap<String, String>();
+
+		sa.put("appId", signParams.get("appid"));
+		sa.put("timeStamp", String.valueOf(System.currentTimeMillis() / 1000));
+		sa.put("nonceStr", signParams.get("nonce_str"));
+		sa.put("package", String.format("prepay_id=%s", wr.get("prepay_id")));
+		sa.put("signType", "MD5");
+
+		String paySign = WxUtils.createSign(sa, payKey);
+		sa.put("paySign", paySign);
+
+		wr.put("sa", sa);
+
+		/*
+		 * { "return_code" :"SUCCESS", "return_msg" :"OK", "appid"
+		 * :"wxd986013eeb54f390", "mch_id" :"1247511701", "nonce_str"
+		 * :"mPhw0Oa85VYtcGsm", "sign" :"1F4E5F28D879C9DD9B3AE2ECFFE14736",
+		 * "result_code" :"SUCCESS", "prepay_id"
+		 * :"wx20150618143949424399f9890214617868", "trade_type" :"JSAPI" }
+		 */
+
+		// string paysign = paysignReqHandler.CreateMd5Sign("key",Key);
+		//
+		// paysignReqHandler.SetParameter("", paysign);
+
+		log.debugf("preycall result= \n %s", Json.toJson(wr));
 
 		return Json.toJson(wr);
 
@@ -215,6 +204,17 @@ public abstract class AbstractWxApi implements WxApi {
 
 		return r;
 
+	}
+
+	@Override
+	public String sendCustomMsg(NutMap msg) {
+		// TODO Auto-generated method stub
+		
+		log.debugf("send custom message=%s", msg);
+		
+		postJson(sendCustomeUrl, msg);
+
+		return null;
 	}
 
 }

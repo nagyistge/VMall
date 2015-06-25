@@ -8,6 +8,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.nutz.lang.util.NutMap;
 import org.xml.sax.SAXException;
 
+import com.blue.wxmp.sdk.bean.WxOutMsg;
 import com.blue.wxmp.sdk.bean.WxPrepayIdResult;
 
 public interface WxApi {
@@ -25,6 +26,6 @@ public interface WxApi {
 	
 	String getPrepayId(String body, String notifyurl, String orderno, String mchid, String amt, String spbill_create_ip, String openId, String payKey); 
 	
-	
+	String sendCustomMsg(NutMap msg);
 	
 }
