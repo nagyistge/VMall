@@ -6,6 +6,7 @@
 	<link rel="stylesheet" type="text/css" href="${base}/lib/jd/order/css/extend.css" charset="gbk">
 	<link rel="stylesheet" href="${base}/lib/jd/order/misc/css/base.css?v=20150604">
 	<link rel="stylesheet" href="${base}/lib/jd/order/misc/css/pay.css?v=20150604">	
+	<script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
 </head>
 
 	<body id="body">
@@ -95,7 +96,7 @@
 			<div class="pay-bar" id="pay-bar">
 				<div class="payb-con">实付款：<span id="payMoney">￥${obj.order.amount?number?string("0.00")}</span></div>
 				<#if obj.order.state=="下单">
-				<a class="payb-btn" onclick="page_forward()" href="javascript:void(0);">订单付款</a>
+				<a id="btn_pay" class="payb-btn" href="javascript:void(0);">订单付款</a>
 				<#else>
 				<a class="payb-btn" href="javascript:void(0);">&nbsp;</a>
 				</#if>
@@ -105,6 +106,92 @@
 	
 	
 <script>
+var targetUrl=location.href.split("#")[0];
+alert("target url is:" + targetUrl);
+
+wx.config({
+    debug: true,
+    appId: '${obj.jscfg.appId!}',
+    timestamp: ${obj.jscfg.timestamp!},
+    nonceStr: '${obj.jscfg.nonceStr!}',
+    signature: '${obj.jscfg.signature!}',
+    jsApiList: [
+      'checkJsApi',
+	    'onMenuShareTimeline',
+	    'onMenuShareAppMessage',
+	    'onMenuShareQQ',
+	    'onMenuShareWeibo',
+	    'chooseWXPay'
+    ]
+});
+
+
+ 
+
+wx.ready(function(){
+
+		//config信息验证后会执行ready方法，所有接口调用都必须在config接口获得结果之后，config是一个客户端的异步操作，所以如果需要在页面加载时就调用相关接口，则须把相关接口放在ready函数中调用来确保正确执行。对于用户触发时才调用的接口，则可以直接调用，不需要放在ready函数中。
+	
+	document.querySelector('#btn_pay').onclick = payFunc;
+	
+  wx.onMenuShareAppMessage({
+	    title: '测试一下，点了看看', 
+	    desc: '${obj.shareurl!}', 
+	    link: '${obj.shareurl!}', 
+	    imgUrl: '', 
+	    type: '', 
+	    dataUrl: '', 
+	    success: function () { 
+	        
+	    },
+	    cancel: function () { 
+	    }
+		});
+		
+		
+//		document.querySelector("#testsendcustommsg").onclick=function(){
+//			$.post("/vmall/sendcustmsg?openid=${obj.openid}",function(re){
+//				alert(re)
+//			})
+//		};
+});
+
+
+
+//
+
+
+var payFunc = function(){
+	
+	$.ajax({
+		url:"/vmall/order/order/pay.action?orderno=${obj.order.cno}&amt=1",
+		cache: false,
+		success:function(result){
+			//alert(result.sa.package);
+			//alert(location.href.split("#")[0]);
+			wx.chooseWXPay({
+             timestamp: result.sa.timeStamp, // 支付签名时间戳，注意微信jssdk中的所有使用timestamp字段均为小写。但最新版的支付后台生成签名使用的timeStamp字段名需大写其中的S字符
+             nonceStr: result.sa.nonceStr, // 支付签名随机串，不长于 32 位
+             package: result.sa.package, // 统一支付接口返回的prepay_id参数值，提交格式如：prepay_id=***）
+             signType: result.sa.signType, // 签名方式，默认为'SHA1'，使用新版支付需传入'MD5'
+             paySign: result.sa.paySign, // 支付签名
+             success: function (res) {
+                 //支付成功之后的处理
+            	if(res.errMsg=="chooseWXPay:ok")
+            	{
+            		 window.location = "${base}/order/order/look.action?id=${obj.order.id}";	
+            	}
+            	else
+        		{
+           	 		alert("支付失败，请稍后再试。原因："+res.errMsg);
+           	 		
+        		}
+             }
+         });
+		}
+	});
+ 	
+}
 
 // 防止手机的enter键自动提交
 document.onkeypress =function()
