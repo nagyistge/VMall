@@ -1,7 +1,5 @@
 package com.skynet.vmall.wx.action;
 
-import java.util.HashMap;
-
 import javax.servlet.http.HttpServletRequest;
 
 import org.nutz.ioc.annotation.InjectName;
@@ -22,50 +20,39 @@ public class WXActionHelper
 {
 	@Inject
 	WxApi myWxApi;
-	
+
 	public NutMap wx_minfo(String info, HttpServletRequest req) throws Exception
 	{
 		String uri = myWxApi.getCompleteUri(req);// 获取完整uri，否则jsticket无法使用
 		Logs.get().debugf("request url=%s", uri);
-		
+
 		String decinfo = BlueDes.decrypt(info);
-		HashMap<String, String> minfo = Json.fromJson(HashMap.class, decinfo);
-		
+		NutMap minfo = Json.fromJson(NutMap.class, decinfo);
+
 		return wx_init(uri, minfo);
 	}
-	
-	
-	public NutMap wx_init(String uri, HashMap<String, String> minfo)
+
+	public NutMap wx_init(String uri, NutMap minfo) throws Exception
 	{
-		NutMap mapwx = NutMap.NEW();
+		String shareurl = wx_shareurl(uri, minfo);
 
-		try
-		{
-			String shareurl = wx_shareurl(uri, minfo);
-			NutMap jscfg = wx_jsconfig(uri);
+		NutMap jscfg = wx_jsconfig(uri);
 
-			mapwx.put("recommender", minfo.get("recommender"));
-			mapwx.put("openid", minfo.get("openid"));			
-			mapwx.put("shareurl", shareurl);
-			mapwx.put("jscfg", jscfg);
-		}
-		catch(Exception e)
-		{
-			System.out.println(e);
-		}
-		
-		return mapwx;
+		minfo.put("shareurl", shareurl);
+		minfo.put("jscfg", jscfg);
+
+		return minfo;
 	}
-	
+
 	// 微信页面交互JS认证
 	private NutMap wx_jsconfig(String uri) throws Exception
 	{
 		NutMap jscfg = myWxApi.genJsSDKConfig(uri, "onMenuShareTimeline", "onMenuShareAppMessage");
 		return jscfg;
 	}
-	
+
 	// 微信推荐链接等信息
-	private String wx_shareurl(String uri, HashMap<String, String> minfo) throws Exception
+	private String wx_shareurl(String uri, NutMap minfo) throws Exception
 	{
 		NutMap rowx = NutMap.NEW();
 
@@ -76,10 +63,10 @@ public class WXActionHelper
 		redirecturl += realurl;
 
 		String url = String.format(OAuthAccessTokenApi.oauthurl, ApiConfigKit.apiConfig.getAppId(), redirecturl);
-		
+
 		System.out.println("url:" + url);
 		System.out.println("redirecturl:" + redirecturl);
-		
+
 		return url;
 	}
 }
