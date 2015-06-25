@@ -348,5 +348,16 @@ public class ShopCartService extends SkynetNameEntityService<ShopCart>
 		
 		return remap;
 	}
+	
+	// 抢购订单结算
+	public Map rushorder(DynamicObject form, DynamicObject login_token) throws Exception
+	{
+
+		
+		Map remap = new DynamicObject();
+		remap.put("state", "success");
+		
+		return remap;
+	}
 
 }

@@ -15,5 +15,7 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/vmall_member"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/vmall_system"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/skynet_log"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/vmall_wx"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/bluemp"/>
 	<classpathentry kind="output" path=""/>
 </classpath>
