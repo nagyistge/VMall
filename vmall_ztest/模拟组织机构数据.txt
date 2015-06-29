@@ -1,0 +1,5 @@
+delete from t_sys_organ;
+
+insert into t_sys_organ(id, cname, ctype, parentorganid, internal) values('vmall', '优品365', '商城', 'R0', '00000001');
+
+insert into t_sys_organ(id, cname, ctype, parentorganid, internal) values('12345678abcd1234abcd12345678abcd', '97微店', '商家', 'vmall', '0000000100000001');                                   
