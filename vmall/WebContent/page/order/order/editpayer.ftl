@@ -37,7 +37,7 @@
         <div class="info pd">
         	<div class="tbl-type">
             	<span class="tbl-cell w100"><span>购买人姓名：</span></span>
-                <span class="tbl-cell"><span><input type="text" maxlength="50" class="new-input" name="membercname" id="membercname" value="${obj.order.membercname}" style="width:100%;" readonly></span></span>
+                <span class="tbl-cell"><span><input type="text" maxlength="50" class="new-input" name="membercname" id="membercname" value="${obj.order.membercname}" style="width:100%;"></span></span>
             </div>
         </div>
 		<div class="info pd" id="membercname_error" style="display:none">
@@ -93,7 +93,7 @@ function page_submiteditform()
 	
 	$.ajax({
 		type:'POST',
-		url:'${base}/order/order/savemember.action',
+		url:'${base}/order/order/savepayer.action',
 		contentType: "application/json",
 		data:JSON.stringify({"id":id,"membercname":membercname,"phone":phone}),
 		cache:false,

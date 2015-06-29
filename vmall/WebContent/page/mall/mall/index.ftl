@@ -20,7 +20,7 @@
 		<a class="item" href="/channel.html?id=8&amp;leftNav=true" target="_top"><i class="icon icon-food-clear"></i>美食</a>
 		</div>
 	</div>
-	
+	<div><a style="font-size:18px" href="weixin://profile/gh_3482de7975be">TEST</a></div>
 	<#list obj.goodsclasses as goodsclass>
 	
 	<div data-spm="${goodsclass.internal}" class="floor floor-man">
@@ -66,6 +66,7 @@
 <script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
 <script>
 
+alert("${obj.shareurl!}");
 <#if obj.jscfg??>
  
 wx.config({

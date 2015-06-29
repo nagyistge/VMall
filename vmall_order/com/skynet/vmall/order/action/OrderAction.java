@@ -9,6 +9,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.nutz.dao.Cnd;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.lang.Xmls;
@@ -34,7 +35,9 @@ import com.skynet.framework.services.db.dybeans.DynamicObject;
 import com.skynet.framework.services.function.StringToolKit;
 import com.skynet.framework.spec.GlobalConstants;
 import com.skynet.vmall.base.author.AuthorService;
+import com.skynet.vmall.base.constants.VMallConstants;
 import com.skynet.vmall.base.filter.LogFilter;
+import com.skynet.vmall.base.pojo.Order;
 import com.skynet.vmall.order.service.OrderGoodsRebateService;
 import com.skynet.vmall.order.service.OrderGoodsService;
 import com.skynet.vmall.order.service.OrderService;
@@ -48,9 +51,9 @@ import com.skynet.vmall.wx.action.WXActionHelper;
 public class OrderAction extends BaseAction
 {
 	private Log log = Logs.get();
-	
+
 	@Inject
-	WxApi myWxApi;	
+	WxApi myWxApi;
 
 	@Inject
 	WXActionHelper myWxHelper;
@@ -143,7 +146,10 @@ public class OrderAction extends BaseAction
 				return remap;
 			}
 
-			remap = orderService.forward(id);
+			Map form = new DynamicObject();
+			form.put("id", id); 
+			// 后继增加需要的参数及值
+			remap = orderService.forward(form);
 
 			return remap;
 		}
@@ -156,24 +162,6 @@ public class OrderAction extends BaseAction
 
 		return remap;
 	}
-
-	// @At("/memberscore")
-	// @Ok("->:/page/order/order/memberscore.ftl")
-	// public Map memberscore(@Param("..") Map map) throws Exception
-	// {
-	// HttpSession session = Mvcs.getHttpSession(true);
-	// DynamicObject login_token = (DynamicObject)
-	// session.getAttribute(GlobalConstants.sys_login_token);
-	// String userid =
-	// login_token.getFormatAttr(GlobalConstants.sys_login_userid);
-	// map.put("memberid", userid);
-	// List<DynamicObject> scores = ordergoodsrebateService.memberscore(map);
-	// BigDecimal sumscore = ordergoodsrebateService.sumscore(map);
-	//
-	// ro.put("sumscore", sumscore);
-	// ro.put("scores", scores);
-	// return ro;
-	// }
 
 	@At("/edittaker")
 	@Ok("->:/page/order/order/edittaker.ftl")
@@ -196,9 +184,9 @@ public class OrderAction extends BaseAction
 		return remap;
 	}
 
-	@At("/editmember")
-	@Ok("->:/page/order/order/editmember.ftl")
-	public Map editmember(@Param("..") Map map) throws Exception
+	@At("/editpayer")
+	@Ok("->:/page/order/order/editpayer.ftl")
+	public Map editpayer(@Param("..") Map map) throws Exception
 	{
 		String id = (String) map.get("id"); // 订单编号
 		DynamicObject order = orderService.locate(id);
@@ -206,34 +194,34 @@ public class OrderAction extends BaseAction
 		return ro;
 	}
 
-	@At("/savemember")
+	@At("/savepayer")
 	@AdaptBy(type = JsonAdaptor.class)
 	@Ok("json")
-	public Map savemember(@Param("..") Map map) throws Exception
+	public Map savepayer(@Param("..") Map map) throws Exception
 	{
 		String id = (String) map.get("id"); // 订单编号
-		Map remap = orderService.savemember(map);
+		Map remap = orderService.savepayer(map);
 		return remap;
 	}
 
 	@At("/pay")
 	@Ok("raw:json")
+	@Filters({ @By(type = LogFilter.class, args = { "订单付款" })})	
 	public String pay(String orderno, String amt) throws Exception
 	{
 		amt = "1";
 		HttpSession session = Mvcs.getHttpSession(true);
 		DynamicObject login_token = (DynamicObject) session.getAttribute(GlobalConstants.sys_login_token);
-		String userid = login_token.getFormatAttr(GlobalConstants.sys_login_userid);
 		String userwxopenid = login_token.getFormatAttr(GlobalConstants.sys_login_userwxopenid);
-		
-		// myWxApi.getPrepayId(body, notifyurl, orderno, mchid, amt,
-		// spbill_create_ip, openId, payKey)
-		return myWxApi.getPrepayId("测试订单1", "http://www.rbtalking.com/vmall/order/order/paynotify.action", orderno, ApiConfigKit.apiConfig.getMchid(), amt, "10.0.0.1", userwxopenid, ApiConfigKit.apiConfig.getKey());
+		String url = "http://" + VMallConstants.svr_domianname + "/" + VMallConstants.app_webcontext + "/order/order/paynotify.action";
+		return myWxApi.getPrepayId(orderno, url, orderno, ApiConfigKit.apiConfig.getMchid(), amt, "10.0.0.1", userwxopenid,
+				ApiConfigKit.apiConfig.getKey());
 
 	}
 
 	@At("/paynotify")
 	@Ok("raw")
+	@Filters({ @By(type = LogFilter.class, args = { "订单付款回执通知" })})		
 	public String paynotify(HttpServletRequest req)
 	{
 
@@ -264,10 +252,14 @@ public class OrderAction extends BaseAction
 			log.debugf("get pay notify return object :\n %s", wr);
 			String orderno = wr.get("out_trade_no").toString();
 
-			/*
-			 * 此处开始修改orderno的状态为已经支付
-			 */
-
+			log.debugf("orderno :\n %s", orderno);
+			
+			Order order = orderService.fetch(Cnd.where("cno", "=", orderno));
+			String id = order.getId();
+			
+			Map form = new DynamicObject();
+			form.put("id", id); 
+			orderService.paynotify(form);
 		}
 		catch (Exception e)
 		{

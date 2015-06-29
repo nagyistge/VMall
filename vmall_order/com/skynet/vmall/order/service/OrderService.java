@@ -1,5 +1,6 @@
 package com.skynet.vmall.order.service;
 
+import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -57,8 +58,10 @@ public class OrderService extends SkynetNameEntityService<Order>
 	}
 
 	// 转发
-	public Map forward(String id) throws Exception
+	public Map forward(Map form) throws Exception
 	{
+		String id = (String)form.get("id");
+		
 		Map map = new DynamicObject();
 		DynamicObject order = locate(id);
 		String flowstate = order.getFormatAttr("state");
@@ -85,11 +88,42 @@ public class OrderService extends SkynetNameEntityService<Order>
 		{
 			flownextstate = VMallConstants.flow_order[index + 1];
 		}
-
+		
 		// 更新状态至下一环节
 		sdao().update(Order.class, Chain.make("state", flownextstate), Cnd.where("id", "=", id));
 		map.put("state", "success");
 		map.put("flownextstate", flownextstate);
+		
+		return map;
+	}
+	
+	// 付款处理
+	public Map paynotify(Map form) throws Exception
+	{
+		String id = (String)form.get("id");
+		
+		Map map = new DynamicObject();
+		DynamicObject order = locate(id);
+		String flowstate = order.getFormatAttr("state");
+
+		// 检查流程已结束异常
+		if ("结束".equals(flowstate))
+		{
+			map.put("state", "error");
+			map.put("errormessage", "订单流程已结束，不允许再转发处理！");
+			return map;
+		}
+
+		// 检查未找到当前流程状态异常
+		String flownextstate = "收款";
+		// 更新状态至下一环节
+		sdao().update(Order.class, Chain.make("state", flownextstate), Cnd.where("id", "=", id));
+		map.put("state", "success");
+		map.put("flownextstate", flownextstate);
+		
+		sdao().update(Order.class, Chain.make("paystate", "已支付"), Cnd.where("id", "=", id));
+		sdao().update(Order.class, Chain.make("paytime", new Timestamp(System.currentTimeMillis())), Cnd.where("id", "=", id));
+		
 		return map;
 	}
 	
@@ -152,7 +186,7 @@ public class OrderService extends SkynetNameEntityService<Order>
 		return remap;	
 	}
 	
-	public Map savemember(Map map) throws Exception
+	public Map savepayer(Map map) throws Exception
 	{
 		Map remap = new HashMap();
 		String id =  (String)map.get("id");		

@@ -57,7 +57,7 @@
 					
 				<div class="step1 border-1px" id="member_info">
 					<div class="m step1-in">
-					<a href="javascript:void(0)" class="s-href" <#if obj.order.state=="下单">onclick="page_editmember()"</#if>>
+					<a href="javascript:void(0)" class="s-href" <#if obj.order.state=="下单">onclick="page_editpayer()"</#if>>
 					<div class="mt_new"><div class="mc">购买人编号：${obj.order.membercno}</div></div>
 						<div class="mt_new"><div class="mc">姓名：${obj.order.membercname}</div></div>
 						<div class="mt_new"><div class="mc">联系电话：${obj.order.phone}</div></div>
@@ -107,7 +107,7 @@
 	
 <script>
 var targetUrl=location.href.split("#")[0];
-alert("target url is:" + targetUrl);
+// alert("target url is:" + targetUrl);
 
 wx.config({
     debug: true,
@@ -125,17 +125,11 @@ wx.config({
     ]
 });
 
-
- 
-
-wx.ready(function(){
-
-		//config信息验证后会执行ready方法，所有接口调用都必须在config接口获得结果之后，config是一个客户端的异步操作，所以如果需要在页面加载时就调用相关接口，则须把相关接口放在ready函数中调用来确保正确执行。对于用户触发时才调用的接口，则可以直接调用，不需要放在ready函数中。
-	
-	document.querySelector('#btn_pay').onclick = payFunc;
-	
-  wx.onMenuShareAppMessage({
-	    title: '测试一下，点了看看', 
+wx.ready(function()
+{
+	document.querySelector('#btn_pay').onclick = page_pay;
+	wx.onMenuShareAppMessage({
+	    title: '优品365', 
 	    desc: '${obj.shareurl!}', 
 	    link: '${obj.shareurl!}', 
 	    imgUrl: '', 
@@ -146,51 +140,38 @@ wx.ready(function(){
 	    },
 	    cancel: function () { 
 	    }
-		});
-		
-		
-//		document.querySelector("#testsendcustommsg").onclick=function(){
-//			$.post("/vmall/sendcustmsg?openid=${obj.openid}",function(re){
-//				alert(re)
-//			})
-//		};
+	});
 });
 
-
-
-//
-
-
-var payFunc = function(){
-	
+// 微信支付
+var payFunc = function()
+{
 	$.ajax({
-		url:"/vmall/order/order/pay.action?orderno=${obj.order.cno}&amt=1",
+		url:"${base}/order/order/pay.action?orderno=${obj.order.cno}&amt=1",
 		cache: false,
-		success:function(result){
-			//alert(result.sa.package);
-			//alert(location.href.split("#")[0]);
+		success:function(result)
+		{
 			wx.chooseWXPay({
-             timestamp: result.sa.timeStamp, // 支付签名时间戳，注意微信jssdk中的所有使用timestamp字段均为小写。但最新版的支付后台生成签名使用的timeStamp字段名需大写其中的S字符
-             nonceStr: result.sa.nonceStr, // 支付签名随机串，不长于 32 位
-             package: result.sa.package, // 统一支付接口返回的prepay_id参数值，提交格式如：prepay_id=***）
-             signType: result.sa.signType, // 签名方式，默认为'SHA1'，使用新版支付需传入'MD5'
-             paySign: result.sa.paySign, // 支付签名
-             success: function (res) {
-                 //支付成功之后的处理
-            	if(res.errMsg=="chooseWXPay:ok")
-            	{
-            		 window.location = "${base}/order/order/look.action?id=${obj.order.id}";	
-            	}
-            	else
-        		{
-           	 		alert("支付失败，请稍后再试。原因："+res.errMsg);
-           	 		
-        		}
-             }
-         });
+				timestamp: result.sa.timeStamp, // 支付签名时间戳，注意微信jssdk中的所有使用timestamp字段均为小写。但最新版的支付后台生成签名使用的timeStamp字段名需大写其中的S字符
+				nonceStr: result.sa.nonceStr, // 支付签名随机串，不长于 32 位
+				package: result.sa.package, // 统一支付接口返回的prepay_id参数值，提交格式如：prepay_id=***）
+				signType: result.sa.signType, // 签名方式，默认为'SHA1'，使用新版支付需传入'MD5'
+				paySign: result.sa.paySign, // 支付签名
+				success: function (res) 
+				{
+					// 支付成功之后的处理
+					if(res.errMsg=="chooseWXPay:ok")
+					{
+						window.location = "${base}/order/order/look.action?id=${obj.order.id}";
+					}
+					else
+	        		{
+	           	 		alert("支付失败，请稍后再试。原因："+res.errMsg);
+	        		}
+				}
+			});
 		}
 	});
- 	
 }
 
 // 防止手机的enter键自动提交
@@ -221,7 +202,7 @@ function page_edittaker()
 	window.location = "${base}/order/order/edittaker.action?id=" + id;
 }
 
-function page_editmember()
+function page_editpayer()
 {
 	var id = $("#id").val();
 	var state = $("#state").val();
@@ -237,7 +218,7 @@ function page_editmember()
 		return;
 	}
 	
-	window.location = "${base}/order/order/editmember.action?id=" + id;
+	window.location = "${base}/order/order/editpayer.action?id=" + id;
 }
 
 function page_listordergoods()
@@ -246,10 +227,10 @@ function page_listordergoods()
 	window.location = "${base}/order/order/listordergoods.action?id=" + id;	
 }
 
-// 提交订单
-function page_forward()
+// 订单付款
+function page_pay()
 {
-	var sign = false; //表单提交标识
+	var sign = false; // 表单提交标识
 	var orderid = $("#id").val();
 	var state = $("#state").val();	
 	
@@ -278,43 +259,50 @@ function page_forward()
 	
 	var keysignature = $("#keysignature").val();
 	
-	if(confirm("亲，你是想要付款吗？"))
+	if(confirm("亲，是想要马上拍下这些宝贝吗？"))
 	{
-		$.ajax({
-			type:'POST',
-			url:'${base}/order/order/forward.action',
-			contentType: "application/json",
-			data:JSON.stringify({"id":orderid, "keysignature":keysignature}),
-			cache:false,
-			async:false,
-			success:function(data)
-			{
-				console.log(data);
-				if(data=="")
-				{
-					alert("亲，对不起，付款不成功，检查一下再试试看！");
-					return;
-				}
-				json = eval("(" + data + ")");
-				if(json.state=="success")
-				{
-					alert("亲，你已成功付款，我们会尽快受理你的订单！");
-					// 更新购物车数量等操作；
-					window.location.reload();
-				}
-				else
-				{
-					alert("订单付款失败："+json.message);
-				}
-			},
-			error:function(data)
-			{
-				console.log(data);
-				alert("抱歉，服务请求异常，可能网络有什么问题，稍后再试试看吧！");
-			}
-		})		
+		payFunc();
 	}
 }
+
+// 没有微信支付环境下的测试
+function page_testpay()
+{
+	$.ajax({
+		type:'POST',
+		url:'${base}/order/order/forward.action',
+		contentType: "application/json",
+		data:JSON.stringify({"id":orderid, "keysignature":keysignature}),
+		cache:false,
+		async:false,
+		success:function(data)
+		{
+			console.log(data);
+			if(data=="")
+			{
+				alert("亲，对不起，付款不成功，检查一下再试试看！");
+				return;
+			}
+			json = eval("(" + data + ")");
+			if(json.state=="success")
+			{
+				alert("亲，你已成功付款，我们会尽快受理你的订单！");
+				// 更新购物车数量等操作；
+				window.location.reload();
+			}
+			else
+			{
+				alert("订单付款失败："+json.message);
+			}
+		},
+		error:function(data)
+		{
+			console.log(data);
+			alert("抱歉，服务请求异常，可能网络有什么问题，稍后再试试看吧！");
+		}
+	})
+}
+
 
 </script> 
 

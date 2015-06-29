@@ -167,13 +167,13 @@ public class ShopCartService extends SkynetNameEntityService<ShopCart>
 		String username = login_token.getFormatAttr(GlobalConstants.sys_login_username);
 		
 		// 当前用户姓名未填写，不允许下单
-		if(StringToolKit.isBlank(username))
-		{
-			Map remap = new DynamicObject();
-			remap.put("state", "error");
-			remap.put("message", "亲，我们还不知道你的姓名，无法下单，快去个人中心填写你的资料吧。");
-			return remap;
-		}
+//		if(StringToolKit.isBlank(username))
+//		{
+//			Map remap = new DynamicObject();
+//			remap.put("state", "error");
+//			remap.put("message", "亲，我们还不知道你的姓名，无法下单，快去个人中心填写你的资料吧。");
+//			return remap;
+//		}
 		
 		// 购物车
 		List<String> ids = (List<String>)form.get("ids");
@@ -231,6 +231,7 @@ public class ShopCartService extends SkynetNameEntityService<ShopCart>
 		order.setCno(SNGenerator.getValue(8));
 		order.setOrdertime(new Timestamp(System.currentTimeMillis()));
 		order.setState("下单");
+		order.setPaystate("未支付");
 		sdao().insert(order);
 		
 		for(int i=0;i<shopcartgoodses.size();i++)

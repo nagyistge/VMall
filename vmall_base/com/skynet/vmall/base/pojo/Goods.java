@@ -17,7 +17,10 @@ public class Goods extends IdEntity
 	private String classinternal; // 商品分类内部码
 	
 	@Column
-	private String dealerid; // 商家（会员）标识	
+	private String dealerid; // 商家标识（组织机构）
+	
+	@Column
+	private String dealername; // 商家名称		
 	
 	@Column
 	private String cname; // 商品名称
@@ -81,7 +84,7 @@ public class Goods extends IdEntity
 	
 	@Column
 	private int salesinit; // 销售量（初始量）	
-	
+
 	public String getClassid()
 	{
 		return classid;
@@ -110,6 +113,16 @@ public class Goods extends IdEntity
 	public void setDealerid(String dealerid)
 	{
 		this.dealerid = dealerid;
+	}
+
+	public String getDealername()
+	{
+		return dealername;
+	}
+
+	public void setDealername(String dealername)
+	{
+		this.dealername = dealername;
 	}
 
 	public String getCname()
@@ -170,6 +183,16 @@ public class Goods extends IdEntity
 	public void setSpec(String spec)
 	{
 		this.spec = spec;
+	}
+
+	public String getSpeccode()
+	{
+		return speccode;
+	}
+
+	public void setSpeccode(String speccode)
+	{
+		this.speccode = speccode;
 	}
 
 	public String getSpecclass()
@@ -270,16 +293,6 @@ public class Goods extends IdEntity
 	public void setPic(String pic)
 	{
 		this.pic = pic;
-	}
-
-	public String getSpeccode()
-	{
-		return speccode;
-	}
-
-	public void setSpeccode(String speccode)
-	{
-		this.speccode = speccode;
 	}
 
 	public int getPopular()

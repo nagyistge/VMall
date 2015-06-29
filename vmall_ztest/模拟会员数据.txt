@@ -1,8 +1,9 @@
 delete from t_app_member;
 
-insert into t_app_member(id, wxopenid, wxnickname, cname, supid, internal, ctype, cno) values('vmall','vmall','微商城', '微商城', 'R0', '0001', '商城', '20150101-00000000');
+insert into t_app_member(id, wxopenid, wxnickname, cname, supid, internal, ctype, cno, level) values('vmall','vmall','优品365商城', '优品365商城', 'R0', '0001', '商城', '20150101-00000000', 1);
 
 update t_app_member set createtime = now();
+update t_app_member set score = 0;
 
 insert into t_sys_user(id, cname, loginname, wxopenid) select id, cname, id, wxopenid from t_app_member;
 update t_sys_user set password = '1111';

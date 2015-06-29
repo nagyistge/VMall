@@ -158,3 +158,5 @@ insert into t_app_goodsphoto(id, goodsid, sno, url, ctype)
 select uuid(), goods.id, 4, concat('image/goods/', goods.classinternal, '-detail-spjs-04.jpg'), '商品介绍' from t_app_goods goods where goods.ctype = '货品';
 insert into t_app_goodsphoto(id, goodsid, sno, url, ctype)
 select uuid(), goods.id, 5, concat('image/goods/', goods.classinternal, '-detail-spjs-05.jpg'), '商品介绍' from t_app_goods goods where goods.ctype = '货品';
+
+update t_app_goods set dealerid = '12345678abcd1234abcd12345678abcd';

@@ -105,11 +105,11 @@ public class ShopCartAction extends BaseAction
 		Map remap = new DynamicObject();
 		try
 		{
-			remap = AuthorService.common_checksignature(decode, ip, userwxopenid);
-			if(!("success".equals(remap.get("state"))))
-			{
-				return remap;
-			}
+//			remap = AuthorService.common_checksignature(decode, ip, userwxopenid);
+//			if(!("success".equals(remap.get("state"))))
+//			{
+//				return remap;
+//			}
 			
 			remap = shopcartService.placeorder(form, login_token);
 			

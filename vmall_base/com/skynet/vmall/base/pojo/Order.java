@@ -78,6 +78,15 @@ public class Order extends IdEntity
 	
 	@Column
 	private String state; // 收货订单状态（下单、收款、发货、收货、结束）
+	
+	@Column
+	private String paystate; // 订单收款支付状态（未支付、已支付）
+	
+	@Column
+	private Timestamp paytime; // 订单收款支付时间
+	
+	@Column
+	private String thirdpaytradeno; // 第三方支付平台交易标识号
 
 	public String getCno()
 	{
@@ -297,6 +306,36 @@ public class Order extends IdEntity
 	public void setState(String state)
 	{
 		this.state = state;
+	}
+
+	public String getPaystate()
+	{
+		return paystate;
+	}
+
+	public void setPaystate(String paystate)
+	{
+		this.paystate = paystate;
+	}
+
+	public Timestamp getPaytime()
+	{
+		return paytime;
+	}
+
+	public void setPaytime(Timestamp paytime)
+	{
+		this.paytime = paytime;
+	}
+
+	public String getThirdpaytradeno()
+	{
+		return thirdpaytradeno;
+	}
+
+	public void setThirdpaytradeno(String thirdpaytradeno)
+	{
+		this.thirdpaytradeno = thirdpaytradeno;
 	}
 
 }
