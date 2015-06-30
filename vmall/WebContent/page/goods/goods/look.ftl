@@ -45,9 +45,9 @@
 				<span class="pop-attention" style="position:absolute;z-index:9999;display:none" id="save">
 					<span class="icon-succ" id="guanzhu"><#--关注成功 --></span>
 				</span>
-				
+
 				<div class="saleinfo miblebox">
-				
+					<#--
 					<dl class="list-entry"> 
 						<dt class="row01" id="promotionitem">
 							<span class="col01">促销：</span>
@@ -78,6 +78,7 @@
 						</dd>
 
 					</dl>
+					-->
 		
 					
 					<dl class="list-entry"> 
