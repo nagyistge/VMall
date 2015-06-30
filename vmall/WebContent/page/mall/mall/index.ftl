@@ -6,6 +6,7 @@
 <body id="body">
 <div class="viewport">
 <#include "/decorator/include/navmain.ftl">
+	<#--	
 	<div class="content">
 		<div data-spm="1003" id="floor-nav" class="list-icon">
 		<h3>热门市场</h3>
@@ -20,7 +21,8 @@
 		<a class="item" href="/channel.html?id=8&amp;leftNav=true" target="_top"><i class="icon icon-food-clear"></i>美食</a>
 		</div>
 	</div>
-	<div><a style="font-size:18px" href="weixin://profile/gh_3482de7975be">TEST</a></div>
+	-->
+	<br/>
 	<#list obj.goodsclasses as goodsclass>
 	
 	<div data-spm="${goodsclass.internal}" class="floor floor-man">
@@ -30,8 +32,8 @@
         		<#assign subpostgoodsclass = goodsclass.subpostgoodsclasses[0]>
 			    <a href="${base}/goods/goods/channel.action?classid=${subpostgoodsclass.id}" target="_top" class="hot-key-main">
 				    <img style="width:92px;height:96px;display:block;" class="" src="${base}/${subpostgoodsclass.pic!}">
-				    <p>最新单凉鞋</p>
-				    <p>最适合这天气的鞋</p>
+				    <p><#-- 热评关键词 --></p>
+				    <p><#-- 热评关键词 --></p>
 			    </a>
 			    </#if>
 			    <div class="hot-key-sub">
@@ -66,7 +68,6 @@
 <script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
 <script>
 
-alert("${obj.shareurl!}");
 <#if obj.jscfg??>
  
 wx.config({
@@ -91,7 +92,7 @@ wx.ready(function()
 {
 	//config信息验证后会执行ready方法，所有接口调用都必须在config接口获得结果之后，config是一个客户端的异步操作，所以如果需要在页面加载时就调用相关接口，则须把相关接口放在ready函数中调用来确保正确执行。对于用户触发时才调用的接口，则可以直接调用，不需要放在ready函数中。
     wx.onMenuShareAppMessage({
-	    title: '测试一下，点了看看', 
+	    title: '优品365', 
 	    desc: '${obj.shareurl!}', 
 	    link: '${obj.shareurl!}', 
 	    imgUrl: '', 

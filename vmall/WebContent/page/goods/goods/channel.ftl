@@ -14,23 +14,29 @@
 <body id="body" style="background:#ffffff">
 <#include "/decorator/include/navmain.ftl">
 <div class="viewport">
-	<div data-spm="${obj.goodsclass.internal}" class="content has-header">
+
+	<div data-spm="${obj.goodsclass.internal}" class="content">
+
+		<#if obj.subgoodsclasses?size &gt;0>
 		<section data-spm="${obj.goodsclass.internal}" class="list-keys">
 		<#list obj.subgoodsclasses as subclass>
 			<a href="#" index="0" querykey="${subclass.cname}" data-spm-click="" class="item active">${subclass.cname}</a>
 		</#list>		
 		</section>
+		</#if>
+		
 		<section class="relate-collect hide"></section>
 		<section class="relate-style hide"></section>
-		<section class="waterfall">
 		
-		<nav data-spm="1006" class="tabs">
-			<div type="popular" data-sort="popular_desc" data-spm-click="" class="tab-item popular_desc active" data-spm-anchor-id="">人气</div>
-			<div type="sales" data-sort="sales_desc" data-spm-click="" class="tab-item  sales_desc" data-spm-anchor-id="">销量</div>
-			<div type="saleprice" data-sort="price_asc:price_desc" data-spm-click="" class="tab-item sort-price price_asc" data-spm-anchor-id="">价格
-	        <b class="asc arrow arrow-top"></b><b class="desc arrow arrow-bottom"></b>
-	        </div>
-	    </nav>		
+		<section class="waterfall">
+		<nav data-spm="" class="tabs">
+		<div type="popular" data-sort="popular_desc" data-spm-click="" class="tab-item popular_desc active" data-spm-anchor-id="">人气</div>
+		<div type="sales" data-sort="sales_desc" data-spm-click="" class="tab-item  sales_desc" data-spm-anchor-id="">销量</div>
+		<div type="saleprice" data-sort="price_asc:price_desc" data-spm-click="" class="tab-item sort-price price_asc" data-spm-anchor-id="">价格
+		<b class="asc arrow arrow-top"></b><b class="desc arrow arrow-bottom"></b>
+		</div>
+		</nav>		
+	
 		
 		<div class="waterfall-list">
 			<div class="waterfall-column" style="width:50%;" id="waterfall-column1">
@@ -41,7 +47,16 @@
 		</div>
 		
 		</section>
+		
 	</div>
+	
+    <div id="payment_p" style="display:block">
+    <div class="payment-total-bar" id="payment">
+        <a class="btn-right-block" id="submit" style="background-color:rgb(192, 0, 0);width:100%">显示更多</a>
+    </div>
+ 
+	
+	<#--
     <div id="payment_p" style="display:block">
     <div id="paymentp"></div>
     <div class="payment-total-bar" id="payment">
@@ -52,6 +67,9 @@
         </div>
         <a class="btn-right-block" id="submit" style="background-color: rgb(192, 0, 0); background-position: initial initial; background-repeat: initial initial;">显示更多</a>
     </div>
+    -->
+    
+    
 </div>	
 
 
@@ -63,11 +81,14 @@ var _maxpage = "N";
 
 function page_showgoods (type, asc) 
 {
+
 	if(_maxpage == "Y")
 	{
+		$("#submit").html("没有更多的内容了...");
 		return;
 	}
 	
+	$("#submit").html("加载中...");
 	
 	$.ajax({
 		type:'post',
@@ -109,7 +130,7 @@ function page_showgoods (type, asc)
 				html += '<img style="display:block;" class="" src="${base}/'+goods1.pic+'">';
 				html += '<h3 style="font-size:10px;color:#8e8e8e">'+goods1.cname+'</h3>';
 				html += '<p>¥<span class="promote-price">'+goods1.promoteprice+'</span>¥<del class="cost-price">'+goods1.saleprice+'</del></p>';
-				html += '<p><span class="info-sum">人气：'+goods1.popular+'　　月销：'+goods1.sales+'</span><span class="info-freight">免运费</span></p>';
+				html += '<p><span class="info-sum">人气：'+goods1.popular+'　　月销：'+goods1.sales+'</span><span class="info-freight"><#--免运费--></span></p>';
 				html += '</a>';
 				
 				$('#waterfall-column1').append(html);
@@ -121,7 +142,7 @@ function page_showgoods (type, asc)
 				html += '<img style="display:block;" class="" src="${base}/'+goods2.pic+'">';
 				html += '<h3 style="font-size:10px;color:#8e8e8e">'+goods2.cname+'</h3>';
 				html += '<p>¥<span class="promote-price">'+goods2.promoteprice+'</span>¥<del class="cost-price">'+goods2.saleprice+'</del></p>';
-				html += '<p><span class="info-sum">人气：'+goods2.popular+'　　月销：'+goods2.sales+'</span><span class="info-freight">免运费</span></p>';
+				html += '<p><span class="info-sum">人气：'+goods2.popular+'　　月销：'+goods2.sales+'</span><span class="info-freight"><#--免运费--></span></p>';
 				html += '</a>';
 
 				$('#waterfall-column2').append(html);
@@ -131,6 +152,8 @@ function page_showgoods (type, asc)
 			}
 			
 			_page = _page + 1;
+			
+			$("#submit").html("显示更多");
 			
 		},
 		error:function(data)

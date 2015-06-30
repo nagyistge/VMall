@@ -103,7 +103,7 @@ public class GoodsAction extends BaseAction
 		List<DynamicObject> subgoodsclasses = goodsclassService.findByCond(Cnd.where("supid", "=", classid));
 
 		map.put("_page", Strings.sNull(page, "1"));
-		map.put("_pagesize", Strings.sNull(pagesize, "2"));
+		map.put("_pagesize", Strings.sNull(pagesize, "10"));
 		map.put("ctype", "货品");
 		map.put("internal", goodsclass.getFormatAttr("internal"));
 		List<DynamicObject> goodses = goodsService.channel(map);
