@@ -7,6 +7,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.nutz.dao.Cnd;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.lang.util.NutMap;
@@ -23,6 +24,9 @@ import com.skynet.framework.services.db.SQLParser;
 import com.skynet.framework.services.db.dybeans.DynamicObject;
 import com.skynet.framework.services.function.StringToolKit;
 import com.skynet.framework.spec.GlobalConstants;
+import com.skynet.vmall.base.pojo.Event;
+import com.skynet.vmall.base.pojo.EventItem;
+import com.skynet.vmall.base.pojo.Member;
 import com.skynet.vmall.base.service.TagService;
 import com.skynet.vmall.goods.service.GoodsClassService;
 import com.skynet.vmall.goods.service.GoodsService;
@@ -169,67 +173,58 @@ public class MallAction extends BaseAction
 		return ro;
 	}
 
-	@At("/sendcustmsg")
+	@At("/eventpromotemsg")
 	@Ok("raw")
-	public String sendcustmsg(String openid, HttpServletRequest req) throws Exception
+	public String eventpromotemsg(String eventid) throws Exception
 	{
-		String[] openids = new String[]
-		{ "ofcJis5AonAzEqhEciUAVOlo1XRY", "ofcJis8jiU2TmU97p-sbOVZYtehs" };
-		for (int i = 0; i < openids.length; i++)
+		Event event = tagService.sdao().fetch(Event.class, eventid);
+		List<EventItem> eventitems = tagService.sdao().query(EventItem.class, Cnd.where("eventid", "=", eventid));
+		List<Member> members = tagService.sdao().query(Member.class, Cnd.where("1", "=", "1"));
+
+		EventItem eventitem = new EventItem();
+
+		for (int i = 0; i < members.size(); i++)
 		{
+
+			String wxopenid = members.get(i).getWxopenid();
+			if (StringToolKit.isBlank(wxopenid))
+			{
+				continue;
+			}
+
 			NutMap msg = new NutMap();
 			NutMap news = new NutMap();
 
 			List<NutMap> ats = new ArrayList<NutMap>();
 			String url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=%s&redirect_uri=%s&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect";
 
-			NutMap n = new NutMap();
-			n.put("title", "正式标题");
-			n.put("description", "说明文字");
+			for (int j = 0; j < eventitems.size(); j++)
+			{
+				eventitem = eventitems.get(j);
+				NutMap n = new NutMap();
+				n.put("title", eventitem.getTitle());
+				n.put("description", eventitem.getDescription());
 
-			// https://open.weixin.qq.com/connect/oauth2/authorize?appid=APPID&redirect_uri=REDIRECT_URI&response_type=code&scope=SCOPE&state=STATE#wechat_redirect
+				// https://open.weixin.qq.com/connect/oauth2/authorize?appid=APPID&redirect_uri=REDIRECT_URI&response_type=code&scope=SCOPE&state=STATE#wechat_redirect
+				String realurl = eventitem.getUrl(); // 真实的url地址，注意不要加项目名称
+				String enurl = ApiConfigKit.apiConfig.getServercontext() + "/oauth.action?info=" + BlueDes.encrypt(realurl);
 
-			// https://open.weixin.qq.com/connect/oauth2/authorize?
-			// appid=wxd986013eeb54f390 appid
-			// redirect_uri=http://www.rbtalking.com/vmall/oauth.action? 转向的url
-			// info=6EB287545EB3B121390287731A45AD74BF12BF3C814A0811C86148CF66E18D9FAD44086B5ABCEC2B
-			// //真实的转向url加密后的数据
-			// response_type=snsapi_userinfo
-			// scope=snsapi_userinfo
-			// state=STATE#
-			// wechat_redirect
-
-			String realurl = "/order/shopcart/catorder.action?goodsid=000100010003-0000-0000"; // 真实的url地址，注意不要加项目名称
-																								// vmall
-																								// 路径
-
-			String enurl = ApiConfigKit.apiConfig.getServercontext() + "/oauth.action?info=" + BlueDes.encrypt(realurl);
-
-			String lasturl = String.format(url, ApiConfigKit.apiConfig.getAppId(), enurl);
-
-			n.put("url", lasturl);
-			n.put("picurl", ApiConfigKit.apiConfig.getServercontext() + "/image/qianggou0.png");
-			ats.add(n);
-
-			NutMap n1 = new NutMap();
-			n1.put("title", "正式标题1");
-			n1.put("description", "说明文字1");
-
-			n1.put("url", lasturl);
-			n1.put("picurl", ApiConfigKit.apiConfig.getServercontext() + "/image/qianggou.png");
-			ats.add(n1);
+				String lasturl = String.format(url, ApiConfigKit.apiConfig.getAppId(), enurl);	
+				String picurl = ApiConfigKit.apiConfig.getServercontext() + "/" + eventitem.getPic();
+				n.put("url", lasturl);
+				n.put("picurl", picurl);
+				ats.add(n);
+			}
 
 			news.put("articles", ats);
 
-			msg.put("touser", openids[i]);
-			msg.put("msgtype", "news");
 			msg.put("news", news);
+			msg.put("touser", wxopenid);
+			msg.put("msgtype", event.getWxmsgtype());
 
 			myWxApi.sendCustomMsg(msg);
 		}
-		// myWxApi.getPrepayId(body, notifyurl, orderno, mchid, amt,
-		// spbill_create_ip, openId, payKey)
-		return "SUCCESS";
 
+		return "SUCCESS";
 	}
 }
