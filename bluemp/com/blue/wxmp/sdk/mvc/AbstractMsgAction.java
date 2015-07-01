@@ -10,15 +10,11 @@ import org.nutz.log.Log;
 import org.nutz.log.Logs;
 import org.nutz.mvc.View;
 import org.nutz.mvc.annotation.At;
-import org.nutz.mvc.annotation.Ok;
 import org.nutz.mvc.view.HttpStatusView;
 import org.nutz.mvc.view.ServerRedirectView;
 import org.nutz.mvc.view.ViewWrapper;
 
-import com.blue.wxmp.sdk.api.ApiConfigKit;
 import com.blue.wxmp.sdk.api.OAuthAccessTokenApi;
-import com.blue.wxmp.sdk.api.WxApi;
-import com.blue.wxmp.sdk.bean.WxPrepayIdResult;
 import com.blue.wxmp.sdk.encrypt.BlueDes;
 import com.blue.wxmp.sdk.handle.WxHandler;
 import com.blue.wxmp.sdk.util.StringUitls;
@@ -34,7 +30,6 @@ public abstract class AbstractMsgAction
 	@At("/wx")
 	public View wxindex(HttpServletRequest req) throws IOException
 	{
-
 		WxHandler w = getWxHandler();
 		return WxUtils.handle(w, req);
 	}
@@ -75,9 +70,18 @@ public abstract class AbstractMsgAction
 			url = murl.get("original_url") + "?info=" + BlueDes.encrypt(Json.toJson(murl));
 
 			log.debugf("encrypt url = %s", url);
+			
+			// 蒲剑增加
+			String newwxopenid = ac.get("openid");
+			String oldwxopenid = ac.get("recommender");
+			set_author(oldwxopenid, newwxopenid);
+			
 			return new ViewWrapper(new ServerRedirectView(url + "&v=" + System.currentTimeMillis()), null);
 		}
+		
 
 	}
+	
+	protected abstract void set_author(String oldwxopenid, String newwxopenid) throws Exception;
 
 }

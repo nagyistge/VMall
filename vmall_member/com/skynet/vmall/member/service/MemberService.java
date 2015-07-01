@@ -65,6 +65,12 @@ public class MemberService extends SkynetNameEntityService<Member>
 				oldwxopenid = vmall.getWxopenid();
 			}
 		}
+		
+		// 检查微信标识是否为空
+		if(StringToolKit.isBlank(newwxopenid))
+		{
+			return null;
+		}
 
 		// 检查推荐人是否正常
 		Member oldmember = sdao().fetch(Member.class, Cnd.where("wxopenid", "=", oldwxopenid));

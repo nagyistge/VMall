@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.nutz.dao.Chain;
@@ -29,11 +30,15 @@ import com.skynet.vmall.goods.service.GoodsClassSpecService;
 import com.skynet.vmall.goods.service.GoodsPhotoService;
 import com.skynet.vmall.goods.service.GoodsService;
 import com.skynet.vmall.member.service.MemberService;
+import com.skynet.vmall.wx.action.WXActionHelper;
 
 @IocBean
 @At("/goods/goods")
 public class GoodsAction extends BaseAction
 {
+	@Inject
+	WXActionHelper myWxHelper;
+	
 	@Inject
 	private MemberService memberService;
 
@@ -152,8 +157,8 @@ public class GoodsAction extends BaseAction
 	{
 		HttpSession session = Mvcs.getHttpSession(true);
 		DynamicObject login_token = (DynamicObject) session.getAttribute(GlobalConstants.sys_login_token);
-		String userid = login_token.getFormatAttr(GlobalConstants.sys_login_userid);
-		DynamicObject member = memberService.locate(userid);
+		String userwxopenid = login_token.getFormatAttr(GlobalConstants.sys_login_userwxopenid);
+		DynamicObject member = memberService.locateBy(Cnd.where("wxopenid", "=", userwxopenid));
 
 		String id = (String) map.get("id");
 		// 记录浏览人气值
@@ -225,6 +230,17 @@ public class GoodsAction extends BaseAction
 		DynamicObject goods = goodsService.getgoodsbyspec(supgoodsid, specs);
 
 		return goods;
+	}
+	
+	// 商品浏览
+	@At("/rushlook")
+	@Ok("->:/page/goods/goods/look.ftl")
+	public Map rushlook(String info) throws Exception
+	{
+		HttpServletRequest req = Mvcs.getReq();
+		Map map = myWxHelper.wx_minfo(info, req);
+		
+		return look(map);
 	}
 
 }

@@ -10,6 +10,7 @@ import org.nutz.dao.Cnd;
 import org.nutz.dao.Dao;
 import org.nutz.ioc.annotation.InjectName;
 import org.nutz.ioc.loader.annotation.IocBean;
+import org.nutz.lang.Lang;
 
 import com.skynet.framework.service.SkynetNameEntityService;
 import com.skynet.framework.services.db.dybeans.DynamicObject;
@@ -101,6 +102,7 @@ public class OrderService extends SkynetNameEntityService<Order>
 	public Map paynotify(Map form) throws Exception
 	{
 		String id = (String)form.get("id");
+		String wxtransactionid = (String)form.get("wxtransactionid");
 		
 		Map map = new DynamicObject();
 		DynamicObject order = locate(id);
@@ -120,10 +122,9 @@ public class OrderService extends SkynetNameEntityService<Order>
 		sdao().update(Order.class, Chain.make("state", flownextstate), Cnd.where("id", "=", id));
 		map.put("state", "success");
 		map.put("flownextstate", flownextstate);
-		
-		sdao().update(Order.class, Chain.make("paystate", "已支付"), Cnd.where("id", "=", id));
-		sdao().update(Order.class, Chain.make("paytime", new Timestamp(System.currentTimeMillis())), Cnd.where("id", "=", id));
-		
+		Chain c = Chain.from(Lang.map("{paystate:'已支付',thirdpaytradeno:'"+wxtransactionid+"'paytime:'"+(new Timestamp(System.currentTimeMillis())+"'}")));
+		// Chain chain = Chain.make("paystate", "已支付").make("paytime", new Timestamp(System.currentTimeMillis())).make("thirdpaytradeno", wxtransactionid);
+		sdao().update(Order.class, c, Cnd.where("id", "=", id));
 		return map;
 	}
 	

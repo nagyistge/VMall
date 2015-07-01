@@ -47,22 +47,21 @@ public class LoginAction extends BaseAction
 	private MemberService memberService;
 
 	@At("/wxlogin")
-	@Ok(">>:/mall/mall/index.action")
+	@Ok(">>:/mall/mall/index.action?info=${obj.info}")
 	public NutMap wxlogin(String info, HttpServletRequest req) throws Exception
 	{
 		// 清除现有会话信息
 		HttpSession session = Mvcs.getHttpSession(true);
 		session.removeAttribute(GlobalConstants.sys_login_token);
 		
-		NutMap mapwx = myWxHelper.wx_minfo(info, req);
-		String newwxopenid = (String)mapwx.get("openid"); // 当前会员
-		String oldwxopenid = (String)mapwx.get("recommender");// 推荐会员 
+		NutMap wxinfo = myWxHelper.wx_minfo(info, req);
+		String newwxopenid = (String)wxinfo.get("openid"); // 当前会员
+		String oldwxopenid = (String)wxinfo.get("recommender");// 推荐会员 
 
 		DynamicObject obj = memberService.newwxuser(oldwxopenid, newwxopenid);
+		session.setAttribute(GlobalConstants.sys_login_token, obj);
 		
-		session.setAttribute(GlobalConstants.sys_login_token, obj);	
-		session.setAttribute(GlobalConstants.sys_wxinfo, info);			
-		return mapwx;
+		return wxinfo;
 	}
 	
 	@At("/login_test")

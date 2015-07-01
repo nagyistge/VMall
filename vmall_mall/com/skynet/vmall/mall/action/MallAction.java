@@ -58,16 +58,14 @@ public class MallAction extends BaseAction
 		// 系统微信配置信息
 		HttpServletRequest req = Mvcs.getReq();
 		HttpSession session = Mvcs.getHttpSession(true);
-		String info = (String) session.getAttribute(GlobalConstants.sys_wxinfo);
-		if (!StringToolKit.isBlank(info))
-		{
-			NutMap mapwx = myWxHelper.wx_minfo(info, req);
-			ro.put("jscfg", mapwx.get("jscfg"));
-			ro.put("shareurl", mapwx.get("shareurl"));
-			ro.put("openid", mapwx.get("openid"));
-			ro.put("recommender", mapwx.get("recommender"));
-		}
+		String info = req.getParameter("info");
+		Map wxinfo = myWxHelper.wx_minfo(info, req);
 
+		ro.put("jscfg", wxinfo.get("jscfg"));
+		ro.put("shareurl", wxinfo.get("shareurl"));
+		ro.put("openid", wxinfo.get("openid"));
+		ro.put("recommender", wxinfo.get("recommender"));
+		
 		// 查询首页海报1级分类
 		StringBuffer sql = new StringBuffer();
 		sql.append(" select goodsclass.* ").append("\n");
@@ -209,8 +207,16 @@ public class MallAction extends BaseAction
 				String realurl = eventitem.getUrl(); // 真实的url地址，注意不要加项目名称
 				String enurl = ApiConfigKit.apiConfig.getServercontext() + "/oauth.action?info=" + BlueDes.encrypt(realurl);
 
-				String lasturl = String.format(url, ApiConfigKit.apiConfig.getAppId(), enurl);	
-				String picurl = ApiConfigKit.apiConfig.getServercontext() + "/" + eventitem.getPic();
+				String lasturl = String.format(url, ApiConfigKit.apiConfig.getAppId(), enurl);
+				String picurl = "";
+				if (j == 0)
+				{
+					picurl = ApiConfigKit.apiConfig.getServercontext() + "/" + eventitem.getPic();
+				}
+				else
+				{
+					picurl = ApiConfigKit.apiConfig.getServercontext() + "/" + eventitem.getPic();
+				}
 				n.put("url", lasturl);
 				n.put("picurl", picurl);
 				ats.add(n);

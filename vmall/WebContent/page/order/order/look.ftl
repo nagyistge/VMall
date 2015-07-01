@@ -128,19 +128,6 @@ wx.config({
 wx.ready(function()
 {
 	document.querySelector('#btn_pay').onclick = page_pay;
-	wx.onMenuShareAppMessage({
-	    title: '优品365', 
-	    desc: '${obj.shareurl!}', 
-	    link: '${obj.shareurl!}', 
-	    imgUrl: '', 
-	    type: '', 
-	    dataUrl: '', 
-	    success: function () { 
-	        
-	    },
-	    cancel: function () { 
-	    }
-	});
 });
 
 // 微信支付

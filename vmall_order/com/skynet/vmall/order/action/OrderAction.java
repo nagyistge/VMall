@@ -86,15 +86,10 @@ public class OrderAction extends BaseAction
 
 		// 支付接口
 		HttpServletRequest req = Mvcs.getReq();
-		String info = (String) session.getAttribute(GlobalConstants.sys_wxinfo);
-		if (!StringToolKit.isBlank(info))
-		{
-			NutMap mapwx = myWxHelper.wx_minfo(info, req);
-			ro.put("jscfg", mapwx.get("jscfg"));
-			ro.put("shareurl", mapwx.get("shareurl"));
-			ro.put("openid", mapwx.get("openid"));
-		}
-
+		
+		Map wxinfo = myWxHelper.wx_jsconfig(myWxHelper.wx_uri(req));
+		ro.put("jscfg", wxinfo);
+		
 		DynamicObject order = orderService.locate(id);
 		List<DynamicObject> ordergoodses = ordergoodsService.list(new DynamicObject("orderid", id));
 
@@ -251,7 +246,8 @@ public class OrderAction extends BaseAction
 			Map wr = Xmls.asMap(root);
 			log.debugf("get pay notify return object :\n %s", wr);
 			String orderno = wr.get("out_trade_no").toString();
-
+			String wxtransactionid = wr.get("transaction_id").toString();
+			
 			log.debugf("orderno :\n %s", orderno);
 			
 			Order order = orderService.fetch(Cnd.where("cno", "=", orderno));
@@ -259,6 +255,8 @@ public class OrderAction extends BaseAction
 			
 			Map form = new DynamicObject();
 			form.put("id", id); 
+			form.put("orderno", "orderno");
+			form.put("wxtransactionid", wxtransactionid);
 			orderService.paynotify(form);
 		}
 		catch (Exception e)
@@ -267,6 +265,8 @@ public class OrderAction extends BaseAction
 			log.debug(e.toString());
 			return String.format(returnstr, returncode_fail, e.toString());
 		}
+		
+		log.debug(String.format(returnstr, returncode_success, return_msg));
 
 		return String.format(returnstr, returncode_success, return_msg);
 	}
