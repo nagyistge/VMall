@@ -73,7 +73,7 @@ public abstract class AbstractMsgAction
 			
 			// 蒲剑增加
 			String newwxopenid = ac.get("openid");
-			String oldwxopenid = ac.get("recommender");
+			String oldwxopenid = murl.get("recommender");
 			set_author(oldwxopenid, newwxopenid);
 			
 			return new ViewWrapper(new ServerRedirectView(url + "&v=" + System.currentTimeMillis()), null);

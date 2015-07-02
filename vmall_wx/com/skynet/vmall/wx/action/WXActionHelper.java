@@ -18,6 +18,7 @@ import com.blue.wxmp.sdk.api.ApiConfigKit;
 import com.blue.wxmp.sdk.api.OAuthAccessTokenApi;
 import com.blue.wxmp.sdk.api.WxApi;
 import com.blue.wxmp.sdk.encrypt.BlueDes;
+import com.skynet.framework.services.function.StringToolKit;
 import com.skynet.framework.spec.GlobalConstants;
 
 @InjectName("myWxHelper")
@@ -64,7 +65,10 @@ public class WXActionHelper
 		NutMap rowx = NutMap.NEW();
 
 		String redirecturl = ApiConfigKit.apiConfig.getServercontext() + "/oauth.action?info=";
-		String realurl = "/author/login/wxlogin.action?recommender=" + minfo.get("openid"); // minfo.get("openid")就是刚点进来链接的人;
+		// String realurl = "/author/login/wxlogin.action?recommender=" + StringToolKit.formatText((String)minfo.get("openid")); // minfo.get("openid")就是刚点进来链接的人;
+		
+		HttpServletRequest req = Mvcs.getReq();
+		String realurl = req.getServletPath() + "?recommender=" + StringToolKit.formatText((String)minfo.get("openid"));
 		realurl = BlueDes.encrypt(realurl);
 
 		redirecturl += realurl;

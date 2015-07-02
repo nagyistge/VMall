@@ -12,6 +12,7 @@ import org.nutz.dao.Cnd;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.lang.Strings;
+import org.nutz.lang.util.NutMap;
 import org.nutz.mvc.Mvcs;
 import org.nutz.mvc.adaptor.JsonAdaptor;
 import org.nutz.mvc.annotation.AdaptBy;
@@ -155,6 +156,13 @@ public class GoodsAction extends BaseAction
 	@Ok("->:/page/goods/goods/look.ftl")
 	public Map look(@Param("..") Map map) throws Exception
 	{
+		HttpServletRequest req = Mvcs.getReq();
+		String uri = myWxHelper.wx_uri(req);
+		String shareurl =  myWxHelper.wx_shareurl(uri, new NutMap(map));
+		NutMap jscfg =  myWxHelper.wx_jsconfig(uri);
+		ro.put("shareurl", shareurl);
+		ro.put("jscfg", jscfg);
+		
 		HttpSession session = Mvcs.getHttpSession(true);
 		DynamicObject login_token = (DynamicObject) session.getAttribute(GlobalConstants.sys_login_token);
 		String userwxopenid = login_token.getFormatAttr(GlobalConstants.sys_login_userwxopenid);
@@ -238,8 +246,7 @@ public class GoodsAction extends BaseAction
 	public Map rushlook(String info) throws Exception
 	{
 		HttpServletRequest req = Mvcs.getReq();
-		Map map = myWxHelper.wx_minfo(info, req);
-		
+		Map map = myWxHelper.decrypt_info(info);
 		return look(map);
 	}
 
