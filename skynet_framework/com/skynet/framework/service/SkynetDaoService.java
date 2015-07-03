@@ -1,14 +1,24 @@
 package com.skynet.framework.service;
 
 import org.nutz.dao.Dao;
-import org.nutz.ioc.loader.annotation.Inject;
+import org.nutz.service.Service;
 
 import com.skynet.framework.dao.SkynetDao;
 
-public class SkynetDaoService
+public abstract class SkynetDaoService extends Service
 {
-	@Inject
 	Dao dao;
+
+	public SkynetDaoService()
+	{
+		super();
+	}
+
+	public SkynetDaoService(Dao dao)
+	{
+		super();
+		this.dao = dao;
+	}
 
 	public Dao dao()
 	{
@@ -19,11 +29,10 @@ public class SkynetDaoService
 	{
 		this.dao = dao;
 	}
-	
-	public SkynetDao sdao() {
+
+	public SkynetDao sdao()
+	{
 		return (SkynetDao) dao();
 	}
-	
-	
-	
+
 }
