@@ -129,6 +129,7 @@ public class AppGoodsService extends SkynetDaoService
 
 		// 根据规格清单新增货品
 		String sku_props = (String) form.get("sku_props");
+		
 		if (!StringToolKit.isBlank(sku_props))
 		{
 			Map sku = (Map) Json.fromJson(sku_props);
@@ -146,7 +147,11 @@ public class AppGoodsService extends SkynetDaoService
 				BigDecimal price = new BigDecimal(String.valueOf(asku.get("price")));
 				BigDecimal stock = new BigDecimal(String.valueOf(asku.get("stock")));
 				
-				
+				String defspec = "否";
+				if(i==0)
+				{
+					defspec = "是";
+				}
 				// 基本信息
 				subgoods.setSerial(Types.parseInt((String)form.get("serial"), 100));
 				subgoods.setCode((String)form.get("code"));
@@ -192,6 +197,8 @@ public class AppGoodsService extends SkynetDaoService
 				subgoods.setSupid(id);
 				subgoods.setSaleprice(o_price);
 				subgoods.setPromoteprice(price);
+				subgoods.setDefspec(defspec); // 
+				
 				sdao().insert(subgoods);
 
 				String[] skukeys = akey.split(";");

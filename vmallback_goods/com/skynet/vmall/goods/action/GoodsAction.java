@@ -106,18 +106,6 @@ public class GoodsAction
 		trans_attr(new String[]{"original_price,saleprice","price,promoteprice","basic_sales,basesalenum","praise_num,basepraisenum","num,allstorenum"}, map);
 		trans_attr(new String[]{"directly_money,rebate1","superior_money,rebate2","three_money,rebate3","goods_no,code"}, map);
 		
-//		map.put("saleprice", map.get("original_price"));	
-//		map.put("promoteprice", map.get("price"));
-//		map.put("basesalenum", map.get("basic_sales"));		
-//		map.put("basepraisenum", map.get("praise_num"));			
-//		map.put("allstorenum", map.get("num")); //总库存		
-//		map.put("rebate1", map.get("directly_money"));
-//		map.put("rebate2", map.get("superior_money"));
-//		map.put("rebate3", map.get("three_money"));
-//		
-//		map.put("code", "goods_no");
-		
-		
 		String id = appgoodsService.insert(map, login_token);
 		
 		DynamicObject ro = new DynamicObject();
