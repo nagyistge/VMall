@@ -1,10 +1,26 @@
 delete from t_app_goodsclassspec;
+delete from t_app_goodsclassspecval;
 delete from t_app_goods;
 delete from t_app_goodschange;
 delete from t_app_goodsspec;
 
-insert into t_app_goodsclassspec(id, goodsclassid, sno, specclass) values('1bd28e7cc0a801900d0b4b2fae429bee','00110002',1,'尺码');
-insert into t_app_goodsclassspec(id, goodsclassid, sno, specclass) values('1bd28e9bc0a801900d0b4b2fb0279d82','00110002',2,'颜色');
+
+insert into t_app_goodsclassspec(id, goodsclassid, sno, specclass) values('001100020001','00110002',1,'尺码');
+insert into t_app_goodsclassspec(id, goodsclassid, sno, specclass) values('001100020002','00110002',2,'颜色');
+
+insert into t_app_goodsclassspecval(id, goodsclassid, goodsclassspecid, sno, cvalue) values('0011000200010001','00110002','001100020001',1,'14');
+insert into t_app_goodsclassspecval(id, goodsclassid, goodsclassspecid, sno, cvalue) values('0011000200010002','00110002','001100020001',1,'16');
+insert into t_app_goodsclassspecval(id, goodsclassid, goodsclassspecid, sno, cvalue) values('0011000200010003','00110002','001100020001',1,'18');
+insert into t_app_goodsclassspecval(id, goodsclassid, goodsclassspecid, sno, cvalue) values('0011000200010004','00110002','001100020001',1,'20');
+
+insert into t_app_goodsclassspecval(id, goodsclassid, goodsclassspecid, sno, cvalue) values('0011000200020001','00110002','001100020002',1,'白色');
+insert into t_app_goodsclassspecval(id, goodsclassid, goodsclassspecid, sno, cvalue) values('0011000200020002','00110002','001100020002',1,'红色');
+insert into t_app_goodsclassspecval(id, goodsclassid, goodsclassspecid, sno, cvalue) values('0011000200020003','00110002','001100020002',1,'绿色');
+insert into t_app_goodsclassspecval(id, goodsclassid, goodsclassspecid, sno, cvalue) values('0011000200020004','00110002','001100020002',1,'青色');
+insert into t_app_goodsclassspecval(id, goodsclassid, goodsclassspecid, sno, cvalue) values('0011000200020005','00110002','001100020002',1,'蓝色');
+insert into t_app_goodsclassspecval(id, goodsclassid, goodsclassspecid, sno, cvalue) values('0011000200020006','00110002','001100020002',1,'紫色');
+insert into t_app_goodsclassspecval(id, goodsclassid, goodsclassspecid, sno, cvalue) values('0011000200020007','00110002','001100020002',1,'黑色');
+
 insert into t_app_goods(id, cname, classid, ctype)  values('001100020007-0000','法兰米高2015夏季新款中坡跟蝴蝶结露趾女凉鞋','001100020007','商品');
 insert into t_app_goodsspec(id, goodsid, specclass, spec) values('1bd28e9dc0a801900d0b4b2f1886a34c','001100020007-0000', '颜色','白色');
 insert into t_app_goodsspec(id, goodsid, specclass, spec) values('1bd28e9dc0a801900d0b4b2faef1a20b','001100020007-0000', '颜色','红色');
