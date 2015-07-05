@@ -10,50 +10,80 @@ import com.skynet.framework.pojo.IdEntity;
 @Table("T_APP_GOODS")
 public class Goods extends IdEntity
 {
+	// 基本信息
 	@Column
 	private String classid; // 商品分类标识
-	
+
 	@Column
 	private String classinternal; // 商品分类内部码
-	
-	@Column
-	private String dealerid; // 商家标识（组织机构）
-	
-	@Column
-	private String dealername; // 商家名称		
-	
-	@Column
-	private String cname; // 商品名称
-	
+
 	@Column
 	private String supid; // 所属商品标识（商品分为商品、货品，货品作为商品的下级）
-	
+
 	@Column
-	private String code; // 商品代码	
+	private String ctype; // 类型（商品、货品）
+
+	@Column
+	private int serial; // 排列顺序号
+
+	// 商品信息
+	@Column
+	private String cname; // 商品名称
+
+	@Column
+	private String dealerid; // 商家标识（组织机构）
+
+	@Column
+	private String dealername; // 商家名称
+
+	@Column
+	private String code; // 商品编码
 
 	@Column
 	private String brand; // 品牌
-	
-	@Column
-	private String ctype; // 类型（商品、货品）
-	
-	@Column
-	private String spec; // 规格（白色、公斤等）（合并后规格，冗余显示）
-	
-	@Column
-	private String speccode; // 规格 编码（合并后规格编码，用于检索查找）
-	
-	@Column
-	private String specclass; // 规格类型（颜色、尺寸、重量等）（合并后规格分类，冗余显示）
-	
-	@Column
-	private BigDecimal costprice; // 成本单价		
 
 	@Column
-	private BigDecimal saleprice; // 销售单价
-	
+	private BigDecimal costprice; // 成本单价
+
 	@Column
-	private BigDecimal promoteprice; // 促销单价
+	private BigDecimal saleprice; // 销售单价（原价）
+
+	@Column
+	private BigDecimal promoteprice; // 促销单价（现价）
+
+	@Column
+	private BigDecimal allstorenum; // 总库存（所有下属货品数量总和）
+
+	@Column
+	private BigDecimal salenum; // 销售量
+
+	@Column
+	private BigDecimal basesalenum; // 基础销量
+
+	@Column
+	private int praisenum; // 点赞数
+
+	@Column
+	private int basepraisenum; // 基础点赞数
+
+	@Column
+	private int popular; // 人气（访问量）
+
+	@Column
+	private int basepopular; // 基础人气（访问量）
+
+	@Column
+	private BigDecimal weight; // 重量
+
+	@Column
+	private BigDecimal volume; // 体积
+
+	@Column
+	private String pic; // 商品图片（URL）
+
+	// 佣金设置
+	@Column
+	private String rebatetype; // 返利方式（积分、百分比）
 
 	@Column
 	private BigDecimal rebate1; // 1级返利
@@ -70,20 +100,34 @@ public class Goods extends IdEntity
 	@Column
 	private BigDecimal rebate5; // 5级返利
 
+	// 库存/规格信息
 	@Column
-	private String pic; // 商品图片（URL）
-	
+	private String spec; // 规格（白色、公斤等）（合并后规格，冗余显示）
+
 	@Column
-	private int popular; // 人气（访问量）
-	
+	private String speccode; // 规格 编码（合并后规格编码，用于检索查找）
+
 	@Column
-	private int sales; // 销售量
-	
-	@Column
-	private int popularinit; // 人气（初始量）
-	
-	@Column
-	private int salesinit; // 销售量（初始量）	
+	private String specclass; // 规格类型（颜色、尺寸、重量等）（合并后规格分类，冗余显示）
+
+	// 物流及其它
+	private String isfreelogistics; // 是否免物流（是、否）
+
+	private String freightpayer; // 运费设置（包邮、统一运费、运费模板）
+
+	private int fullnummail; // 满件包邮
+
+	private String hidestock; // 库存显示（是、否）
+
+	private int quota; // 每人限购（是、否）
+
+	private int buyneedpoints; // 购买商品所需积分
+
+	private String consumcoupon; // 消费送优惠券 （对应优惠券标识）
+
+	private int consumpoint; // 消费送积分
+
+	private int joinleveldiscount; // 会员等级折扣（开启、关闭）
 
 	public String getClassid()
 	{
@@ -103,6 +147,46 @@ public class Goods extends IdEntity
 	public void setClassinternal(String classinternal)
 	{
 		this.classinternal = classinternal;
+	}
+
+	public String getSupid()
+	{
+		return supid;
+	}
+
+	public void setSupid(String supid)
+	{
+		this.supid = supid;
+	}
+
+	public String getCtype()
+	{
+		return ctype;
+	}
+
+	public void setCtype(String ctype)
+	{
+		this.ctype = ctype;
+	}
+
+	public int getSerial()
+	{
+		return serial;
+	}
+
+	public void setSerial(int serial)
+	{
+		this.serial = serial;
+	}
+
+	public String getCname()
+	{
+		return cname;
+	}
+
+	public void setCname(String cname)
+	{
+		this.cname = cname;
 	}
 
 	public String getDealerid()
@@ -125,26 +209,6 @@ public class Goods extends IdEntity
 		this.dealername = dealername;
 	}
 
-	public String getCname()
-	{
-		return cname;
-	}
-
-	public void setCname(String cname)
-	{
-		this.cname = cname;
-	}
-
-	public String getSupid()
-	{
-		return supid;
-	}
-
-	public void setSupid(String supid)
-	{
-		this.supid = supid;
-	}
-
 	public String getCode()
 	{
 		return code;
@@ -163,46 +227,6 @@ public class Goods extends IdEntity
 	public void setBrand(String brand)
 	{
 		this.brand = brand;
-	}
-
-	public String getCtype()
-	{
-		return ctype;
-	}
-
-	public void setCtype(String ctype)
-	{
-		this.ctype = ctype;
-	}
-
-	public String getSpec()
-	{
-		return spec;
-	}
-
-	public void setSpec(String spec)
-	{
-		this.spec = spec;
-	}
-
-	public String getSpeccode()
-	{
-		return speccode;
-	}
-
-	public void setSpeccode(String speccode)
-	{
-		this.speccode = speccode;
-	}
-
-	public String getSpecclass()
-	{
-		return specclass;
-	}
-
-	public void setSpecclass(String specclass)
-	{
-		this.specclass = specclass;
 	}
 
 	public BigDecimal getCostprice()
@@ -233,6 +257,116 @@ public class Goods extends IdEntity
 	public void setPromoteprice(BigDecimal promoteprice)
 	{
 		this.promoteprice = promoteprice;
+	}
+
+	public BigDecimal getAllstorenum()
+	{
+		return allstorenum;
+	}
+
+	public void setAllstorenum(BigDecimal allstorenum)
+	{
+		this.allstorenum = allstorenum;
+	}
+
+	public BigDecimal getSalenum()
+	{
+		return salenum;
+	}
+
+	public void setSalenum(BigDecimal salenum)
+	{
+		this.salenum = salenum;
+	}
+
+	public BigDecimal getBasesalenum()
+	{
+		return basesalenum;
+	}
+
+	public void setBasesalenum(BigDecimal basesalenum)
+	{
+		this.basesalenum = basesalenum;
+	}
+
+	public int getPraisenum()
+	{
+		return praisenum;
+	}
+
+	public void setPraisenum(int praisenum)
+	{
+		this.praisenum = praisenum;
+	}
+
+	public int getBasepraisenum()
+	{
+		return basepraisenum;
+	}
+
+	public void setBasepraisenum(int basepraisenum)
+	{
+		this.basepraisenum = basepraisenum;
+	}
+
+	public int getPopular()
+	{
+		return popular;
+	}
+
+	public void setPopular(int popular)
+	{
+		this.popular = popular;
+	}
+
+	public int getBasepopular()
+	{
+		return basepopular;
+	}
+
+	public void setBasepopular(int basepopular)
+	{
+		this.basepopular = basepopular;
+	}
+
+	public BigDecimal getWeight()
+	{
+		return weight;
+	}
+
+	public void setWeight(BigDecimal weight)
+	{
+		this.weight = weight;
+	}
+
+	public BigDecimal getVolume()
+	{
+		return volume;
+	}
+
+	public void setVolume(BigDecimal volume)
+	{
+		this.volume = volume;
+	}
+
+	public String getPic()
+	{
+		return pic;
+	}
+
+	public void setPic(String pic)
+	{
+		this.pic = pic;
+	}
+
+	public String getRebatetype()
+	{
+		return rebatetype;
+	}
+
+	public void setRebatetype(String rebatetype)
+	{
+		this.rebatetype = rebatetype;
 	}
 
 	public BigDecimal getRebate1()
@@ -285,54 +419,124 @@ public class Goods extends IdEntity
 		this.rebate5 = rebate5;
 	}
 
-	public String getPic()
+	public String getSpec()
 	{
-		return pic;
+		return spec;
 	}
 
-	public void setPic(String pic)
+	public void setSpec(String spec)
 	{
-		this.pic = pic;
+		this.spec = spec;
 	}
 
-	public int getPopular()
+	public String getSpeccode()
 	{
-		return popular;
+		return speccode;
 	}
 
-	public void setPopular(int popular)
+	public void setSpeccode(String speccode)
 	{
-		this.popular = popular;
+		this.speccode = speccode;
 	}
 
-	public int getSales()
+	public String getSpecclass()
 	{
-		return sales;
+		return specclass;
 	}
 
-	public void setSales(int sales)
+	public void setSpecclass(String specclass)
 	{
-		this.sales = sales;
+		this.specclass = specclass;
 	}
 
-	public int getPopularinit()
+	public String getIsfreelogistics()
 	{
-		return popularinit;
+		return isfreelogistics;
 	}
 
-	public void setPopularinit(int popularinit)
+	public void setIsfreelogistics(String isfreelogistics)
 	{
-		this.popularinit = popularinit;
+		this.isfreelogistics = isfreelogistics;
 	}
 
-	public int getSalesinit()
+	public String getFreightpayer()
 	{
-		return salesinit;
+		return freightpayer;
 	}
 
-	public void setSalesinit(int salesinit)
+	public void setFreightpayer(String freightpayer)
 	{
-		this.salesinit = salesinit;
+		this.freightpayer = freightpayer;
+	}
+
+	public int getFullnummail()
+	{
+		return fullnummail;
+	}
+
+	public void setFullnummail(int fullnummail)
+	{
+		this.fullnummail = fullnummail;
+	}
+
+	public String getHidestock()
+	{
+		return hidestock;
+	}
+
+	public void setHidestock(String hidestock)
+	{
+		this.hidestock = hidestock;
+	}
+
+	public int getQuota()
+	{
+		return quota;
+	}
+
+	public void setQuota(int quota)
+	{
+		this.quota = quota;
+	}
+
+	public int getBuyneedpoints()
+	{
+		return buyneedpoints;
+	}
+
+	public void setBuyneedpoints(int buyneedpoints)
+	{
+		this.buyneedpoints = buyneedpoints;
+	}
+
+	public String getConsumcoupon()
+	{
+		return consumcoupon;
+	}
+
+	public void setConsumcoupon(String consumcoupon)
+	{
+		this.consumcoupon = consumcoupon;
+	}
+
+	public int getConsumpoint()
+	{
+		return consumpoint;
+	}
+
+	public void setConsumpoint(int consumpoint)
+	{
+		this.consumpoint = consumpoint;
+	}
+
+	public int getJoinleveldiscount()
+	{
+		return joinleveldiscount;
+	}
+
+	public void setJoinleveldiscount(int joinleveldiscount)
+	{
+		this.joinleveldiscount = joinleveldiscount;
 	}
 
 }
