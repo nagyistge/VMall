@@ -109,6 +109,9 @@ public class Goods extends IdEntity
 
 	@Column
 	private String specclass; // 规格类型（颜色、尺寸、重量等）（合并后规格分类，冗余显示）
+	
+	@Column
+	private String defspec; // 缺省规格货品 （是、否）（产品具有多个规格的货品时，缺省显示的规格货品）
 
 	// 物流及其它
 	private String isfreelogistics; // 是否免物流（是、否）
@@ -447,6 +450,16 @@ public class Goods extends IdEntity
 	public void setSpecclass(String specclass)
 	{
 		this.specclass = specclass;
+	}
+
+	public String getDefspec()
+	{
+		return defspec;
+	}
+
+	public void setDefspec(String defspec)
+	{
+		this.defspec = defspec;
 	}
 
 	public String getIsfreelogistics()
