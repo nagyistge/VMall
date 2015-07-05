@@ -111,6 +111,7 @@ public class GoodsAction extends BaseAction
 		map.put("_page", Strings.sNull(page, "1"));
 		map.put("_pagesize", Strings.sNull(pagesize, "10"));
 		map.put("ctype", "货品");
+		map.put("defspec", "是");
 		map.put("internal", goodsclass.getFormatAttr("internal"));
 		List<DynamicObject> goodses = goodsService.channel(map);
 
