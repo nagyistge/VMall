@@ -1,5 +1,6 @@
 package com.skynet.framework.services.function;
 
+import java.math.BigDecimal;
 import java.sql.Date;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -152,6 +153,20 @@ public class Types
 		else
 		{
 			value = String.valueOf(source);
+		}
+		return value;
+	}
+	
+	public static BigDecimal parseBigDecimal(String source, BigDecimal def_value)
+	{
+		BigDecimal value = def_value;
+		try
+		{
+			value = new BigDecimal(source);
+		}
+		catch (Exception e)
+		{
+			value = def_value;
 		}
 		return value;
 	}

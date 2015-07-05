@@ -13,6 +13,7 @@ import org.nutz.dao.Cnd;
 import org.nutz.dao.Condition;
 import org.nutz.dao.SqlManager;
 import org.nutz.dao.Sqls;
+import org.nutz.dao.entity.annotation.Table;
 import org.nutz.dao.impl.NutDao;
 import org.nutz.dao.sql.PojoCallback;
 import org.nutz.dao.sql.Sql;
@@ -177,7 +178,7 @@ public class SkynetDao extends NutDao
 
 		return obj;
 	}
-
+	
 	public static void main(String[] args) throws Exception
 	{
 		Condition cnd = Cnd.where("actdefid", "=", "test").and("runactkey", "=", "0000");
