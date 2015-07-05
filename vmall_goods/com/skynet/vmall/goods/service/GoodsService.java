@@ -41,6 +41,8 @@ public class GoodsService extends SkynetNameEntityService<Goods>
 	{
 		String internal = (String)map.get("internal");
 		String ctype = (String)map.get("ctype");
+		String defspec = (String)map.get("defspec");
+		
 		String _orderby = (String)map.get("_orderby");
 		String _order = StringToolKit.formatText((String)map.get("_order"),"asc");
 		
@@ -60,6 +62,12 @@ public class GoodsService extends SkynetNameEntityService<Goods>
 			sql.append("  and goods.ctype = ").append(SQLParser.charValue(ctype)).append("\n");
 		}
 		
+		// 增加查询过滤条件
+		if(!StringToolKit.isBlank(defspec))
+		{
+			sql.append("  and goods.defspec = ").append(SQLParser.charValue(defspec)).append("\n");
+		}
+				
 		// 排序条件
 		if(!StringToolKit.isBlank(_orderby))
 		{
