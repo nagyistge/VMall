@@ -36,10 +36,10 @@ public class Order extends IdEntity
 	private BigDecimal amountsale; // 订单销售单价总额
 	
 	@Column
-	private BigDecimal amountpromote; // 订单促销单价总额
+	private BigDecimal amountpromote; // 订单促销单价总额（现价总额）
 	
 	@Column
-	private BigDecimal amount; // 订单实际支付总额（一般为促销单价总额）	
+	private BigDecimal amount; // 订单总额（一般为促销单价总额）	
 	
 	// 支付信息
 	@Column
@@ -79,6 +79,8 @@ public class Order extends IdEntity
 	@Column
 	private String state; // 收货订单状态（下单、收款、发货、收货、结束）
 	
+	
+	// 订单支付信息
 	@Column
 	private String paystate; // 订单收款支付状态（未支付、已支付）
 	
@@ -87,6 +89,9 @@ public class Order extends IdEntity
 	
 	@Column
 	private String thirdpaytradeno; // 第三方支付平台交易标识号
+	
+	@Column
+	private BigDecimal payamount; // 订单实际支付总额
 
 	public String getCno()
 	{
@@ -338,4 +343,13 @@ public class Order extends IdEntity
 		this.thirdpaytradeno = thirdpaytradeno;
 	}
 
+	public BigDecimal getPayamount()
+	{
+		return payamount;
+	}
+
+	public void setPayamount(BigDecimal payamount)
+	{
+		this.payamount = payamount;
+	}
 }

@@ -81,12 +81,12 @@ public class AppOrderService extends SkynetDaoService
 
 		Map map = new DynamicObject();
 
-		if (!isarole(loginname, "订单管理用户"))
-		{
-			map.put("state", "error");
-			map.put("errormessage", "非管理人员不能转发订单！");
-			return map;
-		}
+//		if (!isarole(loginname, "订单管理用户"))
+//		{
+//			map.put("state", "error");
+//			map.put("errormessage", "非管理人员不能转发订单！");
+//			return map;
+//		}
 
 		// 检查流程已结束异常
 		if ("结束".equals(flowstate))

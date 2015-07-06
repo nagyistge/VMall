@@ -1,5 +1,6 @@
-<!DOCTYPE html>
-<html lang="en"><head>
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
 	<meta charset="UTF-8">
 	<title>优品365维分销平台</title>
 	<link rel="stylesheet" href="http://res.mp.wifenxiao.com/Public/css/dist/component-min.css">
@@ -91,12 +92,6 @@
 		</script>
 	<![endif]-->
 
-	<script>
-	$(function(){
-    	$("#btn_login").click
-		
-	});
-	</script>
 	<!-- end session hint -->
 
 </body>

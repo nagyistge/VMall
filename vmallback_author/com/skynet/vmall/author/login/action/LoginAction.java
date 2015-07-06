@@ -34,9 +34,17 @@ public class LoginAction
 
 	@Inject
 	private GroupUserService groupuserService;
+
+	@At("/log")
+	@Ok("->:/login.ftl")
+	public Map log() throws Exception
+	{
+		DynamicObject ro = new DynamicObject();
+		return ro;
+	}
 	
 	@At("/login")
-	@Ok(">>:/page/index.ftl")
+	@Ok("->:/page/home/home/index.ftl")
 	public Map login(String loginname, String password) throws Exception
 	{
 		HttpSession session = Mvcs.getHttpSession(true);
@@ -55,8 +63,8 @@ public class LoginAction
 		
 		DynamicObject user = userService.locateBy(Cnd.where("loginname", "=", loginname).and("password", "=", password));
 
-		DynamicObject dept = userService.getPrimaryDept(loginname);
-		DynamicObject org = userService.getPrimaryOrg(loginname);
+//		DynamicObject dept = userService.getPrimaryDept(loginname);
+//		DynamicObject org = userService.getPrimaryOrg(loginname);
 
 		DynamicObject obj = new DynamicObject();
 		obj.setAttr(GlobalConstants.sys_login_user, loginname);
@@ -64,13 +72,13 @@ public class LoginAction
 		obj.setAttr(GlobalConstants.sys_login_userid, user.getFormatAttr("id"));
 		obj.setAttr(GlobalConstants.sys_login_userwxopenid, user.getFormatAttr("wxopenid"));
 
-		obj.setAttr(GlobalConstants.sys_login_dept, dept.getFormatAttr("id"));
-		obj.setAttr(GlobalConstants.sys_login_deptname, dept.getFormatAttr("cname"));
-		obj.setAttr(GlobalConstants.sys_login_dept_internal, dept.getFormatAttr("internal"));
+//		obj.setAttr(GlobalConstants.sys_login_dept, dept.getFormatAttr("id"));
+//		obj.setAttr(GlobalConstants.sys_login_deptname, dept.getFormatAttr("cname"));
+//		obj.setAttr(GlobalConstants.sys_login_dept_internal, dept.getFormatAttr("internal"));
 
-		obj.setAttr(GlobalConstants.sys_login_org, org.getFormatAttr("id"));
-		obj.setAttr(GlobalConstants.sys_login_orgname, org.getFormatAttr("cname"));
-		obj.setAttr(GlobalConstants.sys_login_org_internal, org.getFormatAttr("internal"));
+//		obj.setAttr(GlobalConstants.sys_login_org, org.getFormatAttr("id"));
+//		obj.setAttr(GlobalConstants.sys_login_orgname, org.getFormatAttr("cname"));
+//		obj.setAttr(GlobalConstants.sys_login_org_internal, org.getFormatAttr("internal"));
 
 		session.setAttribute(GlobalConstants.sys_login_token, obj);
 
