@@ -7,6 +7,7 @@ import java.util.Map;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.beanutils.BeanUtils;
+import org.nutz.dao.Cnd;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.lang.Strings;
@@ -58,8 +59,9 @@ public class GoodsAction
 	@Ok("->:/page/goods/goods/selectgoodsclass.ftl")
 	public Map selectgoodsclass(@Param("..") Map map) throws Exception
 	{
+		List<DynamicObject> classes = goodsclassService.findByCond(Cnd.where("1", "=", "1").orderBy("internal", "ASC"));
 		Map ro = new DynamicObject();
-		
+		ro.put("classes", classes);
 		return ro;
 	}
 	

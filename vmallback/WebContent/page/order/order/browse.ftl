@@ -1,119 +1,27 @@
-
-<!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-    <title>所有订单 - 微分销</title>
-    <!-- 线上环境 -->
-        <link rel="stylesheet" href="http://res.mp.wifenxiao.com/Public/css/dist/component-min.css">    <link rel="stylesheet" href="/Public/plugins/jbox/jbox-min.css">
-    
-    <style>
-        .ftnormal {line-height: 25px!important;}
-        .btn{vertical-align: baseline;}
-        .grounp_chenge_box{ padding:10px 0px; text-align:right;}
-        .grounp_chenge_box .grtt{ font-weight:900;}
-        .grounp_chenge_box .intem{ border:1px solid #CCC; color:#666; padding:2px 10px;}
-        .grounp_chenge_box .intem.cur{ border:1px solid #1C89D5; background:#1C89D5; color:#FFF;}
-		.infor_logistics_box{ display:none; position:absolute; width:260px; left:-105px;top:20px; border:1px solid #ccc; padding:15px; background:#fff; z-index:999;}
-		.arrow-top{ display:none;top: 15px;left: 30px;width: 11px;height: 6px;position: absolute;overflow: hidden; background:url(/Public/images/arrow_cut.png) no-repeat; z-index:9999;}
-		.infor_logistics_box .courier{margin-bottom: 8px;border-bottom: 1px solid #f1f1f1;color: #666;}
-		.infor_logistics_box .courier .name{ margin-right:10px;}
-		.infor_logistics_box .courier em{font-style: normal;font-weight: 400;}
-		.infor_logistics_box .address li{position: relative;padding: 0 25px 12px;}
-		.infor_logistics_box .address .current{ color:#f40;}
-		.infor_logistics_box .address .current .symbol{background:url(/Public/images/xlt.png) 0 0 no-repeat}
-		.infor_logistics_box .address .place{display: block;overflow: hidden;word-wrap: break-word;}
-		.infor_logistics_box .address .symbol{position: absolute;top: 6px;left: 8px;_left: -17px;width: 6px;height: 6px;overflow: hidden;background:url(/Public/images/xlt.png) 0 -11px no-repeat;}
-    </style>
-
+<title>优品365.订单管理.订单查询</title>
 </head>
-<body class="cp-bodybox">
-<!--[if lt IE 9]>
-<div class="alert alert-danger disable-del txtCenter" id="tipLowIEVer">
-    <h4>系统检测到您使用的浏览器版本过低，为达到更好的体验效果请升级您的浏览器，我们为您推荐：</h4>
-    <p>
-        <a href="https://www.google.com.hk/chrome/" target="_blank">Chrome浏览器</a>
-        <a href="http://www.firefox.com.cn/download/" target="_blank">Firefox浏览器</a>
-        <a href="http://www.maxthon.cn/" target="_blank">遨游浏览器</a>
-        <a href="http://se.360.cn/" target="_blank">360浏览器</a>
-        <a href="http://www.liebao.cn/" target="_blank">猎豹浏览器</a>
-    </p>
-</div>
-<![endif]-->
-<div class="header">
-    <div class="inner clearfix">
-        <div class="fl">
-            <a href="/" class="header-logo"><img src="http://res.mp.wifenxiao.com/Public/images/logo.jpg"></a>
-        </div>
-        <!-- end logo -->
+<body>
 
-        <div class="header-nav fl">
-            <ul class="header-nav-list clearfix">
-                
-                <li class="fl "><a href="/Shop/home">首页</a></li><li class="fl "><a href="/Shop/list_homepage">店铺</a></li><li class="fl "><a href="/Item/lists/item_status/onsale">商品</a></li><li class="fl active"><a href="/Order/lists">订单</a></li><li class="fl "><a href="/User/lists">会员</a></li><li class="fl "><a href="/User/apply_lists">分销商</a></li><li class="fl "><a href="/Dist/apply_list">财务</a></li><li class="fl "><a href="/Ump/checkin">营销</a></li><li class="fl "><a href="/System/shopInfo">设置</a></li>                
-            </ul>
-        </div>
-        <!-- end header-nav -->
-
-        <div class="fr">
-            <ul class="header-ctrl clearfix">
-                <li class="header-ctrl-item fl">
-                    <a href="javascript:;" class="header-ctrl-item-parent">
-                        <i class="gicon-user white"></i>
-                        <i class="gicon-user"></i>
-                        账户
-                    </a>
-                    <ul class="header-ctrl-item-children">
-                        <li><a href="/System/updateLog" target="_blank">更新日志</a></li>
-                        <li><a href="http://www.wifenxiao.com/Index/help_list/lm/help.html" target="_blank">帮助中心</a></li>
-                        <li><a href="/System/shopInfo">设置</a></li>
-                        <li><a href="/Public/logout">退出</a></li>
-                    </ul>
-                </li>
-            </ul>
-        </div>
-        <!-- end list -->
-		<span class="account_inbox_switch fr"><a href="/System/notice_list" class="header_mail"><span class="act"></span></a></span>
-        <span class="header-welcome fr"><a href="javasecript:;" class="tips" data-trigger="hover" data-placement="top" data-content='<strong>版本：</strong><font style="color:red">免费版</font>'>13002994107，欢迎回来</a></span>
-
-        <!-- end header-welcome -->
-    </div>
-</div>
-<!-- end header -->
-
-<div class="container">
-<div class="inner clearfix">
-<div class="content-left fl">
-    <dl class="left-menu shop_5 sub_signup">
-            <dt>
-                <i class="icon-menu signup"></i>
-                <span id="shop_5" data-id="5">订单管理</span>
-            </dt>
-            <dd class="subshop_0 active">
-                    <a href="/Order/lists">所有订单</a>
-                                    </dd><dd class="subshop_13 ">
-                    <a href="/Order/export">导出订单</a>
-                                    </dd><dd class="subshop_14 ">
-                    <a href="/Order/del_log">删除日志</a>
-                                    </dd><dd class="subshop_16 ">
-                    <a href="/Order/order_import">备份订单导入</a>
-                                    </dd>        </dl><dl class="left-menu shop_6 sub_shield">
-            <dt>
-                <i class="icon-menu shield"></i>
-                <span id="shop_6" data-id="6">售后服务</span>
-            </dt>
-            <dd class="subshop_0 ">
-                    <a href="/Order/exchange">退/换货审核</a>
-                                    </dd><dd class="subshop_2 ">
-                    <a href="/Comment/lists">商品评价</a>
-                                    </dd><dd class="subshop_7 ">
-                    <a href="/Comment/custom_comment">自定义评价</a>
-                    <i class="icon_hot"></i>                </dd>        </dl></div>
-<!-- end content-left -->
-
-<div class="content-right fl">
- 
+<style>
+    .ftnormal {line-height: 25px!important;}
+    .btn{vertical-align: baseline;}
+    .grounp_chenge_box{ padding:10px 0px; text-align:right;}
+    .grounp_chenge_box .grtt{ font-weight:900;}
+    .grounp_chenge_box .intem{ border:1px solid #CCC; color:#666; padding:2px 10px;}
+    .grounp_chenge_box .intem.cur{ border:1px solid #1C89D5; background:#1C89D5; color:#FFF;}
+	.infor_logistics_box{ display:none; position:absolute; width:260px; left:-105px;top:20px; border:1px solid #ccc; padding:15px; background:#fff; z-index:999;}
+	.arrow-top{ display:none;top: 15px;left: 30px;width: 11px;height: 6px;position: absolute;overflow: hidden; background:url(/Public/images/arrow_cut.png) no-repeat; z-index:9999;}
+	.infor_logistics_box .courier{margin-bottom: 8px;border-bottom: 1px solid #f1f1f1;color: #666;}
+	.infor_logistics_box .courier .name{ margin-right:10px;}
+	.infor_logistics_box .courier em{font-style: normal;font-weight: 400;}
+	.infor_logistics_box .address li{position: relative;padding: 0 25px 12px;}
+	.infor_logistics_box .address .current{ color:#f40;}
+	.infor_logistics_box .address .current .symbol{background:url(/Public/images/xlt.png) 0 0 no-repeat}
+	.infor_logistics_box .address .place{display: block;overflow: hidden;word-wrap: break-word;}
+	.infor_logistics_box .address .symbol{position: absolute;top: 6px;left: 8px;_left: -17px;width: 6px;height: 6px;overflow: hidden;background:url(/Public/images/xlt.png) 0 -11px no-repeat;}
+</style>
 
     <h1 class="content-right-title">所有订单<a class="gicon-info-sign gicon_linkother" href="http://www.wifenxiao.com/Index/help_show/lm/help/id/46.html" target="_blank"></a></h1>
     
@@ -189,12 +97,12 @@
                 <!-- end tables-btmctrl -->
     </form>
 
-    <form action="/Order/print_invoice" method="post" id="ids">
+    <form action="" method="post" id="ids">
         <input type="hidden" name="ids" value="">
     </form>
 
 
-    <script src="http://res.mp.wifenxiao.com/Public/js/jquery/jquery-1.8.3.min.js"></script>
+<script src="${base}/public/js/jquery/jquery-1.8.3.min.js"></script>
 <script>
 $(function(){
 	$('.logistics_box').hover(function(){
@@ -248,28 +156,6 @@ $(function(){
 });
 </script>
 
-</div>
-<!-- end content-right -->
-</div>
-</div>
-<!-- end container -->
-
-<!--gonggao-->
-<div id="gonggao">
-	<div class="gonggao_tt"><i class="gicon_gg_up"></i>系统公告<a href="#" class="fr gound_close"></a></div>
-    <div class="gonggao_cent">
-    	<div class="gonggao_cent_tt">2015-07-05 微分销系统更新</div>
-        <div class="gonggao_cent_cent">
-            <p><a href="/System/notice_list">添加在线客服方</a></p><p><a href="/System/notice_list">图片库中的图片可以重命名，客户可以根据名称模糊搜索图片库</a></p><p><a href="/System/notice_list">提货点管理添加自提地址增加个固话，但不是必填项</a></p>        </div>
-    </div>
-    <div class="gonggao_href"><a href="javascript:;" class="fl btn-notice">我知道了</a><a href="/System/notice_list">查看更多>></a></div>
-</div><div class="footer">&copy; 2015 西安可可西里电子商务 , Inc. All rights reserved.</div>
-<!-- end footer -->
-    <div class="fixedBar">
-        <ul>
-            <li class="shopManager5"><a href="javascript:;" data-target="#shop_5">订单管理</a></li><li class="shopManager6"><a href="javascript:;" data-target="#shop_6">售后服务</a></li>        </ul>
-    </div><a href="#" id="j-gotop" class="gotop" title="回到顶部"></a>
-<!-- end gotop -->
 
 <script type="text/j-template" id="tpl_tooltips">
 	<div class="tooltips" style="display:none;">
@@ -846,14 +732,18 @@ $(function(){
 
 <!--end front template  -->
 
-<script src="http://res.mp.wifenxiao.com/Public/js/dist/lib-min.js"></script>
+<script src="${base}/public/js/dist/lib-min.js"></script>
 <script src="${base}/public/plugins/jbox/jquery.jbox-min.js"></script>
 <script src="${base}/public/plugins/zclip/jquery.zclip-min.js"></script>
-<!-- 线上环境 -->
-    <script src="http://res.mp.wifenxiao.com/Public/js/dist/component-min.js"></script>
-    <script src="http://res.mp.wifenxiao.com/Public/modulesJs/scroll.js"></script>
+<script src="${base}/public/plugins/uploadify/jquery.uploadify.min.js"></script>
+
+<script src="${base}/public/js/dist/component-min.js"></script>
+<script src="${base}/public/modulesJs/scroll.js"></script>
+<script src="${base}/public/plugins/My97DatePicker/WdatePicker.js"></script>
+<script src="${base}/page/order/order/lists.js"></script>
+
 <!--[if lt IE 10]>
-<script src="http://res.mp.wifenxiao.com/Public/js/jquery/jquery.placeholder-min.js"></script>
+<script src="${base}/public/js/jquery/jquery.placeholder-min.js"></script>
 <script>
     $(function(){
         //修复IE下的placeholder
@@ -862,9 +752,12 @@ $(function(){
 </script>
 <![endif]-->
 
+<script>
+$(function(){
+	$("#leftMenu").load('${base}/page/order/leftmenu.ftl');
+});
+</script>
 
-    <script src="http://res.mp.wifenxiao.com/Public/js/dist/home/Order/lists.js"></script>
-    <script src="${base}/public/plugins/My97DatePicker/WdatePicker.js"></script>
     
 
 <script>

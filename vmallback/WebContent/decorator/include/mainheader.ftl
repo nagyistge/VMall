@@ -1,14 +1,18 @@
 
     <div class="inner clearfix">
         <div class="fl">
-            <a href="/" class="header-logo"><img src="http://res.mp.wifenxiao.com/Public/images/logo.jpg"></a>
+            <a href="/" class="header-logo"><img src="${base}/public/images/logo.jpg"></a>
         </div>
         <!-- end logo -->
 
         <div class="header-nav fl">
             <ul class="header-nav-list clearfix">
                 
-                <li class="fl "><a href="/Shop/home">首页</a></li><li class="fl "><a href="/Shop/list_homepage">店铺</a></li><li class="fl active"><a href="/Item/lists/item_status/onsale">商品</a></li><li class="fl "><a href="/Order/lists">订单</a></li><li class="fl "><a href="/User/lists">会员</a></li><li class="fl "><a href="/User/apply_lists">分销商</a></li><li class="fl "><a href="/Dist/apply_list">财务</a></li><li class="fl "><a href="/Ump/checkin">营销</a></li><li class="fl "><a href="/System/shopInfo">设置</a></li>                
+                <li class="fl "><a href="javascript:void(0)">首页</a></li>
+                <li class="fl "><a href="javascript:void(0)">店铺</a></li>
+                <li class="fl "><a href="${base}/goods/goods/selectgoodsclass.action">商品</a></li>
+                <li class="fl "><a href="${base}/order/order/browse.action">订单</a></li>
+                <li class="fl "><a href="/User/lists">会员</a></li><li class="fl "><a href="/User/apply_lists">分销商</a></li><li class="fl "><a href="/Dist/apply_list">财务</a></li><li class="fl "><a href="/Ump/checkin">营销</a></li><li class="fl "><a href="/System/shopInfo">设置</a></li>                
             </ul>
         </div>
         <!-- end header-nav -->
