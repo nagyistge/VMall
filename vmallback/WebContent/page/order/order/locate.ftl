@@ -1,14 +1,25 @@
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
-
-
-<meta charset="UTF-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-<link rel="stylesheet" type="text/css" href="/vmallback/css/component-min.css">
-<link rel="stylesheet" type="text/css" href="/vmallback/css/jbox-min.css">
-
-<script src="/vmallback/lib/jquery-2.1.1.min.js"></script>
-<script src="/vmallback/lib/jquery-ui.min.js"></script>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <title>发布商品 - 微分销</title>
+    <!-- 线上环境 -->
+        <link rel="stylesheet" href="http://res.mp.wifenxiao.com/Public/css/dist/component-min.css">    
+        <link rel="stylesheet" href="/Public/plugins/jbox/jbox-min.css">
+    
+    <link rel="stylesheet" href="/Public/plugins/uploadify/uploadify-min.css">
+    <link rel="stylesheet" href="http://res.mp.wifenxiao.com/Public/css/dist/home/Item/add_step2.css">
+    <style>
+        .imgnav{
+            max-height: 30px;
+            overflow: hidden;
+            cursor: pointer;
+        }
+    </style>
+    
+ <script src="http://res.mp.wifenxiao.com/Public/js/jquery/jquery-1.8.3.min.js"></script>
 
 </head>
 <body class="cp-bodybox">
@@ -58,7 +69,7 @@
         </div>
         <!-- end list -->
 		<span class="account_inbox_switch fr"><a href="/System/notice_list" class="header_mail"><span class="act"></span></a></span>
-        <span class="header-welcome fr"><a href="javasecript:;" class="tips" data-trigger="hover" data-placement="top" data-content="<strong>版本：</strong><font style=&quot;color:red&quot;>免费版</font>">13002994107，欢迎回来</a></span>
+        <span class="header-welcome fr"><a href="javasecript:;" class="tips" data-trigger="hover" data-placement="top" data-content='<strong>版本：</strong><font style="color:red">免费版</font>'>13002994107，欢迎回来</a></span>
 
         <!-- end header-welcome -->
     </div>
@@ -73,7 +84,7 @@
                 <i class="icon-menu commodity"></i>
                 <span id="shop_2" data-id="2">商品管理</span>
             </dt>
-            <dd class="subshop_0 active">
+            <dd class="subshop_0 ">
                     <a href="/Item/add">发布商品</a>
                                     </dd><dd class="subshop_6 ">
                     <a href="/Item/lists/item_status/onsale">出售中的商品</a>
@@ -111,12 +122,106 @@
 <!-- end content-left -->
 
 <div class="content-right fl">
+ 
 
-</iframe>
+    <h1 class="content-right-title">发布商品</h1>
+    
+    
+<input type="hidden" id="j-isSid" value='1'><!-- 是否选择了淘宝类目 -->
+<input type="hidden" id="j-hasNorms" value='1'><!-- 淘宝类目下是否有属性 -->
+<ul class="wizard">
+    <li class="wizard-item complete">
+        <dl class="wizard-item-content">
+            <dt class="wizard-ic-step">
+                <span class="wizard-icstp-num">1</span>
+                <span class="wizard-icstp-title">选择商品类目</span>
+            </dt>
+            <dd class="wizard-ic-desc"></dd>
+        </dl>
+    </li>
+    <li class="wizard-item process">
+        <dl class="wizard-item-content">
+            <dt class="wizard-ic-step">
+                <span class="wizard-icstp-num">2</span>
+                <span class="wizard-icstp-title">编辑商品信息</span>
+            </dt>
+            <dd class="wizard-ic-desc"></dd>
+        </dl>
+    </li>
+    <li class="wizard-item">
+        <dl class="wizard-item-content">
+            <dt class="wizard-ic-step">
+                <span class="wizard-icstp-num">3</span>
+                <span class="wizard-icstp-title">编辑商品详情</span>
+            </dt>
+        </dl>
+    </li>
+</ul>
+<form action="${base}/goods/goods/update.action" method="post" id="editform">
+<input type="hidden" name="id" value="${obj.order.id}">
+<div class="panel-single panel-single-light mgt20">
+    <h3 class="cst_h3 mgb20">基本信息</h3>
+    <div class="formitems">
+        <label class="fi-name"><span class="colorRed">*</span>订单号：</label>
+        <div class="form-controls">
+            <input type="text" class="input xxlarge" name="cno" value="${obj.order.cno}">
+            <span class="fi-help-text"></span>
+        </div>
+    </div>
+
+</div>
+<!-- end 基本信息 -->
+
+<div class="panel-single panel-single-light mgt20">
+    <h3 class="cst_h3 mgb20">购买人信息</h3>
+    <div class="formitems">
+        <label class="fi-name"><span class="colorRed">*</span>购买人：</label>
+        <div class="form-controls">
+            <input type="text" class="input xxlarge" name="membercname" value="${obj.order.membercname}">
+            <span class="fi-help-text"></span>
+        </div>
+    </div>
+    
+</div>
+<!-- end 购买人信息 -->
+
+<div class="panel-single panel-single-light mgt20">
+    <h3 class="cst_h3 mgb20">收货人信息</h3>
+    <div class="formitems">
+        <label class="fi-name"><span class="colorRed">*</span>收货人：</label>
+        <div class="form-controls">
+            <input type="text" class="input xxlarge" name="takercname" value="${obj.order.takercname}">
+            <span class="fi-help-text"></span>
+        </div>
+    </div>
+
+</div>
+<!-- end 收货人信息 -->
+
+<div class="panel-single panel-single-light mgt20 j-emptyhide">
+    <h3 class="cst_h3 mgb20">支付信息</h3>
+    <div class="formitems">
+        <label class="fi-name"><span class="colorRed">*</span>支付状态：</label>
+        <div class="form-controls">
+            <input type="text" class="input xxlarge" name="paystate" value="${obj.order.paystate}">
+            <span class="fi-help-text"></span>
+        </div>
+    </div>
+</div>
+<!-- end 库存/规格 -->
+
+
+</form>
+
+<div class="panel-single panel-single-light mgt20 txtCenter">
+    <input type="button" class="btn btn-primary" value="保存" id="bt_submit">
 </div>
 
+</div>
 <!-- end content-right -->
-
 </div>
 </div>
 <!-- end container -->
+
+</body>
+</html>

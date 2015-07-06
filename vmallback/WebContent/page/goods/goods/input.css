@@ -1,0 +1,120 @@
+.droplist-goodsGroupLabelList .droplist-menu {
+	width: 550px;
+	padding: 10px
+}
+
+.droplist-goodsGroupLabelList .droplist-menu label {
+	display: inline-block
+}
+
+.wxtables-sku {
+	background-color: #fff
+}
+
+.normsPanel {
+	padding: 10px;
+	border: 1px solid #ddd;
+	background-color: #fff
+}
+
+.normslist dt {
+	background-color: #eee;
+	padding: 5px
+}
+
+.normslist dt .input {
+	margin: 0
+}
+
+.normslist dt a {
+	display: block;
+	padding-top: 6px
+}
+
+.normslist dt .fi-help-text {
+	display: inline-block;
+	padding: 6px 0 0 10px
+}
+
+.normslist dd {
+	padding: 10px 5px
+}
+
+.normslist dd .input {
+	height: 15px;
+	line-height: 15px
+}
+
+.sku-add {
+	display: block;
+	line-height: 40px;
+	background: #fff;
+	border: 1px dashed #999;
+	color: #999;
+	font: 700 46px/40px arial;
+	text-align: center
+}
+
+.form-controls-h3 {
+	background: #f8f8f8;
+	font-size: 14px;
+	padding: 5px;
+	color: #666
+}
+
+.form-controls-sku {
+	padding: 8px 5px;
+	overflow: hidden
+}
+
+.form-controls-sku dl dt {
+	color: #000;
+	font-weight: 700;
+	padding-bottom: 5px
+}
+
+.form-controls-sku dl dt input {
+	vertical-align: middle
+}
+
+.form-controls-sku dl dd {
+	padding-left: 6px
+}
+
+.form-controls-sku dl dd label {
+	display: inline-block;
+	min-width: 65px;
+	margin-left: 10px;
+	padding: 5px 0
+}
+
+.form-controls-sku dl dd input {
+	vertical-align: middle
+}
+
+td.tables-form-title {
+	border-right: 1px solid #eee;
+	text-align: center
+}
+
+.setfxs-pic {
+	position: relative
+}
+
+.setfxs-pic .setfxs-box {
+	display: none;
+	margin: 10px 0;
+	width: 300px
+}
+
+.setfxs-pic.options .setfxs-box {
+	position: absolute;
+	left: -242px;
+	top: 15px;
+	z-index: 99;
+	background: #FFF
+}
+
+.J-close-setbox {
+	opacity: 0
+}

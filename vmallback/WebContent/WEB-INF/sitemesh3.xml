@@ -1,0 +1,5 @@
+<sitemesh>
+  <mapping path="/*.action" decorator="/decorator/mainframe.ftl"/>
+  <mapping path="*.html" exclue="true"/>
+  <mapping path="*.ftl" exclue="true"/>  
+</sitemesh>
