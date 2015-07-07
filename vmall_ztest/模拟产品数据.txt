@@ -158,6 +158,9 @@ insert into t_app_goods(id, supid, cname, classid, ctype, costprice, saleprice, 
 insert into t_app_goodsspec(id, goodsid, specclass, spec) values('1bd28eb5c0a801900d0b4b2f1043ca6c','001100020007-0101-0202', '尺码','37');
 insert into t_app_goodsspec(id, goodsid, specclass, spec) values('1bd28eb5c0a801900d0b4b2f9a383322','001100020007-0101-0202', '颜色','粉色');
 
+update t_app_goods set defspec='是' where id = '001100020007-0000-0000';
+update t_app_goods set defspec='是' where id = '001100020007-0101-0000';
+
 
 update t_app_goods set classinternal = classid;
 

@@ -245,18 +245,35 @@ public class OrderAction extends BaseAction
 			Element root = doc.getDocumentElement();
 			Map wr = Xmls.asMap(root);
 			log.debugf("get pay notify return object :\n %s", wr);
-			String orderno = wr.get("out_trade_no").toString();
-			String wxtransactionid = wr.get("transaction_id").toString();
+
+			String orderno = (String)wr.get("out_trade_no");			
+			String deviceinfo = (String)wr.get("device_info"); //微信支付分配的终端设备号
+
+			String wxtransactionid = (String)wr.get("transaction_id");
+			String tradetype = (String)wr.get("trade_type"); // 交易类型			
+			String banktype = (String)wr.get("bank_type"); // 付款银行
+			String totalfee = (String)wr.get("total_fee");
+			String issubscribe = (String)wr.get("is_subscribe"); // 是否关注公众号
+			String openid = (String)wr.get("openid");			
+			String timeend = (String)wr.get("time_end"); // 交易完成时间
 			
 			log.debugf("orderno :\n %s", orderno);
 			
 			Order order = orderService.fetch(Cnd.where("cno", "=", orderno));
 			String id = order.getId();
 			
-			Map form = new DynamicObject();
-			form.put("id", id); 
-			form.put("orderno", "orderno");
-			form.put("wxtransactionid", wxtransactionid);
+			DynamicObject form = new DynamicObject();
+			form.setAttr("id", id); 
+			form.setAttr("wxpayorderno", orderno);
+			form.setAttr("wxpaydeviceinfo", deviceinfo);
+			form.setAttr("wxpaytransactionid", wxtransactionid);
+			form.setAttr("wxpaytradetype", tradetype);
+			form.setAttr("wxpaybanktype", banktype);
+			form.setAttr("wxpaytotalfee", totalfee);
+			form.setAttr("wxpayissubscribe", issubscribe);
+			form.setAttr("wxpaytimeend", timeend);
+			form.setAttr("wxpayopenid", openid);	
+
 			orderService.paynotify(form);
 		}
 		catch (Exception e)

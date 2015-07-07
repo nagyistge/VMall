@@ -29,6 +29,9 @@ public class Goods extends IdEntity
 	// 商品信息
 	@Column
 	private String cname; // 商品名称
+	
+	@Column
+	private String cno; // 商品编号（系统编号）	
 
 	@Column
 	private String dealerid; // 商家标识（组织机构）
@@ -37,7 +40,7 @@ public class Goods extends IdEntity
 	private String dealername; // 商家名称
 
 	@Column
-	private String code; // 商品编码
+	private String code; // 商品货号（商家自定义货号）
 
 	@Column
 	private String brand; // 品牌
@@ -190,6 +193,16 @@ public class Goods extends IdEntity
 	public void setCname(String cname)
 	{
 		this.cname = cname;
+	}
+
+	public String getCno()
+	{
+		return cno;
+	}
+
+	public void setCno(String cno)
+	{
+		this.cno = cno;
 	}
 
 	public String getDealerid()

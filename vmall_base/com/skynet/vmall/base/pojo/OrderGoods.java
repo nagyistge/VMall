@@ -26,6 +26,12 @@ public class OrderGoods extends IdEntity
 	private String goodsname; // 商品名称	
 	
 	@Column
+	private String goodscno; // 商品系统编号
+	
+	@Column
+	private String goodscode; // 商品商家货号
+	
+	@Column
 	private int nums ; // 数量
 	
 	@Column
@@ -142,6 +148,26 @@ public class OrderGoods extends IdEntity
 	public void setGoodsname(String goodsname)
 	{
 		this.goodsname = goodsname;
+	}
+
+	public String getGoodscno()
+	{
+		return goodscno;
+	}
+
+	public void setGoodscno(String goodscno)
+	{
+		this.goodscno = goodscno;
+	}
+
+	public String getGoodscode()
+	{
+		return goodscode;
+	}
+
+	public void setGoodscode(String goodscode)
+	{
+		this.goodscode = goodscode;
 	}
 
 	public int getNums()
@@ -373,5 +399,7 @@ public class OrderGoods extends IdEntity
 	{
 		this.supmemberid5 = supmemberid5;
 	}
+
+
 
 }

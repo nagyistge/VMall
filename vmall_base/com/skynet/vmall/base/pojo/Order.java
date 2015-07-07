@@ -16,48 +16,48 @@ public class Order extends IdEntity
 
 	@Column
 	private String memberid; // 购买方会员标识
-	
+
 	@Column
 	private String wxopenid; // 购买方会员微信标识
-	
+
 	@Column
-	private String membercno; // 购买方会员编号	
-	
+	private String membercno; // 购买方会员编号
+
 	@Column
-	private String membercname; // 购买方会员姓名	
-	
+	private String membercname; // 购买方会员姓名
+
 	@Column
-	private String phone; // 购买方联系电话		
-	
-	@Column	
+	private String phone; // 购买方联系电话
+
+	@Column
 	private Timestamp ordertime; // 订单时间
 
 	@Column
 	private BigDecimal amountsale; // 订单销售单价总额
-	
+
 	@Column
 	private BigDecimal amountpromote; // 订单促销单价总额（现价总额）
-	
+
 	@Column
-	private BigDecimal amount; // 订单总额（一般为促销单价总额）	
-	
+	private BigDecimal amount; // 订单总额（一般为促销单价总额）
+
 	// 支付信息
 	@Column
 	private String paymode; // 支付方式
-	
+
 	@Column
 	private String paybank; // 支付卡开户银行
 
 	@Column
 	private String paybankaccountno; // 支付卡银行账号
-	
+
 	// 收货信息
 	@Column
-	private String takercname; // 收货人（姓名） 
-	
+	private String takercname; // 收货人（姓名）
+
 	@Column
-	private String takermobile; // 收货人联系（手机）电话	
-	
+	private String takermobile; // 收货人联系（手机）电话
+
 	@Column
 	private String takeprovince; // 收货省份（直辖市）
 
@@ -66,32 +66,52 @@ public class Order extends IdEntity
 
 	@Column
 	private String takecounty; // 收货县（直辖市街道）
-	
-	@Column
-	private String taketown; // 收货镇（直辖市街道）	
 
 	@Column
-	private String takepostcode; // 收货邮政编码	
-	
+	private String taketown; // 收货镇（直辖市街道）
+
+	@Column
+	private String takepostcode; // 收货邮政编码
+
 	@Column
 	private String takeaddress; // 收货地址
-	
+
 	@Column
 	private String state; // 收货订单状态（下单、收款、发货、收货、结束）
-	
-	
+
 	// 订单支付信息
 	@Column
 	private String paystate; // 订单收款支付状态（未支付、已支付）
-	
+
 	@Column
-	private Timestamp paytime; // 订单收款支付时间
-	
+	private Timestamp paynotifytime; // 订单收款支付通知时间
+
 	@Column
 	private String thirdpaytradeno; // 第三方支付平台交易标识号
-	
+
 	@Column
-	private BigDecimal payamount; // 订单实际支付总额
+	private String wxpayorderno;
+
+	@Column
+	private String wxpaydeviceinfo;
+
+	@Column
+	private String wxpaytradetype;
+
+	@Column
+	private String wxpaybanktype;
+
+	@Column
+	private BigDecimal wxpaytotalfee; // 订单实际支付总额
+
+	@Column
+	private String wxpayissubscribe;
+
+	@Column
+	private String wxpaytimeend;
+
+	@Column
+	private String wxpayopenid;
 
 	public String getCno()
 	{
@@ -323,14 +343,14 @@ public class Order extends IdEntity
 		this.paystate = paystate;
 	}
 
-	public Timestamp getPaytime()
+	public Timestamp getPaynotifytime()
 	{
-		return paytime;
+		return paynotifytime;
 	}
 
-	public void setPaytime(Timestamp paytime)
+	public void setPaynotifytime(Timestamp paynotifytime)
 	{
-		this.paytime = paytime;
+		this.paynotifytime = paynotifytime;
 	}
 
 	public String getThirdpaytradeno()
@@ -343,13 +363,84 @@ public class Order extends IdEntity
 		this.thirdpaytradeno = thirdpaytradeno;
 	}
 
-	public BigDecimal getPayamount()
+	public String getWxpayorderno()
 	{
-		return payamount;
+		return wxpayorderno;
 	}
 
-	public void setPayamount(BigDecimal payamount)
+	public void setWxpayorderno(String wxpayorderno)
 	{
-		this.payamount = payamount;
+		this.wxpayorderno = wxpayorderno;
 	}
+
+	public String getWxpaydeviceinfo()
+	{
+		return wxpaydeviceinfo;
+	}
+
+	public void setWxpaydeviceinfo(String wxpaydeviceinfo)
+	{
+		this.wxpaydeviceinfo = wxpaydeviceinfo;
+	}
+
+	public String getWxpaytradetype()
+	{
+		return wxpaytradetype;
+	}
+
+	public void setWxpaytradetype(String wxpaytradetype)
+	{
+		this.wxpaytradetype = wxpaytradetype;
+	}
+
+	public String getWxpaybanktype()
+	{
+		return wxpaybanktype;
+	}
+
+	public void setWxpaybanktype(String wxpaybanktype)
+	{
+		this.wxpaybanktype = wxpaybanktype;
+	}
+
+	public BigDecimal getWxpaytotalfee()
+	{
+		return wxpaytotalfee;
+	}
+
+	public void setWxpaytotalfee(BigDecimal wxpaytotalfee)
+	{
+		this.wxpaytotalfee = wxpaytotalfee;
+	}
+
+	public String getWxpayissubscribe()
+	{
+		return wxpayissubscribe;
+	}
+
+	public void setWxpayissubscribe(String wxpayissubscribe)
+	{
+		this.wxpayissubscribe = wxpayissubscribe;
+	}
+
+	public String getWxpaytimeend()
+	{
+		return wxpaytimeend;
+	}
+
+	public void setWxpaytimeend(String wxpaytimeend)
+	{
+		this.wxpaytimeend = wxpaytimeend;
+	}
+
+	public String getWxpayopenid()
+	{
+		return wxpayopenid;
+	}
+
+	public void setWxpayopenid(String wxpayopenid)
+	{
+		this.wxpayopenid = wxpayopenid;
+	}
+	
 }

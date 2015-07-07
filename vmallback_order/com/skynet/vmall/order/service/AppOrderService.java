@@ -26,7 +26,7 @@ public class AppOrderService extends SkynetDaoService
 {
 	@Inject
 	OrderService orderService;
-	
+
 	public AppOrderService()
 	{
 		super();
@@ -47,22 +47,53 @@ public class AppOrderService extends SkynetDaoService
 		int startindex = (page - 1) * pagesize;
 		int endindex = page * pagesize;
 
-		String cno = (String) map.get("cno");
 		String state = (String) map.get("state");
+		String mobile_orderno = (String) map.get("mobile_orderno");
+		String goodscode = (String) map.get("mobile_orderno");
+		String takeaddress = (String) map.get("receiver_address");
+		String ordertimebegin = (String) map.get("start_create_time");
+		String ordertimeend = (String) map.get("end_create_time");
 
 		StringBuffer sql = new StringBuffer();
-		sql.append(" select * from t_app_order ").append("\n");
+		sql.append(" select vorder.* ");
+		sql.append("  from t_app_order vorder, t_app_ordergoods ordergoods ").append("\n");
 		sql.append("  where 1 = 1 ").append("\n");
+		sql.append("  and vorder.id = ordergoods.orderid ").append("\n");
+
 		// 增加查询过滤条件
-		if (!StringToolKit.isBlank(cno))
+		if (!StringToolKit.isBlank(mobile_orderno))
 		{
-			sql.append("  and cno like ").append(SQLParser.charLikeRightValue(cno)).append("\n");
+			sql.append("  and ( ");
+			sql.append("  takercname like ").append(SQLParser.charLikeRightValue(mobile_orderno)).append("\n");
+			sql.append("  or takermobile like ").append(SQLParser.charLikeRightValue(mobile_orderno)).append("\n");
+			sql.append("  or cno like ").append(SQLParser.charLikeRightValue(mobile_orderno)).append("\n");
+			sql.append("  ) ").append("\n");
 		}
-		
+
 		if (!StringToolKit.isBlank(state))
 		{
-			sql.append("  and state = ").append(SQLParser.charValue(state)).append("\n");
-		}		
+			sql.append("  and vorder.state = ").append(SQLParser.charValue(state)).append("\n");
+		}
+
+		if (!StringToolKit.isBlank(goodscode))
+		{
+			sql.append("  and ordergoods.goodscode like ").append(SQLParser.charLikeRightValue(goodscode)).append("\n");
+		}
+
+		if (!StringToolKit.isBlank(takeaddress))
+		{
+			sql.append("  and takeaddress like ").append(SQLParser.charLikeRightValue(takeaddress)).append("\n");
+		}
+
+		if (!StringToolKit.isBlank(ordertimebegin))
+		{
+			sql.append("  and datediff(ordertime, '" + ordertimebegin + "')>=0").append("\n");
+		}
+		
+		if (!StringToolKit.isBlank(ordertimeend))
+		{
+			sql.append("  and datediff(ordertime, '" + ordertimeend + "')<=0").append("\n");
+		}
 
 		List<DynamicObject> datas = sdao().queryForList(sql.toString(), startindex, endindex);
 
@@ -72,7 +103,7 @@ public class AppOrderService extends SkynetDaoService
 
 		return datas;
 	}
-	
+
 	// 转发
 	public Map foward(String id, String loginname) throws Exception
 	{
@@ -81,12 +112,12 @@ public class AppOrderService extends SkynetDaoService
 
 		Map map = new DynamicObject();
 
-//		if (!isarole(loginname, "订单管理用户"))
-//		{
-//			map.put("state", "error");
-//			map.put("errormessage", "非管理人员不能转发订单！");
-//			return map;
-//		}
+		// if (!isarole(loginname, "订单管理用户"))
+		// {
+		// map.put("state", "error");
+		// map.put("errormessage", "非管理人员不能转发订单！");
+		// return map;
+		// }
 
 		// 检查流程已结束异常
 		if ("结束".equals(flowstate))
@@ -118,14 +149,16 @@ public class AppOrderService extends SkynetDaoService
 		map.put("flownextstate", flownextstate);
 		return map;
 	}
-	
+
 	// 当前用户是否为指定的角色
 	public boolean isarole(String loginname, String rolename)
 	{
 		boolean sign = false;
 
 		long num = 0;
-//		num = (Long) userRoleDao.findUnique(" select count(*) from UserRole a where 1 = 1 and a.rname = ? and userid = ? ", rolename, loginname);
+		// num = (Long)
+		// userRoleDao.findUnique(" select count(*) from UserRole a where 1 = 1 and a.rname = ? and userid = ? ",
+		// rolename, loginname);
 
 		if (num > 0)
 		{
@@ -135,5 +168,5 @@ public class AppOrderService extends SkynetDaoService
 
 		return sign;
 	}
-	
+
 }

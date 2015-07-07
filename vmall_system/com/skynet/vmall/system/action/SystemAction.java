@@ -9,7 +9,8 @@ import org.nutz.mvc.annotation.Ok;
 
 import com.skynet.app.organ.service.OrganService;
 import com.skynet.framework.action.BaseAction;
-import com.skynet.vmall.base.pojo.Goods;
+import com.skynet.vmall.base.pojo.Order;
+import com.skynet.vmall.base.pojo.OrderGoods;
 
 @IocBean
 @At("/system/system")
@@ -32,7 +33,8 @@ public class SystemAction extends BaseAction
 //		organService.dao().create(EventItem.class, true);
 //		organService.dao().create(EventItemGoods.class, true);
 //		organService.dao().create(EventItemMember.class, true);	
-		organService.dao().create(Goods.class, true);	
+		organService.dao().create(Order.class, true);	
+		organService.dao().create(OrderGoods.class, true);			
 		return ro;
 	}
 

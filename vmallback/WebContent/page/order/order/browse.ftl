@@ -23,7 +23,7 @@
 	.infor_logistics_box .address .symbol{position: absolute;top: 6px;left: 8px;_left: -17px;width: 6px;height: 6px;overflow: hidden;background:url(/Public/images/xlt.png) 0 -11px no-repeat;}
 </style>
 
-    <h1 class="content-right-title">所有订单<a class="gicon-info-sign gicon_linkother" href="http://www.wifenxiao.com/Index/help_show/lm/help/id/46.html" target="_blank"></a></h1>
+    <h1 class="content-right-title">所有订单<a class="gicon-info-sign gicon_linkother" href="javascript:void(0)" target="_blank"></a></h1>
     
     
     <form action="${base}/order/order/browse.action" method="post" id="queryform">
@@ -46,12 +46,13 @@
         </div>
     </form>
         <div class="tabs clearfix mgt15" id="tabs">
-        <a href="javascript:void(0)" class="active tabs_a fl" state="">所有订单(0)</a>
-        <a href="javascript:void(0)" class="tabs_a fl" state="下单">下单(0)</a>
-        <a href="javascript:void(0)" class="tabs_a fl" state="收款">收款(0)</a>
-        <a href="javascript:void(0)" class="tabs_a fl">待收货(0)</a>
-        <a href="javascript:void(0)" class="tabs_a fl">交易完成(0)</a>
-        <a href="javascript:void(0)" class="tabs_a fl">已关闭(0)</a>
+        <a href="javascript:void(0)" class="<#if obj.state=="">active</#if> tabs_a fl" state="">所有订单(0)</a>
+        <a href="javascript:void(0)" class="<#if obj.state=="下单">active</#if> tabs_a fl" state="下单">下单(0)</a>
+        <a href="javascript:void(0)" class="<#if obj.state=="收款">active</#if> tabs_a fl" state="收款">收款(0)</a>
+        <a href="javascript:void(0)" class="<#if obj.state=="发货">active</#if> tabs_a fl" state="发货">发货(0)</a>
+        <a href="javascript:void(0)" class="<#if obj.state=="收货">active</#if> tabs_a fl" state="收货">收货(0)</a>
+        <a href="javascript:void(0)" class="<#if obj.state=="结算">active</#if> tabs_a fl" state="结算">结算(0)</a>
+        <a href="javascript:void(0)" class="<#if obj.state=="结束">active</#if> tabs_a fl" state="结束">结束(0)</a>
     </div>
         <!-- end tabs -->
         <div class="grounp_chenge_box mgt15">
