@@ -72,8 +72,14 @@ public class OrderAction
 		{
 			flowbackstate = VMallConstants.flow_order[index - 1];
 		}
+		
 
+		Map map = new DynamicObject();
+		map.put("order", order);
+		
 		DynamicObject ro = new DynamicObject();
+		
+		set_author(map, ro);
 
 		ro.put("order", order);
 		ro.put("flowstate", flowstate);
@@ -93,6 +99,87 @@ public class OrderAction
 		
 		Map map = apporderService.foward(id, loginname);
 		return map;
+	}
+	
+	// 设置操作权限
+	public void set_author(Map map, DynamicObject ro) throws Exception
+	{
+		HttpSession session = Mvcs.getHttpSession(true);
+		DynamicObject login_token = (DynamicObject) session.getAttribute(GlobalConstants.sys_login_token);
+		map.put("login_token", login_token);
+		
+		boolean isread = false; // 是否可读
+		boolean isedit = false; // 是否可修改
+		boolean issave = issave(map); // 是否可保存
+
+		boolean isforward = isforward(map); // 是否可转发
+		boolean isbackward = isbackward(map); // 是否可回退
+		
+		ro.put("isread", isread);
+		ro.put("isedit", isedit);
+		ro.put("issave", issave);
+		ro.put("isforward", isforward);
+		ro.put("isbackward", isbackward);
+		
+	}
+	
+	// 保存功能权限
+	public boolean issave(Map map) throws Exception
+	{
+		boolean sign = true;
+
+		DynamicObject order = (DynamicObject) map.get("order");
+		DynamicObject login_token =  (DynamicObject) map.get("login_token");
+		
+		// 订单处于下单状态
+		if (!"下单".equals(order.getFormatAttr("state")))
+		{
+			sign = false;
+			return sign;
+		}
+		
+		return sign;
+	}
+
+	// 转发功能权限
+	public boolean isforward(Map map) throws Exception
+	{
+		boolean sign = true;
+
+		DynamicObject order = (DynamicObject) map.get("order");
+		DynamicObject login_token =  (DynamicObject) map.get("login_token");
+
+		// 评审处于评审状态；
+		if ("结束".equals(order.getFormatAttr("state")))
+		{
+			sign = false;
+			return sign;
+		}
+		
+		return sign;
+	}
+
+	// 退回功能权限
+	public boolean isbackward(Map map) throws Exception
+	{
+		boolean sign = true;
+
+		DynamicObject order = (DynamicObject) map.get("order");
+		DynamicObject login_token =  (DynamicObject) map.get("login_token");
+		
+		if ("下单".equals(order.getFormatAttr("state")))
+		{
+			sign = false;
+			return sign;
+		}
+
+		if ("结束".equals(order.getFormatAttr("state")))
+		{
+			sign = false;
+			return sign;
+		}
+		
+		return sign;
 	}
 
 

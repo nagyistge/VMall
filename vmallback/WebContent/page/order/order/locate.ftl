@@ -5,8 +5,10 @@
 <body>
 
 <h1 class="content-right-title">订单查询</h1>
-<button id="bt_save" class="btn btn-primary">保存</button>
-<button id="bt_forward" class="btn btn-primary">转${obj.flownextstate}</button>
+<#if obj.issave==true><button id="bt_save" class="btn btn-primary">保存</button></#if>
+<#if obj.isforward==true><button id="bt_forward" class="btn btn-primary">转${obj.flownextstate}</button></#if>
+<#if obj.isbackward==true><button id="bt_backward" class="btn btn-primary">退回到${obj.flowbackstate}</button></#if>
+
 <form action="${base}/goods/goods/update.action" method="post" id="editform">
 <input type="hidden" name="id" value="${obj.order.id}">
 <div class="panel-single panel-single-light mgt20">

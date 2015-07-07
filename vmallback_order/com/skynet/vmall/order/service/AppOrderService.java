@@ -49,7 +49,7 @@ public class AppOrderService extends SkynetDaoService
 
 		String state = (String) map.get("state");
 		String mobile_orderno = (String) map.get("mobile_orderno");
-		String goodscode = (String) map.get("mobile_orderno");
+		String goodscode = (String) map.get("goods_no");
 		String takeaddress = (String) map.get("receiver_address");
 		String ordertimebegin = (String) map.get("start_create_time");
 		String ordertimeend = (String) map.get("end_create_time");
@@ -64,9 +64,9 @@ public class AppOrderService extends SkynetDaoService
 		if (!StringToolKit.isBlank(mobile_orderno))
 		{
 			sql.append("  and ( ");
-			sql.append("  takercname like ").append(SQLParser.charLikeRightValue(mobile_orderno)).append("\n");
-			sql.append("  or takermobile like ").append(SQLParser.charLikeRightValue(mobile_orderno)).append("\n");
-			sql.append("  or cno like ").append(SQLParser.charLikeRightValue(mobile_orderno)).append("\n");
+			sql.append("  takercname like ").append(SQLParser.charLikeValue(mobile_orderno)).append("\n");
+			sql.append("  or takermobile like ").append(SQLParser.charLikeValue(mobile_orderno)).append("\n");
+			sql.append("  or cno like ").append(SQLParser.charLikeValue(mobile_orderno)).append("\n");
 			sql.append("  ) ").append("\n");
 		}
 
@@ -77,12 +77,12 @@ public class AppOrderService extends SkynetDaoService
 
 		if (!StringToolKit.isBlank(goodscode))
 		{
-			sql.append("  and ordergoods.goodscode like ").append(SQLParser.charLikeRightValue(goodscode)).append("\n");
+			sql.append("  and ordergoods.goodscode like ").append(SQLParser.charLikeValue(goodscode)).append("\n");
 		}
 
 		if (!StringToolKit.isBlank(takeaddress))
 		{
-			sql.append("  and takeaddress like ").append(SQLParser.charLikeRightValue(takeaddress)).append("\n");
+			sql.append("  and takeaddress like ").append(SQLParser.charLikeValue(takeaddress)).append("\n");
 		}
 
 		if (!StringToolKit.isBlank(ordertimebegin))

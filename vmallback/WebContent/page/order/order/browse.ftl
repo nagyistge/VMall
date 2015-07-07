@@ -27,7 +27,7 @@
     
     
     <form action="${base}/order/order/browse.action" method="post" id="queryform">
-    	<input type="hidden" id="state" name="state" value="">
+    	<input type="hidden" id="state" name="state" value="${obj.state}">
         <div class="tables-searchbox">
             <input type="text" placeholder="输入收货人/手机号/订单号" class="input" name="mobile_orderno" value="">
             <input type="text" placeholder="输入商品货号" class="input" name="goods_no" value="">
@@ -75,7 +75,7 @@
                 	<td>订单号</td>
                     <td>商品</td>
                     <td>收货人</td>
-                    <td>实付金额</td>
+                    <td>金额</td>
                     <td>买家留言</td>
                 </tr>
             </thead>
