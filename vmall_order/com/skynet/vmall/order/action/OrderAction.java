@@ -224,17 +224,43 @@ public class OrderAction extends BaseAction
 	}
 
 	@At("/pay")
-	@Ok("raw:json")
+	// @Ok("raw:json")
+	@Ok("json")
 	@Filters({ @By(type = LogFilter.class, args = { "订单付款" })})	
-	public String pay(String orderno, String amt) throws Exception
+	public Map pay(String orderno, String amt) throws Exception
 	{
 		amt = "1";
 		HttpSession session = Mvcs.getHttpSession(true);
 		DynamicObject login_token = (DynamicObject) session.getAttribute(GlobalConstants.sys_login_token);
+
+		DynamicObject order = orderService.locateBy(Cnd.where("cno", "=", orderno));
+		if(StringToolKit.isBlank(order.getFormatAttr("id")))
+		{
+			Map remap = new DynamicObject();
+			remap.put("state", "error");
+			remap.put("message", "亲，没有找到这个订单，无法付款。");
+			return remap;
+		}
+		
+		if(!"下单".equals(order.getFormatAttr("state")))
+		{
+			Map remap = new DynamicObject();
+			remap.put("state", "error");
+			remap.put("message", "亲，这个订单已不在下单环节，不能付款，看看你是不是已经付过款了。");
+			return remap;
+		}
+
 		String userwxopenid = login_token.getFormatAttr(GlobalConstants.sys_login_userwxopenid);
 		String url = "http://" + VMallConstants.svr_domianname + "/" + VMallConstants.app_webcontext + "/order/order/paynotify.action";
-		return myWxApi.getPrepayId(orderno, url, orderno, ApiConfigKit.apiConfig.getMchid(), amt, "10.0.0.1", userwxopenid,
+		
+		String res = myWxApi.getPrepayId(orderno, url, orderno, ApiConfigKit.apiConfig.getMchid(), amt, "10.0.0.1", userwxopenid,
 				ApiConfigKit.apiConfig.getKey());
+		
+		Map remap = new DynamicObject();
+		remap.put("state", "success");
+		remap.put("res", res);
+		
+		return remap;
 
 	}
 

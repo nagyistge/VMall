@@ -182,11 +182,9 @@ function page_submit()
 			if(json.state=="success")
 			{
 				var ids = json.ids;
-				alert(ids);
 				if(ids.length==1)
 				{
 					var url = "${base}/order/order/look.action?id=" + ids[0];
-					alert(url);
 					window.location = url;
 				}
 				else

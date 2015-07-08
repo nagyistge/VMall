@@ -11,6 +11,9 @@ import com.skynet.app.organ.service.OrganService;
 import com.skynet.framework.action.BaseAction;
 import com.skynet.vmall.base.pojo.Order;
 import com.skynet.vmall.base.pojo.OrderGoods;
+import com.skynet.vmall.base.pojo.OrderGoodsRebate;
+import com.skynet.vmall.base.pojo.ShopCart;
+import com.skynet.vmall.base.pojo.ShopCartGoods;
 
 @IocBean
 @At("/system/system")
@@ -34,7 +37,11 @@ public class SystemAction extends BaseAction
 //		organService.dao().create(EventItemGoods.class, true);
 //		organService.dao().create(EventItemMember.class, true);	
 		organService.dao().create(Order.class, true);	
-		organService.dao().create(OrderGoods.class, true);			
+		organService.dao().create(OrderGoods.class, true);		
+		organService.dao().create(OrderGoodsRebate.class, true);	
+		organService.dao().create(ShopCart.class, true);
+		organService.dao().create(ShopCartGoods.class, true);
+		
 		return ro;
 	}
 
