@@ -95,9 +95,6 @@ public class ShopCartAction extends BaseAction
 		String userid = login_token.getFormatAttr(GlobalConstants.sys_login_userid);
 		String userwxopenid = login_token.getFormatAttr(GlobalConstants.sys_login_userwxopenid);
 
-		String decode = AuthorService.decode(keysignature);
-		String ip = AuthorService.getip(Mvcs.getReq());
-		
 		DynamicObject form = new DynamicObject();
 		form.setObj("ids", ids);	
 		form.setObj("numses", numses);
@@ -105,6 +102,8 @@ public class ShopCartAction extends BaseAction
 		Map remap = new DynamicObject();
 		try
 		{
+//			String decode = AuthorService.decode(keysignature);
+//			String ip = AuthorService.getip(Mvcs.getReq());			
 //			remap = AuthorService.common_checksignature(decode, ip, userwxopenid);
 //			if(!("success".equals(remap.get("state"))))
 //			{

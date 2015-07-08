@@ -179,3 +179,41 @@ insert into t_app_goodsphoto(id, goodsid, sno, url, ctype)
 select uuid(), goods.id, 5, concat('image/goods/', goods.classinternal, '-detail-spjs-05.jpg'), '商品介绍' from t_app_goods goods where goods.ctype = '货品';
 
 update t_app_goods set dealerid = '12345678abcd1234abcd12345678abcd';
+
+insert into t_app_goods(id, cname, classid, ctype)  values('001100020007-8000','法兰米高2015夏季新款中坡跟蝴蝶结露趾女凉鞋','001100020007','商品');
+insert into t_app_goodsspec(id, goodsid, specclass, spec) values(uuid(),'001100020007-8000', '颜色','白色');
+insert into t_app_goodsspec(id, goodsid, specclass, spec) values(uuid(),'001100020007-8000', '颜色','红色');
+insert into t_app_goodsspec(id, goodsid, specclass, spec) values(uuid(),'001100020007-8000', '颜色','绿色');
+insert into t_app_goodsspec(id, goodsid, specclass, spec) values(uuid(),'001100020007-8000', '尺码','34');
+insert into t_app_goodsspec(id, goodsid, specclass, spec) values(uuid(),'001100020007-8000', '尺码','36');
+insert into t_app_goodsspec(id, goodsid, specclass, spec) values(uuid(),'001100020007-8000', '尺码','38');
+insert into t_app_goods(id, supid, cname, classid, ctype, costprice, saleprice, promoteprice, rebate1, rebate2, rebate3)  values('001100020007-8000-0000','001100020007-8000','法兰米高2015夏季新款中坡跟蝴蝶结露趾女凉鞋【白色】【34】','001100020007','货品',15,15,17,6,12,18);
+insert into t_app_goodsspec(id, goodsid, specclass, spec) values(uuid(),'001100020007-8000-0000', '尺码','34');
+insert into t_app_goodsspec(id, goodsid, specclass, spec) values(uuid(),'001100020007-8000-0000', '颜色','白色');
+insert into t_app_goods(id, supid, cname, classid, ctype, costprice, saleprice, promoteprice, rebate1, rebate2, rebate3)  values('001100020007-8000-0001','001100020007-8000','法兰米高2015夏季新款中坡跟蝴蝶结露趾女凉鞋【白色】【36】','001100020007','货品',16,16,18,6,12,18);
+insert into t_app_goodsspec(id, goodsid, specclass, spec) values(uuid(),'001100020007-8000-0001', '尺码','36');
+insert into t_app_goodsspec(id, goodsid, specclass, spec) values(uuid(),'001100020007-8000-0001', '颜色','白色');
+
+insert into t_app_goods(id, cname, classid, ctype)  values('001100020007-8002','欧百特凉拖鞋女夏平跟欧美新款2015羊皮软面人字拖夹趾百搭平底真皮凉拖','001100020007','商品');
+insert into t_app_goodsspec(id, goodsid, specclass, spec) values(uuid(),'001100020007-8002', '颜色','白色');
+insert into t_app_goodsspec(id, goodsid, specclass, spec) values(uuid(),'001100020007-8002', '颜色','红色');
+insert into t_app_goodsspec(id, goodsid, specclass, spec) values(uuid(),'001100020007-8002', '颜色','绿色');
+insert into t_app_goodsspec(id, goodsid, specclass, spec) values(uuid(),'001100020007-8002', '尺码','34');
+insert into t_app_goodsspec(id, goodsid, specclass, spec) values(uuid(),'001100020007-8002', '尺码','36');
+insert into t_app_goodsspec(id, goodsid, specclass, spec) values(uuid(),'001100020007-8002', '尺码','38');
+insert into t_app_goods(id, supid, cname, classid, ctype, costprice, saleprice, promoteprice, rebate1, rebate2, rebate3)  values('001100020007-8002-0000','001100020007-8002','欧百特凉拖鞋女夏平跟欧美新款2015羊皮软面人字拖夹趾百搭平底真皮凉拖【白色】【34】','001100020007','货品',15,15,17,6,12,18);
+insert into t_app_goodsspec(id, goodsid, specclass, spec) values(uuid(),'001100020007-8002-0000', '尺码','34');
+insert into t_app_goodsspec(id, goodsid, specclass, spec) values(uuid(),'001100020007-8002-0000', '颜色','白色');
+insert into t_app_goods(id, supid, cname, classid, ctype, costprice, saleprice, promoteprice, rebate1, rebate2, rebate3)  values('001100020007-8002-0001','001100020007-8002','欧百特凉拖鞋女夏平跟欧美新款2015羊皮软面人字拖夹趾百搭平底真皮凉拖【白色】【36】','001100020007','货品',16,16,18,6,12,18);
+insert into t_app_goodsspec(id, goodsid, specclass, spec) values(uuid(),'001100020007-8002-0001', '尺码','36');
+insert into t_app_goodsspec(id, goodsid, specclass, spec) values(uuid(),'001100020007-8002-0001', '颜色','白色');
+
+update t_app_goods set defspec='是' where id = '001100020007-8000-0000';
+update t_app_goods set defspec='是' where id = '001100020007-8002-0000';
+
+update t_app_goods set classinternal = classid;
+
+update t_app_goods set pic = concat('image/goods/', id, '-look-01.jpg');
+
+update t_app_goods set dealerid = '00000000efgh0000efgh00000000efgh' where id like '%-8000%';
+update t_app_goods set dealerid = '00000000efgh0000efgh00000000efgh' where id like '%-8002%';

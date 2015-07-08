@@ -14,10 +14,16 @@ public class ShopCartGoods extends IdEntity
 	private String shopcartid; // 购物车标识
 	
 	@Column
-	private String memberid; // 销售方会员标识
+	private String memberid; // 商家会员标识
 	
 	@Column
-	private String wxopenid; // 销售方会员微信标识		
+	private String wxopenid; // 商家会员微信标识
+	
+	@Column
+	private String dealerid; // 商家标识（组织机构）
+
+	@Column
+	private String dealername; // 商家名称	
 
 	@Column
 	private String goodsid; // 商品标识

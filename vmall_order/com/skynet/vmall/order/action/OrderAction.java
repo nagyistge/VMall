@@ -33,6 +33,7 @@ import com.blue.wxmp.sdk.api.WxApi;
 import com.skynet.framework.action.BaseAction;
 import com.skynet.framework.services.db.dybeans.DynamicObject;
 import com.skynet.framework.services.function.StringToolKit;
+import com.skynet.framework.services.function.Types;
 import com.skynet.framework.spec.GlobalConstants;
 import com.skynet.vmall.base.author.AuthorService;
 import com.skynet.vmall.base.constants.VMallConstants;
@@ -114,6 +115,29 @@ public class OrderAction extends BaseAction
 
 		return ro;
 	}
+	
+	@At("/list")
+	@Ok("->:/page/order/order/list.ftl")
+	public Map list(@Param("..") Map map, @Param("_page") String page, @Param("_pagesize") String pagesize) throws Exception
+	{
+		map.put("_page", Types.parseInt(page, 1));
+		map.put("_pagesize", Types.parseInt(pagesize, VMallConstants.pagesize));
+
+		List<DynamicObject> orders = orderService.browse(map);
+	
+		DynamicObject ro = new DynamicObject();
+
+		ro.put("orders", orders);
+		
+		ro.put("_page", map.get("_page"));
+		ro.put("_pagesize", map.get("_pagesize"));
+		ro.put("_maxpage", map.get("_maxpage"));
+		ro.put("_startpage", map.get("_startpage"));
+		ro.put("_endpage", map.get("_endpage"));
+
+		return ro;
+	}
+	
 
 	@At("/forward")
 	@AdaptBy(type = JsonAdaptor.class)

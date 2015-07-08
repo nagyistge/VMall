@@ -13,6 +13,7 @@ import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.lang.Lang;
 
 import com.skynet.framework.service.SkynetNameEntityService;
+import com.skynet.framework.services.db.SQLParser;
 import com.skynet.framework.services.db.dybeans.DynamicObject;
 import com.skynet.framework.services.function.StringToolKit;
 import com.skynet.framework.services.function.Types;
@@ -42,17 +43,24 @@ public class OrderService extends SkynetNameEntityService<Order>
 	// 浏览商品
 	public List<DynamicObject> browse(Map map) throws Exception
 	{
-		int page = Types.parseInt((String) map.get("_page"), 1);
-		int pagesize = Types.parseInt((String) map.get("_pagesize"), 1);
+		int page = (Integer) map.get("_page");
+		int pagesize = (Integer) map.get("_pagesize");
 
 		int startindex = (page - 1) * pagesize;
 		int endindex = page * pagesize;
-
+		
+		String batchno = (String) map.get("batchno");
+		
 		StringBuffer sql = new StringBuffer();
-		sql.append(" select * from t_app_goods ").append("\n");
+		sql.append(" select * from t_app_order vorder ").append("\n");
 		sql.append("  where 1 = 1 ").append("\n");
-		// 增加查询过滤条件
 
+		// 增加查询过滤条件
+		if (!StringToolKit.isBlank(batchno))
+		{
+			sql.append("  and vorder.batchno = ").append(SQLParser.charValue(batchno)).append("\n");
+		}
+		
 		List<DynamicObject> datas = sdao().queryForList(sql.toString(), startindex, endindex);
 
 		return datas;
@@ -132,21 +140,6 @@ public class OrderService extends SkynetNameEntityService<Order>
 		map.put("flownextstate", flownextstate);
 		
 		StringBuffer s = new StringBuffer();
-//		s.append("{");
-//		s.append("\"paystate\":\"已支付\",");
-//		s.append("\"wxpayorderno\":\"" + wxpayorderno + "\",");
-//		s.append("\"wxpaydeviceinfo\":\"" + wxpaydeviceinfo + "\",");
-//		s.append("\"thirdpaytradeno\":\"" + wxpaytransactionid + "\",");
-//		s.append("\"wxpaytradetype\":\"" + wxpaytradetype + "\",");
-//		s.append("\"wxpaybanktype\":\"" + wxpaybanktype + "\",");
-//		s.append("\"wxpaytotalfee\":" + wxpaytotalfee + ",");
-//		
-//		s.append("\"wxpayissubscribe\":\"" + wxpayissubscribe + "\",");
-//		s.append("\"wxpaytimeend\":\"" + wxpaytimeend + "\",");
-//		s.append("\"wxpayopenid\":\"" + wxpayopenid + "\",");
-//		s.append("\"paynotifytime\":\"" + (new Timestamp(System.currentTimeMillis())) + "\"");
-//		s.append(" } ");
-		
 		s.append("{");
 		s.append("paystate:'已支付',");
 		s.append("wxpayorderno:'" + wxpayorderno + "',");

@@ -13,6 +13,9 @@ public class Order extends IdEntity
 {
 	@Column
 	private String cno; // 订单编号
+	
+	@Column
+	private String batchno; // 订单批次号（单次生成多个订单时批次）
 
 	@Column
 	private String memberid; // 购买方会员标识
@@ -25,6 +28,12 @@ public class Order extends IdEntity
 
 	@Column
 	private String membercname; // 购买方会员姓名
+	
+	@Column
+	private String sellerid; // 厂商组织机构标识（卖家）
+	
+	@Column
+	private String sellername; // 厂商名称（卖家）
 
 	@Column
 	private String phone; // 购买方联系电话
@@ -123,6 +132,16 @@ public class Order extends IdEntity
 		this.cno = cno;
 	}
 
+	public String getBatchno()
+	{
+		return batchno;
+	}
+
+	public void setBatchno(String batchno)
+	{
+		this.batchno = batchno;
+	}
+
 	public String getMemberid()
 	{
 		return memberid;
@@ -161,6 +180,26 @@ public class Order extends IdEntity
 	public void setMembercname(String membercname)
 	{
 		this.membercname = membercname;
+	}
+
+	public String getSellerid()
+	{
+		return sellerid;
+	}
+
+	public void setSellerid(String sellerid)
+	{
+		this.sellerid = sellerid;
+	}
+
+	public String getSellername()
+	{
+		return sellername;
+	}
+
+	public void setSellername(String sellername)
+	{
+		this.sellername = sellername;
 	}
 
 	public String getPhone()
@@ -442,5 +481,5 @@ public class Order extends IdEntity
 	{
 		this.wxpayopenid = wxpayopenid;
 	}
-	
+
 }

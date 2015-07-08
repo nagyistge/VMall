@@ -181,7 +181,19 @@ function page_submit()
 			json = eval("(" + data + ")");
 			if(json.state=="success")
 			{
-				window.location = "${base}/order/order/look.action?id=" + json.id;
+				var ids = json.ids;
+				alert(ids);
+				if(ids.length==1)
+				{
+					var url = "${base}/order/order/look.action?id=" + ids[0];
+					alert(url);
+					window.location = url;
+				}
+				else
+				{
+					var url = "${base}/order/order/list.action?batchno=" + json.batchno;
+					window.location = url;
+				}
 			}
 			else
 			{

@@ -4,7 +4,7 @@ import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -13,6 +13,7 @@ import org.nutz.dao.Dao;
 import org.nutz.ioc.annotation.InjectName;
 import org.nutz.ioc.loader.annotation.IocBean;
 
+import com.skynet.framework.common.generator.RandomGenerator;
 import com.skynet.framework.common.generator.SNGenerator;
 import com.skynet.framework.common.generator.UUIDGenerator;
 import com.skynet.framework.service.SkynetNameEntityService;
@@ -177,26 +178,30 @@ public class ShopCartService extends SkynetNameEntityService<ShopCart>
 		
 		// 购物车
 		List<String> ids = (List<String>)form.get("ids");
-		List<String> numses = (List<String>)form.get("numses");		
-		// 
-		List<DynamicObject> shopcartgoodses = new ArrayList<DynamicObject>();
+		List<String> numses = (List<String>)form.get("numses");
+		
+		if(ids.size()==0)
+		{
+			Map remap = new DynamicObject();
+			remap.put("state", "error");
+			remap.put("message", "亲，你的购物车里面好像没有拍好的宝贝，再看看吧。");
+			return remap;			
+		}
+		
+		// 检查购物车商品的厂商，按照不同的厂商产生订单
+		Map<String, List<DynamicObject>> deals = new DynamicObject();
 		for (int i = 0; i < ids.size(); i++)
 		{
-			String id = ids.get(i);
 			int nums = Types.parseInt(numses.get(i), 0);
-			
-			if (StringToolKit.isBlank(id))
-			{
-				continue;
-			}
-			
 			// 如果购买数量不大于0，不加入购买订单。
 			if(nums<=0)
 			{
 				continue;
-			}			
+			}
 			
+			String id = ids.get(i);
 			DynamicObject shopcartgoods = sdao().locateBy("t_app_shopcartgoods", Cnd.where("id", "=", id));
+			
 			if(StringToolKit.isBlank(shopcartgoods.getFormatAttr("id")))
 			{
 				continue;
@@ -204,15 +209,59 @@ public class ShopCartService extends SkynetNameEntityService<ShopCart>
 			
 			shopcartgoods.setAttr("nums", nums);
 			
-			shopcartgoodses.add(shopcartgoods);
+			String goodsid = shopcartgoods.getFormatAttr("goodsid");
+			DynamicObject goods = sdao().locateBy("t_app_goods", Cnd.where("id", "=", goodsid));
+			String dealid = goods.getFormatAttr("dealerid");
+			if(deals.containsKey(dealid))
+			{
+				List<DynamicObject> dealcartgoodses = deals.get(dealid);
+				
+				dealcartgoodses.add(shopcartgoods);
+			}
+			else
+			{
+				List<DynamicObject> dealcartgoodses = new ArrayList<DynamicObject>();
+				dealcartgoodses.add(shopcartgoods);
+				deals.put(dealid, dealcartgoodses);
+			}
 		}
+		
+		String batchno = String.valueOf(RandomGenerator.getValue(8));
+		Iterator<String> keys = deals.keySet().iterator();
+		List<String> orderids = new ArrayList<String>();
+		while(keys.hasNext())
+		{
+			String dealid = keys.next();
+			List<DynamicObject> shopcartgoodses = deals.get(dealid);
+			orderids.add(makeorder(dealid, batchno, shopcartgoodses, login_token));
+		}
+
+		Map remap = new DynamicObject();
+		remap.put("state", "success");
+		remap.put("batchno", batchno);
+		remap.put("ids", orderids);
+		
+		return remap;
+	}
+	
+	// 根据厂商及商品列表创建订单
+	protected String makeorder(String dealid, String batchno, List<DynamicObject> shopcartgoodses, DynamicObject login_token) throws Exception
+	{
+		String userid = login_token.getFormatAttr(GlobalConstants.sys_login_userid);
+		String userwxopenid = login_token.getFormatAttr(GlobalConstants.sys_login_userwxopenid);
+		String username = login_token.getFormatAttr(GlobalConstants.sys_login_username);
 		
 		Member member = sdao().fetch(Member.class, userid);
 		
 		Order order = new Order();
-		String orderid = UUIDGenerator.getInstance().getNextValue();
-		// 购买人信息
+
+		// 基本信息
+		String orderid = UUIDGenerator.getInstance().getNextValue();		
 		order.setId(orderid);
+		order.setSellerid(dealid);
+		
+		// 购买人信息
+
 		order.setMemberid(userid);
 		order.setWxopenid(userwxopenid);
 		order.setMembercname(username);
@@ -229,6 +278,7 @@ public class ShopCartService extends SkynetNameEntityService<ShopCart>
 		order.setTakeaddress(member.getAddr());
 		// 订单基本信息
 		order.setCno(SNGenerator.getValue(8));
+		order.setBatchno(batchno);
 		order.setOrdertime(new Timestamp(System.currentTimeMillis()));
 		order.setState("下单");
 		order.setPaystate("未支付");
@@ -259,6 +309,8 @@ public class ShopCartService extends SkynetNameEntityService<ShopCart>
 			ordergoods.setOrderid(orderid);
 			ordergoods.setMemberid(userid);
 			ordergoods.setWxopenid(userwxopenid);
+			ordergoods.setSellerid(dealid);
+			
 			ordergoods.setGoodsid(cartgoods.getGoodsid());
 			ordergoods.setGoodsname(cartgoods.getGoodsname());
 
@@ -341,13 +393,9 @@ public class ShopCartService extends SkynetNameEntityService<ShopCart>
 		order.setAmountsale(amountsale_all);
 		order.setAmountpromote(amountpromote_all);
 		order.setAmount(amount_all);
-		sdao().update(order);
+		sdao().update(order);	
 		
-		Map remap = new DynamicObject();
-		remap.put("state", "success");
-		remap.put("id", orderid);
-		
-		return remap;
+		return order.getId();
 	}
 	
 	// 抢购订单结算

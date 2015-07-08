@@ -14,10 +14,16 @@ public class OrderGoods extends IdEntity
 	private String orderid; // 订单标识
 	
 	@Column
-	private String memberid; // 销售方会员标识
+	private String memberid; // 商家会员标识
 	
 	@Column
-	private String wxopenid; // 销售方会员微信标识	
+	private String wxopenid; // 商家会员微信标识
+	
+	@Column
+	private String sellerid; // 厂商组织机构标识（卖家）
+	
+	@Column
+	private String sellername; // 厂商名称（卖家）	
 
 	@Column
 	private String goodsid; // 商品标识
@@ -128,6 +134,26 @@ public class OrderGoods extends IdEntity
 	public void setWxopenid(String wxopenid)
 	{
 		this.wxopenid = wxopenid;
+	}
+
+	public String getSellerid()
+	{
+		return sellerid;
+	}
+
+	public void setSellerid(String sellerid)
+	{
+		this.sellerid = sellerid;
+	}
+
+	public String getSellername()
+	{
+		return sellername;
+	}
+
+	public void setSellername(String sellername)
+	{
+		this.sellername = sellername;
 	}
 
 	public String getGoodsid()
@@ -399,7 +425,5 @@ public class OrderGoods extends IdEntity
 	{
 		this.supmemberid5 = supmemberid5;
 	}
-
-
 
 }
