@@ -38,6 +38,18 @@ public class OrderGoods extends IdEntity
 	private String goodscode; // 商品商家货号
 	
 	@Column
+	private String eventid; // 参与活动标识
+	
+	@Column
+	private String eventname; // 参与活动名称
+	
+	@Column
+	private String eventitemid; // 参与子活动标识
+	
+	@Column
+	private String eventitemtitle; // 参与子活动标题	
+	
+	@Column
 	private int nums ; // 数量
 	
 	@Column
@@ -194,6 +206,46 @@ public class OrderGoods extends IdEntity
 	public void setGoodscode(String goodscode)
 	{
 		this.goodscode = goodscode;
+	}
+
+	public String getEventid()
+	{
+		return eventid;
+	}
+
+	public void setEventid(String eventid)
+	{
+		this.eventid = eventid;
+	}
+
+	public String getEventname()
+	{
+		return eventname;
+	}
+
+	public void setEventname(String eventname)
+	{
+		this.eventname = eventname;
+	}
+
+	public String getEventitemid()
+	{
+		return eventitemid;
+	}
+
+	public void setEventitemid(String eventitemid)
+	{
+		this.eventitemid = eventitemid;
+	}
+
+	public String getEventitemtitle()
+	{
+		return eventitemtitle;
+	}
+
+	public void setEventitemtitle(String eventitemtitle)
+	{
+		this.eventitemtitle = eventitemtitle;
 	}
 
 	public int getNums()

@@ -65,7 +65,7 @@ public class MallAction extends BaseAction
 		ro.put("shareurl", wxinfo.get("shareurl"));
 		ro.put("openid", wxinfo.get("openid"));
 		ro.put("recommender", wxinfo.get("recommender"));
-		
+
 		// 查询首页海报1级分类
 		StringBuffer sql = new StringBuffer();
 		sql.append(" select goodsclass.* ").append("\n");
@@ -205,6 +205,7 @@ public class MallAction extends BaseAction
 
 				// https://open.weixin.qq.com/connect/oauth2/authorize?appid=APPID&redirect_uri=REDIRECT_URI&response_type=code&scope=SCOPE&state=STATE#wechat_redirect
 				String realurl = eventitem.getUrl(); // 真实的url地址，注意不要加项目名称
+				realurl += "&eventid=" + eventid + "&eventitemid=" + eventitem.getId();
 				String enurl = ApiConfigKit.apiConfig.getServercontext() + "/oauth.action?info=" + BlueDes.encrypt(realurl);
 
 				String lasturl = String.format(url, ApiConfigKit.apiConfig.getAppId(), enurl);

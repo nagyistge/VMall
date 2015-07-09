@@ -1,2 +1,5 @@
 /OrderService.class
 /TagService.class
+/EventService.class
+/EventItemService.class
+/EventItemGoodsService.class

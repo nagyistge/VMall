@@ -7,13 +7,13 @@ insert into t_app_event(id, cname, ctype, begintime, endtime, wxmsgtype, state)
 values('TEST0001', '开业大庆特价宝贝限时抢购', '限时抢购', '2015-7-10 00:00:00', '2015-7-11 00:00:00', 'news', '发布');
 
 insert into t_app_eventitem(id, eventid, title, description, url, pic)
-values('TEST00010001', 'TEST0001', '开业大庆', '本款宝贝超值抢购', 'goods/goods/rushlook.action?id=000100010003-0000-0000','image/goods/000100010003-0000-0000-look-01.jpg');
+values('TEST00010001', 'TEST0001', '开业大庆', '本款宝贝超值抢购', 'goods/goods/rushlook.action?id=001100020007-0000-0000','image/goods/000100010003-0000-0000-look-01.jpg');
 
 insert into t_app_eventitem(id, eventid, title, description, url, pic)
-values('TEST00010002', 'TEST0001', '开业大庆', '本款宝贝超值抢购', 'goods/goods/rushlook.action?id=001100010001-0000-0000','image/goods/001100010001-0000-0000-look-01.jpg');
+values('TEST00010002', 'TEST0001', '开业大庆', '本款宝贝超值抢购', 'goods/goods/rushlook.action?id=001100020007-8000-0000','image/goods/001100010001-0000-0000-look-01.jpg');
 
 insert into t_app_eventitemgoods(id, eventid, eventitemid, goodsclassid, goodsid, saleprice, promoteprice, nums, buynums)
-values('TEST000100010001', 'TEST0001', 'TEST00010001', '000100010003', '000100010003-0000-0000', 15, 12, 10, 1);
+values('TEST000100010001', 'TEST0001', 'TEST00010001', '001100020007', '001100020007-0000-0000', 15, 12, 10, 3);
 
 insert into t_app_eventitemgoods(id, eventid, eventitemid, goodsclassid, goodsid, saleprice, promoteprice, nums, buynums)
-values('TEST000100020001', 'TEST0001', 'TEST00010002', '001100010001', '001100010001-0000-0000', 15, 12, 10, 1);
+values('TEST000100020001', 'TEST0001', 'TEST00010002', '001100020007', '001100020007-0000-0000', 15, 12, 10, 3);

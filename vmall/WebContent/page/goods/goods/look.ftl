@@ -111,8 +111,15 @@
 							</section>							
 							</#list>
 							<section class="select">
-								<p class="label">数量</p>
-								<p class="option"><a class="btn-del" id="minus" onclick="minus();">-</a><input type="text" class="fm-txt" value="1" id="number" onblur="modify();"><a class="btn-add" id="plus" onclick="plus();">+</a></p>
+							<p class="label">数量</p>
+							<p class="option">
+							<a class="btn-del" id="minus" onclick="minus();">-</a>
+							<input type="text" class="fm-txt" value="1" id="number" onblur="modify();">
+							<a class="btn-add" id="plus" onclick="plus();">+</a>
+							<#if obj.eventitemid!="">
+							<span>该宝贝本次活动限购${obj.eventitemgoods.buynums}件。</span>
+							</#if>								
+							</p>
 							</section>
 						</dd>
 					</dl>
@@ -311,7 +318,6 @@
 <input type="hidden" id="goodsid" value="${obj.goods.id}">
 <input type="hidden" id="supgoodsid" value="${obj.goods.supid}">
 
-<p>${obj.shareurl!}</p>
 <script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
 <script>
 
@@ -358,8 +364,17 @@ wx.ready(function()
 </script>
 
 <script>
+
 $("#color a").click(page_selectspec);
 
+var maxbuynums = 999;
+alert("hello");
+
+<#if obj.eventitemid!="">
+alert("${obj.eventitemid}");
+maxbuynums = parseInt("${obj.eventitemgoods.buynums}");
+</#if>
+alert(maxbuynums);
 function page_selectspec()
 {
 	console.log($(this).attr("specclass"));
@@ -437,7 +452,7 @@ function minus() {
 }
 function plus() {
 	var a = parseInt($("#number").val(), 10);
-	if (a >= 999) {
+	if (a >= maxbuynums) {
 		$("#number").val(1);
 		$("#amount").html("1\u4ef6")
 	} else {
@@ -454,7 +469,7 @@ function modify() {
 		return
 	}
 	if (!isNaN(a)) {
-		if (1 > a || a > 999) {
+		if (1 > a || a > maxbuynums) {
 			$("#number").val(1);
 			$("#amount").html("1\u4ef6");
 			return

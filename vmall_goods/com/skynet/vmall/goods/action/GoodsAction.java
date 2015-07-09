@@ -23,9 +23,14 @@ import org.nutz.mvc.annotation.Param;
 import com.skynet.framework.action.BaseAction;
 import com.skynet.framework.services.db.SQLParser;
 import com.skynet.framework.services.db.dybeans.DynamicObject;
+import com.skynet.framework.services.function.StringToolKit;
 import com.skynet.framework.services.function.Types;
 import com.skynet.framework.spec.GlobalConstants;
+import com.skynet.vmall.base.pojo.Event;
 import com.skynet.vmall.base.pojo.Goods;
+import com.skynet.vmall.base.service.EventItemGoodsService;
+import com.skynet.vmall.base.service.EventItemService;
+import com.skynet.vmall.base.service.EventService;
 import com.skynet.vmall.goods.service.GoodsClassService;
 import com.skynet.vmall.goods.service.GoodsClassSpecService;
 import com.skynet.vmall.goods.service.GoodsPhotoService;
@@ -54,6 +59,15 @@ public class GoodsAction extends BaseAction
 
 	@Inject
 	private GoodsPhotoService goodsphotoService;
+	
+	@Inject
+	private EventService eventService;
+	
+	@Inject
+	private EventItemService eventitemService;
+	
+	@Inject
+	private EventItemGoodsService eventitemgoodsService;
 
 	@At("/index")
 	@Ok("->:/page/goods/goods/index.ftl")
@@ -169,11 +183,31 @@ public class GoodsAction extends BaseAction
 		String userwxopenid = login_token.getFormatAttr(GlobalConstants.sys_login_userwxopenid);
 		DynamicObject member = memberService.locateBy(Cnd.where("wxopenid", "=", userwxopenid));
 
-		String id = (String) map.get("id");
+		String id = (String) map.get("id"); // 商品标识
+		String eventid = (String) map.get("eventid"); //活动标识
+		String eventitemid = (String) map.get("eventitemid"); //子活动标识
+		
 		// 记录浏览人气值
 		DynamicObject goods = goodsService.locate(id);
-
 		goodsService.sdao().update(Goods.class, Chain.make("popular", Types.parseInt(goods.getFormatAttr("popular"), 0) + 1), Cnd.where("id", "=", id));
+		
+		// 如果从参与活动入口，产品价格按照参与活动价格为准。
+		if(!(StringToolKit.isBlank(eventid))&&!(StringToolKit.isBlank(eventitemid)))
+		{
+			DynamicObject eventitemgoods = eventitemgoodsService.locateBy(Cnd.where("eventitemid", "=", eventitemid).and("goodsid", "=", id));
+			goods.setAttr("saleprice", eventitemgoods.getFormatAttr("saleprice"));
+			goods.setAttr("promoteprice", eventitemgoods.getFormatAttr("promoteprice"));
+
+			
+			DynamicObject event = eventService.locate(eventid);
+			DynamicObject eventitem = eventitemService.locate(eventitemid);
+
+			ro.put("event", event);
+			ro.put("eventitem", eventitem);
+			ro.put("eventitemgoods", eventitemgoods);
+			
+			ro.put("eventitemid", eventitemid);
+		}
 
 		List<DynamicObject> goodsclassspeces = goodsclassspecService.getGoodsClassSpeces(goods.getFormatAttr("classid"));
 		List<DynamicObject> goodsspecs = goodsService.findgoodsspec(goods.getFormatAttr("supid"));
