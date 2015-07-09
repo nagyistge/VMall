@@ -159,7 +159,7 @@ function page_submiteditform()
 		contentType: "application/json",
 		data:JSON.stringify({"id":id,"takercname":takercname,"takermobile":takermobile,"takeprovince":takeprovince,"takecity":takecity,"takecounty":takecounty,"taketown":taketown,"takepostcode":takepostcode,"takeaddress":takeaddress}),
 		cache:false,
-		async:false,
+		async:true,
 		success:function(data)
 		{
 			console.log(data);

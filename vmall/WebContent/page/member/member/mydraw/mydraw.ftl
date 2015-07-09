@@ -87,7 +87,7 @@ function page_showbygroup()
 		contentType: "application/json",
 		data:JSON.stringify({"orderstate":"结束","drawstate":"结束"}),
 		cache:false,
-		async:false,
+		async:true,
 		success:function(data)
 		{
 			//console.log(data);
@@ -112,7 +112,7 @@ function page_showbygoods()
 		contentType: "application/json",
 		data:JSON.stringify({"orderstate":"结束","drawstate":"结束"}),
 		cache:false,
-		async:false,
+		async:true,
 		success:function(data)
 		{
 			//console.log(data);
@@ -136,7 +136,7 @@ function page_showbyorder()
 		contentType: "application/json",
 		data:JSON.stringify({"orderstate":"结束","drawstate":"结束"}),
 		cache:false,
-		async:false,
+		async:true,
 		success:function(data)
 		{
 			//console.log(data);
@@ -158,7 +158,7 @@ function page_showsum_rebate_latent()
 		contentType: "application/json",
 		data:JSON.stringify({"orderstate":"结束","drawstate":"NULL"}),
 		cache:false,
-		async:false,
+		async:true,
 		success:function(data)
 		{
 			console.log(data);
@@ -181,7 +181,7 @@ function page_showsum_rebate_all()
 		contentType: "application/json",
 		data:JSON.stringify({"orderstate":"结束","drawstatebegin":"申请","drawstateend":"结束"}),
 		cache:false,
-		async:false,
+		async:true,
 		success:function(data)
 		{
 			console.log(data);
@@ -204,7 +204,7 @@ function page_showsum_rebate_wait()
 		contentType: "application/json",
 		data:JSON.stringify({"orderstate":"结束", "drawstatebegin":"申请","drawstateend":"收款"}),
 		cache:false,
-		async:false,
+		async:true,
 		success:function(data)
 		{
 			console.log(data);
@@ -227,7 +227,7 @@ function page_showsum_rebate()
 		contentType: "application/json",
 		data:JSON.stringify({"orderstate":"结束","drawstate":"结束"}),
 		cache:false,
-		async:false,
+		async:true,
 		success:function(data)
 		{
 			console.log(data);

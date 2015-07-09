@@ -282,7 +282,7 @@ function page_testpay()
 		contentType: "application/json",
 		data:JSON.stringify({"id":orderid, "keysignature":keysignature}),
 		cache:false,
-		async:false,
+		async:true,
 		success:function(data)
 		{
 			console.log(data);

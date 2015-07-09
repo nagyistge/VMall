@@ -396,7 +396,7 @@ function page_selectspec()
 			contentType: "application/json",
 			data:JSON.stringify({"supgoodsid":supgoodsid, "specs":spec_select}),
 			cache:false,
-			async:false,
+			async:true,
 			success:function(data)
 			{
 				console.log(data);
@@ -486,7 +486,7 @@ function page_addtocart()
 		url:'${base}/order/shopcart/addtocart.action',
 		data:{"goodsid":goodsid,"nums":nums},
 		cache:false,
-		async:false,
+		async:true,
 		success:function(data)
 		{
 			

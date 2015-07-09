@@ -29,7 +29,7 @@ function page_browse()
 		url:'${base}/member/member/browsemydraw.action',
 		data:{temp:'temp'},
 		cache:false,
-		async:false,
+		async:true,
 		success:function(data)
 		{
 			console.log(data);

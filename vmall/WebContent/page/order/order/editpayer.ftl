@@ -97,7 +97,7 @@ function page_submiteditform()
 		contentType: "application/json",
 		data:JSON.stringify({"id":id,"membercname":membercname,"phone":phone}),
 		cache:false,
-		async:false,
+		async:true,
 		success:function(data)
 		{
 			console.log(data);

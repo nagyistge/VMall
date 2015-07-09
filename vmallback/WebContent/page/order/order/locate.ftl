@@ -92,7 +92,7 @@ function page_forward()
 		url:'${base}/order/order/forward.action',
 		data:{id:'${obj.order.id}'},
 		cache:false,
-		async:false,
+		async:true,
 		success:function(data)
 		{
 			console.log(data);

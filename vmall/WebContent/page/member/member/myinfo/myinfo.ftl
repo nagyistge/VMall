@@ -290,7 +290,7 @@ function page_save()
 		url:'${base}/member/member/myinfo/saveinfo.action',
 		data:$("#form_info").serialize(),
 		cache:false,
-		async:false,
+		async:true,
 		success:function(data)
 		{
 			console.log(data);

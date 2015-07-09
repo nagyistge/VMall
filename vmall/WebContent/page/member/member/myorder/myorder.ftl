@@ -29,7 +29,7 @@ function page_browse()
 		url:'${base}/member/member/myorder/showorder.action',
 		data:{temp:'temp'},
 		cache:false,
-		async:false,
+		async:true,
 		success:function(data)
 		{
 			console.log(data);
@@ -51,7 +51,7 @@ function page_loadordergoods(id)
 		url:'${base}/member/member/myorder/showordergoods.action',
 		data:{"id":id},
 		cache:false,
-		async:false,
+		async:true,
 		success:function(data)
 		{
 			console.log(data);

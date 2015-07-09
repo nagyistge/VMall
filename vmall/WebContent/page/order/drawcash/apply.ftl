@@ -138,7 +138,7 @@ function page_submit()
 		url:'${base}/order/drawcash/insert.action',
 		data:$("#form_draw").serialize(),
 		cache:false,
-		async:false,
+		async:true,
 		success:function(data)
 		{
 			console.log(data);

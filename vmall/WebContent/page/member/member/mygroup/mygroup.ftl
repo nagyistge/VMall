@@ -31,7 +31,7 @@ function page_browse()
 		url:'${base}/member/member/mygroup/show.action',
 		data:{temp:'temp'},
 		cache:false,
-		async:false,
+		async:true,
 		success:function(data)
 		{
 			$("#shp-cart-list").append(data);
@@ -57,7 +57,7 @@ function page_subcount(id)
 		url:'${base}/member/member/mygroup/subcount.action',
 		data:{"id":id},
 		cache:false,
-		async:false,
+		async:true,
 		success:function(data)
 		{
 			if(data=="")

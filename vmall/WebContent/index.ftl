@@ -124,7 +124,7 @@
 			url:url,
 			dataType: "html",
 			cache:false,
-			async:false,
+			async:true,
 			success:function(data)
 			{
 				$("#leftNavi").html(data);
