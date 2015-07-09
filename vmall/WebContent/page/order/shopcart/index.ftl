@@ -169,10 +169,8 @@ function page_submit()
 		contentType: "application/json",
 		data:JSON.stringify({"ids":ids,"numses":numses,"keysignature":keysignature}),
 		cache:false,
-		async:false,
 		success:function(data)
 		{
-			console.log(data);
 			if(data=="")
 			{
 				alert("提交订单异常，请检查后再试试！");
@@ -195,13 +193,15 @@ function page_submit()
 			}
 			else
 			{
-				alert("提交订单失败："+json.message);
+				alert(json.message);
+				window.location.reload();
 			}
 		},
 		error:function(data)
 		{
 			console.log(data);
 			alert("服务请求异常！");
+			window.location.reload();
 		}
 	})	
 	

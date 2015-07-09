@@ -204,7 +204,11 @@ public class ShopCartService extends SkynetNameEntityService<ShopCart>
 			
 			if(StringToolKit.isBlank(shopcartgoods.getFormatAttr("id")))
 			{
-				continue;
+				// continue;
+				Map remap = new DynamicObject();
+				remap.put("state", "error");
+				remap.put("message", "亲，当前购物车里的宝贝已经无效，请刷新后重试。");
+				return remap;
 			}
 			
 			shopcartgoods.setAttr("nums", nums);
