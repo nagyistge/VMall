@@ -5,24 +5,24 @@ import org.nutz.ioc.annotation.InjectName;
 import org.nutz.ioc.loader.annotation.IocBean;
 
 import com.skynet.framework.service.SkynetNameEntityService;
-import com.skynet.vmall.base.pojo.Tag;
+import com.skynet.vmall.base.pojo.EventItem;
 
-@InjectName("tagService")
+@InjectName("eventitemService")
 @IocBean(args =
 { "refer:dao" })
-public class TagService extends SkynetNameEntityService<Tag>
+public class EventItemService extends SkynetNameEntityService<EventItem>
 {
-	public TagService()
+	public EventItemService()
 	{
 		super();
 	}
 
-	public TagService(Dao dao)
+	public EventItemService(Dao dao)
 	{
 		super(dao);
 	}
 
-	public TagService(Dao dao, Class<Tag> entityType)
+	public EventItemService(Dao dao, Class<EventItem> entityType)
 	{
 		super(dao, entityType);
 	}
