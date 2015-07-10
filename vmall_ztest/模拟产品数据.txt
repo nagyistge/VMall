@@ -217,3 +217,7 @@ update t_app_goods set pic = concat('image/goods/', id, '-look-01.jpg');
 
 update t_app_goods set dealerid = '00000000efgh0000efgh00000000efgh' where id like '%-8000%';
 update t_app_goods set dealerid = '00000000efgh0000efgh00000000efgh' where id like '%-8002%';
+
+delete from t_app_goodsprice;
+insert into t_app_goodsprice(id, goodsid, costprice, saleprice, promoteprice, isdefault)
+select uuid(), id, costprice, saleprice, promoteprice, '是' from t_app_goods;

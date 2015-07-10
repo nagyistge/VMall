@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 import org.nutz.ioc.annotation.InjectName;
 import org.nutz.ioc.loader.annotation.Inject;
@@ -14,12 +13,12 @@ import org.nutz.lang.util.NutMap;
 import org.nutz.log.Logs;
 import org.nutz.mvc.Mvcs;
 
+import com.blue.wxmp.sdk.api.AbstractWxApi;
 import com.blue.wxmp.sdk.api.ApiConfigKit;
 import com.blue.wxmp.sdk.api.OAuthAccessTokenApi;
 import com.blue.wxmp.sdk.api.WxApi;
 import com.blue.wxmp.sdk.encrypt.BlueDes;
 import com.skynet.framework.services.function.StringToolKit;
-import com.skynet.framework.spec.GlobalConstants;
 
 @InjectName("myWxHelper")
 @IocBean
@@ -81,11 +80,20 @@ public class WXActionHelper
 		return url;
 	}
 
+	//解密URL
 	public Map decrypt_info(String info) throws Exception
 	{
 		info = BlueDes.decrypt(info);
 		Map<String, String> rinfo = Json.fromJson(HashMap.class, info);
 		return rinfo;
 	}
-
+	
+	// 加密URL
+	public String encrypt_info(String realurl) throws Exception
+	{
+		String url = AbstractWxApi.authorUrl;
+		String enurl = ApiConfigKit.apiConfig.getServercontext() + "/oauth.action?info=" + BlueDes.encrypt(realurl);
+		String lasturl = String.format(url, ApiConfigKit.apiConfig.getAppId(), enurl);
+		return lasturl;
+	}
 }

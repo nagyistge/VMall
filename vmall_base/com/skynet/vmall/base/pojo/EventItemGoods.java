@@ -29,6 +29,9 @@ public class EventItemGoods extends IdEntity
 	private String goodsname; // 商品名称
 	
 	@Column
+	private BigDecimal costprice; // 成本单价	
+	
+	@Column
 	private BigDecimal saleprice; // 商品销售单价
 	
 	@Column
@@ -101,6 +104,16 @@ public class EventItemGoods extends IdEntity
 	public void setGoodsname(String goodsname)
 	{
 		this.goodsname = goodsname;
+	}
+
+	public BigDecimal getCostprice()
+	{
+		return costprice;
+	}
+
+	public void setCostprice(BigDecimal costprice)
+	{
+		this.costprice = costprice;
 	}
 
 	public BigDecimal getSaleprice()

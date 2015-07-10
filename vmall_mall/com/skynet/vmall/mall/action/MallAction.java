@@ -23,10 +23,12 @@ import com.skynet.framework.action.BaseAction;
 import com.skynet.framework.services.db.SQLParser;
 import com.skynet.framework.services.db.dybeans.DynamicObject;
 import com.skynet.framework.services.function.StringToolKit;
-import com.skynet.framework.spec.GlobalConstants;
 import com.skynet.vmall.base.pojo.Event;
 import com.skynet.vmall.base.pojo.EventItem;
 import com.skynet.vmall.base.pojo.Member;
+import com.skynet.vmall.base.service.EventItemGoodsService;
+import com.skynet.vmall.base.service.EventItemService;
+import com.skynet.vmall.base.service.EventService;
 import com.skynet.vmall.base.service.TagService;
 import com.skynet.vmall.goods.service.GoodsClassService;
 import com.skynet.vmall.goods.service.GoodsService;
@@ -50,6 +52,15 @@ public class MallAction extends BaseAction
 
 	@Inject
 	private TagService tagService;
+	
+	@Inject
+	private EventService eventService;	
+	
+	@Inject
+	private EventItemService eventitemService;
+	
+	@Inject
+	private EventItemGoodsService eventitemgoodsService;
 
 	@At("/index")
 	@Ok("->:/page/mall/mall/index.ftl")
@@ -233,5 +244,29 @@ public class MallAction extends BaseAction
 		}
 
 		return "SUCCESS";
+	}
+	
+	@At("/eventitemlook")
+	@Ok("->:/page/mall/mall/eventitemlook.ftl")
+	public Map eventitemlook(String info) throws Exception
+	{
+		HttpServletRequest req = Mvcs.getReq();
+		Map map = myWxHelper.decrypt_info(info);
+		String eventitemid = StringToolKit.formatText((String)map.get("eventitemid"));
+		
+		DynamicObject eventitem = eventitemService.locate(eventitemid);
+		List<DynamicObject> eventitemgoodses = eventitemgoodsService.findByCond(Cnd.where("eventitemid", "=", eventitemid));
+		Map remap = new DynamicObject();
+		remap.put("eventitemgoodses", eventitemgoodses);
+
+		for(int i=0;i<eventitemgoodses.size();i++)
+		{
+			DynamicObject eventitemgoods = eventitemgoodses.get(i);
+			String realurl = "goods/goods/eventlook.action?eventitemgoodsid="+eventitemgoods.getFormatAttr("id");
+			String lasturl = myWxHelper.encrypt_info(realurl);
+			eventitemgoodses.get(i).setAttr("lasturl", lasturl);
+		}
+		
+		return remap;
 	}
 }

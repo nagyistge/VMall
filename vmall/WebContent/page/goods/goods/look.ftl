@@ -116,7 +116,7 @@
 							<a class="btn-del" id="minus" onclick="minus();">-</a>
 							<input type="text" class="fm-txt" value="1" id="number" onblur="modify();">
 							<a class="btn-add" id="plus" onclick="plus();">+</a>
-							<#if obj.eventitemid!="">
+							<#if obj.eventitemgoodsid!="">
 							<span>该宝贝本次活动限购${obj.eventitemgoods.buynums}件。</span>
 							</#if>								
 							</p>
@@ -368,13 +368,11 @@ wx.ready(function()
 $("#color a").click(page_selectspec);
 
 var maxbuynums = 999;
-alert("hello");
 
-<#if obj.eventitemid!="">
-alert("${obj.eventitemid}");
+<#if obj.eventitemgoodsid!="">
 maxbuynums = parseInt("${obj.eventitemgoods.buynums}");
 </#if>
-alert(maxbuynums);
+
 function page_selectspec()
 {
 	console.log($(this).attr("specclass"));
@@ -499,7 +497,7 @@ function page_addtocart()
 	{
 		type:'POST',
 		url:'${base}/order/shopcart/addtocart.action',
-		data:{"goodsid":goodsid,"nums":nums},
+		data:{"goodsid":goodsid,"nums":nums,"eventitemgoodsid":"${obj.eventitemgoodsid}"},
 		cache:false,
 		async:true,
 		success:function(data)

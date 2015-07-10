@@ -27,7 +27,8 @@ import com.blue.wxmp.sdk.bean.WxOutMsg;
 import com.blue.wxmp.sdk.bean.WxPrePay;
 import com.blue.wxmp.sdk.util.WxUtils;
 
-public abstract class AbstractWxApi implements WxApi {
+public abstract class AbstractWxApi implements WxApi
+{
 	protected final static Log log = Logs.get();
 
 	private static String sendTemplateMsgUrl = "https://api.weixin.qq.com/cgi-bin/message/template/send";
@@ -35,9 +36,12 @@ public abstract class AbstractWxApi implements WxApi {
 	private static String callUnifiedOrderUrl = "https://api.mch.weixin.qq.com/pay/unifiedorder";
 
 	private static String sendCustomeUrl = "https://api.weixin.qq.com/cgi-bin/message/custom/send";
+	
+	public static final String authorUrl = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=%s&redirect_uri=%s&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect";
 
 	@Override
-	public String getCompleteUri(HttpServletRequest req) {
+	public String getCompleteUri(HttpServletRequest req)
+	{
 		// TODO Auto-generated method stub
 		String uri = Mvcs.getRequestPathObject(req).getUrl() + (req.getQueryString() != null ? "?" + req.getQueryString() : "");
 
@@ -47,12 +51,14 @@ public abstract class AbstractWxApi implements WxApi {
 	}
 
 	@Override
-	public String getAccessToken() {
+	public String getAccessToken()
+	{
 		// TODO Auto-generated method stub
 		return AccessTokenApi.getAccessToken().getAccessToken();
 	}
 
-	public NutMap genJsSDKConfig(String url, String... jsApiList) {
+	public NutMap genJsSDKConfig(String url, String... jsApiList)
+	{
 		String jt = JsapiTicketApi.getJsapiTicket().getJsapiTicket();
 		long timestamp = System.currentTimeMillis() / 1000;
 		String nonceStr = R.UU64();
@@ -76,23 +82,30 @@ public abstract class AbstractWxApi implements WxApi {
 	 * 发送模板消息
 	 */
 	@Override
-	public NutMap sendTemplateMsg(NutMap body) {
+	public NutMap sendTemplateMsg(NutMap body)
+	{
 
 		return postJson(sendTemplateMsgUrl, body);
 	}
 
-	protected NutMap postJson(String uri, NutMap body) {
+	protected NutMap postJson(String uri, NutMap body)
+	{
 		return call(uri, METHOD.POST, Json.toJson(body));
 	}
 
-	protected NutMap call(String URL, METHOD method, String body) {
+	protected NutMap call(String URL, METHOD method, String body)
+	{
 		String token = getAccessToken();
-		if (URL.contains("?")) {
+		if (URL.contains("?"))
+		{
 			URL += "&access_token=" + token;
-		} else {
+		}
+		else
+		{
 			URL += "?access_token=" + token;
 		}
-		if (log.isInfoEnabled()) {
+		if (log.isInfoEnabled())
+		{
 			log.info("wxapi call: " + URL);
 			log.debug(body);
 
@@ -108,7 +121,8 @@ public abstract class AbstractWxApi implements WxApi {
 	}
 
 	@Override
-	public String getPrepayId(String body, String notifyurl, String orderno, String mchid, String amt, String spbill_create_ip, String openId, String payKey) {
+	public String getPrepayId(String body, String notifyurl, String orderno, String mchid, String amt, String spbill_create_ip, String openId, String payKey)
+	{
 		String nonceStr = R.UU64();
 		SortedMap<String, String> signParams = new TreeMap<String, String>();
 		signParams.put("appid", ApiConfigKit.apiConfig.getAppId());
@@ -122,9 +136,12 @@ public abstract class AbstractWxApi implements WxApi {
 		signParams.put("nonce_str", nonceStr);
 		signParams.put("openid", openId);
 		String sign = "";
-		try {
+		try
+		{
 			sign = WxUtils.createSign(signParams, payKey);
-		} catch (Exception e) {
+		}
+		catch (Exception e)
+		{
 			e.printStackTrace();
 		}
 		// 增加非参与签名的额外参数
@@ -177,12 +194,15 @@ public abstract class AbstractWxApi implements WxApi {
 		// signParams);// 预支付订单号
 	}
 
-	private static WxPrePay asUnifiedorder(SortedMap<String, String> signParams) {
-		return new WxPrePay(signParams.get("appid"), signParams.get("body"), signParams.get("mch_id"), signParams.get("nonce_str"), signParams.get("notify_url"), signParams.get("openid"), signParams.get("out_trade_no"), signParams.get("spbill_create_ip"), signParams.get("total_fee"), signParams.get("trade_type"), signParams.get("sign"));
+	private static WxPrePay asUnifiedorder(SortedMap<String, String> signParams)
+	{
+		return new WxPrePay(signParams.get("appid"), signParams.get("body"), signParams.get("mch_id"), signParams.get("nonce_str"), signParams.get("notify_url"), signParams.get("openid"), signParams.get("out_trade_no"),
+				signParams.get("spbill_create_ip"), signParams.get("total_fee"), signParams.get("trade_type"), signParams.get("sign"));
 
 	}
 
-	private static String asUnifiedorderXML(SortedMap<String, String> signParams) {
+	private static String asUnifiedorderXML(SortedMap<String, String> signParams)
+	{
 		StringBuffer str = new StringBuffer();
 		str.append("<xml>");
 		str.append("<appid>%s</appid>");
@@ -199,7 +219,8 @@ public abstract class AbstractWxApi implements WxApi {
 		// str.append("<attach>%s</attach>");
 
 		str.append("</xml>");
-		String r = String.format(str.toString(), signParams.get("appid"), signParams.get("body"), signParams.get("mch_id"), signParams.get("nonce_str"), signParams.get("notify_url"), signParams.get("openid"), signParams.get("out_trade_no"), signParams.get("spbill_create_ip"), signParams.get("total_fee"), signParams.get("trade_type"), signParams.get("sign"));
+		String r = String.format(str.toString(), signParams.get("appid"), signParams.get("body"), signParams.get("mch_id"), signParams.get("nonce_str"), signParams.get("notify_url"), signParams.get("openid"), signParams.get("out_trade_no"),
+				signParams.get("spbill_create_ip"), signParams.get("total_fee"), signParams.get("trade_type"), signParams.get("sign"));
 		log.debugf("xml contents is %s", r);
 
 		return r;
@@ -207,11 +228,12 @@ public abstract class AbstractWxApi implements WxApi {
 	}
 
 	@Override
-	public String sendCustomMsg(NutMap msg) {
+	public String sendCustomMsg(NutMap msg)
+	{
 		// TODO Auto-generated method stub
-		
+
 		log.debugf("send custom message=%s", msg);
-		
+
 		postJson(sendCustomeUrl, msg);
 
 		return null;

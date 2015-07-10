@@ -183,30 +183,33 @@ public class GoodsAction extends BaseAction
 		String userwxopenid = login_token.getFormatAttr(GlobalConstants.sys_login_userwxopenid);
 		DynamicObject member = memberService.locateBy(Cnd.where("wxopenid", "=", userwxopenid));
 
-		String id = (String) map.get("id"); // 商品标识
-		String eventid = (String) map.get("eventid"); //活动标识
-		String eventitemid = (String) map.get("eventitemid"); //子活动标识
+		String id = StringToolKit.formatText((String) map.get("id")); // 商品标识
+//		String eventid = StringToolKit.formatText((String) map.get("eventid")); //活动标识
+//		String eventitemid = StringToolKit.formatText((String) map.get("eventitemid")); //活动项目标识
+		String eventitemgoodsid = StringToolKit.formatText((String) map.get("eventitemgoodsid")); //活动项目商品标识
 		
 		// 记录浏览人气值
 		DynamicObject goods = goodsService.locate(id);
 		goodsService.sdao().update(Goods.class, Chain.make("popular", Types.parseInt(goods.getFormatAttr("popular"), 0) + 1), Cnd.where("id", "=", id));
 		
+//		ro.put("eventitemid", eventitemid);
+		ro.put("eventitemgoodsid", eventitemgoodsid);
+		
 		// 如果从参与活动入口，产品价格按照参与活动价格为准。
-		if(!(StringToolKit.isBlank(eventid))&&!(StringToolKit.isBlank(eventitemid)))
+		if(!(StringToolKit.isBlank(eventitemgoodsid)))
 		{
-			DynamicObject eventitemgoods = eventitemgoodsService.locateBy(Cnd.where("eventitemid", "=", eventitemid).and("goodsid", "=", id));
+			DynamicObject eventitemgoods = eventitemgoodsService.locate(eventitemgoodsid);
 			goods.setAttr("saleprice", eventitemgoods.getFormatAttr("saleprice"));
 			goods.setAttr("promoteprice", eventitemgoods.getFormatAttr("promoteprice"));
-
 			
-			DynamicObject event = eventService.locate(eventid);
-			DynamicObject eventitem = eventitemService.locate(eventitemid);
+//			DynamicObject event = eventService.locate(eventid);
+//			DynamicObject eventitem = eventitemService.locate(eventitemid);
 
-			ro.put("event", event);
-			ro.put("eventitem", eventitem);
+//			ro.put("event", event);
+//			ro.put("eventitem", eventitem);
 			ro.put("eventitemgoods", eventitemgoods);
 			
-			ro.put("eventitemid", eventitemid);
+//			ro.put("eventitemid", eventitemid);
 		}
 
 		List<DynamicObject> goodsclassspeces = goodsclassspecService.getGoodsClassSpeces(goods.getFormatAttr("classid"));
@@ -275,13 +278,20 @@ public class GoodsAction extends BaseAction
 		return goods;
 	}
 	
-	// 商品浏览
-	@At("/rushlook")
+	// 活动商品查看
+	@At("/eventlook")
 	@Ok("->:/page/goods/goods/look.ftl")
-	public Map rushlook(String info) throws Exception
+	public Map eventlook(String info) throws Exception
 	{
 		HttpServletRequest req = Mvcs.getReq();
 		Map map = myWxHelper.decrypt_info(info);
+		
+		String eventitemgoodsid = StringToolKit.formatText((String)map.get("eventitemgoodsid"));
+		DynamicObject eventitemgoods = eventitemgoodsService.locate(eventitemgoodsid);
+		
+		String goodsid = eventitemgoods.getFormatAttr("goodsid");
+		map.put("id", goodsid);
+		
 		return look(map);
 	}
 

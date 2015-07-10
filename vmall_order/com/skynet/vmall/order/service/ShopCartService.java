@@ -11,6 +11,7 @@ import java.util.Map;
 import org.nutz.dao.Cnd;
 import org.nutz.dao.Dao;
 import org.nutz.ioc.annotation.InjectName;
+import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
 
 import com.skynet.framework.common.generator.RandomGenerator;
@@ -29,12 +30,28 @@ import com.skynet.vmall.base.pojo.OrderGoods;
 import com.skynet.vmall.base.pojo.OrderGoodsRebate;
 import com.skynet.vmall.base.pojo.ShopCart;
 import com.skynet.vmall.base.pojo.ShopCartGoods;
+import com.skynet.vmall.base.service.EventItemGoodsService;
+import com.skynet.vmall.base.service.EventItemService;
+import com.skynet.vmall.base.service.EventService;
+import com.skynet.vmall.goods.service.GoodsService;
 import com.skynet.vmall.member.service.MemberService;
 
 @InjectName("shopcartService")
 @IocBean(args = { "refer:dao" }) 
 public class ShopCartService extends SkynetNameEntityService<ShopCart>
 {
+	@Inject
+	EventService eventService;
+	
+	@Inject
+	EventItemService eventitemService;
+	
+	@Inject
+	EventItemGoodsService eventitemgoodsService;
+	
+	@Inject
+	GoodsService goodsService;
+	
 	public ShopCartService()
 	{
 		super();
@@ -83,8 +100,9 @@ public class ShopCartService extends SkynetNameEntityService<ShopCart>
 		String username = login_token.getFormatAttr(GlobalConstants.sys_login_username);
 		String userwxopenid = login_token.getFormatAttr(GlobalConstants.sys_login_userwxopenid);
 		
-		String goodsid = (String)form.get("goodsid");
-		int nums = Types.parseInt((String)form.get("nums"),1);
+		String goodsid = StringToolKit.formatText((String)form.get("goodsid"));
+		int nums = Types.parseInt(StringToolKit.formatText((String)form.get("nums")),1);
+		String eventitemgoodsid = StringToolKit.formatText((String)form.get("eventitemgoodsid"));
 		
 		ShopCart cart = new ShopCart();
 		// 检查是否已创建过购物车
@@ -103,22 +121,33 @@ public class ShopCartService extends SkynetNameEntityService<ShopCart>
 		
 		Goods goods = sdao().fetch(Goods.class, goodsid);
 		
-		
 		ShopCartGoods cartgoods = new ShopCartGoods();
 		
-		//检查是否已经有同款商品，如有，增加数量，否则，新增购物商品;
-		if(sdao().count(ShopCartGoods.class, Cnd.where("shopcartid","=",cart.getId()).and("goodsid", "=", goodsid))>0)
+		// 检查是否已经有同款商品，如有，增加数量，否则，新增购物商品;
+		// 增加检查同款商品，活动不同，不合并
+		int hasnums = sdao().count(ShopCartGoods.class, Cnd.where("shopcartid","=",cart.getId()).and("goodsid", "=", goodsid).and("eventitemgoodsid", "=", eventitemgoodsid));		
+		if(hasnums>0)
 		{
-			cartgoods = sdao().fetch(ShopCartGoods.class, Cnd.where("shopcartid","=",cart.getId()).and("goodsid", "=", goodsid));
+			cartgoods = sdao().fetch(ShopCartGoods.class, Cnd.where("shopcartid","=",cart.getId()).and("goodsid", "=", goodsid).and("eventitemgoodsid", "=", eventitemgoodsid));
 			cartgoods.setNums(cartgoods.getNums()+nums);
 			
 			// 同款商品不同时间购物，如未提交付款，价格按照最新价格重新更新
-			cartgoods.setSaleprice(goods.getSaleprice()); // 销售价（原价）
-			cartgoods.setPromoteprice(goods.getPromoteprice()); // 促销价（促销价）
+			// 如果参加活动，获取活动价格
+			if(StringToolKit.isBlank(eventitemgoodsid))
+			{
+				cartgoods.setSaleprice(goods.getSaleprice()); // 销售价（原价）
+				cartgoods.setPromoteprice(goods.getPromoteprice()); // 促销价（现价）
+			}
+			else
+			{
+				DynamicObject goodsprice = goodsService.getPrice(new DynamicObject(new String[]{"goodsid","eventitemgoodsid"}, new String[]{goodsid, eventitemgoodsid}));
+				cartgoods.setSaleprice(new BigDecimal(goodsprice.getFormatAttr("saleprice"))); // 销售价（原价）
+				cartgoods.setPromoteprice(new BigDecimal(goodsprice.getFormatAttr("promoteprice"))); // 促销价（现价）
+				cartgoods.setEventitemgoodsid(eventitemgoodsid);
+			}
 			
-			BigDecimal amountsale = goods.getSaleprice().multiply(new BigDecimal(cartgoods.getNums()));
-			BigDecimal amountpromote = goods.getPromoteprice().multiply(new BigDecimal(cartgoods.getNums()));
-			
+			BigDecimal amountsale = cartgoods.getSaleprice().multiply(new BigDecimal(cartgoods.getNums()));
+			BigDecimal amountpromote = cartgoods.getPromoteprice().multiply(new BigDecimal(cartgoods.getNums()));	
 			cartgoods.setAmountsale(amountsale);
 			cartgoods.setAmountpromote(amountpromote);
 			
@@ -132,13 +161,25 @@ public class ShopCartService extends SkynetNameEntityService<ShopCart>
 			cartgoods.setWxopenid(""); // 商品经销商会员微信标识
 			cartgoods.setGoodsid(goodsid);
 			cartgoods.setGoodsname(goods.getCname());
-			cartgoods.setNums(nums);			
-			cartgoods.setSaleprice(goods.getSaleprice()); // 销售价（原价）
-			cartgoods.setPromoteprice(goods.getPromoteprice()); // 促销价（促销价）
+			cartgoods.setNums(nums);	
 			
-			BigDecimal amountsale = goods.getSaleprice().multiply(new BigDecimal(cartgoods.getNums()));
-			BigDecimal amountpromote = goods.getPromoteprice().multiply(new BigDecimal(cartgoods.getNums()));
+			// 同款商品不同时间购物，如未提交付款，价格按照最新价格重新更新
+			// 如果参加活动，获取活动价格
+			if(StringToolKit.isBlank(eventitemgoodsid))
+			{
+				cartgoods.setSaleprice(goods.getSaleprice()); // 销售价（原价）
+				cartgoods.setPromoteprice(goods.getPromoteprice()); // 促销价（现价）
+			}
+			else
+			{
+				DynamicObject goodsprice = goodsService.getPrice(new DynamicObject(new String[]{"goodsid","eventitemgoodsid"}, new String[]{goodsid, eventitemgoodsid}));
+				cartgoods.setSaleprice(new BigDecimal(goodsprice.getFormatAttr("saleprice"))); // 销售价（原价）
+				cartgoods.setPromoteprice(new BigDecimal(goodsprice.getFormatAttr("promoteprice"))); // 促销价（现价）
+				cartgoods.setEventitemgoodsid(eventitemgoodsid);
+			}
 			
+			BigDecimal amountsale = cartgoods.getSaleprice().multiply(new BigDecimal(cartgoods.getNums()));
+			BigDecimal amountpromote = cartgoods.getPromoteprice().multiply(new BigDecimal(cartgoods.getNums()));	
 			cartgoods.setAmountsale(amountsale);
 			cartgoods.setAmountpromote(amountpromote);
 			

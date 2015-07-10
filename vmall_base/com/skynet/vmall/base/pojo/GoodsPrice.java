@@ -7,29 +7,15 @@ import org.nutz.dao.entity.annotation.Table;
 
 import com.skynet.framework.pojo.IdEntity;
 
-@Table("T_APP_SHOPCARTGOODS")
-public class ShopCartGoods extends IdEntity
+@Table("T_APP_GOODSPRICE")
+public class GoodsPrice extends IdEntity
 {
-	@Column
-	private String shopcartid; // 购物车标识
-	
-	@Column
-	private String memberid; // 商家会员标识
-	
-	@Column
-	private String wxopenid; // 商家会员微信标识
-	
-	@Column
-	private String dealerid; // 商家标识（组织机构）
-
-	@Column
-	private String dealername; // 商家名称	
-
+	// 基本信息
 	@Column
 	private String goodsid; // 商品标识
 	
 	@Column
-	private String goodsname; // 商品名称
+	private String membertype; // 会员类型	
 	
 	@Column
 	private String eventid; // 参与活动标识
@@ -47,19 +33,20 @@ public class ShopCartGoods extends IdEntity
 	private String eventitemgoodsid; // 参与活动项目商品标识	
 	
 	@Column
-	private int nums ; // 数量
-	
+	private String isdefault; // 是否缺省价格（是、否）
+
 	@Column
-	private BigDecimal saleprice; // 销售单价
-	
+	private BigDecimal costprice; // 成本单价
+
 	@Column
-	private BigDecimal promoteprice; // 促销单价
-	
+	private BigDecimal saleprice; // 销售单价（原价）
+
 	@Column
-	private BigDecimal amountsale; // 销售单价计算金额
-	
+	private BigDecimal promoteprice; // 促销单价（现价）
+
+	// 佣金设置
 	@Column
-	private BigDecimal amountpromote; // 销售单价计算金额
+	private String rebatetype; // 返利方式（积分、百分比）
 
 	@Column
 	private BigDecimal rebate1; // 1级返利
@@ -76,56 +63,6 @@ public class ShopCartGoods extends IdEntity
 	@Column
 	private BigDecimal rebate5; // 5级返利
 
-	public String getShopcartid()
-	{
-		return shopcartid;
-	}
-
-	public void setShopcartid(String shopcartid)
-	{
-		this.shopcartid = shopcartid;
-	}
-
-	public String getMemberid()
-	{
-		return memberid;
-	}
-
-	public void setMemberid(String memberid)
-	{
-		this.memberid = memberid;
-	}
-
-	public String getWxopenid()
-	{
-		return wxopenid;
-	}
-
-	public void setWxopenid(String wxopenid)
-	{
-		this.wxopenid = wxopenid;
-	}
-
-	public String getDealerid()
-	{
-		return dealerid;
-	}
-
-	public void setDealerid(String dealerid)
-	{
-		this.dealerid = dealerid;
-	}
-
-	public String getDealername()
-	{
-		return dealername;
-	}
-
-	public void setDealername(String dealername)
-	{
-		this.dealername = dealername;
-	}
-
 	public String getGoodsid()
 	{
 		return goodsid;
@@ -136,14 +73,14 @@ public class ShopCartGoods extends IdEntity
 		this.goodsid = goodsid;
 	}
 
-	public String getGoodsname()
+	public String getMembertype()
 	{
-		return goodsname;
+		return membertype;
 	}
 
-	public void setGoodsname(String goodsname)
+	public void setMembertype(String membertype)
 	{
-		this.goodsname = goodsname;
+		this.membertype = membertype;
 	}
 
 	public String getEventid()
@@ -196,14 +133,24 @@ public class ShopCartGoods extends IdEntity
 		this.eventitemgoodsid = eventitemgoodsid;
 	}
 
-	public int getNums()
+	public String getIsdefault()
 	{
-		return nums;
+		return isdefault;
 	}
 
-	public void setNums(int nums)
+	public void setIsdefault(String isdefault)
 	{
-		this.nums = nums;
+		this.isdefault = isdefault;
+	}
+
+	public BigDecimal getCostprice()
+	{
+		return costprice;
+	}
+
+	public void setCostprice(BigDecimal costprice)
+	{
+		this.costprice = costprice;
 	}
 
 	public BigDecimal getSaleprice()
@@ -226,24 +173,14 @@ public class ShopCartGoods extends IdEntity
 		this.promoteprice = promoteprice;
 	}
 
-	public BigDecimal getAmountsale()
+	public String getRebatetype()
 	{
-		return amountsale;
+		return rebatetype;
 	}
 
-	public void setAmountsale(BigDecimal amountsale)
+	public void setRebatetype(String rebatetype)
 	{
-		this.amountsale = amountsale;
-	}
-
-	public BigDecimal getAmountpromote()
-	{
-		return amountpromote;
-	}
-
-	public void setAmountpromote(BigDecimal amountpromote)
-	{
-		this.amountpromote = amountpromote;
+		this.rebatetype = rebatetype;
 	}
 
 	public BigDecimal getRebate1()
@@ -295,7 +232,5 @@ public class ShopCartGoods extends IdEntity
 	{
 		this.rebate5 = rebate5;
 	}
-
-
 
 }
