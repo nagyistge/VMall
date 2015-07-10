@@ -65,9 +65,9 @@ public class MemberService extends SkynetNameEntityService<Member>
 				oldwxopenid = vmall.getWxopenid();
 			}
 		}
-		
+
 		// 检查微信标识是否为空
-		if(StringToolKit.isBlank(newwxopenid))
+		if (StringToolKit.isBlank(newwxopenid))
 		{
 			return null;
 		}
@@ -272,11 +272,47 @@ public class MemberService extends SkynetNameEntityService<Member>
 		String memberid = (String) map.get("memberid");
 
 		StringBuffer sql = new StringBuffer();
-		sql.append(" select * from t_app_order ").append("\n");
-		sql.append("  where 1 = 1 ").append("\n");
-		sql.append("    and memberid = ").append(SQLParser.charValue(memberid)).append("\n");
-		// 增加查询过滤条件
-		sql.append("  order by ordertime desc ").append("\n");
+
+		// 后期增加 付款前按照商品实时价格查询，付款后按照订单商品价格查询
+		
+		sql.append(" select id, cno, membercname, takeaddress, state, sum(amount) amount ").append("\n");
+		sql.append(" from ( ").append("\n");
+		sql.append(		
+				" select vorder.id, vorder.cno, vorder.membercname, vorder.takeaddress, vorder.state, (ordergoods.nums * price.promoteprice) amount ")
+				.append("\n");
+		sql.append(" from t_app_order vorder, t_app_ordergoods ordergoods, t_app_goodsprice price ").append("\n");
+		sql.append(" where 1 = 1 ").append("\n");
+		sql.append("     and ordergoods.goodsid = price.goodsid ").append("\n");
+		sql.append("     and ordergoods.eventitemgoodsid is not null ").append("\n");
+		sql.append("     and ordergoods.eventitemgoodsid = price.eventitemgoodsid ").append("\n");
+		sql.append("     and vorder.id = ordergoods.orderid ").append("\n");
+		sql.append("     and vorder.state = '下单' ").append("\n");
+		sql.append("     and vorder.memberid = ").append(SQLParser.charValue(memberid)).append("\n");
+		sql.append(" union ").append("\n");
+		sql.append(
+				" select vorder.id, vorder.cno, vorder.membercname, vorder.takeaddress, vorder.state, (ordergoods.nums * price.promoteprice) amount ")
+				.append("\n");
+		sql.append(" from t_app_order vorder, t_app_ordergoods ordergoods, t_app_goodsprice price ").append("\n");
+		sql.append(" where 1 = 1 ").append("\n");
+		sql.append("     and vorder.id = ordergoods.orderid ").append("\n");
+		sql.append("     and ordergoods.eventitemgoodsid is null  ").append("\n");
+		sql.append("     and ordergoods.goodsid = price.goodsid ").append("\n");
+		sql.append("     and price.isdefault = '是' ").append("\n");
+		sql.append("     and vorder.state = '下单' ").append("\n");
+		sql.append("     and vorder.memberid = ").append(SQLParser.charValue(memberid)).append("\n");
+		sql.append(" ) v ").append("\n");
+		sql.append(" group by id, cno, membercname, takeaddress, state ").append("\n");
+		
+		sql.append(" union ").append("\n");
+		sql.append(
+				" select vorder.id, vorder.cno, vorder.membercname, vorder.takeaddress, vorder.state, sum(ordergoods.nums * ordergoods.realprice) amount ")				.append("\n");
+		sql.append(" from t_app_order vorder, t_app_ordergoods ordergoods ").append("\n");
+		sql.append(" where 1 = 1 ").append("\n");
+		sql.append("     and vorder.id = ordergoods.orderid ").append("\n");
+		sql.append("     and vorder.state <> '下单' ").append("\n");
+		sql.append("     and vorder.memberid = ").append(SQLParser.charValue(memberid)).append("\n");
+		sql.append("  group by vorder.id, vorder.cno, vorder.membercname, vorder.takeaddress, vorder.state ").append("\n");
+		sql.append("   order by cno ").append("\n");
 
 		List<DynamicObject> datas = sdao().queryForList(sql.toString(), startindex, endindex);
 
@@ -342,7 +378,7 @@ public class MemberService extends SkynetNameEntityService<Member>
 		sql.append(" from t_app_ordergoodsrebate rebate, t_app_order morder ").append("\n");
 		sql.append("  where 1 = 1 ").append("\n");
 		sql.append("    and rebate.ordercno = morder.cno ").append("\n");
-		
+
 		sql.append(where_sum(map));
 
 		int score = Types.parseInt(queryForMap(sql.toString()).getFormatAttr("score"), 0);
@@ -366,7 +402,7 @@ public class MemberService extends SkynetNameEntityService<Member>
 		sql.append("    and rebate.ordercno = morder.cno").append("\n");
 
 		sql.append(where_sum(map));
-		
+
 		sql.append("  group by rebate.submemberid, member.cno, member.cname ").append("\n");
 		sql.append("  order by member.cname, member.cno desc ").append("\n");
 
@@ -390,9 +426,9 @@ public class MemberService extends SkynetNameEntityService<Member>
 		sql.append("    and rebate.ordergoodsid = ordergoods.id ").append("\n");
 		sql.append("    and ordergoods.goodsid = goods.id ").append("\n");
 		sql.append("    and rebate.ordercno = morder.cno ").append("\n");
-		
-		sql.append(where_sum(map));		
-		
+
+		sql.append(where_sum(map));
+
 		sql.append("  group by goods.id, goods.cname, goods.pic ").append("\n");
 		sql.append("  order by goods.cname desc ").append("\n");
 
@@ -415,8 +451,8 @@ public class MemberService extends SkynetNameEntityService<Member>
 		sql.append("  where 1 = 1 ").append("\n");
 		sql.append("    and rebate.ordergoodsid = ordergoods.id ").append("\n");
 		sql.append("    and ordergoods.orderid = morder.id ").append("\n");
-		
-		sql.append(where_sum(map));				
+
+		sql.append(where_sum(map));
 
 		sql.append("  group by morder.id, morder.cno, morder.membercname, morder.ordertime ").append("\n");
 		sql.append("  order by morder.ordertime desc ").append("\n");
@@ -425,7 +461,7 @@ public class MemberService extends SkynetNameEntityService<Member>
 
 		return datas;
 	}
-	
+
 	private String where_sum(Map map)
 	{
 		int page = Types.parseInt((String) map.get("_page"), 1);
@@ -437,19 +473,19 @@ public class MemberService extends SkynetNameEntityService<Member>
 		String memberid = (String) map.get("memberid");
 		String rebatetimebegin = (String) map.get("rebatetimebegin");
 		String rebatetimeend = (String) map.get("rebatetimeend");
-		
+
 		String orderstatebegin = (String) map.get("orderstatebegin");
 		String orderstateend = (String) map.get("orderstateend");
 		String orderstate = (String) map.get("orderstate");
-		
-		String drawstatebegin = (String) map.get("drawstatebegin");		
+
+		String drawstatebegin = (String) map.get("drawstatebegin");
 		String drawstateend = (String) map.get("drawstateend");
-		String drawstate = (String) map.get("drawstate");		
+		String drawstate = (String) map.get("drawstate");
 
 		StringBuffer sql = new StringBuffer();
-		
+
 		sql.append("    and rebate.supmemberid = ").append(SQLParser.charValue(memberid)).append("\n");
-		
+
 		if (!StringToolKit.isBlank(rebatetimebegin))
 		{
 			sql.append(" and rebate.rebatetime >= ").append(SQLParser.charValue(rebatetimebegin)).append("\n");
@@ -459,7 +495,7 @@ public class MemberService extends SkynetNameEntityService<Member>
 		{
 			sql.append(" and rebate.rebatetime < ").append(SQLParser.charValue(rebatetimeend)).append("\n");
 		}
-		
+
 		if (!StringToolKit.isBlank(orderstate))
 		{
 			sql.append(" and morder.state = ").append(SQLParser.charValue(orderstate)).append("\n");
@@ -478,10 +514,10 @@ public class MemberService extends SkynetNameEntityService<Member>
 				sql.append(" and morder.state in (").append(states).append(")").append("\n");
 			}
 		}
-		
+
 		if (!StringToolKit.isBlank(drawstate))
 		{
-			if("NULL".equals(drawstate))
+			if ("NULL".equals(drawstate))
 			{
 				sql.append(" and rebate.state is null").append("\n");
 			}
@@ -504,7 +540,7 @@ public class MemberService extends SkynetNameEntityService<Member>
 				sql.append(" and rebate.state in (").append(states).append(")").append("\n").append("\n");
 			}
 		}
-		
+
 		return sql.toString();
 	}
 

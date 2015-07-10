@@ -42,7 +42,7 @@
 						<div class="s-item">
 							<div class="sitem-l" id="goodslist">
 								<#list obj.ordergoodses as goods>
-								<input type="hidden" name="ordergoodsid" value="${goods.id}">
+								<#--<input type="hidden" name="ordergoodsid" value="${goods.id}"> -->
 								<div class="sl-img">
 									<img src="${base}/${goods.goodspic}">
 								</div>
@@ -75,15 +75,25 @@
 						</a>	
 					</div>
 				</div>
+				
+				<#assign amountsale=0>
+				<#assign amountpromote=0>
+				<#assign amountreal=0>
+
+				<#list obj.ordergoodses as goods>
+					<#assign amountsale = amountsale + goods.amountsale?number>
+					<#assign amountpromote = amountpromote + goods.amountpromote?number>
+					<#assign amountreal = amountreal + goods.amountreal?number>					
+				</#list>
 
 				<div class="step5 border-1px" id="carriage_info" style="margin-bottom: 3.125em;">
 					<div class="s-item">
 						<div class="sitem-l">实付总额：</div>
-						<div class="sitem-r">￥${obj.order.amount?number}</div>
+						<div class="sitem-r">￥${amountpromote?number}</div>
 					</div>
 				<div class="s-item">
-					<div class="sitem-l">原价总额/折扣价总额：</div>
-					<div class="sitem-r" style="color:#cecece">￥${obj.order.amountsale?number}/${obj.order.amountpromote?number}</div>
+					<div class="sitem-l">原价总额/活动优惠价总额：</div>
+					<div class="sitem-r" style="color:#cecece">￥${amountsale?number}/${amountpromote?number}</div>
 				</div>					
 					<div class="s-item">
 						<div class="sitem-l">运费：</div>
@@ -94,7 +104,8 @@
 			</div>
 
 			<div class="pay-bar" id="pay-bar">
-				<div class="payb-con">实付款：<span id="payMoney">￥${obj.order.amount?number?string("0.00")}</span></div>
+
+				<div class="payb-con">实付款：<span id="payMoney">￥${amountpromote?string("0.00")}</span></div>
 				<#if obj.order.state=="下单">
 				<a id="btn_pay" class="payb-btn" href="javascript:void(0);">订单付款</a>
 				<#else>

@@ -34,6 +34,8 @@
            		</div>
        		</div>
        		
+
+       		
 			<div class="cart-product-cell-3">
         		<p>￥<span style="font-size:18px;color:#ff6666">${order.amount?number?string("0.00")}</span></p>
         		<p><span style="font-size:12px;color:#aeaede">${order.state}</span></p>

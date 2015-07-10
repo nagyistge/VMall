@@ -249,6 +249,11 @@ public class OrderAction extends BaseAction
 			remap.put("message", "亲，这个订单已不在下单环节，不能付款，看看你是不是已经付过款了。");
 			return remap;
 		}
+		
+		String orderid = orderService.locateBy(Cnd.where("cno", "=", orderno)).getFormatAttr("id");
+		// 更新订单商品价格和金额
+		orderService.pay(orderid, login_token);
+		
 
 		String userwxopenid = login_token.getFormatAttr(GlobalConstants.sys_login_userwxopenid);
 		String url = "http://" + VMallConstants.svr_domianname + "/" + VMallConstants.app_webcontext + "/order/order/paynotify.action";

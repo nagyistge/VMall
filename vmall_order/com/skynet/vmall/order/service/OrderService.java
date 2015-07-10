@@ -1,5 +1,7 @@
 package com.skynet.vmall.order.service;
 
+import java.lang.reflect.Method;
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.List;
@@ -9,22 +11,35 @@ import org.nutz.dao.Chain;
 import org.nutz.dao.Cnd;
 import org.nutz.dao.Dao;
 import org.nutz.ioc.annotation.InjectName;
+import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.lang.Lang;
 
+import com.skynet.framework.common.generator.UUIDGenerator;
 import com.skynet.framework.service.SkynetNameEntityService;
 import com.skynet.framework.services.db.SQLParser;
 import com.skynet.framework.services.db.dybeans.DynamicObject;
 import com.skynet.framework.services.function.StringToolKit;
 import com.skynet.framework.services.function.Types;
+import com.skynet.framework.spec.GlobalConstants;
 import com.skynet.vmall.base.constants.VMallConstants;
+import com.skynet.vmall.base.pojo.Goods;
+import com.skynet.vmall.base.pojo.Member;
 import com.skynet.vmall.base.pojo.Order;
+import com.skynet.vmall.base.pojo.OrderGoods;
+import com.skynet.vmall.base.pojo.OrderGoodsRebate;
+import com.skynet.vmall.goods.service.GoodsService;
+import com.skynet.vmall.member.service.MemberService;
 
 @InjectName("orderService")
 @IocBean(args =
 { "refer:dao" })
 public class OrderService extends SkynetNameEntityService<Order>
 {
+	
+	@Inject
+	GoodsService goodsService;
+	
 	public OrderService()
 	{
 		super();
@@ -52,14 +67,58 @@ public class OrderService extends SkynetNameEntityService<Order>
 		String batchno = (String) map.get("batchno");
 		
 		StringBuffer sql = new StringBuffer();
-		sql.append(" select * from t_app_order vorder ").append("\n");
-		sql.append("  where 1 = 1 ").append("\n");
-
+		sql.append(" select id, cno, membercname, takeaddress, state, sum(amount) amount ").append("\n");
+		sql.append(" from ( ").append("\n");
+		sql.append(		
+				" select vorder.id, vorder.cno, vorder.membercname, vorder.takeaddress, vorder.state, (ordergoods.nums * price.promoteprice) amount ")
+				.append("\n");
+		sql.append(" from t_app_order vorder, t_app_ordergoods ordergoods, t_app_goodsprice price ").append("\n");
+		sql.append(" where 1 = 1 ").append("\n");
+		sql.append("     and ordergoods.goodsid = price.goodsid ").append("\n");
+		sql.append("     and ordergoods.eventitemgoodsid is not null ").append("\n");
+		sql.append("     and ordergoods.eventitemgoodsid = price.eventitemgoodsid ").append("\n");
+		sql.append("     and vorder.id = ordergoods.orderid ").append("\n");
+		sql.append("     and vorder.state = '下单' ").append("\n");
 		// 增加查询过滤条件
 		if (!StringToolKit.isBlank(batchno))
 		{
 			sql.append("  and vorder.batchno = ").append(SQLParser.charValue(batchno)).append("\n");
 		}
+		sql.append(" union ").append("\n");
+		sql.append(
+				" select vorder.id, vorder.cno, vorder.membercname, vorder.takeaddress, vorder.state, (ordergoods.nums * price.promoteprice) amount ")
+				.append("\n");
+		sql.append(" from t_app_order vorder, t_app_ordergoods ordergoods, t_app_goodsprice price ").append("\n");
+		sql.append(" where 1 = 1 ").append("\n");
+		sql.append("     and vorder.id = ordergoods.orderid ").append("\n");
+		sql.append("     and ordergoods.eventitemgoodsid is null  ").append("\n");
+		sql.append("     and ordergoods.goodsid = price.goodsid ").append("\n");
+		sql.append("     and price.isdefault = '是' ").append("\n");
+		sql.append("     and vorder.state = '下单' ").append("\n");
+		// 增加查询过滤条件
+		if (!StringToolKit.isBlank(batchno))
+		{
+			sql.append("  and vorder.batchno = ").append(SQLParser.charValue(batchno)).append("\n");
+		}
+		sql.append(" ) v ").append("\n");
+		sql.append(" group by id, cno, membercname, takeaddress, state ").append("\n");
+		
+		sql.append(" union ").append("\n");
+		sql.append(
+				" select vorder.id, vorder.cno, vorder.membercname, vorder.takeaddress, vorder.state, sum(ordergoods.nums * ordergoods.realprice) amount ")				.append("\n");
+		sql.append(" from t_app_order vorder, t_app_ordergoods ordergoods ").append("\n");
+		sql.append(" where 1 = 1 ").append("\n");
+		sql.append("     and vorder.id = ordergoods.orderid ").append("\n");
+		sql.append("     and vorder.state <> '下单' ").append("\n");
+		// 增加查询过滤条件
+		if (!StringToolKit.isBlank(batchno))
+		{
+			sql.append("  and vorder.batchno = ").append(SQLParser.charValue(batchno)).append("\n");
+		}
+		sql.append("  group by vorder.id, vorder.cno, vorder.membercname, vorder.takeaddress, vorder.state ").append("\n");
+		sql.append("   order by cno ").append("\n");
+
+
 		
 		List<DynamicObject> datas = sdao().queryForList(sql.toString(), startindex, endindex);
 
@@ -105,6 +164,130 @@ public class OrderService extends SkynetNameEntityService<Order>
 
 		return map;
 	}
+	
+	// 付款
+	public void pay(String orderid, DynamicObject login_token) throws Exception
+	{
+		
+		if(StringToolKit.isBlank(orderid))
+		{
+			throw new Exception("订单未找到，请核实订单。");
+		}
+		
+		String userid = login_token.getFormatAttr(GlobalConstants.sys_login_userid);
+		String userwxopenid = login_token.getFormatAttr(GlobalConstants.sys_login_userwxopenid);
+		String username = login_token.getFormatAttr(GlobalConstants.sys_login_username);
+		
+		Order order = sdao().fetch(Order.class, orderid);
+		
+		List<OrderGoods> ordergoodses = sdao().query(OrderGoods.class, Cnd.where("orderid", "=", orderid));
+		for(int i=0;i<ordergoodses.size();i++)
+		{
+			// 再次检查数量，防止非法数量；	
+			int nums = ordergoodses.get(i).getNums();
+			if(nums<=0)
+			{
+				continue;
+			}
+			
+			OrderGoods ordergoods = ordergoodses.get(i);
+			String goodsid = ordergoods.getGoodsid();
+			Goods goods = sdao().fetch(Goods.class, goodsid);
+			
+			MemberService memberService = new MemberService(sdao(), Member.class);
+			List<DynamicObject> supmembers = memberService.findsupmembers(userid, MemberService.level_rebate);
+
+			// 如正常购买，单价、金额应为下订单时的商品实时价格
+			// 如为参加活动购买，单价、金额应为活动的商品实时价格
+			String eventitemgoodsid = ordergoods.getEventitemgoodsid();
+			if(StringToolKit.isBlank(eventitemgoodsid))
+			{
+				ordergoods.setSaleprice(goods.getSaleprice());
+				ordergoods.setPromoteprice(goods.getPromoteprice());
+				ordergoods.setRealprice(goods.getPromoteprice());				
+			}
+			else
+			{
+				DynamicObject goodsprice = goodsService.getPrice(new DynamicObject(new String[]{"goodsid","eventitemgoodsid"}, new String[]{goodsid, eventitemgoodsid}));
+				ordergoods.setSaleprice(new BigDecimal(goodsprice.getFormatAttr("saleprice"))); // 销售价（原价）
+				ordergoods.setPromoteprice(new BigDecimal(goodsprice.getFormatAttr("promoteprice"))); // 促销价（现价）
+				ordergoods.setRealprice(new BigDecimal(goodsprice.getFormatAttr("promoteprice")));					
+			}
+			
+			BigDecimal amountsale = ordergoods.getSaleprice().multiply(new BigDecimal(ordergoods.getNums()));
+			BigDecimal amountpromote = ordergoods.getPromoteprice().multiply(new BigDecimal(ordergoods.getNums()));
+			BigDecimal amountreal = ordergoods.getRealprice().multiply(new BigDecimal(ordergoods.getNums()));				
+			
+			ordergoods.setAmountsale(amountsale);
+			ordergoods.setAmountpromote(amountpromote);
+			ordergoods.setAmountreal(amountreal);
+			
+			// 更新返利
+			for(int j=0;j<supmembers.size();j++)
+			{
+				DynamicObject supmember = supmembers.get(j);
+				int level = j + 1;
+				
+				Method mog_setrebate = OrderGoods.class.getMethod("setRebate"+level, BigDecimal.class);
+				Method mog_setsupwxopenid = OrderGoods.class.getMethod("setSupwxopenid"+level, String.class);
+				Method mog_setsupmemberid = OrderGoods.class.getMethod("setSupmemberid"+level, String.class);
+				
+				Method mg = Goods.class.getMethod("getRebate"+level);
+				mog_setrebate.invoke(ordergoods, mg.invoke(goods));
+				mog_setsupwxopenid.invoke(ordergoods, supmember.getFormatAttr("wxopenid"));
+				mog_setsupmemberid.invoke(ordergoods, supmember.getFormatAttr("id"));
+			}
+			
+			sdao().update(ordergoods); 
+
+			sdao().clear(OrderGoodsRebate.class, Cnd.where("ordercno", "=", order.getCno()));
+			for(int j=0;j<supmembers.size();j++)
+			{
+				String supmemberid = supmembers.get(j).getFormatAttr("id");
+				String supwxopenid = supmembers.get(j).getFormatAttr("wxopenid");
+				String supmembercname = supmembers.get(j).getFormatAttr("cname");
+				int level = j + 1;
+				
+				// 生成订单商品返利记录
+				OrderGoodsRebate orderrebate = new OrderGoodsRebate();
+				String orderrebateid = UUIDGenerator.getInstance().getNextValue();			
+				orderrebate.setId(orderrebateid);
+				orderrebate.setOrdercno(order.getCno());
+				orderrebate.setOrdergoodsid(ordergoods.getGoodsid());
+				orderrebate.setOrdergoodsname(ordergoods.getGoodsname());
+				orderrebate.setSupmemberid(supmemberid);
+				orderrebate.setSupwxopenid(supwxopenid);
+				orderrebate.setSupmembercname(supmembercname);
+				orderrebate.setSubmemberid(userid);
+				orderrebate.setSubwxopenid(userwxopenid);
+				orderrebate.setSubmembercname(username);
+				orderrebate.setLevel(level);
+				
+				Method m = Goods.class.getMethod("getRebate"+level);
+				orderrebate.setRebate((BigDecimal)m.invoke(goods));
+				orderrebate.setNums(ordergoods.getNums());
+				orderrebate.setScore(orderrebate.getRebate().multiply(new BigDecimal(ordergoods.getNums())));
+				orderrebate.setRebatetime(new Timestamp(System.currentTimeMillis()));
+				sdao().insert(orderrebate);
+			}
+		}
+		
+		// 订单合计信息
+		StringBuffer sql = new StringBuffer();
+		sql.append(" select sum(saleprice * nums) amountsale, sum(promoteprice * nums) amountpromote, sum(realprice * nums) amount ");
+		sql.append("   from t_app_ordergoods goods ").append("\n");
+		sql.append("  where 1 = 1 ").append("\n");
+		sql.append("    and goods.orderid = ").append(SQLParser.charValue(orderid)).append("\n");
+		
+		DynamicObject amounts = sdao().queryForMap(sql.toString());
+		BigDecimal amountsale_all = new BigDecimal(Types.parseInt(amounts.getFormatAttr("amountsale"), 0));
+		BigDecimal amountpromote_all = new BigDecimal(Types.parseInt(amounts.getFormatAttr("amountpromote"), 0));
+		BigDecimal amount_all = new BigDecimal(Types.parseInt(amounts.getFormatAttr("amount"), 0));
+		order.setAmountsale(amountsale_all);
+		order.setAmountpromote(amountpromote_all);
+		order.setAmount(amount_all);
+		sdao().update(order);	
+	}	
 
 	// 付款处理
 	public Map paynotify(Map form) throws Exception

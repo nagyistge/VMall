@@ -44,10 +44,13 @@ public class OrderGoods extends IdEntity
 	private String eventname; // 参与活动名称
 	
 	@Column
-	private String eventitemid; // 参与子活动标识
+	private String eventitemid; // 参与活动项目标识
 	
 	@Column
-	private String eventitemtitle; // 参与子活动标题	
+	private String eventitemname; // 参与活动项目标题
+	
+	@Column
+	private String eventitemgoodsid; // 参与活动项目商品标识
 	
 	@Column
 	private int nums ; // 数量
@@ -238,14 +241,24 @@ public class OrderGoods extends IdEntity
 		this.eventitemid = eventitemid;
 	}
 
-	public String getEventitemtitle()
+	public String getEventitemname()
 	{
-		return eventitemtitle;
+		return eventitemname;
 	}
 
-	public void setEventitemtitle(String eventitemtitle)
+	public void setEventitemname(String eventitemname)
 	{
-		this.eventitemtitle = eventitemtitle;
+		this.eventitemname = eventitemname;
+	}
+
+	public String getEventitemgoodsid()
+	{
+		return eventitemgoodsid;
+	}
+
+	public void setEventitemgoodsid(String eventitemgoodsid)
+	{
+		this.eventitemgoodsid = eventitemgoodsid;
 	}
 
 	public int getNums()
@@ -477,5 +490,5 @@ public class OrderGoods extends IdEntity
 	{
 		this.supmemberid5 = supmemberid5;
 	}
-
+	
 }

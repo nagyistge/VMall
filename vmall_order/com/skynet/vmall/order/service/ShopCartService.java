@@ -355,90 +355,93 @@ public class ShopCartService extends SkynetNameEntityService<ShopCart>
 			ordergoods.setMemberid(userid);
 			ordergoods.setWxopenid(userwxopenid);
 			ordergoods.setSellerid(dealid);
+			ordergoods.setState("下单");
 			
 			ordergoods.setGoodsid(cartgoods.getGoodsid());
 			ordergoods.setGoodsname(cartgoods.getGoodsname());
 
 			ordergoods.setNums(nums);
-			ordergoods.setSaleprice(goods.getSaleprice());
-			ordergoods.setPromoteprice(goods.getPromoteprice());
-			ordergoods.setRealprice(goods.getPromoteprice());
-			ordergoods.setState("下单");
+			ordergoods.setEventitemgoodsid(cartgoods.getEventitemgoodsid());
 			
-			BigDecimal amountsale = goods.getSaleprice().multiply(new BigDecimal(ordergoods.getNums()));
-			BigDecimal amountpromote = goods.getPromoteprice().multiply(new BigDecimal(ordergoods.getNums()));
-			BigDecimal amountreal = goods.getPromoteprice().multiply(new BigDecimal(ordergoods.getNums()));				
-			
-			ordergoods.setAmountsale(amountsale);
-			ordergoods.setAmountpromote(amountpromote);
-			ordergoods.setAmountreal(amountreal);
-			
-			for(int j=0;j<supmembers.size();j++)
-			{
-				DynamicObject supmember = supmembers.get(j);
-				int level = j + 1;
-				
-				Method mog_setrebate = OrderGoods.class.getMethod("setRebate"+level, BigDecimal.class);
-				Method mog_setsupwxopenid = OrderGoods.class.getMethod("setSupwxopenid"+level, String.class);
-				Method mog_setsupmemberid = OrderGoods.class.getMethod("setSupmemberid"+level, String.class);
-				
-				Method mg = Goods.class.getMethod("getRebate"+level);
-				mog_setrebate.invoke(ordergoods, mg.invoke(goods));
-				mog_setsupwxopenid.invoke(ordergoods, supmember.getFormatAttr("wxopenid"));
-				mog_setsupmemberid.invoke(ordergoods, supmember.getFormatAttr("id"));
-			}
-			
+			// 单价、金额应为下订单时的商品实时价格
+//			ordergoods.setSaleprice(goods.getSaleprice());
+//			ordergoods.setPromoteprice(goods.getPromoteprice());
+//			ordergoods.setRealprice(goods.getPromoteprice());
+//
+//			BigDecimal amountsale = goods.getSaleprice().multiply(new BigDecimal(ordergoods.getNums()));
+//			BigDecimal amountpromote = goods.getPromoteprice().multiply(new BigDecimal(ordergoods.getNums()));
+//			BigDecimal amountreal = goods.getPromoteprice().multiply(new BigDecimal(ordergoods.getNums()));				
+//			
+//			ordergoods.setAmountsale(amountsale);
+//			ordergoods.setAmountpromote(amountpromote);
+//			ordergoods.setAmountreal(amountreal);
+//			
+//			for(int j=0;j<supmembers.size();j++)
+//			{
+//				DynamicObject supmember = supmembers.get(j);
+//				int level = j + 1;
+//				
+//				Method mog_setrebate = OrderGoods.class.getMethod("setRebate"+level, BigDecimal.class);
+//				Method mog_setsupwxopenid = OrderGoods.class.getMethod("setSupwxopenid"+level, String.class);
+//				Method mog_setsupmemberid = OrderGoods.class.getMethod("setSupmemberid"+level, String.class);
+//				
+//				Method mg = Goods.class.getMethod("getRebate"+level);
+//				mog_setrebate.invoke(ordergoods, mg.invoke(goods));
+//				mog_setsupwxopenid.invoke(ordergoods, supmember.getFormatAttr("wxopenid"));
+//				mog_setsupmemberid.invoke(ordergoods, supmember.getFormatAttr("id"));
+//			}
+//			
 			sdao().insert(ordergoods); 
-
-			for(int j=0;j<supmembers.size();j++)
-			{
-				String supmemberid = supmembers.get(j).getFormatAttr("id");
-				String supwxopenid = supmembers.get(j).getFormatAttr("wxopenid");
-				String supmembercname = supmembers.get(j).getFormatAttr("cname");
-				int level = j + 1;
-				
-				// 生成订单商品返利记录
-				OrderGoodsRebate orderrebate = new OrderGoodsRebate();
-				String orderrebateid = UUIDGenerator.getInstance().getNextValue();			
-				orderrebate.setId(orderrebateid);
-				orderrebate.setOrdercno(order.getCno());
-				orderrebate.setOrdergoodsid(ordergoodsid);
-				orderrebate.setOrdergoodsname(cartgoods.getGoodsname());
-				orderrebate.setSupmemberid(supmemberid);
-				orderrebate.setSupwxopenid(supwxopenid);
-				orderrebate.setSupmembercname(supmembercname);
-				orderrebate.setSubmemberid(userid);
-				orderrebate.setSubwxopenid(userwxopenid);
-				orderrebate.setSubmembercname(username);
-				orderrebate.setLevel(level);
-				
-				Method m = Goods.class.getMethod("getRebate"+level);
-				orderrebate.setRebate((BigDecimal)m.invoke(goods));
-				orderrebate.setNums(ordergoods.getNums());
-				orderrebate.setScore(orderrebate.getRebate().multiply(new BigDecimal(ordergoods.getNums())));
-				orderrebate.setRebatetime(new Timestamp(System.currentTimeMillis()));
-				sdao().insert(orderrebate);
-			}
+//
+//			for(int j=0;j<supmembers.size();j++)
+//			{
+//				String supmemberid = supmembers.get(j).getFormatAttr("id");
+//				String supwxopenid = supmembers.get(j).getFormatAttr("wxopenid");
+//				String supmembercname = supmembers.get(j).getFormatAttr("cname");
+//				int level = j + 1;
+//				
+//				// 生成订单商品返利记录
+//				OrderGoodsRebate orderrebate = new OrderGoodsRebate();
+//				String orderrebateid = UUIDGenerator.getInstance().getNextValue();			
+//				orderrebate.setId(orderrebateid);
+//				orderrebate.setOrdercno(order.getCno());
+//				orderrebate.setOrdergoodsid(ordergoodsid);
+//				orderrebate.setOrdergoodsname(cartgoods.getGoodsname());
+//				orderrebate.setSupmemberid(supmemberid);
+//				orderrebate.setSupwxopenid(supwxopenid);
+//				orderrebate.setSupmembercname(supmembercname);
+//				orderrebate.setSubmemberid(userid);
+//				orderrebate.setSubwxopenid(userwxopenid);
+//				orderrebate.setSubmembercname(username);
+//				orderrebate.setLevel(level);
+//				
+//				Method m = Goods.class.getMethod("getRebate"+level);
+//				orderrebate.setRebate((BigDecimal)m.invoke(goods));
+//				orderrebate.setNums(ordergoods.getNums());
+//				orderrebate.setScore(orderrebate.getRebate().multiply(new BigDecimal(ordergoods.getNums())));
+//				orderrebate.setRebatetime(new Timestamp(System.currentTimeMillis()));
+//				sdao().insert(orderrebate);
+//			}
 			
 			// 清除购物车商品
 			sdao().delete(cartgoods);
 		}
 		
 		// 订单合计信息
-		StringBuffer sql = new StringBuffer();
-		sql.append(" select sum(saleprice * nums) amountsale, sum(promoteprice * nums) amountpromote, sum(realprice * nums) amount ");
-		sql.append("   from t_app_ordergoods goods ").append("\n");
-		sql.append("  where 1 = 1 ").append("\n");
-		sql.append("    and goods.orderid = ").append(SQLParser.charValue(orderid)).append("\n");
-		
-		DynamicObject amounts = sdao().queryForMap(sql.toString());
-		BigDecimal amountsale_all = new BigDecimal(Types.parseInt(amounts.getFormatAttr("amountsale"), 0));
-		BigDecimal amountpromote_all = new BigDecimal(Types.parseInt(amounts.getFormatAttr("amountpromote"), 0));
-		BigDecimal amount_all = new BigDecimal(Types.parseInt(amounts.getFormatAttr("amount"), 0));
-		order.setAmountsale(amountsale_all);
-		order.setAmountpromote(amountpromote_all);
-		order.setAmount(amount_all);
-		sdao().update(order);	
+//		StringBuffer sql = new StringBuffer();
+//		sql.append(" select sum(saleprice * nums) amountsale, sum(promoteprice * nums) amountpromote, sum(realprice * nums) amount ");
+//		sql.append("   from t_app_ordergoods goods ").append("\n");
+//		sql.append("  where 1 = 1 ").append("\n");
+//		sql.append("    and goods.orderid = ").append(SQLParser.charValue(orderid)).append("\n");
+//		
+//		DynamicObject amounts = sdao().queryForMap(sql.toString());
+//		BigDecimal amountsale_all = new BigDecimal(Types.parseInt(amounts.getFormatAttr("amountsale"), 0));
+//		BigDecimal amountpromote_all = new BigDecimal(Types.parseInt(amounts.getFormatAttr("amountpromote"), 0));
+//		BigDecimal amount_all = new BigDecimal(Types.parseInt(amounts.getFormatAttr("amount"), 0));
+//		order.setAmountsale(amountsale_all);
+//		order.setAmountpromote(amountpromote_all);
+//		order.setAmount(amount_all);
+//		sdao().update(order);	
 		
 		return order.getId();
 	}
