@@ -157,8 +157,12 @@ public class ShopCartService extends SkynetNameEntityService<ShopCart>
 		{
 			cartgoods.setId(UUIDGenerator.getInstance().getNextValue());
 			cartgoods.setShopcartid(cart.getId());
+
 			cartgoods.setMemberid(""); // 商品经销商会员标识
 			cartgoods.setWxopenid(""); // 商品经销商会员微信标识
+			cartgoods.setDealerid(goods.getDealerid());// 商家标识（组织机构）
+			cartgoods.setDealername(goods.getDealername()); // 商家名称	
+			
 			cartgoods.setGoodsid(goodsid);
 			cartgoods.setGoodsname(goods.getCname());
 			cartgoods.setNums(nums);	
