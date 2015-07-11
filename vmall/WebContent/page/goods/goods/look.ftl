@@ -525,7 +525,7 @@ function page_addtocart()
 			}
 			else
 			{
-				alert("添加至购物车失败！");
+				alert(json.message);
 			}
 		},
 		error:function(data)

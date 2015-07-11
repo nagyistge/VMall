@@ -23,6 +23,7 @@ import com.skynet.framework.services.db.dybeans.DynamicObject;
 import com.skynet.framework.services.function.StringToolKit;
 import com.skynet.framework.services.function.Types;
 import com.skynet.framework.spec.GlobalConstants;
+import com.skynet.vmall.base.pojo.EventItemGoods;
 import com.skynet.vmall.base.pojo.Goods;
 import com.skynet.vmall.base.pojo.Member;
 import com.skynet.vmall.base.pojo.Order;
@@ -119,10 +120,27 @@ public class ShopCartService extends SkynetNameEntityService<ShopCart>
 			cart = sdao().fetch(ShopCart.class, userid);
 		}
 		
+		//  检查商品是否活动商品；
+		//  是否个人限购数量已满；是否投放数量是否已满；
+		EventItemGoods eventitemgoods = sdao().fetch(EventItemGoods.class, eventitemgoodsid);
 		Goods goods = sdao().fetch(Goods.class, goodsid);
 		
-		ShopCartGoods cartgoods = new ShopCartGoods();
+		if(!StringToolKit.isBlank(eventitemgoodsid))
+		{
+			int odd_buynums_shopcart = 0;
+			odd_buynums_shopcart=check_over_shopcart_event_buynums(userid, goodsid, nums, eventitemgoodsid);
+			if(odd_buynums_shopcart==0)
+			{
+				Map remap = new DynamicObject();
+				remap.put("state", "error");
+				remap.put("message", "亲，你想要的"+goods.getCname()+"已经超过限购数量了，不能再买了哦。");
+				return remap;
+			}
+			
+			nums = odd_buynums_shopcart;
+		}
 		
+		ShopCartGoods cartgoods = new ShopCartGoods();
 		// 检查是否已经有同款商品，如有，增加数量，否则，新增购物商品;
 		// 增加检查同款商品，活动不同，不合并
 		int hasnums = sdao().count(ShopCartGoods.class, Cnd.where("shopcartid","=",cart.getId()).and("goodsid", "=", goodsid).and("eventitemgoodsid", "=", eventitemgoodsid));		
@@ -198,11 +216,11 @@ public class ShopCartService extends SkynetNameEntityService<ShopCart>
 		
 		int cartgoodsnums = Types.parseInt(sdao().queryForMap(sql.toString()).getFormatAttr("nums"), 0);
 				
-		Map map = new DynamicObject();
-		map.put("state", "success");
-		map.put("shopcart", cart);
-		map.put("cartgoodsnum", cartgoodsnums);
-		return map;
+		Map remap = new DynamicObject();
+		remap.put("state", "success");
+		remap.put("shopcart", cart);
+		remap.put("cartgoodsnum", cartgoodsnums);
+		return remap;
 	}
 	
 	// 购物车结算。
@@ -301,6 +319,7 @@ public class ShopCartService extends SkynetNameEntityService<ShopCart>
 		String username = login_token.getFormatAttr(GlobalConstants.sys_login_username);
 		
 		Member member = sdao().fetch(Member.class, userid);
+
 		
 		Order order = new Order();
 
@@ -346,6 +365,7 @@ public class ShopCartService extends SkynetNameEntityService<ShopCart>
 			String cartgoodsid = shopcartgoodses.get(i).getFormatAttr("id");
 			ShopCartGoods cartgoods = sdao().fetch(ShopCartGoods.class, cartgoodsid);
 			Goods goods = sdao().fetch(Goods.class, cartgoods.getGoodsid());
+			String goodsid = goods.getId();
 			String goodsclassid = goods.getClassid();
 			
 			MemberService memberService = new MemberService(sdao(), Member.class);
@@ -450,15 +470,101 @@ public class ShopCartService extends SkynetNameEntityService<ShopCart>
 		return order.getId();
 	}
 	
-	// 抢购订单结算
-	public Map rushorder(DynamicObject form, DynamicObject login_token) throws Exception
+	// 返回真为超过限购数量
+	public int check_over_shopcart_event_buynums(String userid, String goodsid, int nums, String eventitemgoodsid) throws Exception
 	{
-
+		EventItemGoods eventitemgoods = sdao().fetch(EventItemGoods.class, eventitemgoodsid);
 		
-		Map remap = new DynamicObject();
-		remap.put("state", "success");
+		StringBuffer sql = new StringBuffer();
+		sql.append(" select sum(shopcartgoods.nums) nums ");
+		sql.append("   from t_app_shopcart shopcart, t_app_shopcartgoods shopcartgoods ").append("\n");
+		sql.append("  where 1 = 1 ").append("\n");
+		sql.append("    and shopcart.id = shopcartgoods.shopcartid ").append("\n");
+		sql.append("    and shopcart.memberid = ").append(SQLParser.charValue(userid));
+		sql.append("    and shopcartgoods.goodsid = ").append(SQLParser.charValue(goodsid)).append("\n");
+		sql.append("    and shopcartgoods.eventitemgoodsid = ").append(SQLParser.charValue(eventitemgoodsid)).append("\n");
 		
-		return remap;
+		int nums_buyed = Types.parseInt(sdao().queryForMap(sql.toString()).getFormatAttr("nums"),0);
+		int nums_all = eventitemgoods.getBuynums().intValue();
+		int odd = nums_buyed - nums_all;
+		if(odd>=0)
+		{
+			return 0;
+		}
+		
+		if(nums_buyed + nums > nums_all)
+		{
+			return Math.abs(odd);
+		}
+		else
+		{
+			return nums;
+		}
 	}
+	
+	public int check_over_event_buynums(String userid, String goodsid, int nums, String eventitemgoodsid) throws Exception
+	{
+		EventItemGoods eventitemgoods = sdao().fetch(EventItemGoods.class, eventitemgoodsid);
+		
+		StringBuffer sql = new StringBuffer();
+		sql.append(" select sum(ordergoods.nums) nums ");
+		sql.append("   from t_app_order vorder, t_app_ordergoods ordergoods ").append("\n");
+		sql.append("  where 1 = 1 ").append("\n");
+		sql.append("    and vorder.id = ordergoods.orderid ").append("\n");
+		sql.append("    and vorder.memberid = ").append(SQLParser.charValue(userid));
+		sql.append("    and vorder.state <> '下单' ").append("\n");
+		sql.append("    and ordergoods.goodsid = ").append(SQLParser.charValue(goodsid)).append("\n");
+		sql.append("    and ordergoods.eventitemgoodsid = ").append(SQLParser.charValue(eventitemgoodsid)).append("\n");
+		
+		int nums_buyed = Types.parseInt(sdao().queryForMap(sql.toString()).getFormatAttr("nums"),0);
+		int nums_all = eventitemgoods.getBuynums().intValue();
+		int odd = nums_buyed - nums_all;
+		if(odd>=0)
+		{
+			return 0;
+		}
+		
+		if(nums_buyed + nums > nums_all)
+		{
+			return Math.abs(odd);
+		}
+		else
+		{
+			return nums;
+		}
+	}
+	
+	public int check_over_event_allnums(String goodsid, int nums, String eventitemgoodsid) throws Exception
+	{
+		EventItemGoods eventitemgoods = sdao().fetch(EventItemGoods.class, eventitemgoodsid);
+		
+		StringBuffer sql = new StringBuffer();
+		sql.append(" select  sum(ordergoods.nums) nums ");
+		sql.append("   from t_app_order vorder, t_app_ordergoods ordergoods ").append("\n");
+		sql.append("  where 1 = 1 ").append("\n");
+		sql.append("    and vorder.id = ordergoods.orderid ").append("\n");
+		sql.append("    and vorder.state <> '下单' ").append("\n");
+		sql.append("    and ordergoods.goodsid = ").append(SQLParser.charValue(goodsid)).append("\n");
+		sql.append("    and ordergoods.eventitemgoodsid = ").append(SQLParser.charValue(eventitemgoodsid)).append("\n");
+		
+		int nums_allbuyed = Types.parseInt(sdao().queryForMap(sql.toString()).getFormatAttr("nums"),0);
+		int nums_all = eventitemgoods.getNums().intValue();
+		int odd = nums_allbuyed - nums_all;
+		if(odd>=0)
+		{
+			return 0;
+		}
+		
+		if(nums_allbuyed + nums > nums_all)
+		{
+			return Math.abs(odd);
+		}
+		else
+		{
+			return nums;
+		}
+	}
+	
+	
 
 }
