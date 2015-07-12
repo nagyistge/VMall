@@ -128,7 +128,7 @@ public class ShopCartService extends SkynetNameEntityService<ShopCart>
 		{
 			
 			int odd_allnums_order = 0;
-			odd_allnums_order = check_order_event_allnums(goodsid, nums, eventitemgoodsid);
+			odd_allnums_order = check_order_event_allnums(goodsid, nums, eventitemgoodsid, false);
 			if (odd_allnums_order == 0)
 			{
 				Map remap = new DynamicObject();
@@ -138,7 +138,7 @@ public class ShopCartService extends SkynetNameEntityService<ShopCart>
 			}				
 			
 			int odd_buynums_order = 0;
-			odd_buynums_order = check_order_event_buynums(userid, goodsid, nums, eventitemgoodsid);
+			odd_buynums_order = check_order_event_buynums(userid, goodsid, nums, eventitemgoodsid, false);
 			if (odd_buynums_order == 0)
 			{
 				Map remap = new DynamicObject();
@@ -157,7 +157,7 @@ public class ShopCartService extends SkynetNameEntityService<ShopCart>
 			}			
 			
 			int odd_buynums_shopcart = 0;
-			odd_buynums_shopcart = check_shopcart_event_buynums(userid, goodsid, nums, eventitemgoodsid);
+			odd_buynums_shopcart = check_shopcart_event_buynums(userid, goodsid, nums, eventitemgoodsid, false);
 			if (odd_buynums_shopcart == 0)
 			{
 				Map remap = new DynamicObject();
@@ -167,7 +167,7 @@ public class ShopCartService extends SkynetNameEntityService<ShopCart>
 			}
 			
 			int odd_allnums_shopcart = 0;
-			odd_allnums_shopcart = check_shopcart_event_allnums(userid, goodsid, nums, eventitemgoodsid);
+			odd_allnums_shopcart = check_shopcart_event_allnums(userid, goodsid, nums, eventitemgoodsid, false);
 			if (odd_allnums_shopcart == 0)
 			{
 				Map remap = new DynamicObject();
@@ -335,7 +335,7 @@ public class ShopCartService extends SkynetNameEntityService<ShopCart>
 			{
 				int odd_buynums_shopcart = 0;
 				// 注意，此处检验规则与添加至购物车有所不同；
-				odd_buynums_shopcart = check_shopcart_event_buyednums(userid, goodsid, eventitemgoodsid);
+				odd_buynums_shopcart = check_shopcart_event_buynums(userid, goodsid, 0, eventitemgoodsid, true);
 				if (odd_buynums_shopcart == 0)
 				{
 					Map remap = new DynamicObject();
@@ -345,7 +345,7 @@ public class ShopCartService extends SkynetNameEntityService<ShopCart>
 				}
 
 				int odd_allnums_order = 0;
-				odd_allnums_order = check_order_event_allnums(goodsid, nums, eventitemgoodsid);
+				odd_allnums_order = check_order_event_allnums(goodsid, nums, eventitemgoodsid, false);
 				if (odd_allnums_order == 0)
 				{
 					Map remap = new DynamicObject();
@@ -355,7 +355,7 @@ public class ShopCartService extends SkynetNameEntityService<ShopCart>
 				}				
 				
 				int odd_buynums_order = 0;
-				odd_buynums_order = check_order_event_buynums(userid, goodsid, nums, eventitemgoodsid);
+				odd_buynums_order = check_order_event_buynums(userid, goodsid, nums, eventitemgoodsid, false);
 				if (odd_buynums_order == 0)
 				{
 					Map remap = new DynamicObject();
@@ -584,7 +584,31 @@ public class ShopCartService extends SkynetNameEntityService<ShopCart>
 	}
 
 	// 返回真为超过限购数量
-	public int check_shopcart_event_buyednums(String userid, String goodsid, String eventitemgoodsid) throws Exception
+//	public int check_shopcart_event_buyednums(String userid, String goodsid, String eventitemgoodsid) throws Exception
+//	{
+//		EventItemGoods eventitemgoods = sdao().fetch(EventItemGoods.class, eventitemgoodsid);
+//
+//		StringBuffer sql = new StringBuffer();
+//		sql.append(" select sum(shopcartgoods.nums) nums ");
+//		sql.append("   from t_app_shopcart shopcart, t_app_shopcartgoods shopcartgoods ").append("\n");
+//		sql.append("  where 1 = 1 ").append("\n");
+//		sql.append("    and shopcart.id = shopcartgoods.shopcartid ").append("\n");
+//		sql.append("    and shopcart.memberid = ").append(SQLParser.charValue(userid));
+//		sql.append("    and shopcartgoods.goodsid = ").append(SQLParser.charValue(goodsid)).append("\n");
+//		sql.append("    and shopcartgoods.eventitemgoodsid = ").append(SQLParser.charValue(eventitemgoodsid)).append("\n");
+//
+//		int nums_buyed = Types.parseInt(sdao().queryForMap(sql.toString()).getFormatAttr("nums"), 0);
+//		int nums_all = eventitemgoods.getBuynums().intValue();
+//		int odd = nums_buyed - nums_all;
+//		if (odd > 0)
+//		{
+//			return 0;
+//		}
+//
+//		return 1;
+//	}
+
+	public int check_shopcart_event_buynums(String userid, String goodsid, int nums, String eventitemgoodsid, boolean completed) throws Exception
 	{
 		EventItemGoods eventitemgoods = sdao().fetch(EventItemGoods.class, eventitemgoodsid);
 
@@ -599,47 +623,12 @@ public class ShopCartService extends SkynetNameEntityService<ShopCart>
 
 		int nums_buyed = Types.parseInt(sdao().queryForMap(sql.toString()).getFormatAttr("nums"), 0);
 		int nums_all = eventitemgoods.getBuynums().intValue();
-		int odd = nums_buyed - nums_all;
-		if (odd > 0)
-		{
-			return 0;
-		}
-
-		return 1;
+		// int odd = nums_buyed - nums_all;
+		
+		return buyed_limit(nums_all, nums_buyed, nums, completed);
 	}
 
-	public int check_shopcart_event_buynums(String userid, String goodsid, int nums, String eventitemgoodsid) throws Exception
-	{
-		EventItemGoods eventitemgoods = sdao().fetch(EventItemGoods.class, eventitemgoodsid);
-
-		StringBuffer sql = new StringBuffer();
-		sql.append(" select sum(shopcartgoods.nums) nums ");
-		sql.append("   from t_app_shopcart shopcart, t_app_shopcartgoods shopcartgoods ").append("\n");
-		sql.append("  where 1 = 1 ").append("\n");
-		sql.append("    and shopcart.id = shopcartgoods.shopcartid ").append("\n");
-		sql.append("    and shopcart.memberid = ").append(SQLParser.charValue(userid));
-		sql.append("    and shopcartgoods.goodsid = ").append(SQLParser.charValue(goodsid)).append("\n");
-		sql.append("    and shopcartgoods.eventitemgoodsid = ").append(SQLParser.charValue(eventitemgoodsid)).append("\n");
-
-		int nums_buyed = Types.parseInt(sdao().queryForMap(sql.toString()).getFormatAttr("nums"), 0);
-		int nums_all = eventitemgoods.getBuynums().intValue();
-		int odd = nums_buyed - nums_all;
-		if (odd >= 0)
-		{
-			return 0;
-		}
-
-		if (nums_buyed + nums > nums_all)
-		{
-			return Math.abs(odd);
-		}
-		else
-		{
-			return nums;
-		}
-	}
-
-	public int check_shopcart_event_allnums(String userid, String goodsid, int nums, String eventitemgoodsid) throws Exception
+	public int check_shopcart_event_allnums(String userid, String goodsid, int nums, String eventitemgoodsid, boolean completed) throws Exception
 	{
 		EventItemGoods eventitemgoods = sdao().fetch(EventItemGoods.class, eventitemgoodsid);
 
@@ -654,23 +643,12 @@ public class ShopCartService extends SkynetNameEntityService<ShopCart>
 
 		int nums_buyed = Types.parseInt(sdao().queryForMap(sql.toString()).getFormatAttr("nums"), 0);
 		int nums_all = eventitemgoods.getNums().intValue();
-		int odd = nums_buyed - nums_all;
-		if (odd >= 0)
-		{
-			return 0;
-		}
+//		int odd = nums_buyed - nums_all;
 
-		if (nums_buyed + nums > nums_all)
-		{
-			return Math.abs(odd);
-		}
-		else
-		{
-			return nums;
-		}
+		return buyed_limit(nums_all, nums_buyed, nums, completed);
 	}
 
-	public int check_order_event_buynums(String userid, String goodsid, int nums, String eventitemgoodsid) throws Exception
+	public int check_order_event_buynums(String userid, String goodsid, int nums, String eventitemgoodsid, boolean completed) throws Exception
 	{
 		EventItemGoods eventitemgoods = sdao().fetch(EventItemGoods.class, eventitemgoodsid);
 
@@ -686,23 +664,12 @@ public class ShopCartService extends SkynetNameEntityService<ShopCart>
 
 		int nums_buyed = Types.parseInt(sdao().queryForMap(sql.toString()).getFormatAttr("nums"), 0);
 		int nums_all = eventitemgoods.getBuynums().intValue();
-		int odd = nums_buyed - nums_all;
-		if (odd >= 0)
-		{
-			return 0;
-		}
-
-		if (nums_buyed + nums > nums_all)
-		{
-			return Math.abs(odd);
-		}
-		else
-		{
-			return nums;
-		}
+//		int odd = nums_buyed - nums_all;
+		
+		return buyed_limit(nums_all, nums_buyed, nums, completed);
 	}
 
-	public int check_order_event_allnums(String goodsid, int nums, String eventitemgoodsid) throws Exception
+	public int check_order_event_allnums(String goodsid, int nums, String eventitemgoodsid, boolean completed) throws Exception
 	{
 		EventItemGoods eventitemgoods = sdao().fetch(EventItemGoods.class, eventitemgoodsid);
 
@@ -717,19 +684,44 @@ public class ShopCartService extends SkynetNameEntityService<ShopCart>
 
 		int nums_allbuyed = Types.parseInt(sdao().queryForMap(sql.toString()).getFormatAttr("nums"), 0);
 		int nums_all = eventitemgoods.getNums().intValue();
-		int odd = nums_allbuyed - nums_all;
-		if (odd >= 0)
+		//int odd = nums_allbuyed - nums_all;
+		return buyed_limit(nums_all, nums_allbuyed, nums, completed);
+	}
+	
+	
+	public int buyed_limit(int all, int buyed, int nums, boolean completed)
+	{
+		int odd = buyed - all;
+		
+		// 未完成
+		if (completed==false)
 		{
-			return 0;
-		}
-
-		if (nums_allbuyed + nums > nums_all)
-		{
-			return Math.abs(odd);
+			if(odd>=0)
+			{
+				return 0;
+			}
+			else
+			{
+				if (buyed + nums > all)
+				{
+					return Math.abs(odd);
+				}
+				else
+				{
+					return nums;
+				}				
+			}
 		}
 		else
 		{
-			return nums;
+			if(odd>0)
+			{
+				return 0;
+			}
+			else
+			{
+				return 1; // 表示可以购买
+			}
 		}
 	}
 

@@ -166,7 +166,7 @@ public class OrderService extends SkynetNameEntityService<Order>
 	}
 	
 	// 付款
-	public BigDecimal pay(String orderid, DynamicObject login_token) throws Exception
+	public Map pay(String orderid, DynamicObject login_token) throws Exception
 	{
 		
 		if(StringToolKit.isBlank(orderid))
@@ -199,7 +199,46 @@ public class OrderService extends SkynetNameEntityService<Order>
 
 			// 如正常购买，单价、金额应为下订单时的商品实时价格
 			// 如为参加活动购买，单价、金额应为活动的商品实时价格
+			// 增加商品活动限量检查
 			String eventitemgoodsid = ordergoods.getEventitemgoodsid();
+			
+			if(!StringToolKit.isBlank(eventitemgoodsid))
+			{
+				ShopCartService shopcartService = new ShopCartService();
+				shopcartService.setDao(sdao());
+
+				int odd_allnums_order = 0;
+				odd_allnums_order = shopcartService.check_order_event_allnums(goodsid, nums, eventitemgoodsid, true);
+				if (odd_allnums_order == 0)
+				{
+					Map remap = new DynamicObject();
+					remap.put("state", "error");
+					remap.put("message", "亲，你想要的" + goods.getCname() + "已经被大家一抢而空了，等下次活动吧。");
+					return remap;
+				}				
+				
+				int odd_buynums_order = 0;
+				odd_buynums_order = shopcartService.check_order_event_buynums(userid, goodsid, nums, eventitemgoodsid, true);
+				if (odd_buynums_order == 0)
+				{
+					Map remap = new DynamicObject();
+					remap.put("state", "error");
+					remap.put("message", "亲，你想要的" + goods.getCname() + "在你的订单里已经超过限购数量了，不能再拍了哦。");
+					return remap;
+				}
+
+				if (odd_buynums_order > odd_allnums_order)
+				{
+					nums = odd_allnums_order;
+				}
+				else
+				{
+					nums = odd_buynums_order;
+				}
+				
+				ordergoods.setNums(nums);
+			}
+			
 			if(StringToolKit.isBlank(eventitemgoodsid))
 			{
 				ordergoods.setSaleprice(goods.getSaleprice());
@@ -223,6 +262,7 @@ public class OrderService extends SkynetNameEntityService<Order>
 			ordergoods.setAmountreal(amountreal);
 			
 			// 更新返利
+			// 后期也需要完善为按活动的返利赋值
 			for(int j=0;j<supmembers.size();j++)
 			{
 				DynamicObject supmember = supmembers.get(j);
@@ -288,7 +328,10 @@ public class OrderService extends SkynetNameEntityService<Order>
 		order.setAmount(amount_all);
 		sdao().update(order);
 		
-		return order.getAmount();
+		Map remap = new DynamicObject();
+		remap.put("state", "success");
+		remap.put("amt", order.getAmount());
+		return remap;
 	}	
 
 	// 付款处理

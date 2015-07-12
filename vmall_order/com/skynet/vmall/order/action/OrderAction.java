@@ -252,8 +252,17 @@ public class OrderAction extends BaseAction
 		
 		String orderid = orderService.locateBy(Cnd.where("cno", "=", orderno)).getFormatAttr("id");
 		// 更新订单商品价格和金额（系统单位为元，需要乘以100转换为分）
-		amt = String.valueOf(orderService.pay(orderid, login_token).multiply(new BigDecimal(1)).intValue());
-//		amt = "1";
+		Map paymap = new DynamicObject();
+		paymap = orderService.pay(orderid, login_token);
+		
+		
+		if("error".equals((String)paymap.get("state")))
+		{
+			return paymap;
+		}
+		
+		amt = String.valueOf(((BigDecimal)paymap.get("amt")).multiply(new BigDecimal(1)).intValue());
+		amt = "1";
 		
 		String userwxopenid = login_token.getFormatAttr(GlobalConstants.sys_login_userwxopenid);
 		String url = "http://" + VMallConstants.svr_domianname + "/" + VMallConstants.app_webcontext + "/order/order/paynotify.action";
