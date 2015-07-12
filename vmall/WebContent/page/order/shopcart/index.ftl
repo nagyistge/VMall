@@ -194,7 +194,7 @@ function page_submit()
 			else
 			{
 				alert(json.message);
-				window.location.reload();
+				//window.location.reload();
 			}
 		},
 		error:function(data)
