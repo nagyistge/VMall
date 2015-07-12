@@ -166,7 +166,7 @@ public class OrderService extends SkynetNameEntityService<Order>
 	}
 	
 	// 付款
-	public void pay(String orderid, DynamicObject login_token) throws Exception
+	public BigDecimal pay(String orderid, DynamicObject login_token) throws Exception
 	{
 		
 		if(StringToolKit.isBlank(orderid))
@@ -286,7 +286,9 @@ public class OrderService extends SkynetNameEntityService<Order>
 		order.setAmountsale(amountsale_all);
 		order.setAmountpromote(amountpromote_all);
 		order.setAmount(amount_all);
-		sdao().update(order);	
+		sdao().update(order);
+		
+		return order.getAmount();
 	}	
 
 	// 付款处理

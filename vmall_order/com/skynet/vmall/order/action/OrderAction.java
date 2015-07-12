@@ -3,6 +3,7 @@ package com.skynet.vmall.order.action;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
@@ -13,7 +14,6 @@ import org.nutz.dao.Cnd;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.lang.Xmls;
-import org.nutz.lang.util.NutMap;
 import org.nutz.log.Log;
 import org.nutz.log.Logs;
 import org.nutz.mvc.Mvcs;
@@ -246,15 +246,15 @@ public class OrderAction extends BaseAction
 		{
 			Map remap = new DynamicObject();
 			remap.put("state", "error");
-			remap.put("message", "亲，这个订单已不在下单环节，不能付款，看看你是不是已经付过款了。");
+			remap.put("message", "亲，这个订单不能再拍了，看看是不是已经付过款了。");
 			return remap;
 		}
 		
 		String orderid = orderService.locateBy(Cnd.where("cno", "=", orderno)).getFormatAttr("id");
-		// 更新订单商品价格和金额
-		orderService.pay(orderid, login_token);
+		// 更新订单商品价格和金额（系统单位为元，需要乘以100转换为分）
+		amt = String.valueOf(orderService.pay(orderid, login_token).multiply(new BigDecimal(1)).intValue());
+//		amt = "1";
 		
-
 		String userwxopenid = login_token.getFormatAttr(GlobalConstants.sys_login_userwxopenid);
 		String url = "http://" + VMallConstants.svr_domianname + "/" + VMallConstants.app_webcontext + "/order/order/paynotify.action";
 		
@@ -342,5 +342,11 @@ public class OrderAction extends BaseAction
 
 		return String.format(returnstr, returncode_success, return_msg);
 	}
+	
+	public static void main(String[] args) throws Exception
+	{
+		System.out.println(String.valueOf(new BigDecimal("3.5").multiply(new BigDecimal(100)).intValue()));
+	}
+	
 
 }
