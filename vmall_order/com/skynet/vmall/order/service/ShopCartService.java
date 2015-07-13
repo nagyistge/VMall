@@ -274,6 +274,28 @@ public class ShopCartService extends SkynetNameEntityService<ShopCart>
 		remap.put("cartgoodsnum", cartgoodsnums);
 		return remap;
 	}
+	
+	public Map delfromcart(String id, DynamicObject login_token) throws Exception
+	{
+		String userwxopenid = login_token.getFormatAttr(GlobalConstants.sys_login_userwxopenid);
+		ShopCartGoods cartgoods = sdao().fetch(ShopCartGoods.class, id);
+		String shopcartid = cartgoods.getShopcartid();
+		ShopCart shopcart = sdao().fetch(ShopCart.class, shopcartid);
+		if(userwxopenid.equals(shopcart.getWxopenid()))
+		{
+			sdao().delete(ShopCartGoods.class, id);
+			DynamicObject remap = new DynamicObject();
+			remap.setAttr("state", "success");
+			return remap;
+		}
+		else
+		{
+			DynamicObject remap = new DynamicObject();
+			remap.setAttr("state", "error");
+			remap.setAttr("message", "购物车认证异常，不允许删除。");
+			return remap;
+		}
+	}
 
 	// 购物车结算。
 	public Map placeorder(DynamicObject form, DynamicObject login_token) throws Exception

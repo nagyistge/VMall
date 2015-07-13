@@ -74,9 +74,12 @@ public class ShopCartAction extends BaseAction
 
 	@At("/delfromcart")
 	@Ok("json")
-	public Map delfromcart(@Param("..") Map map) throws Exception
+	public Map delfromcart(String id) throws Exception
 	{
-		return ro;
+		HttpSession session = Mvcs.getHttpSession(true);
+		DynamicObject login_token = (DynamicObject) session.getAttribute(GlobalConstants.sys_login_token);
+		Map remap = shopcartService.delfromcart(id, login_token);
+		return remap;
 	}
 
 	// 填写订单

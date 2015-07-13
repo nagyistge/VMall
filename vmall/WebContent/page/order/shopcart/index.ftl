@@ -65,7 +65,7 @@
 	               		<div class="cart-product-cell-3">
 	                		<p><span class="shp-cart-item-price" style="font-size:10px">￥${cartgoods.saleprice!?number?string("0.00")}/${cartgoods.promoteprice!?number?string("0.00")}</span>
 	                        <p><span class="shp-cart-item-price" style="font-size:14px;color:#ff6666" id="amountpromote-${cartgoods_index}">￥${cartgoods.amountpromote!?number?string("0.00")}</span>
-	                		<p><span class="shp-cart-item-price"><a class="shp-cart-icon-remove" href="javascript:void(0)" onclick="page_delete('${cartgoods.id}')"></a></span></p>
+	                		<p><span class="shp-cart-item-price"><a class="shp-cart-icon-remove" href="javascript:void(0)" sid="${cartgoods.id}"></a></span></p>
 	                	</div>
 	                    
 	                </div>    
@@ -93,7 +93,43 @@
     </div>
     
 <script>
+
 $("#submit").click(function() {page_submit()});
+
+$(".shp-cart-icon-remove").click(function() {
+	var sid = $(this).attr("sid");
+	
+	$.ajax({
+		type:'POST',
+		url:'${base}/order/shopcart/delfromcart.action',
+		data:{id:sid},
+		cache:false,
+		success:function(data)
+		{
+			if(data=="")
+			{
+				alert("删除异常，请检查后再试试！");
+				return;
+			}
+			json = eval("(" + data + ")");
+			if(json.state=="success")
+			{
+				window.location.reload();
+			}
+			else
+			{
+				alert(json.message);
+			}
+		},
+		error:function(data)
+		{
+			console.log(data);
+			alert("服务请求异常！");
+			window.location.reload();
+		}
+	})		
+		
+});
 
 $(".btn-del").click(function() {
 
