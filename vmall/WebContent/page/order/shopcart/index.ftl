@@ -40,7 +40,7 @@
                 <a id="shopping${cartgoods.id}" href="" class="shp-cart-conditions-link" style="display: none"></a>
                 <div class="items" id="product${cartgoods.id}" name="item${cartgoods.id}">
 					<div class="check-wrapper">
-                        <span class="cart-checkbox checked" id="checkIcon${cartgoods.id}"></span>
+                        <span class="cart-checkbox checked" id="checkIcon${cartgoods.id}" cindex="${cartgoods_index}"></span>
                     </div>
 				
 	                <div class="shp-cart-item-core">
@@ -131,6 +131,17 @@ $(".shp-cart-icon-remove").click(function() {
 		
 });
 
+$(".cart-checkbox").click(function() {
+	if($(this).hasClass("checked"))
+	{
+		$(this).removeClass("checked");
+	}
+	else
+	{
+		$(this).addClass("checked");
+	}
+});
+
 $(".btn-del").click(function() {
 
 	var sid = $(this).attr("sid");
@@ -176,21 +187,31 @@ function page_submit()
 {
 	var ids = [];
 	var numses = [];
+
+	var checks = $('#notEmptyCart .cart-checkbox');
+	var checkeds = $('#notEmptyCart .cart-checkbox.checked');
 	var fids = $('#notEmptyCart input[name="id"]');
 	var fnums = $('#notEmptyCart input[name="nums"]');
 	var keysignature = $("#keysignature").val();
-	
+
 	if(fids.length==0)
 	{
-		alert("购物车是空的，没有需要结算的商品。");
+		alert("亲，你的购物车还是空的，无法下单哦。");
+		return;
+	}
+	
+	if(checkeds.length==0)
+	{
+		alert("亲，你还没有选定购物车里的宝贝，无法下单哦。");
 		return;
 	}
 
     // 增加检查哪些购物车商品提交订单
-	for(i=0;i<fids.length;i++)
+	for(i=0;i<checkeds.length;i++)
 	{
-		ids.push(fids[i].value);
-		numses.push(fnums[i].value);
+		var cindex = (checkeds[i]).getAttribute("cindex");
+		ids.push(fids[cindex].value);
+		numses.push(fnums[cindex].value);
 	}
 	
 	if(ids.length==0)
