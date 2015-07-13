@@ -62,9 +62,9 @@ public class MallAction extends BaseAction
 	@Inject
 	private EventItemGoodsService eventitemgoodsService;
 
-	@At("/index")
+	@At("/wxindex")
 	@Ok("->:/page/mall/mall/index.ftl")
-	public Map index(@Param("..") Map map) throws Exception
+	public Map wxindex(@Param("..") Map map) throws Exception
 	{
 		// 系统微信配置信息
 		HttpServletRequest req = Mvcs.getReq();
@@ -77,6 +77,13 @@ public class MallAction extends BaseAction
 		ro.put("openid", wxinfo.get("openid"));
 		ro.put("recommender", wxinfo.get("recommender"));
 
+		return index(map);
+	}
+	
+	@At("/index")
+	@Ok("->:/page/mall/mall/index.ftl")
+	public Map index(@Param("..") Map map) throws Exception
+	{
 		// 查询首页海报1级分类
 		StringBuffer sql = new StringBuffer();
 		sql.append(" select goodsclass.* ").append("\n");
@@ -125,7 +132,7 @@ public class MallAction extends BaseAction
 
 		ro.put("goodsclasses", goodsclasses);
 		return ro;
-	}
+	}	
 
 	// 非微信环境测试访问地址
 	@At("/index_test")

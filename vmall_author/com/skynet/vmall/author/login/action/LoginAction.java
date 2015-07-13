@@ -47,7 +47,7 @@ public class LoginAction extends BaseAction
 	private MemberService memberService;
 
 	@At("/wxlogin")
-	@Ok(">>:/mall/mall/index.action?info=${obj.info}")
+	@Ok(">>:/mall/mall/wxindex.action?info=${obj.info}")
 	public NutMap wxlogin(String info, HttpServletRequest req) throws Exception
 	{
 		// 清除现有会话信息
