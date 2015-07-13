@@ -13,6 +13,7 @@ import org.nutz.ioc.annotation.InjectName;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
 
+import com.skynet.app.organ.pojo.Organ;
 import com.skynet.framework.common.generator.RandomGenerator;
 import com.skynet.framework.common.generator.SNGenerator;
 import com.skynet.framework.common.generator.UUIDGenerator;
@@ -440,6 +441,7 @@ public class ShopCartService extends SkynetNameEntityService<ShopCart>
 		String username = login_token.getFormatAttr(GlobalConstants.sys_login_username);
 
 		Member member = sdao().fetch(Member.class, userid);
+		Organ dealer = sdao().fetch(Organ.class, dealid);
 
 		Order order = new Order();
 
@@ -447,6 +449,7 @@ public class ShopCartService extends SkynetNameEntityService<ShopCart>
 		String orderid = UUIDGenerator.getInstance().getNextValue();
 		order.setId(orderid);
 		order.setSellerid(dealid);
+		order.setSellername(dealer.getCname());
 
 		// 购买人信息
 
@@ -499,6 +502,7 @@ public class ShopCartService extends SkynetNameEntityService<ShopCart>
 			ordergoods.setMemberid(userid);
 			ordergoods.setWxopenid(userwxopenid);
 			ordergoods.setSellerid(dealid);
+			ordergoods.setSellername(cartgoods.getDealername());
 			ordergoods.setState("下单");
 
 			ordergoods.setGoodsid(cartgoods.getGoodsid());

@@ -3,25 +3,27 @@
 <li id="order${order.id}">
     <div class="items" id="items${order.id}" name="item">
 		<div class="check-wrapper">
-			<span style="color:#dedede">
-	            <p>&nbsp;</p>
-	            <p>${order_index+1}</p>
-	            <p>&nbsp;</p>	
+			<span style="color:#6e6e6e">
+	            <p><span>&nbsp;</span></p>
+	            <p><span>${order_index+1}</span></p>	
 			</span>
         </div>
-        <div class="shp-cart-item-core">
+        <div class="shp-cart-item-core"  style="color:#dedede;font-size:10px">
         
         	<div class="cart-product-cell-2">
-                <div class="cart-product-name">
-                    <p><span><a href="${base}/order/order/look.action?id=${order.id}" style="font-size:14px;color:#aeaede">${order.cno}</a></span><sapn>&nbsp;&nbsp;</span><span style="font-size:10px;color:#dedede">${order.membercname}</span></p>
-                    <p><span>&nbsp;</span></p>
-                    <p><span style="font-size:14px;color:#dedede">${order.takeaddress}</span></p>
-           		</div>
+                <p>
+                <span style="color:#6e6e6e;font-size:16px;"><a href="${base}/order/order/look.action?id=${order.id}">${order.cno}</a></span>
+                <sapn>&nbsp;&nbsp;</span>
+                <span>${order.ordertime?datetime?string("HH:mm")}</span>
+                </p>
+                <p><span>${order.sellername}</span></p>
+                <p><span>${order.takeaddress}</span></p>
        		</div>
        		
 			<div class="cart-product-cell-3">
-        		<p>￥<span style="font-size:18px;color:#ff6666">${order.amount?number?string("0.00")}</span></p>
-        		<p><span style="font-size:12px;color:#aeaede">${order.state}</span></p>
+        		<p>￥<span style="color:#ff6666;font-size:16px;">${order.amount?number?string("0.00")}</span></p>
+        		<p><span>${order.paystate}</span></p>
+        		<p><span>${order.state}</span></p>
 	       	</div>       		
         </div>
 	</div>           
