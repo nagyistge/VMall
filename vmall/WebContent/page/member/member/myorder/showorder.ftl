@@ -8,11 +8,11 @@
 	            <p><span>${order_index+1}</span></p>	
 			</span>
         </div>
-        <div class="shp-cart-item-core"  style="color:#dedede;font-size:10px">
+        <div class="shp-cart-item-core"  style="color:#dedede;font-size:12px">
         
         	<div class="cart-product-cell-2">
                 <p>
-                <span style="color:#6e6e6e;font-size:16px;"><a href="${base}/order/order/look.action?id=${order.id}">${order.cno}</a></span>
+                <span style="color:#6e6e6e"><a href="${base}/order/order/look.action?id=${order.id}">${order.cno}</a></span>
                 <sapn>&nbsp;&nbsp;</span>
                 <span>${order.ordertime?datetime?string("HH:mm")}</span>
                 </p>
@@ -21,38 +21,46 @@
        		</div>
        		
 			<div class="cart-product-cell-3">
-        		<p>￥<span style="color:#ff6666;font-size:16px;">${order.amount?number?string("0.00")}</span></p>
-        		<p><span>${order.paystate}</span></p>
-        		<p><span>${order.state}</span></p>
+        		<p>￥<span style="color:#ff6666;">${order.amount?number?string("0.00")}</span></p>
+        		<p><span>${order.paystate}/${order.state}</span></p>
+        		<p><span><#if order.state=="下单"><a class="order-icon-remove" style="color:#6e6eff" sid="${order.id}">删除</a></#if></span></p>
 	       	</div>       		
         </div>
 	</div>           
 </li>
 </#list>
 
-
-
-
-
-
-<#--
-<#list obj.orders as order>
-<li id="order${order.cno}">
-<div class="items">
-    <div class="check-wrapper">
-        <span id="checkIcon1196557" class="cart-checkbox checked"></span>
-    </div>
-    <div>
- 		<span style="margin-right:10px;font-size:18px"><a href="javascript:void(0)" onclick="page_loadordergoods('${order.id}')" style="color:#cecdce">${order.cno}</a></span>	
- 		<span style="margin-right:10px;color:#cecdce">${(order.ordertime?datetime?string("HH:mm"))!''}</span>
- 		<span style="margin-right:10px;color:#cecdce">${order.state}</span> 		
- 		<span>￥<span style="margin-right:20px;font-size:24px;color:#ff6666">${order.amount}</span></span>
- 		<span><a href="${base}/order/order/look.action?id=${order.id}" style="color:#cecece">详细</a></span>
- 		<a class="shp-cart-icon-remove" href="javascript:void(0)" onclick="page_deleteorder('${order.id}')"></a>		
-    </div>
-</div>
-<div id="ordergoods${order.id}">
-</div>
-</li>
-</#list>
--->
+<script>
+$(".order-icon-remove").click(function() {
+	var sid = $(this).attr("sid");
+	$.ajax({
+		type:'POST',
+		url:'${base}/order/order/delete.action',
+		data:{id:sid},
+		cache:false,
+		success:function(data)
+		{
+			if(data=="")
+			{
+				alert("删除异常，请检查后再试试！");
+				return;
+			}
+			json = eval("(" + data + ")");
+			if(json.state=="success")
+			{
+				window.location.reload();
+			}
+			else
+			{
+				alert(json.message);
+			}
+		},
+		error:function(data)
+		{
+			console.log(data);
+			alert("服务请求异常！");
+			// window.location.reload();
+		}
+	})
+});
+</script>

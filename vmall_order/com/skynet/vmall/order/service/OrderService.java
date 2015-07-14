@@ -28,6 +28,8 @@ import com.skynet.vmall.base.pojo.Member;
 import com.skynet.vmall.base.pojo.Order;
 import com.skynet.vmall.base.pojo.OrderGoods;
 import com.skynet.vmall.base.pojo.OrderGoodsRebate;
+import com.skynet.vmall.base.pojo.ShopCart;
+import com.skynet.vmall.base.pojo.ShopCartGoods;
 import com.skynet.vmall.goods.service.GoodsService;
 import com.skynet.vmall.member.service.MemberService;
 
@@ -508,6 +510,34 @@ public class OrderService extends SkynetNameEntityService<Order>
 		remap.put("order", locate(id));
 
 		return remap;
+	}
+	
+	public Map deleteorder(String id, DynamicObject login_token) throws Exception
+	{
+		String userid = login_token.getFormatAttr(GlobalConstants.sys_login_userid);
+		Order order = sdao().fetch(Order.class, id);
+		if(userid.equals(order.getMemberid()))
+		{
+			if(!"下单".equals(order.getState()))
+			{
+				DynamicObject remap = new DynamicObject();
+				remap.setAttr("state", "error");
+				remap.setAttr("message", "订单已付款，不允许删除。");
+				return remap;				
+			}
+				
+			sdao().delete(Order.class, id);
+			DynamicObject remap = new DynamicObject();
+			remap.setAttr("state", "success");
+			return remap;
+		}
+		else
+		{
+			DynamicObject remap = new DynamicObject();
+			remap.setAttr("state", "error");
+			remap.setAttr("message", "订单认证异常，不允许删除。");
+			return remap;
+		}
 	}
 
 }

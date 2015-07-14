@@ -352,6 +352,16 @@ public class OrderAction extends BaseAction
 		return String.format(returnstr, returncode_success, return_msg);
 	}
 	
+	@At("/delete")
+	@Ok("json")
+	public Map delfromcart(String id) throws Exception
+	{
+		HttpSession session = Mvcs.getHttpSession(true);
+		DynamicObject login_token = (DynamicObject) session.getAttribute(GlobalConstants.sys_login_token);
+		Map remap = orderService.deleteorder(id, login_token);
+		return remap;
+	}
+	
 	public static void main(String[] args) throws Exception
 	{
 		System.out.println(String.valueOf(new BigDecimal("3.5").multiply(new BigDecimal(100)).intValue()));
