@@ -11,5 +11,6 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/skynet_upload"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/vmall_base"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/vmall"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/bluemp"/>
 	<classpathentry kind="output" path=""/>
 </classpath>

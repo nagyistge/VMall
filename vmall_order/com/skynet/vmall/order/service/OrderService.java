@@ -28,8 +28,6 @@ import com.skynet.vmall.base.pojo.Member;
 import com.skynet.vmall.base.pojo.Order;
 import com.skynet.vmall.base.pojo.OrderGoods;
 import com.skynet.vmall.base.pojo.OrderGoodsRebate;
-import com.skynet.vmall.base.pojo.ShopCart;
-import com.skynet.vmall.base.pojo.ShopCartGoods;
 import com.skynet.vmall.goods.service.GoodsService;
 import com.skynet.vmall.member.service.MemberService;
 
@@ -545,6 +543,54 @@ public class OrderService extends SkynetNameEntityService<Order>
 			remap.setAttr("message", "订单认证异常，不允许删除。");
 			return remap;
 		}
+	}
+	
+	public Map savetakeover(Map map) throws Exception
+	{
+		String id = (String) map.get("id");
+		String ordergoodsid = (String) map.get("ordergoodsid");
+		String takeover = (String) map.get("takeover");
+		String takeoverreason = (String) map.get("takeoverreason");
+		
+		// 检查订单是否处于发货阶段
+		Order order = sdao().fetch(Order.class, id);
+		if(!"收货".equals(order.getState()))
+		{
+			Map remap = new DynamicObject();
+			remap.put("state", "error");
+			remap.put("message", "亲，订单不在收货阶段，不能进行收货确认哦。");		
+			return remap;			
+		}
+		
+		if(!StringToolKit.isBlank(ordergoodsid))
+		{
+			OrderGoods ordergoods = sdao().fetch(OrderGoods.class, ordergoodsid);
+			if("同意".equals(ordergoods.getTakeover()))
+			{
+				Map remap = new DynamicObject();
+				remap.put("state", "error");
+				remap.put("message", "亲，之前已经同意收货了，不能再重新收货哦。");		
+				return remap;
+			}
+			
+			ordergoods.setTakeover(takeover);
+			ordergoods.setTakeoverreason(takeoverreason);
+			
+			sdao().update(ordergoods);
+		}
+		
+		// 检查是否所有的明细商品都已经同意收货，是则订单转发至下一阶段；
+		int nums_reject = sdao().count(OrderGoods.class, Cnd.where("orderid", "=", id).and("takeover", "=", "拒绝"));
+		if(nums_reject==0)
+		{
+			forward(new DynamicObject(new String[]{"id"}, new String[]{id}));
+		}
+		
+		Map remap = new DynamicObject();
+		remap.put("state", "success");
+		remap.put("id", id);
+		remap.put("ordergoodsid", ordergoodsid);
+		return remap;
 	}
 
 }

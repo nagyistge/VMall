@@ -108,6 +108,8 @@
 				<div class="payb-con">实付款：<span id="payMoney">￥${amountpromote?string("0.00")}</span></div>
 				<#if obj.order.state=="下单">
 				<a id="btn_pay" class="payb-btn" href="javascript:void(0);">订单付款</a>
+				<#elseif obj.order.state=="收货">
+				<a id="btn_takeover" class="payb-btn" href="javascript:void(0);">确认收货</a>				
 				<#else>
 				<a class="payb-btn" href="javascript:void(0);">&nbsp;</a>
 				</#if>
@@ -139,7 +141,10 @@ wx.config({
 wx.ready(function()
 {
 	document.querySelector('#btn_pay').onclick = page_pay;
+
 });
+
+$("#btn_takeover").click(function() {page_takeover()});
 
 // 微信支付
 var payFunc = function()
@@ -283,6 +288,29 @@ function page_pay()
 		payFunc();
 	}
 }
+
+//收货确认
+function page_takeover()
+{
+	var sign = false; // 表单提交标识
+	var orderid = $("#id").val();
+	var state = $("#state").val();	
+	
+	if(orderid=="")
+	{
+		alert("订单数据异常，无法确认收货。");
+		return;
+	}
+
+	if(!("收货"==state))
+	{
+		alert("亲，无法确认收货，该订单不在收货状态哦。");
+		return;
+	}
+	
+	window.location = "${base}/order/order/inputtakeover.action";
+}
+
 
 // 没有微信支付环境下的测试
 function page_testpay()

@@ -109,8 +109,10 @@ public class OrderAction extends BaseAction
 		HttpSession session = Mvcs.getHttpSession(true);
 		DynamicObject login_token = (DynamicObject) session.getAttribute(GlobalConstants.sys_login_token);
 
+		DynamicObject order = orderService.locate(id);
 		List<DynamicObject> ordergoodses = ordergoodsService.list(new DynamicObject("orderid", id));
 
+		ro.put("order", order);
 		ro.put("ordergoodses", ordergoodses);
 
 		return ro;
@@ -186,6 +188,7 @@ public class OrderAction extends BaseAction
 
 		return remap;
 	}
+	
 
 	@At("/edittaker")
 	@Ok("->:/page/order/order/edittaker.ftl")
@@ -366,6 +369,41 @@ public class OrderAction extends BaseAction
 		Map remap = orderService.deleteorder(id, login_token);
 		return remap;
 	}
+	
+	@At("/inputtakeover")
+	@Ok("->:/page/order/order/inputtakeover.ftl")
+	public Map inputtakeover(@Param("..") Map map) throws Exception
+	{
+		String id = (String) map.get("id"); //
+		DynamicObject order = orderService.locate(id);
+		ro.put("id", id);
+		ro.put("order", order);
+		return ro;
+	}
+	
+	@At("/inputgoodstakeover")
+	@Ok("->:/page/order/order/inputtakeover.ftl")
+	public Map inputgoodstakeover(@Param("..") Map map) throws Exception
+	{
+		String ordergoodsid = (String) map.get("ordergoodsid"); // 
+		DynamicObject ordergoods = ordergoodsService.locate(ordergoodsid);
+		String id = ordergoods.getFormatAttr("orderid");
+		DynamicObject order = orderService.locate(id);
+		
+		ro.put("id", id);
+		ro.put("ordergoodsid", ordergoodsid);
+		ro.put("order", order);
+		ro.put("ordergoods", ordergoods);
+		return ro;
+	}
+	
+	@At("/savetakeover")
+	@Ok("json")
+	public Map savetakeover(@Param("..") Map map) throws Exception
+	{
+		Map remap = orderService.savetakeover(map);
+		return remap;
+	}	
 	
 	public static void main(String[] args) throws Exception
 	{

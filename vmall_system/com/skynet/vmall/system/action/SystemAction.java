@@ -37,16 +37,16 @@ public class SystemAction extends BaseAction
 //		Daos.createTablesInPackage(organService.dao(), "com.skynet.vmall.base.pojo", true);
 //		Daos.createTablesInPackage(organService.dao(), "com.skynet.app.dictionary.pojo", true);
 //		Daos.createTablesInPackage(organService.dao(), "com.skynet.vmall.base.pojo.Event", false);
-		organService.dao().create(Event.class, true);
-		organService.dao().create(EventItem.class, true);
-		organService.dao().create(EventItemGoods.class, true);
-		organService.dao().create(EventItemMember.class, true);	
+//		organService.dao().create(Event.class, true);
+//		organService.dao().create(EventItem.class, true);
+//		organService.dao().create(EventItemGoods.class, true);
+//		organService.dao().create(EventItemMember.class, true);	
 		organService.dao().create(Order.class, true);	
 		organService.dao().create(OrderGoods.class, true);		
 		organService.dao().create(OrderGoodsRebate.class, true);	
 		organService.dao().create(ShopCart.class, true);
 		organService.dao().create(ShopCartGoods.class, true);
-		organService.dao().create(GoodsPrice.class, true);	
+//		organService.dao().create(GoodsPrice.class, true);	
 		return ro;
 	}
 

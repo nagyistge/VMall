@@ -28,5 +28,17 @@ public class MyHandle extends AbstractWxHandle {
 		return super.eventSubscribe(msg);
 	}
 	
+	@Override
+	public WxOutMsg eventScan(WxInMsg msg) {
+		// TODO Auto-generated method stub
+		
+		log.debugf("扫描消息来了！关注人的openid是[%s],eventkey=%s", msg.getFromUserName(),msg.getEventKey());
+		
+		// 记录
+		
+		
+		return super.eventScan(msg);
+	}
+	
 	
 }

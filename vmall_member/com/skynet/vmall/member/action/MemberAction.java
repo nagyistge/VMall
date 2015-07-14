@@ -1,7 +1,6 @@
 package com.skynet.vmall.member.action;
 
 import java.math.BigDecimal;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -10,6 +9,7 @@ import javax.servlet.http.HttpSession;
 import org.nutz.dao.Cnd;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
+import org.nutz.json.Json;
 import org.nutz.mvc.Mvcs;
 import org.nutz.mvc.adaptor.JsonAdaptor;
 import org.nutz.mvc.annotation.AdaptBy;
@@ -20,6 +20,7 @@ import org.nutz.mvc.annotation.Ok;
 import org.nutz.mvc.annotation.Param;
 import org.nutz.mvc.filter.CheckSession;
 
+import com.blue.wxmp.sdk.api.WxApi;
 import com.skynet.framework.action.BaseAction;
 import com.skynet.framework.services.db.dybeans.DynamicObject;
 import com.skynet.framework.services.function.Types;
@@ -33,6 +34,9 @@ import com.skynet.vmall.member.service.MemberService;
 @Filters({@By(type=CheckSession.class, args={"sys_login_token", "/checksession.html"})})	
 public class MemberAction extends BaseAction
 {
+	@Inject
+	WxApi myWxApi;
+
 	@Inject
 	private MemberService memberService;
 
@@ -286,4 +290,11 @@ public class MemberAction extends BaseAction
 		return remap;
 	}
 	
+	
+	@At("/myqrcode")
+	@Ok("raw:json")
+	public String getQrcode(){
+		
+		return Json.toJson(myWxApi.getQrcodeUrl("{openid:xxxxxgongrui}"));
+	}
 }

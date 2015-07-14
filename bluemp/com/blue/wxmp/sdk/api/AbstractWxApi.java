@@ -239,4 +239,30 @@ public abstract class AbstractWxApi implements WxApi
 		return null;
 	}
 
+	@Override
+	public NutMap getQrcodeUrl(String scene_str){
+		String ticketURL = "https://api.weixin.qq.com/cgi-bin/qrcode/create?access_token="+AccessTokenApi.getAccessToken().getAccessToken();
+		String qrcodeurl = "https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket=";
+		
+		NutMap jm = NutMap.NEW();
+		NutMap actioninfo = NutMap.NEW();
+		NutMap scenestr = NutMap.NEW();
+		scenestr.put("scene_str", scene_str);
+		actioninfo.put("scene", scenestr);
+		jm.put("action_name", "QR_LIMIT_STR_SCENE");
+		jm.put("action_info", actioninfo);
+		
+		NutMap rt = postJson(ticketURL, jm);
+		rt.put("url", qrcodeurl);
+		log.debugf("get qr ticket result: %s", rt);
+		
+//		String ticket = rt.getString("ticket");
+//		
+//		String json = "{\"action_name\": "QR_LIMIT_STR_SCENE", "action_info": {"scene": {"scene_str": "123"}}}"
+
+		return rt;
+	}
+	
+	
+
 }

@@ -120,6 +120,13 @@ public class OrderGoods extends IdEntity
 	
 	@Column
 	private String supmemberid5; // 5级收取返利会员标识
+	
+	// 收货信息
+	@Column
+	private String takeover; // 收货结果（接受、拒绝）	
+	
+	@Column
+	private String takeoverreason; // 拒绝原因（接受、拒绝）	
 
 	public String getOrderid()
 	{
@@ -490,5 +497,24 @@ public class OrderGoods extends IdEntity
 	{
 		this.supmemberid5 = supmemberid5;
 	}
-	
+
+	public String getTakeover()
+	{
+		return takeover;
+	}
+
+	public void setTakeover(String takeover)
+	{
+		this.takeover = takeover;
+	}
+
+	public String getTakeoverreason()
+	{
+		return takeoverreason;
+	}
+
+	public void setTakeoverreason(String takeoverreason)
+	{
+		this.takeoverreason = takeoverreason;
+	}
 }
