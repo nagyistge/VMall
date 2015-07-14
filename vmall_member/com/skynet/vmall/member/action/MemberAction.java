@@ -22,7 +22,9 @@ import org.nutz.mvc.filter.CheckSession;
 
 import com.skynet.framework.action.BaseAction;
 import com.skynet.framework.services.db.dybeans.DynamicObject;
+import com.skynet.framework.services.function.Types;
 import com.skynet.framework.spec.GlobalConstants;
+import com.skynet.vmall.base.constants.VMallConstants;
 import com.skynet.vmall.base.pojo.Member;
 import com.skynet.vmall.member.service.MemberService;
 
@@ -114,13 +116,18 @@ public class MemberAction extends BaseAction
 	
 	@At("/myorder/showorder")
 	@Ok("->:/page/member/member/myorder/showorder.ftl")
-	public Map showmyorder(@Param("..") Map map) throws Exception
+	public Map showmyorder(@Param("..") Map map, @Param("_page") String page, @Param("_pagesize") String pagesize) throws Exception
 	{
 		HttpSession session = Mvcs.getHttpSession(true);
 		DynamicObject login_token = (DynamicObject) session.getAttribute(GlobalConstants.sys_login_token);
 		String userid = login_token.getFormatAttr(GlobalConstants.sys_login_userid);
+		
+		map.put("_page", Types.parseInt(page, 1));
+		map.put("_pagesize", Types.parseInt(pagesize, VMallConstants.pagesize));
 		map.put("memberid", userid);
+
 		List<DynamicObject> orders = memberService.showmyorder(map);
+		
 		ro.put("orders", orders);
 		return ro;
 	}	

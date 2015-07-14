@@ -67,12 +67,17 @@ public class OrderService extends SkynetNameEntityService<Order>
 		int endindex = page * pagesize;
 		
 		String batchno = (String) map.get("batchno");
-		
+		String memberid = (String) map.get("memberid");
+
+
 		StringBuffer sql = new StringBuffer();
-		sql.append(" select id, cno, membercname, takeaddress, state, sum(amount) amount ").append("\n");
+
+		// 后期增加 付款前按照商品实时价格查询，付款后按照订单商品价格查询
+		
+		sql.append(" select id, cno, sellername, ordertime, takeaddress, paystate, state, sum(amount) amount ").append("\n");
 		sql.append(" from ( ").append("\n");
 		sql.append(		
-				" select vorder.id, vorder.cno, vorder.membercname, vorder.takeaddress, vorder.state, (ordergoods.nums * price.promoteprice) amount ")
+				" select vorder.id, vorder.cno, vorder.sellername, vorder.ordertime, vorder.takeaddress, vorder.paystate, vorder.state, (ordergoods.nums * price.promoteprice) amount ")
 				.append("\n");
 		sql.append(" from t_app_order vorder, t_app_ordergoods ordergoods, t_app_goodsprice price ").append("\n");
 		sql.append(" where 1 = 1 ").append("\n");
@@ -81,14 +86,15 @@ public class OrderService extends SkynetNameEntityService<Order>
 		sql.append("     and ordergoods.eventitemgoodsid = price.eventitemgoodsid ").append("\n");
 		sql.append("     and vorder.id = ordergoods.orderid ").append("\n");
 		sql.append("     and vorder.state = '下单' ").append("\n");
+		sql.append("     and vorder.memberid = ").append(SQLParser.charValue(memberid)).append("\n");
 		// 增加查询过滤条件
 		if (!StringToolKit.isBlank(batchno))
 		{
 			sql.append("  and vorder.batchno = ").append(SQLParser.charValue(batchno)).append("\n");
-		}
+		}			
 		sql.append(" union ").append("\n");
 		sql.append(
-				" select vorder.id, vorder.cno, vorder.membercname, vorder.takeaddress, vorder.state, (ordergoods.nums * price.promoteprice) amount ")
+				" select vorder.id, vorder.cno, vorder.sellername, vorder.ordertime, vorder.takeaddress, vorder.paystate, vorder.state, (ordergoods.nums * price.promoteprice) amount ")
 				.append("\n");
 		sql.append(" from t_app_order vorder, t_app_ordergoods ordergoods, t_app_goodsprice price ").append("\n");
 		sql.append(" where 1 = 1 ").append("\n");
@@ -97,30 +103,31 @@ public class OrderService extends SkynetNameEntityService<Order>
 		sql.append("     and ordergoods.goodsid = price.goodsid ").append("\n");
 		sql.append("     and price.isdefault = '是' ").append("\n");
 		sql.append("     and vorder.state = '下单' ").append("\n");
+		sql.append("     and vorder.memberid = ").append(SQLParser.charValue(memberid)).append("\n");
 		// 增加查询过滤条件
 		if (!StringToolKit.isBlank(batchno))
 		{
 			sql.append("  and vorder.batchno = ").append(SQLParser.charValue(batchno)).append("\n");
-		}
+		}		
+		
 		sql.append(" ) v ").append("\n");
-		sql.append(" group by id, cno, membercname, takeaddress, state ").append("\n");
+		sql.append(" group by id, cno, sellername, ordertime, takeaddress, paystate, state ").append("\n");
 		
 		sql.append(" union ").append("\n");
 		sql.append(
-				" select vorder.id, vorder.cno, vorder.membercname, vorder.takeaddress, vorder.state, sum(ordergoods.nums * ordergoods.realprice) amount ")				.append("\n");
+				" select vorder.id, vorder.cno, vorder.sellername, vorder.ordertime, vorder.takeaddress, vorder.paystate, vorder.state, sum(ordergoods.nums * ordergoods.realprice) amount ")				.append("\n");
 		sql.append(" from t_app_order vorder, t_app_ordergoods ordergoods ").append("\n");
 		sql.append(" where 1 = 1 ").append("\n");
 		sql.append("     and vorder.id = ordergoods.orderid ").append("\n");
 		sql.append("     and vorder.state <> '下单' ").append("\n");
+		sql.append("     and vorder.memberid = ").append(SQLParser.charValue(memberid)).append("\n");
 		// 增加查询过滤条件
 		if (!StringToolKit.isBlank(batchno))
 		{
 			sql.append("  and vorder.batchno = ").append(SQLParser.charValue(batchno)).append("\n");
-		}
-		sql.append("  group by vorder.id, vorder.cno, vorder.membercname, vorder.takeaddress, vorder.state ").append("\n");
-		sql.append("   order by cno ").append("\n");
-
-
+		}			
+		sql.append("  group by vorder.id, vorder.cno, vorder.sellername, vorder.ordertime, vorder.takeaddress, vorder.paystate, vorder.state ").append("\n");
+		sql.append("   order by ordertime desc ").append("\n");
 		
 		List<DynamicObject> datas = sdao().queryForList(sql.toString(), startindex, endindex);
 

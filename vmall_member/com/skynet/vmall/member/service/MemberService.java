@@ -263,8 +263,8 @@ public class MemberService extends SkynetNameEntityService<Member>
 	// 浏览我的订单
 	public List<DynamicObject> showmyorder(Map map) throws Exception
 	{
-		int page = Types.parseInt((String) map.get("_page"), 1);
-		int pagesize = Types.parseInt((String) map.get("_pagesize"), 10);
+		int page = (Integer) map.get("_page");
+		int pagesize = (Integer) map.get("_pagesize");
 
 		int startindex = (page - 1) * pagesize;
 		int endindex = page * pagesize;

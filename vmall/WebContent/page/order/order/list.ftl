@@ -12,63 +12,43 @@
 <#include "/decorator/include/header.ftl">
 </head>
 <body id="body" style="background:#ffffff">
-
+<#include "/decorator/include/navmain.ftl">
+<div id="notEmptyCart" style="display:block">
+	<form id="form_browse" method="POST">
+	<ul class="shp-cart-list" id="shp-cart-list">
 <#list obj.orders as order>
 
 <li id="order${order.id}">
     <div class="items" id="items${order.id}" name="item">
 		<div class="check-wrapper">
-			<span style="color:#dedede">
-	            <p>&nbsp;</p>
-	            <p>${order_index+1}</p>
-	            <p>&nbsp;</p>	
+			<span style="color:#6e6e6e">
+	            <p><span>&nbsp;</span></p>
+	            <p><span>${order_index+1}</span></p>	
 			</span>
         </div>
-        <div class="shp-cart-item-core">
+        <div class="shp-cart-item-core"  style="color:#dedede;font-size:12px">
         
         	<div class="cart-product-cell-2">
-                <div class="cart-product-name">
-                    <p><span><a href="${base}/order/order/look.action?id=${order.id}" style="font-size:14px;color:#aeaede">${order.cno}</a></span><sapn>&nbsp;&nbsp;</span><span style="font-size:10px;color:#dedede">${order.membercname}</span></p>
-                    <p><span>&nbsp;</span></p>
-                    <p><span style="font-size:14px;color:#dedede">${order.takeaddress}</span></p>
-           		</div>
+                <p>
+                <span style="color:#6e6e6e"><a href="${base}/order/order/look.action?id=${order.id}">${order.cno}</a></span>
+                <sapn>&nbsp;&nbsp;</span>
+                <span>${order.ordertime?datetime?string("HH:mm")}</span>
+                </p>
+                <p><span>${order.sellername}</span></p>
+                <p><span>${order.takeaddress}</span></p>
        		</div>
        		
-
-       		
 			<div class="cart-product-cell-3">
-        		<p>￥<span style="font-size:18px;color:#ff6666">${order.amount?number?string("0.00")}</span></p>
-        		<p><span style="font-size:12px;color:#aeaede">${order.state}</span></p>
+        		<p>￥<span style="color:#ff6666;">${order.amount?number?string("0.00")}</span></p>
+        		<p><span>${order.paystate}/${order.state}</span></p>
+        		<p><span><#if order.state=="下单"><a class="order-icon-remove" style="color:#6e6eff" sid="${order.id}">删除</a></#if></span></p>
 	       	</div>       		
         </div>
 	</div>           
 </li>
-</#list>
+</#list>	
+	</ul>
+	</form>
+</div>
 </body>
 </html>
-
-
-
-
-
-<#--
-<#list obj.orders as order>
-<li id="order${order.cno}">
-<div class="items">
-    <div class="check-wrapper">
-        <span id="checkIcon1196557" class="cart-checkbox checked"></span>
-    </div>
-    <div>
- 		<span style="margin-right:10px;font-size:18px"><a href="javascript:void(0)" onclick="page_loadordergoods('${order.id}')" style="color:#cecdce">${order.cno}</a></span>	
- 		<span style="margin-right:10px;color:#cecdce">${(order.ordertime?datetime?string("HH:mm"))!''}</span>
- 		<span style="margin-right:10px;color:#cecdce">${order.state}</span> 		
- 		<span>￥<span style="margin-right:20px;font-size:24px;color:#ff6666">${order.amount}</span></span>
- 		<span><a href="${base}/order/order/look.action?id=${order.id}" style="color:#cecece">详细</a></span>
- 		<a class="shp-cart-icon-remove" href="javascript:void(0)" onclick="page_deleteorder('${order.id}')"></a>		
-    </div>
-</div>
-<div id="ordergoods${order.id}">
-</div>
-</li>
-</#list>
--->

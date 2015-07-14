@@ -120,9 +120,14 @@ public class OrderAction extends BaseAction
 	@Ok("->:/page/order/order/list.ftl")
 	public Map list(@Param("..") Map map, @Param("_page") String page, @Param("_pagesize") String pagesize) throws Exception
 	{
+		HttpSession session = Mvcs.getHttpSession(true);
+		DynamicObject login_token = (DynamicObject) session.getAttribute(GlobalConstants.sys_login_token);
+		String userid = login_token.getFormatAttr(GlobalConstants.sys_login_userid);
+		
 		map.put("_page", Types.parseInt(page, 1));
 		map.put("_pagesize", Types.parseInt(pagesize, VMallConstants.pagesize));
-
+		map.put("memberid", userid);
+		
 		List<DynamicObject> orders = orderService.browse(map);
 	
 		DynamicObject ro = new DynamicObject();
