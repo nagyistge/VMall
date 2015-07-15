@@ -40,7 +40,7 @@ public class OrderGoodsService extends SkynetNameEntityService<OrderGoods>
 		StringBuffer sql = new StringBuffer();
 
 		// 后期增加 付款前按照商品实时价格查询，付款后按照订单商品价格查询
-		sql.append(" select vorder.cno, ordergoods.id, ordergoods.goodsid, ordergoods.goodsname, ordergoods.eventitemgoodsid, ordergoods.nums, (ordergoods.nums * price.saleprice) amountsale, (ordergoods.nums * price.promoteprice) amountpromote, (ordergoods.nums * price.promoteprice) amountreal, price.saleprice, price.promoteprice, price.promoteprice realprice, goods.pic goodspic ").append("\n");
+		sql.append(" select vorder.cno, ordergoods.id, ordergoods.goodsid, ordergoods.goodsname, ordergoods.eventitemgoodsid, ordergoods.takeover, ordergoods.nums, (ordergoods.nums * price.saleprice) amountsale, (ordergoods.nums * price.promoteprice) amountpromote, (ordergoods.nums * price.promoteprice) amountreal, price.saleprice, price.promoteprice, price.promoteprice realprice, goods.pic goodspic ").append("\n");
 		sql.append(" from t_app_order vorder, t_app_ordergoods ordergoods, t_app_goodsprice price, t_app_goods goods ").append("\n");
 		sql.append(" where 1 = 1 ").append("\n");
 		sql.append("     and ordergoods.goodsid = price.goodsid ").append("\n");
@@ -51,7 +51,7 @@ public class OrderGoodsService extends SkynetNameEntityService<OrderGoods>
 		sql.append("     and vorder.state = '下单' ").append("\n");		
 		sql.append("     and vorder.id = ").append(SQLParser.charValue(orderid)).append("\n");
 		sql.append(" union ").append("\n");
-		sql.append(" select vorder.cno, ordergoods.id, ordergoods.goodsid, ordergoods.goodsname, ordergoods.eventitemgoodsid, ordergoods.nums, (ordergoods.nums * price.saleprice) amountsale, (ordergoods.nums * price.promoteprice) amountpromote, (ordergoods.nums * price.promoteprice) amountreal, price.saleprice, price.promoteprice, price.promoteprice realprice, goods.pic goodspic ").append("\n");
+		sql.append(" select vorder.cno, ordergoods.id, ordergoods.goodsid, ordergoods.goodsname, ordergoods.eventitemgoodsid, ordergoods.takeover, ordergoods.nums, (ordergoods.nums * price.saleprice) amountsale, (ordergoods.nums * price.promoteprice) amountpromote, (ordergoods.nums * price.promoteprice) amountreal, price.saleprice, price.promoteprice, price.promoteprice realprice, goods.pic goodspic ").append("\n");
 		sql.append(" from t_app_order vorder, t_app_ordergoods ordergoods, t_app_goodsprice price, t_app_goods goods ").append("\n");
 		sql.append(" where 1 = 1 ").append("\n");
 		sql.append("     and vorder.id = ordergoods.orderid ").append("\n");
@@ -62,7 +62,7 @@ public class OrderGoodsService extends SkynetNameEntityService<OrderGoods>
 		sql.append("     and vorder.state = '下单' ").append("\n");			
 		sql.append("     and vorder.id = ").append(SQLParser.charValue(orderid)).append("\n");
 		sql.append(" union ").append("\n");
-		sql.append(" select vorder.cno, ordergoods.id, ordergoods.goodsid, ordergoods.goodsname, ordergoods.eventitemgoodsid, ordergoods.nums, (ordergoods.nums * ordergoods.saleprice) amountsale, (ordergoods.nums * ordergoods.promoteprice) amountpromote, (ordergoods.nums * ordergoods.realprice) amountreal, ordergoods.saleprice, ordergoods.promoteprice, ordergoods.realprice, goods.pic goodspic ").append("\n");
+		sql.append(" select vorder.cno, ordergoods.id, ordergoods.goodsid, ordergoods.goodsname, ordergoods.eventitemgoodsid, ordergoods.takeover, ordergoods.nums, (ordergoods.nums * ordergoods.saleprice) amountsale, (ordergoods.nums * ordergoods.promoteprice) amountpromote, (ordergoods.nums * ordergoods.realprice) amountreal, ordergoods.saleprice, ordergoods.promoteprice, ordergoods.realprice, goods.pic goodspic ").append("\n");
 		sql.append(" from t_app_order vorder, t_app_ordergoods ordergoods, t_app_goodsprice price, t_app_goods goods ").append("\n");
 		sql.append(" where 1 = 1 ").append("\n");
 		sql.append("     and vorder.id = ordergoods.orderid ").append("\n");

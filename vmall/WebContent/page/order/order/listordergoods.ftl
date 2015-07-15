@@ -35,12 +35,8 @@
         <input type="hidden" name="saleprice" value="${goods.saleprice}">
         
         <li id="product${goods.id}">
-            <a id="shopping${goods.id}" href="" class="shp-cart-conditions-link" style="display: none"></a>
-            <div class="items" id="product${goods.id}" name="item${goods.id}">
-				<div class="check-wrapper">
-                    <span class="cart-checkbox checked" id="checkIcon${goods.id}"></span>
-                </div>
-			
+            
+            <div class="items" id="product${goods.id}" name="item${goods.id}" style="margin-left:4px;margin-top:4px;">
                 <div class="shp-cart-item-core">
                     <div class="cart-product-cell-1">
                     <a class="cart-product-cell-1" href="${base}/goods/goods/look.action?id=${goods.goodsid}">
@@ -56,8 +52,8 @@
                		
                		<div class="cart-product-cell-3">
                 		<p><span style="font-size:14px;color:#ff6666" id="amountpromote-${goods_index}">￥${goods.amountpromote!?number?string("0.00")}</span></p>
-                        <p><span>&nbsp;</span></p>
-                        <p><span><#if obj.order.state=="收货"><a href="javascript:void(0)" class="ordergoods-icon-remove" style="font-size:14px;color:#6e6eff" sid="${goods.id}">同意/拒绝</a></#if></span></p>
+                        <p><span>${goods.takeover}</span></p>
+                        <p><span><#if obj.order.state=="收货"><#if goods.takeover=="同意"><#else><a href="javascript:void(0)" class="ordergoods-icon-remove" style="color:#6e6eff" sid="${goods.id}">收货</a></#if></#if></span></p>
                 	</div>
                     
                 </div>    

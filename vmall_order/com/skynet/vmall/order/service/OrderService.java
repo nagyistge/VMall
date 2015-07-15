@@ -580,8 +580,9 @@ public class OrderService extends SkynetNameEntityService<Order>
 		}
 		
 		// 检查是否所有的明细商品都已经同意收货，是则订单转发至下一阶段；
-		int nums_reject = sdao().count(OrderGoods.class, Cnd.where("orderid", "=", id).and("takeover", "=", "拒绝"));
-		if(nums_reject==0)
+		int nums_agree = sdao().count(OrderGoods.class, Cnd.where("orderid", "=", id).and("takeover", "=", "同意"));
+		int nums_all = sdao().count(OrderGoods.class, Cnd.where("orderid", "=", id));		
+		if((nums_all-nums_agree)==0)
 		{
 			forward(new DynamicObject(new String[]{"id"}, new String[]{id}));
 		}
