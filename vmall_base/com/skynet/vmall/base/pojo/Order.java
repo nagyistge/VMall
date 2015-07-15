@@ -11,6 +11,7 @@ import com.skynet.framework.pojo.IdEntity;
 @Table("T_APP_ORDER")
 public class Order extends IdEntity
 {
+	// 基本信息
 	@Column
 	private String cno; // 订单编号
 	
@@ -49,6 +50,9 @@ public class Order extends IdEntity
 
 	@Column
 	private BigDecimal amount; // 订单总额（一般为促销单价总额）
+	
+	@Column
+	private String state; // 收货订单状态（下单、收款、发货、收货、结束）	
 
 	// 支付信息
 	@Column
@@ -59,6 +63,19 @@ public class Order extends IdEntity
 
 	@Column
 	private String paybankaccountno; // 支付卡银行账号
+	
+	// 发货信息
+	@Column
+	private String freighttype; // 运费方式（免运费、自定义）
+	
+	@Column
+	private BigDecimal freight; // 运费
+	
+	@Column
+	private String logisticscomp; // 物流公司	
+
+	@Column
+	private String expressno; // 快递单号
 
 	// 收货信息
 	@Column
@@ -85,8 +102,12 @@ public class Order extends IdEntity
 	@Column
 	private String takeaddress; // 收货地址
 
+	// 收货信息
 	@Column
-	private String state; // 收货订单状态（下单、收款、发货、收货、结束）
+	private String takeover; // 收货结果（同意、拒绝）	
+	
+	@Column
+	private String takeoverreason; // 拒绝原因			
 
 	// 订单支付信息
 	@Column
@@ -121,13 +142,6 @@ public class Order extends IdEntity
 
 	@Column
 	private String wxpayopenid;
-	
-	// 收货信息
-	@Column
-	private String takeover; // 收货结果（同意、拒绝）	
-	
-	@Column
-	private String takeoverreason; // 拒绝原因		
 
 	public String getCno()
 	{
@@ -259,6 +273,16 @@ public class Order extends IdEntity
 		this.amount = amount;
 	}
 
+	public String getState()
+	{
+		return state;
+	}
+
+	public void setState(String state)
+	{
+		this.state = state;
+	}
+
 	public String getPaymode()
 	{
 		return paymode;
@@ -287,6 +311,36 @@ public class Order extends IdEntity
 	public void setPaybankaccountno(String paybankaccountno)
 	{
 		this.paybankaccountno = paybankaccountno;
+	}
+
+	public BigDecimal getFreight()
+	{
+		return freight;
+	}
+
+	public void setFreight(BigDecimal freight)
+	{
+		this.freight = freight;
+	}
+
+	public String getLogisticscomp()
+	{
+		return logisticscomp;
+	}
+
+	public void setLogisticscomp(String logisticscomp)
+	{
+		this.logisticscomp = logisticscomp;
+	}
+
+	public String getExpressno()
+	{
+		return expressno;
+	}
+
+	public void setExpressno(String expressno)
+	{
+		this.expressno = expressno;
 	}
 
 	public String getTakercname()
@@ -369,14 +423,24 @@ public class Order extends IdEntity
 		this.takeaddress = takeaddress;
 	}
 
-	public String getState()
+	public String getTakeover()
 	{
-		return state;
+		return takeover;
 	}
 
-	public void setState(String state)
+	public void setTakeover(String takeover)
 	{
-		this.state = state;
+		this.takeover = takeover;
+	}
+
+	public String getTakeoverreason()
+	{
+		return takeoverreason;
+	}
+
+	public void setTakeoverreason(String takeoverreason)
+	{
+		this.takeoverreason = takeoverreason;
 	}
 
 	public String getPaystate()
@@ -487,26 +551,6 @@ public class Order extends IdEntity
 	public void setWxpayopenid(String wxpayopenid)
 	{
 		this.wxpayopenid = wxpayopenid;
-	}
-
-	public String getTakeover()
-	{
-		return takeover;
-	}
-
-	public void setTakeover(String takeover)
-	{
-		this.takeover = takeover;
-	}
-
-	public String getTakeoverreason()
-	{
-		return takeoverreason;
-	}
-
-	public void setTakeoverreason(String takeoverreason)
-	{
-		this.takeoverreason = takeoverreason;
 	}
 
 }
