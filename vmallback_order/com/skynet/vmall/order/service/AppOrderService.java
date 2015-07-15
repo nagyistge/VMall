@@ -56,9 +56,8 @@ public class AppOrderService extends SkynetDaoService
 
 		StringBuffer sql = new StringBuffer();
 		sql.append(" select vorder.* ");
-		sql.append("  from t_app_order vorder, t_app_ordergoods ordergoods ").append("\n");
+		sql.append("  from t_app_order vorder ").append("\n");
 		sql.append("  where 1 = 1 ").append("\n");
-		sql.append("  and vorder.id = ordergoods.orderid ").append("\n");
 
 		// 增加查询过滤条件
 		if (!StringToolKit.isBlank(mobile_orderno))
@@ -75,11 +74,6 @@ public class AppOrderService extends SkynetDaoService
 			sql.append("  and vorder.state = ").append(SQLParser.charValue(state)).append("\n");
 		}
 
-		if (!StringToolKit.isBlank(goodscode))
-		{
-			sql.append("  and ordergoods.goodscode like ").append(SQLParser.charLikeValue(goodscode)).append("\n");
-		}
-
 		if (!StringToolKit.isBlank(takeaddress))
 		{
 			sql.append("  and takeaddress like ").append(SQLParser.charLikeValue(takeaddress)).append("\n");
@@ -93,6 +87,18 @@ public class AppOrderService extends SkynetDaoService
 		if (!StringToolKit.isBlank(ordertimeend))
 		{
 			sql.append("  and datediff(ordertime, '" + ordertimeend + "')<=0").append("\n");
+		}
+		
+		if (!StringToolKit.isBlank(goodscode))
+		{
+			sql.append("  and exists( ").append("\n");
+			sql.append("  select id from t_app_ordergoods ").append("\n");
+			sql.append("   where orderid = vorder.id ").append("\n");
+			sql.append("     and ( ").append("\n");
+			sql.append("         goodscode like ").append(SQLParser.charLikeValue(goodscode)).append("\n");
+			sql.append("      or goodsname like ").append(SQLParser.charLikeValue(goodscode)).append("\n");
+			sql.append("     )").append("\n");
+			sql.append(" ) ").append("\n");
 		}
 
 		List<DynamicObject> datas = sdao().queryForList(sql.toString(), startindex, endindex);
