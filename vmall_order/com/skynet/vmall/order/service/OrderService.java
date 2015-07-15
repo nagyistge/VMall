@@ -352,7 +352,7 @@ public class OrderService extends SkynetNameEntityService<Order>
 		String wxpaybanktype = (String) form.get("wxpaybanktype");
 		String wxpaytotalfee = (String) form.get("wxpaytotalfee");
 		String wxpayissubscribe = (String) form.get("wxpayissubscribe");
-		String wxpaytimeend = (String) form.get("wxpaytimeend");
+		Timestamp wxpaytimeend = Timestamp.valueOf((String)form.get("wxpaytimeend"));
 		String wxpayopenid = (String) form.get("wxpayopenid");
 
 		Map map = new DynamicObject();

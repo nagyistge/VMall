@@ -117,7 +117,7 @@ public class Order extends IdEntity
 	private String wxpayissubscribe;
 
 	@Column
-	private String wxpaytimeend;
+	private Timestamp wxpaytimeend;
 
 	@Column
 	private String wxpayopenid;
@@ -469,12 +469,12 @@ public class Order extends IdEntity
 		this.wxpayissubscribe = wxpayissubscribe;
 	}
 
-	public String getWxpaytimeend()
+	public Timestamp getWxpaytimeend()
 	{
 		return wxpaytimeend;
 	}
 
-	public void setWxpaytimeend(String wxpaytimeend)
+	public void setWxpaytimeend(Timestamp wxpaytimeend)
 	{
 		this.wxpaytimeend = wxpaytimeend;
 	}
