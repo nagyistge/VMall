@@ -545,15 +545,36 @@ public class OrderService extends SkynetNameEntityService<Order>
 		}
 	}
 	
-	public Map savetakeover(Map map) throws Exception
+	public Map savetakeover(Map map, DynamicObject login_token) throws Exception
 	{
+		String userid = login_token.getFormatAttr(GlobalConstants.sys_login_userid);
+		
 		String id = (String) map.get("id");
 		String ordergoodsid = (String) map.get("ordergoodsid");
 		String takeover = (String) map.get("takeover");
 		String takeoverreason = (String) map.get("takeoverreason");
 		
+		// 检查当前用户信息
+		if(StringToolKit.isBlank(userid))
+		{
+			Map remap = new DynamicObject();
+			remap.put("state", "error");
+			remap.put("message", "亲，无法认证你的个人信息，不能签收订单哦。");		
+			return remap;				
+		}			
+		
 		// 检查订单是否处于发货阶段
 		Order order = sdao().fetch(Order.class, id);
+		
+		// 检查订单是否属于当前用户
+		if(!userid.equals(order.getMemberid()))
+		{
+			Map remap = new DynamicObject();
+			remap.put("state", "error");
+			remap.put("message", "亲，订单认证异常，无法签收不属于你的订单哦。");		
+			return remap;				
+		}		
+		
 		if(!"收货".equals(order.getState()))
 		{
 			Map remap = new DynamicObject();
@@ -591,6 +612,71 @@ public class OrderService extends SkynetNameEntityService<Order>
 		remap.put("state", "success");
 		remap.put("id", id);
 		remap.put("ordergoodsid", ordergoodsid);
+		return remap;
+	}
+	
+	// 快速收货确认，不逐项确认
+	public Map savealltakeover(Map map, DynamicObject login_token) throws Exception
+	{
+		String userid = login_token.getFormatAttr(GlobalConstants.sys_login_userid);
+		
+		String id = (String) map.get("id");
+		String takeover = (String) map.get("takeover");
+		String takeoverreason = (String) map.get("takeoverreason");		
+
+		// 检查当前用户信息
+		if(StringToolKit.isBlank(userid))
+		{
+			Map remap = new DynamicObject();
+			remap.put("state", "error");
+			remap.put("message", "亲，无法认证你的个人信息，不能签收订单哦。");		
+			return remap;				
+		}
+		
+		Order order = sdao().fetch(Order.class, id);
+		
+		// 检查订单是否属于当前用户
+		if(!userid.equals(order.getMemberid()))
+		{
+			Map remap = new DynamicObject();
+			remap.put("state", "error");
+			remap.put("message", "亲，订单认证异常，无法签收不属于你的订单哦。");		
+			return remap;				
+		}
+		
+		// 检查订单是否处于发货阶段
+		if(!"收货".equals(order.getState()))
+		{
+			Map remap = new DynamicObject();
+			remap.put("state", "error");
+			remap.put("message", "亲，订单不在收货阶段，不能进行收货确认哦。");		
+			return remap;			
+		}
+		
+		if("同意".equals(order.getTakeover()))
+		{
+			Map remap = new DynamicObject();
+			remap.put("state", "error");
+			remap.put("message", "亲，之前已经同意收货了，不能再重新收货哦。");		
+			return remap;
+		}
+		
+		order.setTakeover(takeover);
+		order.setTakeoverreason(takeoverreason);
+		sdao().update(order);
+		
+		sdao().update(OrderGoods.class, Chain.make("takeover", takeover), Cnd.where("orderid", "=", id));
+		sdao().update(OrderGoods.class, Chain.make("takeoverreason", null), Cnd.where("orderid", "=", id));
+		
+		// 如果同意签收订单，直接转发至下一结点；
+		if("同意".equals(takeover))
+		{
+			forward(new DynamicObject(new String[]{"id"}, new String[]{id}));
+		}
+		
+		Map remap = new DynamicObject();
+		remap.put("state", "success");
+		remap.put("id", id);
 		return remap;
 	}
 

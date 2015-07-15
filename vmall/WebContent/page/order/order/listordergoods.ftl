@@ -69,7 +69,6 @@
 $(".ordergoods-icon-remove").click(function() 
 {
 	var ordergoodsid = $(this).attr("sid");
-	console.log(ordergoodsid);
 	window.location = "${base}/order/order/inputgoodstakeover.action?ordergoodsid="+ordergoodsid;
 });
 

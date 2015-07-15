@@ -1,0 +1,3 @@
+update t_app_order set state = '收货' where state = '结算';
+update t_app_order set takeover = null, takeoverreason = null;
+update t_app_ordergoods set takeover = null, takeoverreason = null;

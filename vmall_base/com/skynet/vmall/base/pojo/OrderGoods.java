@@ -123,10 +123,10 @@ public class OrderGoods extends IdEntity
 	
 	// 收货信息
 	@Column
-	private String takeover; // 收货结果（接受、拒绝）	
+	private String takeover; // 收货结果（同意、拒绝）	
 	
 	@Column
-	private String takeoverreason; // 拒绝原因（接受、拒绝）	
+	private String takeoverreason; // 拒绝原因	
 
 	public String getOrderid()
 	{

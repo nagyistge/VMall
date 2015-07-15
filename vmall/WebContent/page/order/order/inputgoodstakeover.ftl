@@ -56,9 +56,9 @@
 <input type="hidden" id="id" name="id" value="${obj.id!}">
 <input type="hidden" id="cno" name="cno" value="${obj.order.cno}">
 <input type="hidden" id="state" name="state" value="${obj.order.state}">
-
-<input type="hidden" id="takeover" name="takeover" value="${obj.order.takeover}">
-<input type="hidden" id="takeoverreason" name="takeoverreason" value="${obj.order.takeoverreason}">
+<input type="hidden" id="ordergoodsid" name="ordergoodsid" value="${obj.ordergoodsid!}">
+<input type="hidden" id="takeover" name="takeover" value="${obj.ordergoods.takeover}">
+<input type="hidden" id="takeoverreason" name="takeoverreason" value="${obj.ordergoods.takeoverreason}">
 
 <div class="new-ct shouhuo">
 
@@ -97,8 +97,8 @@
                 <span class="tbl-cell" id="cell_takeover">
                 	<p>&nbsp;</p>
                 	<p>
-                	<span class="cart-checkbox <#if obj.order.takeover="同意">checked</#if>" style="float:left" id="check_agree" cindex="" value="同意"></span><span style="float:left;width:60px">同意</span>
-                	<span class="cart-checkbox <#if obj.order.takeover='拒绝'>checked</#if>" style="float:left" id="check_reject" cindex="" value="拒绝"></span><span style="width:60px">拒绝</span>
+                	<span class="cart-checkbox <#if obj.ordergoods.takeover="同意">checked</#if>" style="float:left" id="check_agree" cindex="" value="同意"></span><span style="float:left;width:60px">同意</span>
+                	<span class="cart-checkbox <#if obj.ordergoods.takeover='拒绝'>checked</#if>" style="float:left" id="check_reject" cindex="" value="拒绝"></span><span style="width:60px">拒绝</span>
                 	</p>
                 	<p>&nbsp;</p>
 				</span>
@@ -110,21 +110,21 @@
             	<span class="tbl-cell w100" style="text-align:right"><span>原因：&nbsp;&nbsp;</span></span>
                 <span class="tbl-cell" id="cell_takeover_reason" style="float:left;font-family:'微软雅黑';font-size:14px;">
 	               		<p>&nbsp;<p>
-	               		<span><span class="cart-checkbox <#if obj.order.takeoverreason="包装破损">checked</#if>" style="float:left" id="" cindex="" value="包装破损"></span><span>包装破损</span></span>
+	               		<span><span class="cart-checkbox <#if obj.ordergoods.takeoverreason="包装破损">checked</#if>" style="float:left" id="" cindex="" value="包装破损"></span><span>包装破损</span></span>
 	               		<p>&nbsp;<p>
-	               		<span><span class="cart-checkbox <#if obj.order.takeoverreason="商品错发漏发">checked</#if>" style="float:left" id="" cindex="" value="商品错发漏发"></span><span>商品错发漏发</span></span>
+	               		<span><span class="cart-checkbox <#if obj.ordergoods.takeoverreason="商品错发漏发">checked</#if>" style="float:left" id="" cindex="" value="商品错发漏发"></span><span>商品错发漏发</span></span>
 	               		<p>&nbsp;<p>
-	               		<span><span class="cart-checkbox <#if obj.order.takeoverreason="商品需要维修">checked</#if>" style="float:left" id="" cindex="" value="商品需要维修"></span><span>商品需要维修</span></span>
+	               		<span><span class="cart-checkbox <#if obj.ordergoods.takeoverreason="商品需要维修">checked</#if>" style="float:left" id="" cindex="" value="商品需要维修"></span><span>商品需要维修</span></span>
 	               		<p>&nbsp;<p>
-	               		<span><span class="cart-checkbox <#if obj.order.takeoverreason="发票原因">checked</#if>" style="float:left" id="" cindex="" value="发票原因"></span><span>发票原因</span></span>
+	               		<span><span class="cart-checkbox <#if obj.ordergoods.takeoverreason="发票原因">checked</#if>" style="float:left" id="" cindex="" value="发票原因"></span><span>发票原因</span></span>
 	               		<p>&nbsp;<p>
-	               		<span><span class="cart-checkbox <#if obj.order.takeoverreason="收到商品与描述不符">checked</#if>" style="float:left" id="" cindex="" value="收到商品与描述不符"></span><span>收到商品与描述不符</span></span>
+	               		<span><span class="cart-checkbox <#if obj.ordergoods.takeoverreason="收到商品与描述不符">checked</#if>" style="float:left" id="" cindex="" value="收到商品与描述不符"></span><span>收到商品与描述不符</span></span>
 	               		<p>&nbsp;<p>
-	               		<span><span class="cart-checkbox <#if obj.order.takeoverreason="商品质量问题">checked</#if>" style="float:left" id="" cindex="" value="商品质量问题"></span><span>商品质量问题</span></span>
+	               		<span><span class="cart-checkbox <#if obj.ordergoods.takeoverreason="商品质量问题">checked</#if>" style="float:left" id="" cindex="" value="商品质量问题"></span><span>商品质量问题</span></span>
 	               		<p>&nbsp;<p>
-	               		<span><span class="cart-checkbox <#if obj.order.takeoverreason="未按约定时间发货">checked</#if>" style="float:left" id="" cindex="" value="未按约定时间发货"></span><span>未按约定时间发货</span></span>
+	               		<span><span class="cart-checkbox <#if obj.ordergoods.takeoverreason="未按约定时间发货">checked</#if>" style="float:left" id="" cindex="" value="未按约定时间发货"></span><span>未按约定时间发货</span></span>
 	               		<p>&nbsp;<p>
-	               		<span><span class="cart-checkbox <#if obj.order.takeoverreason="收到假货">checked</#if>" style="float:left" id="" cindex="" value="收到假货"></span><span>收到假货</span></span>
+	               		<span><span class="cart-checkbox <#if obj.ordergoods.takeoverreason="收到假货">checked</#if>" style="float:left" id="" cindex="" value="收到假货"></span><span>收到假货</span></span>
      					<p>&nbsp;<p>
                 </span>
             </div>
@@ -182,7 +182,8 @@ function page_check_reject()
 
 function page_submit()
 {
-	var id = $("#id").val();
+	var id = $("#id").val();	
+	var ordergoodsid = $("#ordergoodsid").val();
 	var takeover = $("#takeover").val();
 	var takeoverreason = $("#takeoverreason").val();
 	
@@ -200,8 +201,8 @@ function page_submit()
 	
 	$.ajax({
 		type:'POST',
-		url:'${base}/order/order/savealltakeover.action',
-		data:{"id":id,"takeover":takeover,"takeoverreason":takeoverreason},
+		url:'${base}/order/order/savetakeover.action',
+		data:{"id":id,"ordergoodsid":ordergoodsid,"takeover":takeover,"takeoverreason":takeoverreason},
 		cache:false,
 		async:true,
 		success:function(data)
@@ -215,7 +216,7 @@ function page_submit()
 			json = eval("(" + data + ")");
 			if(json.state=="success")
 			{
-				window.location = "${base}/order/order/look.action?id="+id;
+				window.location = "${base}/order/order/listordergoods.action?id="+id;
 			}
 			else
 			{

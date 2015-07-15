@@ -140,7 +140,7 @@ wx.config({
 
 wx.ready(function()
 {
-	document.querySelector('#btn_pay').onclick = page_pay;
+	// document.querySelector('#btn_pay').onclick = page_pay;
 
 });
 
@@ -308,7 +308,7 @@ function page_takeover()
 		return;
 	}
 	
-	window.location = "${base}/order/order/inputtakeover.action";
+	window.location = "${base}/order/order/inputtakeover.action?id="+orderid;
 }
 
 

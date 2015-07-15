@@ -121,6 +121,13 @@ public class Order extends IdEntity
 
 	@Column
 	private String wxpayopenid;
+	
+	// 收货信息
+	@Column
+	private String takeover; // 收货结果（同意、拒绝）	
+	
+	@Column
+	private String takeoverreason; // 拒绝原因		
 
 	public String getCno()
 	{
@@ -480,6 +487,26 @@ public class Order extends IdEntity
 	public void setWxpayopenid(String wxpayopenid)
 	{
 		this.wxpayopenid = wxpayopenid;
+	}
+
+	public String getTakeover()
+	{
+		return takeover;
+	}
+
+	public void setTakeover(String takeover)
+	{
+		this.takeover = takeover;
+	}
+
+	public String getTakeoverreason()
+	{
+		return takeoverreason;
+	}
+
+	public void setTakeoverreason(String takeoverreason)
+	{
+		this.takeoverreason = takeoverreason;
 	}
 
 }
