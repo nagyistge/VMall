@@ -9,14 +9,11 @@ import org.nutz.mvc.annotation.Ok;
 
 import com.skynet.app.organ.service.OrganService;
 import com.skynet.framework.action.BaseAction;
-import com.skynet.vmall.base.pojo.Event;
-import com.skynet.vmall.base.pojo.EventItem;
-import com.skynet.vmall.base.pojo.EventItemGoods;
-import com.skynet.vmall.base.pojo.EventItemMember;
-import com.skynet.vmall.base.pojo.GoodsPrice;
 import com.skynet.vmall.base.pojo.Order;
 import com.skynet.vmall.base.pojo.OrderGoods;
 import com.skynet.vmall.base.pojo.OrderGoodsRebate;
+import com.skynet.vmall.base.pojo.RunFlow;
+import com.skynet.vmall.base.pojo.RunFlowLog;
 import com.skynet.vmall.base.pojo.ShopCart;
 import com.skynet.vmall.base.pojo.ShopCartGoods;
 
@@ -41,12 +38,17 @@ public class SystemAction extends BaseAction
 //		organService.dao().create(EventItem.class, true);
 //		organService.dao().create(EventItemGoods.class, true);
 //		organService.dao().create(EventItemMember.class, true);	
+
+//		organService.dao().create(GoodsPrice.class, true);
+		
 		organService.dao().create(Order.class, true);	
 		organService.dao().create(OrderGoods.class, true);		
 		organService.dao().create(OrderGoodsRebate.class, true);	
 		organService.dao().create(ShopCart.class, true);
 		organService.dao().create(ShopCartGoods.class, true);
-//		organService.dao().create(GoodsPrice.class, true);	
+		organService.dao().create(RunFlow.class, true);
+		organService.dao().create(RunFlowLog.class, true);
+		
 		return ro;
 	}
 

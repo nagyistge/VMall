@@ -177,6 +177,35 @@
 <!-- end 支付信息 -->
 
 <div class="panel-single panel-single-light mgt20">
+    <h3 class="cst_h3 mgb20">发货信息</h3>
+    <div class="formitems">
+        <label class="fi-name"><span class="colorRed">*</span>运费：</label>
+        <div class="form-controls">
+            <input type="text" class="input" name="freighttype" value="${obj.order.freighttype}">
+            <input type="text" class="input" name="freight" value="${obj.order.freight}">
+            <span class="fi-help-text"></span>
+        </div>
+    </div>
+    
+    <div class="formitems">
+        <label class="fi-name"><span class="colorRed">*</span>物流公司：</label>
+        <div class="form-controls">
+            <input type="text" class="input" name="logisticscomp" value="${obj.order.logisticscomp}">
+            <span class="fi-help-text"></span>
+        </div>
+    </div>  
+    
+    <div class="formitems">
+        <label class="fi-name"><span class="colorRed">*</span>快递单号：</label>
+        <div class="form-controls">
+            <input type="text" class="input" name="expressno" value="${obj.order.expressno}">
+            <span class="fi-help-text"></span>
+        </div>
+    </div>      
+</div>    
+<!-- end 发货信息 -->
+
+<div class="panel-single panel-single-light mgt20">
     <h3 class="cst_h3 mgb20">收货信息</h3>
     <div class="formitems">
         <label class="fi-name"><span class="colorRed">*</span>收货人：</label>

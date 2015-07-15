@@ -29,3 +29,6 @@
 /EventItemMember.class
 /GoodsClassSpecValue.class
 /GoodsPrice.class
+/FlowLog.class
+/RunFlowLog.class
+/RunFlow.class

@@ -6,10 +6,20 @@ public class VMallConstants
 	
 	public static int pagenavnums = 10; // 分页导航页码个数	
 	
+	public static final String flow_order_name = "订单";
+	
+	public static final String flow_drawcash_name = "提现";
+	
 	public static final String[] flow_order = new String[]
 	{ "下单", "收款", "发货", "收货", "结算", "结束" };
 	public static final String[] flow_drawcash = new String[]
 	{ "申请", "受理", "付款", "收款", "结束" };
+	
+	public static final String flow_create = "创建";
+	
+	public static final String flow_forward = "转发";
+	
+	public static final String flow_backward = "退回";
 	
 	public static final String svr_domianname = "www.rbtalking.com";
 	

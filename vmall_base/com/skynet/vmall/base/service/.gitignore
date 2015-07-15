@@ -4,3 +4,5 @@
 /EventItemService.class
 /EventItemGoodsService.class
 /GoodsPriceService.class
+/RunFlowService.class
+/RunFlowLogService.class
