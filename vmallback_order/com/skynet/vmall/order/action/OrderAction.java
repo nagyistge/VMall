@@ -95,9 +95,9 @@ public class OrderAction
 	{	
 		HttpSession session = Mvcs.getHttpSession(true);
 		DynamicObject login_token = (DynamicObject) session.getAttribute(GlobalConstants.sys_login_token);
-		String loginname = login_token.getFormatAttr(GlobalConstants.sys_login_user);
-		
-		Map map = apporderService.foward(id, loginname);
+		DynamicObject form = new DynamicObject();
+		form.setAttr("id", id);
+		Map map = apporderService.foward(form, login_token);
 		return map;
 	}
 	

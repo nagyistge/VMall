@@ -169,7 +169,11 @@
     <div class="formitems">
         <label class="fi-name"><span class="colorRed">*</span>交易结束时间：</label>
         <div class="form-controls">
+            <#-- 
             <input type="text" class="input" name="wxpaytimeend" value="<#if obj.order.wxpaytimeend!=''>${obj.order.wxpaytimeend!?datetime?string('yyyy-MM-dd HH:mm')}</#if>">
+            -->
+           <input type="text" class="input" name="wxpaytimeend" value="${obj.order.wxpaytimeend}">
+            
             <span class="fi-help-text"></span>
         </div>
     </div>             

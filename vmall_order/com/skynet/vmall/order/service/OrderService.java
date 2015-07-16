@@ -3,6 +3,7 @@ package com.skynet.vmall.order.service;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,6 +16,10 @@ import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.lang.Lang;
 
+import com.skynet.app.flow.pojo.RFlow;
+import com.skynet.app.flow.service.AppFlowService;
+import com.skynet.app.flow.service.BFlowService;
+import com.skynet.app.flow.service.RFlowService;
 import com.skynet.framework.common.generator.UUIDGenerator;
 import com.skynet.framework.service.SkynetNameEntityService;
 import com.skynet.framework.services.db.SQLParser;
@@ -22,12 +27,14 @@ import com.skynet.framework.services.db.dybeans.DynamicObject;
 import com.skynet.framework.services.function.StringToolKit;
 import com.skynet.framework.services.function.Types;
 import com.skynet.framework.spec.GlobalConstants;
+import com.skynet.vmall.app.service.AppRunFlowService;
 import com.skynet.vmall.base.constants.VMallConstants;
 import com.skynet.vmall.base.pojo.Goods;
 import com.skynet.vmall.base.pojo.Member;
 import com.skynet.vmall.base.pojo.Order;
 import com.skynet.vmall.base.pojo.OrderGoods;
 import com.skynet.vmall.base.pojo.OrderGoodsRebate;
+import com.skynet.vmall.base.service.RunFlowService;
 import com.skynet.vmall.goods.service.GoodsService;
 import com.skynet.vmall.member.service.MemberService;
 
@@ -36,10 +43,18 @@ import com.skynet.vmall.member.service.MemberService;
 { "refer:dao" })
 public class OrderService extends SkynetNameEntityService<Order>
 {
-	
+	@Inject
+	AppFlowService appflowService;
+
+	@Inject
+	BFlowService bflowService;
+
+	@Inject
+	RFlowService rflowService;
+
 	@Inject
 	GoodsService goodsService;
-	
+
 	public OrderService()
 	{
 		super();
@@ -63,20 +78,17 @@ public class OrderService extends SkynetNameEntityService<Order>
 
 		int startindex = (page - 1) * pagesize;
 		int endindex = page * pagesize;
-		
+
 		String batchno = (String) map.get("batchno");
 		String memberid = (String) map.get("memberid");
-
 
 		StringBuffer sql = new StringBuffer();
 
 		// 后期增加 付款前按照商品实时价格查询，付款后按照订单商品价格查询
-		
+
 		sql.append(" select id, cno, sellername, ordertime, takeaddress, paystate, state, sum(amount) amount ").append("\n");
 		sql.append(" from ( ").append("\n");
-		sql.append(		
-				" select vorder.id, vorder.cno, vorder.sellername, vorder.ordertime, vorder.takeaddress, vorder.paystate, vorder.state, (ordergoods.nums * price.promoteprice) amount ")
-				.append("\n");
+		sql.append(" select vorder.id, vorder.cno, vorder.sellername, vorder.ordertime, vorder.takeaddress, vorder.paystate, vorder.state, (ordergoods.nums * price.promoteprice) amount ").append("\n");
 		sql.append(" from t_app_order vorder, t_app_ordergoods ordergoods, t_app_goodsprice price ").append("\n");
 		sql.append(" where 1 = 1 ").append("\n");
 		sql.append("     and ordergoods.goodsid = price.goodsid ").append("\n");
@@ -89,11 +101,9 @@ public class OrderService extends SkynetNameEntityService<Order>
 		if (!StringToolKit.isBlank(batchno))
 		{
 			sql.append("  and vorder.batchno = ").append(SQLParser.charValue(batchno)).append("\n");
-		}			
+		}
 		sql.append(" union ").append("\n");
-		sql.append(
-				" select vorder.id, vorder.cno, vorder.sellername, vorder.ordertime, vorder.takeaddress, vorder.paystate, vorder.state, (ordergoods.nums * price.promoteprice) amount ")
-				.append("\n");
+		sql.append(" select vorder.id, vorder.cno, vorder.sellername, vorder.ordertime, vorder.takeaddress, vorder.paystate, vorder.state, (ordergoods.nums * price.promoteprice) amount ").append("\n");
 		sql.append(" from t_app_order vorder, t_app_ordergoods ordergoods, t_app_goodsprice price ").append("\n");
 		sql.append(" where 1 = 1 ").append("\n");
 		sql.append("     and vorder.id = ordergoods.orderid ").append("\n");
@@ -106,14 +116,13 @@ public class OrderService extends SkynetNameEntityService<Order>
 		if (!StringToolKit.isBlank(batchno))
 		{
 			sql.append("  and vorder.batchno = ").append(SQLParser.charValue(batchno)).append("\n");
-		}		
-		
+		}
+
 		sql.append(" ) v ").append("\n");
 		sql.append(" group by id, cno, sellername, ordertime, takeaddress, paystate, state ").append("\n");
-		
+
 		sql.append(" union ").append("\n");
-		sql.append(
-				" select vorder.id, vorder.cno, vorder.sellername, vorder.ordertime, vorder.takeaddress, vorder.paystate, vorder.state, sum(ordergoods.nums * ordergoods.realprice) amount ")				.append("\n");
+		sql.append(" select vorder.id, vorder.cno, vorder.sellername, vorder.ordertime, vorder.takeaddress, vorder.paystate, vorder.state, sum(ordergoods.nums * ordergoods.realprice) amount ").append("\n");
 		sql.append(" from t_app_order vorder, t_app_ordergoods ordergoods ").append("\n");
 		sql.append(" where 1 = 1 ").append("\n");
 		sql.append("     and vorder.id = ordergoods.orderid ").append("\n");
@@ -123,84 +132,74 @@ public class OrderService extends SkynetNameEntityService<Order>
 		if (!StringToolKit.isBlank(batchno))
 		{
 			sql.append("  and vorder.batchno = ").append(SQLParser.charValue(batchno)).append("\n");
-		}			
+		}
 		sql.append("  group by vorder.id, vorder.cno, vorder.sellername, vorder.ordertime, vorder.takeaddress, vorder.paystate, vorder.state ").append("\n");
 		sql.append("   order by ordertime desc ").append("\n");
-		
+
 		List<DynamicObject> datas = sdao().queryForList(sql.toString(), startindex, endindex);
 
 		return datas;
 	}
 
 	// 转发
-	public Map forward(Map form) throws Exception
+	public Map forward(DynamicObject form, DynamicObject login_token) throws Exception
 	{
 		String id = (String) form.get("id");
 
 		Map map = new DynamicObject();
 		DynamicObject order = locate(id);
-		String flowstate = order.getFormatAttr("state");
 
-		// 检查流程已结束异常
-		if ("结束".equals(flowstate))
-		{
-			map.put("state", "error");
-			map.put("errormessage", "订单流程已结束，不允许再转发处理！");
-			return map;
-		}
+		// 更新流程信息
+		String dataid = order.getFormatAttr("id");
+		String bflowid = bflowService.fetch(Cnd.where("cname", "=", VMallConstants.flow_order_name)).getId();
+		RFlow rflow = rflowService.fetch(Cnd.where("dataid", "=", dataid).and("bflowid", "=", bflowid));
+		String runflowkey = rflow.getRunflowkey();
+		String sname = rflow.getState();
 
-		// 检查未找到当前流程状态异常
-		String flownextstate = flowstate;
-		int index = StringToolKit.getTextInArrayIndex(VMallConstants.flow_order, flowstate);
-		if (index == -1)
-		{
-			map.put("state", "error");
-			map.put("errormessage", "未找到当前流程状态！");
-			return map;
-		}
+		DynamicObject swapflow = new DynamicObject();
+		swapflow.setAttr("runflowkey", runflowkey);
+		swapflow.setAttr("sname", sname);
 
-		if (VMallConstants.flow_order.length > (index + 1))
-		{
-			flownextstate = VMallConstants.flow_order[index + 1];
-		}
+		String flownextstate = appflowService.forward(swapflow, login_token);
 
 		// 更新状态至下一环节
 		sdao().update(Order.class, Chain.make("state", flownextstate), Cnd.where("id", "=", id));
+
 		map.put("state", "success");
 		map.put("flownextstate", flownextstate);
 
 		return map;
 	}
-	
+
 	// 付款
 	public Map pay(String orderid, DynamicObject login_token) throws Exception
 	{
-		
-		if(StringToolKit.isBlank(orderid))
+
+		if (StringToolKit.isBlank(orderid))
 		{
 			throw new Exception("订单未找到，请核实订单。");
 		}
-		
+
 		String userid = login_token.getFormatAttr(GlobalConstants.sys_login_userid);
 		String userwxopenid = login_token.getFormatAttr(GlobalConstants.sys_login_userwxopenid);
 		String username = login_token.getFormatAttr(GlobalConstants.sys_login_username);
-		
+
 		Order order = sdao().fetch(Order.class, orderid);
-		
+
 		List<OrderGoods> ordergoodses = sdao().query(OrderGoods.class, Cnd.where("orderid", "=", orderid));
-		for(int i=0;i<ordergoodses.size();i++)
+		for (int i = 0; i < ordergoodses.size(); i++)
 		{
-			// 再次检查数量，防止非法数量；	
+			// 再次检查数量，防止非法数量；
 			int nums = ordergoodses.get(i).getNums();
-			if(nums<=0)
+			if (nums <= 0)
 			{
 				continue;
 			}
-			
+
 			OrderGoods ordergoods = ordergoodses.get(i);
 			String goodsid = ordergoods.getGoodsid();
 			Goods goods = sdao().fetch(Goods.class, goodsid);
-			
+
 			MemberService memberService = new MemberService(sdao(), Member.class);
 			List<DynamicObject> supmembers = memberService.findsupmembers(userid, MemberService.level_rebate);
 
@@ -208,8 +207,8 @@ public class OrderService extends SkynetNameEntityService<Order>
 			// 如为参加活动购买，单价、金额应为活动的商品实时价格
 			// 增加商品活动限量检查
 			String eventitemgoodsid = ordergoods.getEventitemgoodsid();
-			
-			if(!StringToolKit.isBlank(eventitemgoodsid))
+
+			if (!StringToolKit.isBlank(eventitemgoodsid))
 			{
 				ShopCartService shopcartService = new ShopCartService();
 				shopcartService.setDao(sdao());
@@ -222,8 +221,8 @@ public class OrderService extends SkynetNameEntityService<Order>
 					remap.put("state", "error");
 					remap.put("message", "亲，你想要的" + goods.getCname() + "已经被大家一抢而空了，等下次活动吧。");
 					return remap;
-				}				
-				
+				}
+
 				int odd_buynums_order = 0;
 				odd_buynums_order = shopcartService.check_order_event_buynums(userid, goodsid, nums, eventitemgoodsid, true);
 				if (odd_buynums_order == 0)
@@ -242,62 +241,64 @@ public class OrderService extends SkynetNameEntityService<Order>
 				{
 					nums = odd_buynums_order;
 				}
-				
+
 				ordergoods.setNums(nums);
 			}
-			
-			if(StringToolKit.isBlank(eventitemgoodsid))
+
+			if (StringToolKit.isBlank(eventitemgoodsid))
 			{
 				ordergoods.setSaleprice(goods.getSaleprice());
 				ordergoods.setPromoteprice(goods.getPromoteprice());
-				ordergoods.setRealprice(goods.getPromoteprice());				
+				ordergoods.setRealprice(goods.getPromoteprice());
 			}
 			else
 			{
-				DynamicObject goodsprice = goodsService.getPrice(new DynamicObject(new String[]{"goodsid","eventitemgoodsid"}, new String[]{goodsid, eventitemgoodsid}));
+				DynamicObject goodsprice = goodsService.getPrice(new DynamicObject(new String[]
+				{ "goodsid", "eventitemgoodsid" }, new String[]
+				{ goodsid, eventitemgoodsid }));
 				ordergoods.setSaleprice(new BigDecimal(goodsprice.getFormatAttr("saleprice"))); // 销售价（原价）
 				ordergoods.setPromoteprice(new BigDecimal(goodsprice.getFormatAttr("promoteprice"))); // 促销价（现价）
-				ordergoods.setRealprice(new BigDecimal(goodsprice.getFormatAttr("promoteprice")));					
+				ordergoods.setRealprice(new BigDecimal(goodsprice.getFormatAttr("promoteprice")));
 			}
-			
+
 			BigDecimal amountsale = ordergoods.getSaleprice().multiply(new BigDecimal(ordergoods.getNums()));
 			BigDecimal amountpromote = ordergoods.getPromoteprice().multiply(new BigDecimal(ordergoods.getNums()));
-			BigDecimal amountreal = ordergoods.getRealprice().multiply(new BigDecimal(ordergoods.getNums()));				
-			
+			BigDecimal amountreal = ordergoods.getRealprice().multiply(new BigDecimal(ordergoods.getNums()));
+
 			ordergoods.setAmountsale(amountsale);
 			ordergoods.setAmountpromote(amountpromote);
 			ordergoods.setAmountreal(amountreal);
-			
+
 			// 更新返利
 			// 后期也需要完善为按活动的返利赋值
-			for(int j=0;j<supmembers.size();j++)
+			for (int j = 0; j < supmembers.size(); j++)
 			{
 				DynamicObject supmember = supmembers.get(j);
 				int level = j + 1;
-				
-				Method mog_setrebate = OrderGoods.class.getMethod("setRebate"+level, BigDecimal.class);
-				Method mog_setsupwxopenid = OrderGoods.class.getMethod("setSupwxopenid"+level, String.class);
-				Method mog_setsupmemberid = OrderGoods.class.getMethod("setSupmemberid"+level, String.class);
-				
-				Method mg = Goods.class.getMethod("getRebate"+level);
+
+				Method mog_setrebate = OrderGoods.class.getMethod("setRebate" + level, BigDecimal.class);
+				Method mog_setsupwxopenid = OrderGoods.class.getMethod("setSupwxopenid" + level, String.class);
+				Method mog_setsupmemberid = OrderGoods.class.getMethod("setSupmemberid" + level, String.class);
+
+				Method mg = Goods.class.getMethod("getRebate" + level);
 				mog_setrebate.invoke(ordergoods, mg.invoke(goods));
 				mog_setsupwxopenid.invoke(ordergoods, supmember.getFormatAttr("wxopenid"));
 				mog_setsupmemberid.invoke(ordergoods, supmember.getFormatAttr("id"));
 			}
-			
-			sdao().update(ordergoods); 
+
+			sdao().update(ordergoods);
 
 			sdao().clear(OrderGoodsRebate.class, Cnd.where("ordercno", "=", order.getCno()));
-			for(int j=0;j<supmembers.size();j++)
+			for (int j = 0; j < supmembers.size(); j++)
 			{
 				String supmemberid = supmembers.get(j).getFormatAttr("id");
 				String supwxopenid = supmembers.get(j).getFormatAttr("wxopenid");
 				String supmembercname = supmembers.get(j).getFormatAttr("cname");
 				int level = j + 1;
-				
+
 				// 生成订单商品返利记录
 				OrderGoodsRebate orderrebate = new OrderGoodsRebate();
-				String orderrebateid = UUIDGenerator.getInstance().getNextValue();			
+				String orderrebateid = UUIDGenerator.getInstance().getNextValue();
 				orderrebate.setId(orderrebateid);
 				orderrebate.setOrdercno(order.getCno());
 				orderrebate.setOrdergoodsid(ordergoods.getGoodsid());
@@ -309,23 +310,23 @@ public class OrderService extends SkynetNameEntityService<Order>
 				orderrebate.setSubwxopenid(userwxopenid);
 				orderrebate.setSubmembercname(username);
 				orderrebate.setLevel(level);
-				
-				Method m = Goods.class.getMethod("getRebate"+level);
-				orderrebate.setRebate((BigDecimal)m.invoke(goods));
+
+				Method m = Goods.class.getMethod("getRebate" + level);
+				orderrebate.setRebate((BigDecimal) m.invoke(goods));
 				orderrebate.setNums(ordergoods.getNums());
 				orderrebate.setScore(orderrebate.getRebate().multiply(new BigDecimal(ordergoods.getNums())));
 				orderrebate.setRebatetime(new Timestamp(System.currentTimeMillis()));
 				sdao().insert(orderrebate);
 			}
 		}
-		
+
 		// 订单合计信息
 		StringBuffer sql = new StringBuffer();
 		sql.append(" select sum(saleprice * nums) amountsale, sum(promoteprice * nums) amountpromote, sum(realprice * nums) amount ");
 		sql.append("   from t_app_ordergoods goods ").append("\n");
 		sql.append("  where 1 = 1 ").append("\n");
 		sql.append("    and goods.orderid = ").append(SQLParser.charValue(orderid)).append("\n");
-		
+
 		DynamicObject amounts = sdao().queryForMap(sql.toString());
 		BigDecimal amountsale_all = new BigDecimal(Types.parseInt(amounts.getFormatAttr("amountsale"), 0));
 		BigDecimal amountpromote_all = new BigDecimal(Types.parseInt(amounts.getFormatAttr("amountpromote"), 0));
@@ -334,15 +335,15 @@ public class OrderService extends SkynetNameEntityService<Order>
 		order.setAmountpromote(amountpromote_all);
 		order.setAmount(amount_all);
 		sdao().update(order);
-		
+
 		Map remap = new DynamicObject();
 		remap.put("state", "success");
 		remap.put("amt", order.getAmount());
 		return remap;
-	}	
+	}
 
 	// 付款处理
-	public Map paynotify(Map form) throws Exception
+	public Map paynotify(Map form, DynamicObject login_token) throws Exception
 	{
 		String id = (String) form.get("id");
 		String wxpayorderno = (String) form.get("wxpayorderno");
@@ -352,30 +353,32 @@ public class OrderService extends SkynetNameEntityService<Order>
 		String wxpaybanktype = (String) form.get("wxpaybanktype");
 		String wxpaytotalfee = (String) form.get("wxpaytotalfee");
 		String wxpayissubscribe = (String) form.get("wxpayissubscribe");
-		Timestamp wxpaytimeend = Timestamp.valueOf((String)form.get("wxpaytimeend"));
+		String wxpaytimeend = (String) form.get("wxpaytimeend");
 		String wxpayopenid = (String) form.get("wxpayopenid");
 
-		Map map = new DynamicObject();
 		DynamicObject order = locate(id);
-		String flowstate = order.getFormatAttr("state");
 
-		// 检查流程已结束异常
-		if ("结束".equals(flowstate))
-		{
-			map.put("state", "error");
-			map.put("errormessage", "订单流程已结束，不允许再转发处理！");
-			return map;
-		}
+		Map map = new DynamicObject();
 
-		// 检查未找到当前流程状态异常
-		String flownextstate = "收款";
-		// 更新状态至下一环节
-		sdao().update(Order.class, Chain.make("state", flownextstate), Cnd.where("id", "=", id));
+		// 更新流程信息
+		String dataid = order.getFormatAttr("id");
+		String bflowid = bflowService.fetch(Cnd.where("cname", "=", VMallConstants.flow_order_name)).getId();
+		RFlow rflow = rflowService.fetch(Cnd.where("dataid", "=", dataid).and("bflowid", "=", bflowid));
+		String runflowkey = rflow.getRunflowkey();
+		String sname = rflow.getState();
+
+		DynamicObject swapflow = new DynamicObject();
+		swapflow.setAttr("runflowkey", runflowkey);
+		swapflow.setAttr("sname", sname);
+
+		String flownextstate = appflowService.forward(swapflow, login_token);
+
 		map.put("state", "success");
 		map.put("flownextstate", flownextstate);
-		
+
 		StringBuffer s = new StringBuffer();
 		s.append("{");
+		s.append("state:'" + flownextstate + "'");
 		s.append("paystate:'已支付',");
 		s.append("wxpayorderno:'" + wxpayorderno + "',");
 		s.append("wxpaydeviceinfo:'" + wxpaydeviceinfo + "',");
@@ -383,15 +386,15 @@ public class OrderService extends SkynetNameEntityService<Order>
 		s.append("wxpaytradetype:'" + wxpaytradetype + "',");
 		s.append("wxpaybanktype:'" + wxpaybanktype + "',");
 		s.append("wxpaytotalfee:'" + wxpaytotalfee + "',");
-		
+
 		s.append("wxpayissubscribe:'" + wxpayissubscribe + "',");
 		s.append("wxpaytimeend:'" + wxpaytimeend + "',");
 		s.append("wxpayopenid:'" + wxpayopenid + "',");
 		s.append("paynotifytime:'" + (new Timestamp(System.currentTimeMillis())) + "'");
 		s.append("}");
-		
+
 		System.out.println(s.toString());
-		
+
 		Chain c = Chain.from(Lang.map(s.toString()));
 		// Chain chain = Chain.make("paystate", "已支付").make("paytime", new
 		// Timestamp(System.currentTimeMillis())).make("thirdpaytradeno",
@@ -516,21 +519,21 @@ public class OrderService extends SkynetNameEntityService<Order>
 
 		return remap;
 	}
-	
+
 	public Map deleteorder(String id, DynamicObject login_token) throws Exception
 	{
 		String userid = login_token.getFormatAttr(GlobalConstants.sys_login_userid);
 		Order order = sdao().fetch(Order.class, id);
-		if(userid.equals(order.getMemberid()))
+		if (userid.equals(order.getMemberid()))
 		{
-			if(!"下单".equals(order.getState()))
+			if (!"下单".equals(order.getState()))
 			{
 				DynamicObject remap = new DynamicObject();
 				remap.setAttr("state", "error");
 				remap.setAttr("message", "订单已付款，不允许删除。");
-				return remap;				
+				return remap;
 			}
-				
+
 			sdao().delete(Order.class, id);
 			DynamicObject remap = new DynamicObject();
 			remap.setAttr("state", "success");
@@ -544,140 +547,144 @@ public class OrderService extends SkynetNameEntityService<Order>
 			return remap;
 		}
 	}
-	
-	public Map savetakeover(Map map, DynamicObject login_token) throws Exception
+
+	public Map savetakeover(Map form, DynamicObject login_token) throws Exception
 	{
 		String userid = login_token.getFormatAttr(GlobalConstants.sys_login_userid);
-		
-		String id = (String) map.get("id");
-		String ordergoodsid = (String) map.get("ordergoodsid");
-		String takeover = (String) map.get("takeover");
-		String takeoverreason = (String) map.get("takeoverreason");
-		
+
+		String id = (String) form.get("id");
+		String ordergoodsid = (String) form.get("ordergoodsid");
+		String takeover = (String) form.get("takeover");
+		String takeoverreason = (String) form.get("takeoverreason");
+
 		// 检查当前用户信息
-		if(StringToolKit.isBlank(userid))
+		if (StringToolKit.isBlank(userid))
 		{
 			Map remap = new DynamicObject();
 			remap.put("state", "error");
-			remap.put("message", "亲，无法认证你的个人信息，不能签收订单哦。");		
-			return remap;				
-		}			
-		
+			remap.put("message", "亲，无法认证你的个人信息，不能签收订单哦。");
+			return remap;
+		}
+
 		// 检查订单是否处于发货阶段
 		Order order = sdao().fetch(Order.class, id);
-		
+
 		// 检查订单是否属于当前用户
-		if(!userid.equals(order.getMemberid()))
+		if (!userid.equals(order.getMemberid()))
 		{
 			Map remap = new DynamicObject();
 			remap.put("state", "error");
-			remap.put("message", "亲，订单认证异常，无法签收不属于你的订单哦。");		
-			return remap;				
-		}		
-		
-		if(!"收货".equals(order.getState()))
-		{
-			Map remap = new DynamicObject();
-			remap.put("state", "error");
-			remap.put("message", "亲，订单不在收货阶段，不能进行收货确认哦。");		
-			return remap;			
+			remap.put("message", "亲，订单认证异常，无法签收不属于你的订单哦。");
+			return remap;
 		}
-		
-		if(!StringToolKit.isBlank(ordergoodsid))
+
+		if (!"收货".equals(order.getState()))
+		{
+			Map remap = new DynamicObject();
+			remap.put("state", "error");
+			remap.put("message", "亲，订单不在收货阶段，不能进行收货确认哦。");
+			return remap;
+		}
+
+		if (!StringToolKit.isBlank(ordergoodsid))
 		{
 			OrderGoods ordergoods = sdao().fetch(OrderGoods.class, ordergoodsid);
-			if("同意".equals(ordergoods.getTakeover()))
+			if ("同意".equals(ordergoods.getTakeover()))
 			{
 				Map remap = new DynamicObject();
 				remap.put("state", "error");
-				remap.put("message", "亲，之前已经同意收货了，不能再重新收货哦。");		
+				remap.put("message", "亲，之前已经同意收货了，不能再重新收货哦。");
 				return remap;
 			}
-			
+
 			ordergoods.setTakeover(takeover);
 			ordergoods.setTakeoverreason(takeoverreason);
-			
+
 			sdao().update(ordergoods);
 		}
-		
+
 		// 检查是否所有的明细商品都已经同意收货，是则订单转发至下一阶段；
 		int nums_agree = sdao().count(OrderGoods.class, Cnd.where("orderid", "=", id).and("takeover", "=", "同意"));
-		int nums_all = sdao().count(OrderGoods.class, Cnd.where("orderid", "=", id));		
-		if((nums_all-nums_agree)==0)
+		int nums_all = sdao().count(OrderGoods.class, Cnd.where("orderid", "=", id));
+		if ((nums_all - nums_agree) == 0)
 		{
-			forward(new DynamicObject(new String[]{"id"}, new String[]{id}));
+			forward(new DynamicObject(new String[]
+			{ "id" }, new String[]
+			{ id }), login_token);
 		}
-		
+
 		Map remap = new DynamicObject();
 		remap.put("state", "success");
 		remap.put("id", id);
 		remap.put("ordergoodsid", ordergoodsid);
 		return remap;
 	}
-	
+
 	// 快速收货确认，不逐项确认
 	public Map savealltakeover(Map map, DynamicObject login_token) throws Exception
 	{
 		String userid = login_token.getFormatAttr(GlobalConstants.sys_login_userid);
-		
+
 		String id = (String) map.get("id");
 		String takeover = (String) map.get("takeover");
-		String takeoverreason = (String) map.get("takeoverreason");		
+		String takeoverreason = (String) map.get("takeoverreason");
 
 		// 检查当前用户信息
-		if(StringToolKit.isBlank(userid))
+		if (StringToolKit.isBlank(userid))
 		{
 			Map remap = new DynamicObject();
 			remap.put("state", "error");
-			remap.put("message", "亲，无法认证你的个人信息，不能签收订单哦。");		
-			return remap;				
-		}
-		
-		Order order = sdao().fetch(Order.class, id);
-		
-		// 检查订单是否属于当前用户
-		if(!userid.equals(order.getMemberid()))
-		{
-			Map remap = new DynamicObject();
-			remap.put("state", "error");
-			remap.put("message", "亲，订单认证异常，无法签收不属于你的订单哦。");		
-			return remap;				
-		}
-		
-		// 检查订单是否处于发货阶段
-		if(!"收货".equals(order.getState()))
-		{
-			Map remap = new DynamicObject();
-			remap.put("state", "error");
-			remap.put("message", "亲，订单不在收货阶段，不能进行收货确认哦。");		
-			return remap;			
-		}
-		
-		if("同意".equals(order.getTakeover()))
-		{
-			Map remap = new DynamicObject();
-			remap.put("state", "error");
-			remap.put("message", "亲，之前已经同意收货了，不能再重新收货哦。");		
+			remap.put("message", "亲，无法认证你的个人信息，不能签收订单哦。");
 			return remap;
 		}
-		
+
+		Order order = sdao().fetch(Order.class, id);
+
+		// 检查订单是否属于当前用户
+		if (!userid.equals(order.getMemberid()))
+		{
+			Map remap = new DynamicObject();
+			remap.put("state", "error");
+			remap.put("message", "亲，订单认证异常，无法签收不属于你的订单哦。");
+			return remap;
+		}
+
+		// 检查订单是否处于发货阶段
+		if (!"收货".equals(order.getState()))
+		{
+			Map remap = new DynamicObject();
+			remap.put("state", "error");
+			remap.put("message", "亲，订单不在收货阶段，不能进行收货确认哦。");
+			return remap;
+		}
+
+		if ("同意".equals(order.getTakeover()))
+		{
+			Map remap = new DynamicObject();
+			remap.put("state", "error");
+			remap.put("message", "亲，之前已经同意收货了，不能再重新收货哦。");
+			return remap;
+		}
+
 		order.setTakeover(takeover);
 		order.setTakeoverreason(takeoverreason);
 		sdao().update(order);
-		
+
 		sdao().update(OrderGoods.class, Chain.make("takeover", takeover), Cnd.where("orderid", "=", id));
 		sdao().update(OrderGoods.class, Chain.make("takeoverreason", null), Cnd.where("orderid", "=", id));
-		
+
 		// 如果同意签收订单，直接转发至下一结点；
-		if("同意".equals(takeover))
+		if ("同意".equals(takeover))
 		{
-			forward(new DynamicObject(new String[]{"id"}, new String[]{id}));
+			forward(new DynamicObject(new String[]
+			{ "id" }, new String[]
+			{ id }), login_token);
 		}
-		
+
 		Map remap = new DynamicObject();
 		remap.put("state", "success");
 		remap.put("id", id);
 		return remap;
 	}
-
+	
 }

@@ -10,6 +10,10 @@ import org.nutz.ioc.annotation.InjectName;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
 
+import com.skynet.app.flow.pojo.RFlow;
+import com.skynet.app.flow.service.AppFlowService;
+import com.skynet.app.flow.service.BFlowService;
+import com.skynet.app.flow.service.RFlowService;
 import com.skynet.framework.service.SkynetDaoService;
 import com.skynet.framework.services.db.SQLParser;
 import com.skynet.framework.services.db.dybeans.DynamicObject;
@@ -24,6 +28,15 @@ import com.skynet.vmall.base.service.OrderService;
 { "refer:dao" })
 public class AppOrderService extends SkynetDaoService
 {
+	@Inject
+	AppFlowService appflowService;
+
+	@Inject
+	BFlowService bflowService;
+
+	@Inject
+	RFlowService rflowService;
+	
 	@Inject
 	OrderService orderService;
 
@@ -111,49 +124,31 @@ public class AppOrderService extends SkynetDaoService
 	}
 
 	// 转发
-	public Map foward(String id, String loginname) throws Exception
+	public Map foward(DynamicObject form, DynamicObject login_token) throws Exception
 	{
+		String id = form.getAttr("id");
 		DynamicObject order = orderService.locate(id);
-		String flowstate = order.getFormatAttr("state");
 
-		Map map = new DynamicObject();
+		// 更新流程信息
+		String dataid = order.getFormatAttr("id");
+		String bflowid = bflowService.fetch(Cnd.where("cname", "=", VMallConstants.flow_order_name)).getId();
+		RFlow rflow = rflowService.fetch(Cnd.where("dataid", "=", dataid).and("bflowid", "=", bflowid));
+		String runflowkey = rflow.getRunflowkey();
+		String sname = rflow.getState();
 
-		// if (!isarole(loginname, "订单管理用户"))
-		// {
-		// map.put("state", "error");
-		// map.put("errormessage", "非管理人员不能转发订单！");
-		// return map;
-		// }
+		DynamicObject swapflow = new DynamicObject();
+		swapflow.setAttr("runflowkey", runflowkey);
+		swapflow.setAttr("sname", sname);
 
-		// 检查流程已结束异常
-		if ("结束".equals(flowstate))
-		{
-			map.put("state", "error");
-			map.put("errormessage", "流程已结束！");
-			return map;
-		}
-
-		// 检查未找到当前流程状态异常
-		String flownextstate = flowstate;
-		int index = StringToolKit.getTextInArrayIndex(VMallConstants.flow_order, flowstate);
-		if (index == -1)
-		{
-			map.put("state", "error");
-			map.put("errormessage", "未找到当前流程状态！");
-			return map;
-		}
-
-		if (VMallConstants.flow_order.length > (index + 1))
-		{
-			flownextstate = VMallConstants.flow_order[index + 1];
-		}
+		String flownextstate = appflowService.forward(swapflow, login_token);
 
 		// 更新状态至下一环节
 		sdao().update(Order.class, Chain.make("state", flownextstate), Cnd.where("id", "=", id));
-
-		map.put("state", "success");
-		map.put("flownextstate", flownextstate);
-		return map;
+		
+		DynamicObject ro = new DynamicObject();
+		ro.setAttr("state", "success");
+		ro.setAttr("flownextstate", flownextstate);
+		return ro;
 	}
 
 	// 当前用户是否为指定的角色

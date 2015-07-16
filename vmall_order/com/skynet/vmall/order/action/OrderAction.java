@@ -30,6 +30,7 @@ import org.w3c.dom.Element;
 
 import com.blue.wxmp.sdk.api.ApiConfigKit;
 import com.blue.wxmp.sdk.api.WxApi;
+import com.skynet.app.organ.pojo.User;
 import com.skynet.framework.action.BaseAction;
 import com.skynet.framework.services.db.dybeans.DynamicObject;
 import com.skynet.framework.services.function.StringToolKit;
@@ -87,10 +88,10 @@ public class OrderAction extends BaseAction
 
 		// 支付接口
 		HttpServletRequest req = Mvcs.getReq();
-		
+
 		Map wxinfo = myWxHelper.wx_jsconfig(myWxHelper.wx_uri(req));
 		ro.put("jscfg", wxinfo);
-		
+
 		DynamicObject order = orderService.locate(id);
 		List<DynamicObject> ordergoodses = ordergoodsService.list(new DynamicObject("orderid", id));
 
@@ -117,7 +118,7 @@ public class OrderAction extends BaseAction
 
 		return ro;
 	}
-	
+
 	@At("/list")
 	@Ok("->:/page/order/order/list.ftl")
 	public Map list(@Param("..") Map map, @Param("_page") String page, @Param("_pagesize") String pagesize) throws Exception
@@ -125,17 +126,17 @@ public class OrderAction extends BaseAction
 		HttpSession session = Mvcs.getHttpSession(true);
 		DynamicObject login_token = (DynamicObject) session.getAttribute(GlobalConstants.sys_login_token);
 		String userid = login_token.getFormatAttr(GlobalConstants.sys_login_userid);
-		
+
 		map.put("_page", Types.parseInt(page, 1));
 		map.put("_pagesize", Types.parseInt(pagesize, VMallConstants.pagesize));
 		map.put("memberid", userid);
-		
+
 		List<DynamicObject> orders = orderService.browse(map);
-	
+
 		DynamicObject ro = new DynamicObject();
 
 		ro.put("orders", orders);
-		
+
 		ro.put("_page", map.get("_page"));
 		ro.put("_pagesize", map.get("_pagesize"));
 		ro.put("_maxpage", map.get("_maxpage"));
@@ -144,7 +145,6 @@ public class OrderAction extends BaseAction
 
 		return ro;
 	}
-	
 
 	@At("/forward")
 	@AdaptBy(type = JsonAdaptor.class)
@@ -172,10 +172,10 @@ public class OrderAction extends BaseAction
 				return remap;
 			}
 
-			Map form = new DynamicObject();
-			form.put("id", id); 
+			DynamicObject form = new DynamicObject();
+			form.put("id", id);
 			// 后继增加需要的参数及值
-			remap = orderService.forward(form);
+			remap = orderService.forward(form, login_token);
 
 			return remap;
 		}
@@ -188,7 +188,6 @@ public class OrderAction extends BaseAction
 
 		return remap;
 	}
-	
 
 	@At("/edittaker")
 	@Ok("->:/page/order/order/edittaker.ftl")
@@ -234,7 +233,9 @@ public class OrderAction extends BaseAction
 	@At("/pay")
 	// @Ok("raw:json")
 	@Ok("json")
-	@Filters({ @By(type = LogFilter.class, args = { "订单付款" })})	
+	@Filters(
+	{ @By(type = LogFilter.class, args =
+	{ "订单付款" }) })
 	public Map pay(String orderno, String amt) throws Exception
 	{
 		amt = "1";
@@ -242,53 +243,53 @@ public class OrderAction extends BaseAction
 		DynamicObject login_token = (DynamicObject) session.getAttribute(GlobalConstants.sys_login_token);
 
 		DynamicObject order = orderService.locateBy(Cnd.where("cno", "=", orderno));
-		if(StringToolKit.isBlank(order.getFormatAttr("id")))
+		if (StringToolKit.isBlank(order.getFormatAttr("id")))
 		{
 			Map remap = new DynamicObject();
 			remap.put("state", "error");
 			remap.put("message", "亲，没有找到这个订单，无法付款。");
 			return remap;
 		}
-		
-		if(!"下单".equals(order.getFormatAttr("state")))
+
+		if (!"下单".equals(order.getFormatAttr("state")))
 		{
 			Map remap = new DynamicObject();
 			remap.put("state", "error");
 			remap.put("message", "亲，这个订单不能再拍了，看看是不是已经付过款了。");
 			return remap;
 		}
-		
+
 		String orderid = orderService.locateBy(Cnd.where("cno", "=", orderno)).getFormatAttr("id");
 		// 更新订单商品价格和金额（系统单位为元，需要乘以100转换为分）
 		Map paymap = new DynamicObject();
 		paymap = orderService.pay(orderid, login_token);
-		
-		
-		if("error".equals((String)paymap.get("state")))
+
+		if ("error".equals((String) paymap.get("state")))
 		{
 			return paymap;
 		}
-		
-		amt = String.valueOf(((BigDecimal)paymap.get("amt")).multiply(new BigDecimal(1)).intValue());
+
+		amt = String.valueOf(((BigDecimal) paymap.get("amt")).multiply(new BigDecimal(1)).intValue());
 		amt = "1";
-		
+
 		String userwxopenid = login_token.getFormatAttr(GlobalConstants.sys_login_userwxopenid);
 		String url = "http://" + VMallConstants.svr_domianname + "/" + VMallConstants.app_webcontext + "/order/order/paynotify.action";
-		
-		String res = myWxApi.getPrepayId(orderno, url, orderno, ApiConfigKit.apiConfig.getMchid(), amt, "10.0.0.1", userwxopenid,
-				ApiConfigKit.apiConfig.getKey());
-		
+
+		String res = myWxApi.getPrepayId(orderno, url, orderno, ApiConfigKit.apiConfig.getMchid(), amt, "10.0.0.1", userwxopenid, ApiConfigKit.apiConfig.getKey());
+
 		Map remap = new DynamicObject();
 		remap.put("state", "success");
 		remap.put("res", res);
-		
+
 		return remap;
 
 	}
 
 	@At("/paynotify")
 	@Ok("raw")
-	@Filters({ @By(type = LogFilter.class, args = { "订单付款回执通知" })})		
+	@Filters(
+	{ @By(type = LogFilter.class, args =
+	{ "订单付款回执通知" }) })
 	public String paynotify(HttpServletRequest req)
 	{
 
@@ -318,35 +319,46 @@ public class OrderAction extends BaseAction
 			Map wr = Xmls.asMap(root);
 			log.debugf("get pay notify return object :\n %s", wr);
 
-			String orderno = (String)wr.get("out_trade_no");			
-			String deviceinfo = (String)wr.get("device_info"); //微信支付分配的终端设备号
+			String orderno = (String) wr.get("out_trade_no");
+			String deviceinfo = (String) wr.get("device_info"); // 微信支付分配的终端设备号
 
-			String wxtransactionid = (String)wr.get("transaction_id");
-			String tradetype = (String)wr.get("trade_type"); // 交易类型			
-			String banktype = (String)wr.get("bank_type"); // 付款银行
-			String totalfee = (String)wr.get("total_fee");
-			String issubscribe = (String)wr.get("is_subscribe"); // 是否关注公众号
-			String openid = (String)wr.get("openid");			
-			String timeend = (String)wr.get("time_end"); // 交易完成时间
-			
+			String wxtransactionid = (String) wr.get("transaction_id");
+			String tradetype = (String) wr.get("trade_type"); // 交易类型
+			String banktype = (String) wr.get("bank_type"); // 付款银行
+			String totalfee = (String) wr.get("total_fee");
+			String issubscribe = (String) wr.get("is_subscribe"); // 是否关注公众号
+			String openid = (String) wr.get("openid");
+			String timeend = (String) wr.get("time_end"); // 交易完成时间
+
 			log.debugf("orderno :\n %s", orderno);
-			
+
 			Order order = orderService.fetch(Cnd.where("cno", "=", orderno));
 			String id = order.getId();
-			
-			DynamicObject form = new DynamicObject();
-			form.setAttr("id", id); 
-			form.setAttr("wxpayorderno", orderno);
-			form.setAttr("wxpaydeviceinfo", deviceinfo);
-			form.setAttr("wxpaytransactionid", wxtransactionid);
-			form.setAttr("wxpaytradetype", tradetype);
-			form.setAttr("wxpaybanktype", banktype);
-			form.setAttr("wxpaytotalfee", totalfee);
-			form.setAttr("wxpayissubscribe", issubscribe);
-			form.setAttr("wxpaytimeend", timeend);
-			form.setAttr("wxpayopenid", openid);	
+			// 检查是否已经成功回执过
+			if (StringToolKit.isBlank(order.getThirdpaytradeno())&&StringToolKit.isBlank(order.getWxpaytimeend()))
+			{
+				DynamicObject form = new DynamicObject();
+				form.setAttr("id", id);
+				form.setAttr("wxpayorderno", orderno);
+				form.setAttr("wxpaydeviceinfo", deviceinfo);
+				form.setAttr("wxpaytransactionid", wxtransactionid);
+				form.setAttr("wxpaytradetype", tradetype);
+				form.setAttr("wxpaybanktype", banktype);
+				form.setAttr("wxpaytotalfee", totalfee);
+				form.setAttr("wxpayissubscribe", issubscribe);
+				form.setAttr("wxpaytimeend", timeend);
+				form.setAttr("wxpayopenid", openid);
 
-			orderService.paynotify(form);
+				// 该请求为微信支付平台发出，用户信息现取，不能从会话取出。
+				DynamicObject login_token = new DynamicObject();
+
+				User user = orderService.sdao().fetch(User.class, Cnd.where("wxopenid", "=", openid));
+				login_token.setAttr(GlobalConstants.sys_login_user, user.getLoginname());
+				login_token.setAttr(GlobalConstants.sys_login_username, user.getCname());
+				login_token.setAttr(GlobalConstants.sys_login_userid, user.getId());
+				login_token.setAttr(GlobalConstants.sys_login_userwxopenid, user.getWxopenid());
+				orderService.paynotify(form, login_token);
+			}
 		}
 		catch (Exception e)
 		{
@@ -354,12 +366,12 @@ public class OrderAction extends BaseAction
 			log.debug(e.toString());
 			return String.format(returnstr, returncode_fail, e.toString());
 		}
-		
+
 		log.debug(String.format(returnstr, returncode_success, return_msg));
 
 		return String.format(returnstr, returncode_success, return_msg);
 	}
-	
+
 	@At("/delete")
 	@Ok("json")
 	public Map delfromcart(String id) throws Exception
@@ -369,7 +381,7 @@ public class OrderAction extends BaseAction
 		Map remap = orderService.deleteorder(id, login_token);
 		return remap;
 	}
-	
+
 	@At("/inputtakeover")
 	@Ok("->:/page/order/order/inputtakeover.ftl")
 	public Map inputtakeover(@Param("..") Map map) throws Exception
@@ -381,16 +393,16 @@ public class OrderAction extends BaseAction
 		ro.put("order", order);
 		return ro;
 	}
-	
+
 	@At("/inputgoodstakeover")
 	@Ok("->:/page/order/order/inputgoodstakeover.ftl")
 	public Map inputgoodstakeover(@Param("..") Map map) throws Exception
 	{
-		String ordergoodsid = (String) map.get("ordergoodsid"); // 
+		String ordergoodsid = (String) map.get("ordergoodsid"); //
 		DynamicObject ordergoods = ordergoodsService.locate(ordergoodsid);
 		String id = ordergoods.getFormatAttr("orderid");
 		DynamicObject order = orderService.locate(id);
-		
+
 		ro.clear();
 		ro.put("id", id);
 		ro.put("ordergoodsid", ordergoodsid);
@@ -398,7 +410,7 @@ public class OrderAction extends BaseAction
 		ro.put("ordergoods", ordergoods);
 		return ro;
 	}
-	
+
 	@At("/savetakeover")
 	@Ok("json")
 	public Map savetakeover(@Param("..") Map map) throws Exception
@@ -408,7 +420,7 @@ public class OrderAction extends BaseAction
 		Map remap = orderService.savetakeover(map, login_token);
 		return remap;
 	}
-	
+
 	@At("/savealltakeover")
 	@Ok("json")
 	public Map savealltakeover(@Param("..") Map map) throws Exception
@@ -417,12 +429,11 @@ public class OrderAction extends BaseAction
 		DynamicObject login_token = (DynamicObject) session.getAttribute(GlobalConstants.sys_login_token);
 		Map remap = orderService.savealltakeover(map, login_token);
 		return remap;
-	}	
-	
+	}
+
 	public static void main(String[] args) throws Exception
 	{
 		System.out.println(String.valueOf(new BigDecimal("3.5").multiply(new BigDecimal(100)).intValue()));
 	}
-	
 
 }

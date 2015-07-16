@@ -14,5 +14,6 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/skynet_upload"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/vmall_base"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/vmallback_base"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/skynet_flow"/>
 	<classpathentry kind="output" path=""/>
 </classpath>

@@ -7,16 +7,8 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/skynet_framework"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/skynet_function"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/skynet_json"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/skynet_log"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/skynet_organ"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/skynet_tools"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/skynet_upload"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/vmall_base"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/vmall_goods"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/vmall_member"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/vmall_system"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/skynet_log"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/vmall_wx"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/bluemp"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/skynet_flow"/>
 	<classpathentry kind="output" path=""/>
 </classpath>

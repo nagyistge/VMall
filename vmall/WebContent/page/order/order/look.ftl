@@ -140,7 +140,7 @@ wx.config({
 
 wx.ready(function()
 {
-	// document.querySelector('#btn_pay').onclick = page_pay;
+	document.querySelector('#btn_pay').onclick = page_pay;
 
 });
 

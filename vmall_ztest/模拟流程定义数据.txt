@@ -1,0 +1,13 @@
+delete from t_sys_fbflow;
+delete from t_sys_fbact;
+delete from t_sys_frflow;
+delete from t_sys_fract;
+delete from t_sys_fflowlog;
+
+insert into t_sys_fbflow(id, cname) values('6bbfdf84-7cd6-1033-9b6c-9122f76f4717', '订单');
+insert into t_sys_fbact(id, bflowid, sno, cname) values(uuid(), '6bbfdf84-7cd6-1033-9b6c-9122f76f4717', 1, '下单');
+insert into t_sys_fbact(id, bflowid, sno, cname) values(uuid(), '6bbfdf84-7cd6-1033-9b6c-9122f76f4717', 2, '收款');
+insert into t_sys_fbact(id, bflowid, sno, cname) values(uuid(), '6bbfdf84-7cd6-1033-9b6c-9122f76f4717', 3, '发货');
+insert into t_sys_fbact(id, bflowid, sno, cname) values(uuid(), '6bbfdf84-7cd6-1033-9b6c-9122f76f4717', 4, '收货');
+insert into t_sys_fbact(id, bflowid, sno, cname) values(uuid(), '6bbfdf84-7cd6-1033-9b6c-9122f76f4717', 5, '结算');
+insert into t_sys_fbact(id, bflowid, sno, cname) values(uuid(), '6bbfdf84-7cd6-1033-9b6c-9122f76f4717', 6, '结束');

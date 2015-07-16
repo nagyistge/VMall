@@ -13,6 +13,9 @@ import org.nutz.ioc.annotation.InjectName;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
 
+import com.skynet.app.flow.service.AppFlowService;
+import com.skynet.app.flow.service.BFlowService;
+import com.skynet.app.flow.service.RFlowService;
 import com.skynet.app.organ.pojo.Organ;
 import com.skynet.framework.common.generator.RandomGenerator;
 import com.skynet.framework.common.generator.SNGenerator;
@@ -23,15 +26,12 @@ import com.skynet.framework.services.db.dybeans.DynamicObject;
 import com.skynet.framework.services.function.StringToolKit;
 import com.skynet.framework.services.function.Types;
 import com.skynet.framework.spec.GlobalConstants;
-import com.skynet.vmall.app.service.AppRunFlowService;
 import com.skynet.vmall.base.constants.VMallConstants;
 import com.skynet.vmall.base.pojo.EventItemGoods;
 import com.skynet.vmall.base.pojo.Goods;
 import com.skynet.vmall.base.pojo.Member;
 import com.skynet.vmall.base.pojo.Order;
 import com.skynet.vmall.base.pojo.OrderGoods;
-import com.skynet.vmall.base.pojo.RunFlow;
-import com.skynet.vmall.base.pojo.RunFlowLog;
 import com.skynet.vmall.base.pojo.ShopCart;
 import com.skynet.vmall.base.pojo.ShopCartGoods;
 import com.skynet.vmall.base.service.EventItemGoodsService;
@@ -58,7 +58,13 @@ public class ShopCartService extends SkynetNameEntityService<ShopCart>
 	GoodsService goodsService;
 	
 	@Inject
-	AppRunFlowService apprunflowService;
+	AppFlowService appflowService;
+	
+	@Inject
+	BFlowService bflowService;
+	
+	@Inject
+	RFlowService rflowService;	
 
 	public ShopCartService()
 	{
@@ -478,7 +484,7 @@ public class ShopCartService extends SkynetNameEntityService<ShopCart>
 		order.setCno(SNGenerator.getValue(8));
 		order.setBatchno(batchno);
 		order.setOrdertime(new Timestamp(System.currentTimeMillis()));
-		order.setState("下单");
+		// order.setState("下单");
 		order.setPaystate("未支付");
 		sdao().insert(order);
 
@@ -523,12 +529,19 @@ public class ShopCartService extends SkynetNameEntityService<ShopCart>
 			// 清除购物车商品
 			sdao().delete(cartgoods);
 		}
+
+		String bflowid = bflowService.fetch(Cnd.where("cname", "=", VMallConstants.flow_order_name)).getId();
+		String dataid = order.getId();
 		
-		DynamicObject form = new DynamicObject();
-		form.setAttr("flowname", VMallConstants.flow_order_name);		
-		form.setObj("flowdef", VMallConstants.flow_order);
-		form.setAttr("dataid", order.getId());
-		apprunflowService.flow_create(form, login_token);
+		DynamicObject swapflow = new DynamicObject();
+		swapflow.setAttr("bflowid", bflowid);
+		swapflow.setAttr("dataid", dataid);
+		
+		String runflowkey = appflowService.create(swapflow, login_token);
+		String nextstate = rflowService.locate(runflowkey).getFormatAttr("state");
+		
+		order.setState(nextstate);
+		sdao().update(order);
 		
 		return order.getId();
 	}

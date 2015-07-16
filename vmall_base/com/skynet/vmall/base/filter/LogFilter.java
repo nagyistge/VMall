@@ -38,6 +38,13 @@ public class LogFilter implements ActionFilter
 		{
 			HttpSession session = Mvcs.getHttpSession(true);
 			DynamicObject login_token = (DynamicObject) session.getAttribute(GlobalConstants.sys_login_token);
+			
+			// 微信平台回执访问没有会话信息
+			if(login_token==null)
+			{
+				login_token = new DynamicObject();
+			}
+			
 			String userid = login_token.getFormatAttr(GlobalConstants.sys_login_userid);
 			String username = login_token.getFormatAttr(GlobalConstants.sys_login_username);
 			String loginname = login_token.getFormatAttr(GlobalConstants.sys_login_user);
