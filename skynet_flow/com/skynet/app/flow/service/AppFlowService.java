@@ -1,6 +1,8 @@
 package com.skynet.app.flow.service;
 
 import java.sql.Timestamp;
+import java.util.List;
+import java.util.Map;
 
 import org.nutz.dao.Chain;
 import org.nutz.dao.Cnd;
@@ -15,6 +17,7 @@ import com.skynet.app.flow.pojo.RFlow;
 import com.skynet.app.flow.spec.FlowConstants;
 import com.skynet.framework.common.generator.UUIDGenerator;
 import com.skynet.framework.service.SkynetDaoService;
+import com.skynet.framework.services.db.SQLParser;
 import com.skynet.framework.services.db.dybeans.DynamicObject;
 import com.skynet.framework.spec.GlobalConstants;
 
@@ -218,6 +221,23 @@ public class AppFlowService extends SkynetDaoService
 		sdao().update(rflow);
 		
 		return dname;
+	}
+	
+	public List<DynamicObject> trace(Map map) throws Exception
+	{
+		String dataid = (String) map.get("dataid");
+		String flowname = (String) map.get("flowname");
+
+		StringBuffer sql = new StringBuffer();
+		sql.append(" select * from t_sys_fflowlog flowlog, t_sys_fbflow bflow ").append("\n");
+		sql.append("  where 1 = 1 ").append("\n");
+		sql.append("    and flowlog.dataid = ").append(SQLParser.charValue(dataid)).append("\n");
+		sql.append("    and flowlog.bflowid = bflow.id").append("\n");
+		sql.append("    and bflow.cname = ").append(SQLParser.charValue(flowname)).append("\n");
+
+		List<DynamicObject> datas = sdao().queryForList(sql.toString());
+
+		return datas;
 	}
 
 }

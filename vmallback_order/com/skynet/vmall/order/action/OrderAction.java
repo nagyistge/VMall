@@ -5,6 +5,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
+import org.nutz.dao.Cnd;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.mvc.Mvcs;
@@ -12,6 +13,10 @@ import org.nutz.mvc.annotation.At;
 import org.nutz.mvc.annotation.Ok;
 import org.nutz.mvc.annotation.Param;
 
+import com.skynet.app.flow.pojo.BAct;
+import com.skynet.app.flow.pojo.BFlow;
+import com.skynet.app.flow.service.BActService;
+import com.skynet.app.flow.service.BFlowService;
 import com.skynet.framework.services.db.dybeans.DynamicObject;
 import com.skynet.framework.services.function.StringToolKit;
 import com.skynet.framework.services.function.Types;
@@ -24,6 +29,12 @@ import com.skynet.vmall.order.service.AppOrderService;
 @At("/order/order")
 public class OrderAction
 {
+	@Inject
+	BFlowService bflowService;
+	
+	@Inject
+	BActService bactService;	
+	
 	@Inject
 	private OrderService orderService;
 	
@@ -59,21 +70,26 @@ public class OrderAction
 	public Map locate(String id) throws Exception
 	{
 		DynamicObject order = orderService.locate(id);
-		
 		String flowstate = order.getFormatAttr("state");
-		String flownextstate = flowstate;
-		String flowbackstate = flowstate;
-		int index = StringToolKit.getTextInArrayIndex(VMallConstants.flow_order, flowstate);
-		if (VMallConstants.flow_order.length > (index + 1))
-		{
-			flownextstate = VMallConstants.flow_order[index + 1];
-		}
-		if (index-1>=0)
-		{
-			flowbackstate = VMallConstants.flow_order[index - 1];
-		}
+		BFlow bflow = bflowService.fetch(Cnd.where("cname", "=", VMallConstants.flow_order_name));
+		String bflowid = bflow.getId();
+		BAct bact = bactService.fetch(Cnd.where("bflowid", "=", bflowid).and("cname", "=", flowstate));
 		
 
+		int sno = bact.getSno();
+		String flownextstate = flowstate;
+		String flowbackstate = flowstate;
+		
+		if(sno>1)
+		{
+			flowbackstate = bactService.fetch(Cnd.where("bflowid", "=", bflowid).and("sno", "=", (sno-1))).getCname();
+		}
+		
+		if(!("结束".equals(bact.getCname())))
+		{
+			flownextstate = bactService.fetch(Cnd.where("bflowid", "=", bflowid).and("sno", "=", (sno+1))).getCname();
+		}
+		
 		Map map = new DynamicObject();
 		map.put("order", order);
 		

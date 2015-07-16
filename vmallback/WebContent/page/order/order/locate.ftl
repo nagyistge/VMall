@@ -331,7 +331,26 @@
 
 <div id="div_lc" style="display:none">
 
+    <table class="wxtables table-order mgt20" id="tb_flowtrace">
+        <colgroup>
+	    <col width="25%">
+        <col width="25%">
+        <col width="25%">
+        <col width="25%">
+        </colgroup>
+        <thead>
+            <tr>
+            	<td>时间</td>
+                <td>用户</td>            	
+                <td>业务</td>
+                <td>操作</td>
+            </tr>
+        </thead>
+        <tbody>
 
+        </tbody>
+        
+    </table>
 
 </div>
 <!-- end 流程标签页 -->
@@ -374,9 +393,25 @@
 <%});%>
 </script>
 
+<script type="text/j-template" id="tpl_flowtrace">
+<%_.each(flowtraces, function(item) {%> 
+<tr>
+	<td><%=item.createtime%></td>
+    <td><%=item.susername%></td>            	
+    <td><%=item.sname%></td> 
+    <td><%=item.ctype%></td>
+</tr>
+<%});%>
+</script>
+
 <script>
+
+var flowtraces; //流程跟踪模板数据
+
 $(function(){
 //////////
+
+
 
 $("#leftMenu").load('${base}/page/order/leftmenu.ftl');
 
@@ -407,7 +442,6 @@ var page_do_sp = function()
 	$.ajax({
 		type:'POST',
 		url:'${base}/order/ordergoods/ajaxlist.action',
-		contentType: "application/json",
 		data:{"orderid":orderid},
 		cache:false,
 		async:true,
@@ -428,6 +462,27 @@ var page_do_sp = function()
 var page_do_lc = function()
 {
 	console.log("page_do_lc");
+	
+	var orderid = '${obj.order.id}';
+	
+	$.ajax({
+		type:'POST',
+		url:'${base}/flow/flow/ajaxtrace.action',
+		data:{"dataid":orderid,"flowname":"订单"},
+		cache:false,
+		async:true,
+		success:function(data)
+		{
+			flowtraces = eval("("+data+")");
+			console.log(flowtraces);
+			$("#tb_flowtrace tbody").html(_.template($("#tpl_flowtrace").html(), flowtraces)); 
+		},
+		error:function(data)
+		{
+			console.log(data);
+			alert("抱歉，服务请求异常，可能网络有什么问题，稍后再试试看吧！");
+		}
+	})		
 };
 
 function page_forward()
