@@ -121,6 +121,19 @@ public class OrderGoods extends IdEntity
 	@Column
 	private String supmemberid5; // 5级收取返利会员标识
 	
+	// 发货信息
+	@Column
+	private String freighttype; // 运费方式（免运费、自定义）
+	
+	@Column
+	private BigDecimal freight; // 运费
+	
+	@Column
+	private String logisticscomp; // 物流公司	
+
+	@Column
+	private String expressno; // 快递单号	
+	
 	// 收货信息
 	@Column
 	private String takeover; // 收货结果（同意、拒绝）	
@@ -498,6 +511,46 @@ public class OrderGoods extends IdEntity
 		this.supmemberid5 = supmemberid5;
 	}
 
+	public String getFreighttype()
+	{
+		return freighttype;
+	}
+
+	public void setFreighttype(String freighttype)
+	{
+		this.freighttype = freighttype;
+	}
+
+	public BigDecimal getFreight()
+	{
+		return freight;
+	}
+
+	public void setFreight(BigDecimal freight)
+	{
+		this.freight = freight;
+	}
+
+	public String getLogisticscomp()
+	{
+		return logisticscomp;
+	}
+
+	public void setLogisticscomp(String logisticscomp)
+	{
+		this.logisticscomp = logisticscomp;
+	}
+
+	public String getExpressno()
+	{
+		return expressno;
+	}
+
+	public void setExpressno(String expressno)
+	{
+		this.expressno = expressno;
+	}
+
 	public String getTakeover()
 	{
 		return takeover;
@@ -517,4 +570,5 @@ public class OrderGoods extends IdEntity
 	{
 		this.takeoverreason = takeoverreason;
 	}
+
 }
