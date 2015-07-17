@@ -28,8 +28,8 @@
                     <ul class="header-ctrl-item-children">
                         <li><a href="/System/updateLog" target="_blank">更新日志</a></li>
                         <li><a href="" target="_blank">帮助中心</a></li>
-                        <li><a href="/System/shopInfo">设置</a></li>
-                        <li><a href="/Public/logout">退出</a></li>
+                        <li><a href="javascript:void(0)">设置</a></li>
+                        <li><a href="${base}/author/login/log.action">退出</a></li>
                     </ul>
                 </li>
             </ul>

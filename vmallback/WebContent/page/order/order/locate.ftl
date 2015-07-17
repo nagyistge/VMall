@@ -509,7 +509,7 @@ function page_forward()
 			}
 			else
 			{
-				alert("转发失败！原因："+json.errormessage);
+				alert(json.message);
 			}
 		},
 		error:function(data)

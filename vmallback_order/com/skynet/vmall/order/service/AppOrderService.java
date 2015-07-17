@@ -139,11 +139,21 @@ public class AppOrderService extends SkynetDaoService
 		DynamicObject swapflow = new DynamicObject();
 		swapflow.setAttr("runflowkey", runflowkey);
 		swapflow.setAttr("sname", sname);
+		String flownextstate = sname;
+		try
+		{
+			flownextstate = appflowService.forward(swapflow, login_token);
 
-		String flownextstate = appflowService.forward(swapflow, login_token);
-
-		// 更新状态至下一环节
-		sdao().update(Order.class, Chain.make("state", flownextstate), Cnd.where("id", "=", id));
+			// 更新状态至下一环节
+			sdao().update(Order.class, Chain.make("state", flownextstate), Cnd.where("id", "=", id));
+		}
+		catch(Exception e)
+		{
+			DynamicObject ro = new DynamicObject();
+			ro.setAttr("state", "error");
+			ro.setAttr("message", e.getMessage());
+			return ro;
+		}
 		
 		DynamicObject ro = new DynamicObject();
 		ro.setAttr("state", "success");

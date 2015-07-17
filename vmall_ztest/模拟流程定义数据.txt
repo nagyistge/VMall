@@ -1,13 +1,21 @@
 delete from t_sys_fbflow;
 delete from t_sys_fbact;
+delete from t_sys_fbactowner;
 delete from t_sys_frflow;
 delete from t_sys_fract;
 delete from t_sys_fflowlog;
 
-insert into t_sys_fbflow(id, cname) values('6bbfdf84-7cd6-1033-9b6c-9122f76f4717', '订单');
-insert into t_sys_fbact(id, bflowid, sno, cname) values(uuid(), '6bbfdf84-7cd6-1033-9b6c-9122f76f4717', 1, '下单');
-insert into t_sys_fbact(id, bflowid, sno, cname) values(uuid(), '6bbfdf84-7cd6-1033-9b6c-9122f76f4717', 2, '收款');
-insert into t_sys_fbact(id, bflowid, sno, cname) values(uuid(), '6bbfdf84-7cd6-1033-9b6c-9122f76f4717', 3, '发货');
-insert into t_sys_fbact(id, bflowid, sno, cname) values(uuid(), '6bbfdf84-7cd6-1033-9b6c-9122f76f4717', 4, '收货');
-insert into t_sys_fbact(id, bflowid, sno, cname) values(uuid(), '6bbfdf84-7cd6-1033-9b6c-9122f76f4717', 5, '结算');
-insert into t_sys_fbact(id, bflowid, sno, cname) values(uuid(), '6bbfdf84-7cd6-1033-9b6c-9122f76f4717', 6, '结束');
+insert into t_sys_fbflow(id, cname) values('ORDER', '订单');
+insert into t_sys_fbact(id, bflowid, sno, cname) values('ORDER_XIADAN', 'ORDER', 1, '下单');
+insert into t_sys_fbact(id, bflowid, sno, cname) values('ORDER_SHOUKUAN', 'ORDER', 2, '收款');
+insert into t_sys_fbact(id, bflowid, sno, cname) values('ORDER_FAHUO', 'ORDER', 3, '发货');
+insert into t_sys_fbact(id, bflowid, sno, cname) values('ORDER_SHOUHUO', 'ORDER', 4, '收货');
+insert into t_sys_fbact(id, bflowid, sno, cname) values('ORDER_JIESUAN', 'ORDER', 5, '结算');
+insert into t_sys_fbact(id, bflowid, sno, cname) values('ORDER_JIESHU', 'ORDER', 6, '结束');
+
+insert into t_sys_fbactowner(id, bflowid, bactid, groupid, grouptype, groupname) values('ORDER_XIADAN_01','ORDER','ORDER_XIADAN','HY','ROLE','会员');
+insert into t_sys_fbactowner(id, bflowid, bactid, groupid, grouptype, groupname) values('ORDER_SHOUKUAN_01','ORDER','ORDER_SHOUKUAN','DDSK','ROLE','订单收款');
+insert into t_sys_fbactowner(id, bflowid, bactid, groupid, grouptype, groupname) values('ORDER_FAHUO_01','ORDER','ORDER_FAHUO','DDFH','ROLE','订单发货');
+insert into t_sys_fbactowner(id, bflowid, bactid, groupid, grouptype, groupname) values('ORDER_SHOUHUO_01','ORDER','ORDER_SHOUHUO','HY','ROLE','会员');
+insert into t_sys_fbactowner(id, bflowid, bactid, groupid, grouptype, groupname) values('ORDER_JIESUAN_01','ORDER','ORDER_JIESUAN','DDJS','ROLE','订单结算');
+

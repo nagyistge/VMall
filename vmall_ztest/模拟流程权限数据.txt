@@ -1,0 +1,27 @@
+insert into t_sys_user(id, loginname, cname) values('gongrui','gongrui','巩睿');
+insert into t_sys_user(id, loginname, cname) values('ruanlixin','ruanlixin','阮丽欣');
+insert into t_sys_user(id, loginname, cname) values('lili','lili','李丽');
+insert into t_sys_user(id, loginname, cname) values('shaoyaobin','shaoyaobin','邵耀斌');
+insert into t_sys_user(id, loginname, cname) values('chenjian','chenjian','陈健');
+insert into t_sys_user(id, loginname, cname) values('yanchangyong','yanchangyong','闫长永');
+
+-- update t_sys_user set password = 'b59c67bf196a4758191e42f76670ceba';
+update t_sys_user set password = '1111';
+
+insert into t_sys_role(id, cno, cname) values('HY', 'HY', '会员');
+insert into t_sys_role(id, cno, cname) values('DDSK', 'DDSK', '订单收款');
+insert into t_sys_role(id, cno, cname) values('DDFH', 'DDFH', '订单发货');
+insert into t_sys_role(id, cno, cname) values('DDSH', 'DDSH', '订单收货');
+insert into t_sys_role(id, cno, cname) values('DDJS', 'DDJS', '订单结算');
+
+insert into t_sys_groupuser(id, groupname, groupid, grouptype, username, loginname, userid) 
+select uuid(),'会员','HY','ROLE',cname,loginname,id from t_sys_user where wxopenid is not null and cname is not null;
+
+insert into t_sys_groupuser(id, groupname, groupid, grouptype, username, loginname, userid) values(uuid(),'订单收款','DDSK','ROLE','阮丽欣','ruanlixin','ruanlixin');
+insert into t_sys_groupuser(id, groupname, groupid, grouptype, username, loginname, userid) values(uuid(),'订单发货','DDFH','ROLE','李丽','lili','lili');
+insert into t_sys_groupuser(id, groupname, groupid, grouptype, username, loginname, userid) values(uuid(),'订单结算','DDJS','ROLE','陈健','chenjian','chenjian');
+
+values(uuid(),'订单收款','DDSK','ROLE','阮丽欣','ruanlixin','ruanlixin');
+
+
+

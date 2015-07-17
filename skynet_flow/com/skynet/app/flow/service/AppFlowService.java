@@ -19,6 +19,7 @@ import com.skynet.framework.common.generator.UUIDGenerator;
 import com.skynet.framework.service.SkynetDaoService;
 import com.skynet.framework.services.db.SQLParser;
 import com.skynet.framework.services.db.dybeans.DynamicObject;
+import com.skynet.framework.services.function.Types;
 import com.skynet.framework.spec.GlobalConstants;
 
 
@@ -130,9 +131,14 @@ public class AppFlowService extends SkynetDaoService
 		BAct dbact = bactService.fetch(Cnd.where("bflowid", "=", bflowid).and("sno", "=", sno+1));
 		String dbactid = dbact.getId();
 		String dname = dbact.getCname();
-
+		
 		String suserid = login_token.getFormatAttr(GlobalConstants.sys_login_userid);
 		String susername = login_token.getFormatAttr(GlobalConstants.sys_login_username);
+
+		if(!isbactowner(sbactid, suserid))
+		{
+			throw new Exception("没有当前活动的转发权限！");
+		}
 		
 		FlowLog flowlog = new FlowLog();
 		flowlog.setId(UUIDGenerator.getInstance().getNextValue());
@@ -238,6 +244,31 @@ public class AppFlowService extends SkynetDaoService
 		List<DynamicObject> datas = sdao().queryForList(sql.toString());
 
 		return datas;
+	}
+	
+	// 检查当前人员是否是活动所有者
+	public boolean isbactowner(String bactid, String userid) throws Exception
+	{
+		StringBuffer sql = new StringBuffer();
+		sql.append(" select count(0) nums").append("\n");
+		sql.append("   from t_sys_fbact bact, t_sys_fbactowner bactowner ").append("\n");
+		sql.append("  where 1 = 1 ").append("\n");
+		sql.append("    and bact.id = bactowner.bactid ").append("\n");
+		sql.append("    and bact.id = ").append(SQLParser.charValue(bactid)).append("\n");
+		sql.append("    and exists ( ").append("\n");
+		sql.append("  select groupid, grouptype from t_sys_groupuser gu ").append("\n");
+		sql.append("   where 1 = 1").append("\n");
+		sql.append("     and gu.userid = ").append(SQLParser.charValue(userid)).append("\n");
+		sql.append("     and gu.grouptype = bactowner.grouptype ").append("\n");
+		sql.append("     and gu.groupid = bactowner.groupid ").append("\n");
+		sql.append("  )");
+		
+		int nums = Types.parseInt(sdao().queryForMap(sql.toString()).getFormatAttr("nums"),0);
+		if(nums>0)
+		{
+			return true;
+		}
+		return false;
 	}
 
 }

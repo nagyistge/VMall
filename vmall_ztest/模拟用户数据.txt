@@ -10,31 +10,29 @@ insert into T_SYS_ORGAN(id,cname,shortname,allname,ctype,internal,parentorganid)
 insert into T_SYS_ORGAN(id,cname,shortname,allname,ctype,internal,parentorganid) values('000000000004','总经销商D','总经销商D','总经销商D/微商城','DEPT','00000004','00000000');
 insert into T_SYS_ORGAN(id,cname,shortname,allname,ctype,internal,parentorganid) values('000000000005','总经销商E','总经销商E','总经销商E/微商城','DEPT','00000005','00000000');
 
-insert into t_sys_user(id, loginname, cname) values('liuys','liuys','刘予胜');
-insert into t_sys_user(id, loginname, cname) values('licg','licg','李春光');
-insert into t_sys_user(id, loginname, cname) values('liujp','liujp','刘建平');
-insert into t_sys_user(id, loginname, cname) values('wudf','wudf','武登峰');
-insert into t_sys_user(id, loginname, cname) values('xingzq','xingzq','邢兆群');
+insert into t_sys_user(id, loginname, cname) values('gongrui','gongrui','巩睿');
+insert into t_sys_user(id, loginname, cname) values('ruanlixin','ruanlixin','阮丽欣');
+insert into t_sys_user(id, loginname, cname) values('lili','lili','李丽');
+insert into t_sys_user(id, loginname, cname) values('shaoyaobin','shaoyaobin','邵耀斌');
+insert into t_sys_user(id, loginname, cname) values('chenjian','chenjian','陈健');
+insert into t_sys_user(id, loginname, cname) values('yanchangyong','yanchangyong','闫长永');
+
 
 -- update t_sys_user set password = 'b59c67bf196a4758191e42f76670ceba';
 update t_sys_user set password = '1111';
 
 --update t_sys_user set wxopenid = concat_ws('wx', loginname);
 
-insert into t_sys_groupuser(id, groupname, groupid, grouptype, username, loginname, userid) values(uuid(),'商城','00000000','DEPT','刘予胜','liuys','liuys');
-insert into t_sys_groupuser(id, groupname, groupid, grouptype, username, loginname, userid) values(uuid(),'商城','00000000','DEPT','李春光','licg','licg');
-insert into t_sys_groupuser(id, groupname, groupid, grouptype, username, loginname, userid) values(uuid(),'商城','00000000','DEPT','刘建平','liujp','liujp');
-insert into t_sys_groupuser(id, groupname, groupid, grouptype, username, loginname, userid) values(uuid(),'商城','00000000','DEPT','武登峰','wudf','wudf');
-insert into t_sys_groupuser(id, groupname, groupid, grouptype, username, loginname, userid) values(uuid(),'商城','00000000','DEPT','邢兆群','xingzq','xingzq');
-insert into t_sys_groupuser(id, groupname, groupid, grouptype, username, loginname, userid) values(uuid(),'商城','00000000','DEPT','杨培功','yangpg','yangpg');
-insert into t_sys_groupuser(id, groupname, groupid, grouptype, username, loginname, userid) values(uuid(),'总经销商A','000000000001','DEPT','王文斌','wangwb','wangwb');
-insert into t_sys_groupuser(id, groupname, groupid, grouptype, username, loginname, userid) values(uuid(),'总经销商A','000000000001','DEPT','张凯','zhangk','zhangk');
-insert into t_sys_groupuser(id, groupname, groupid, grouptype, username, loginname, userid) values(uuid(),'总经销商A','000000000001','DEPT','戎江','rongj','rongj');
-insert into t_sys_groupuser(id, groupname, groupid, grouptype, username, loginname, userid) values(uuid(),'总经销商B','000000000002','DEPT','张月仙','zhangyx','zhangyx');
-insert into t_sys_groupuser(id, groupname, groupid, grouptype, username, loginname, userid) values(uuid(),'总经销商C','000000000003','DEPT','郭丽霞','guolx','guolx');
-insert into t_sys_groupuser(id, groupname, groupid, grouptype, username, loginname, userid) values(uuid(),'总经销商C','000000000003','DEPT','张鹏宇','zhangpy','zhangpy');
-insert into t_sys_groupuser(id, groupname, groupid, grouptype, username, loginname, userid) values(uuid(),'总经销商C','000000000003','DEPT','王晶','wangj','wangj');
-insert into t_sys_groupuser(id, groupname, groupid, grouptype, username, loginname, userid) values(uuid(),'总经销商D','000000000004','DEPT','常士琴','changsq','changsq');
-insert into t_sys_groupuser(id, groupname, groupid, grouptype, username, loginname, userid) values(uuid(),'总经销商D','000000000004','DEPT','施昌玲','shicl','shicl');
-insert into t_sys_groupuser(id, groupname, groupid, grouptype, username, loginname, userid) values(uuid(),'总经销商D','000000000004','DEPT','王晋华','wangjh','wangjh');
-insert into t_sys_groupuser(id, groupname, groupid, grouptype, username, loginname, userid) values(uuid(),'总经销商D','000000000004','DEPT','杜晋华','duph','duph');
+insert into t_sys_role(id, cno, cname) values('HY', 'HY', '会员');
+insert into t_sys_role(id, cno, cname) values('DDSK', 'DDSK', '订单收款');
+insert into t_sys_role(id, cno, cname) values('DDFH', 'DDFH', '订单发货');
+insert into t_sys_role(id, cno, cname) values('DDSH', 'DDSH', '订单收货');
+insert into t_sys_role(id, cno, cname) values('DDJS', 'DDJS', '订单结算');
+
+insert into t_sys_groupuser(id, groupname, groupid, grouptype, username, loginname, userid) values(uuid(),'订单收款','DDSK','ROLE','阮丽欣','ruanlixin','ruanlixin');
+insert into t_sys_groupuser(id, groupname, groupid, grouptype, username, loginname, userid) values(uuid(),'订单发货','DDFH','ROLE','李丽','lili','lili');
+insert into t_sys_groupuser(id, groupname, groupid, grouptype, username, loginname, userid) values(uuid(),'订单结算','DDJS','ROLE','陈健','chenjian','chenjian');
+
+insert into t_sys_groupuser(id, groupname, groupid, grouptype, username, loginname, userid) values(uuid(),'商城','00000000','DEPT','巩睿','gongrui','gongrui');
+
+insert into t_sys_groupuser(id, groupname, groupid, grouptype, username, loginname, userid) values(uuid(),'总经销商A','000000000001','DEPT','阮丽欣','ruanlixin','ruanlixin');
