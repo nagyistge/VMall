@@ -10,8 +10,11 @@ import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.mvc.Mvcs;
 import org.nutz.mvc.annotation.At;
+import org.nutz.mvc.annotation.By;
+import org.nutz.mvc.annotation.Filters;
 import org.nutz.mvc.annotation.Ok;
 import org.nutz.mvc.annotation.Param;
+import org.nutz.mvc.filter.CheckSession;
 
 import com.skynet.app.flow.pojo.BAct;
 import com.skynet.app.flow.pojo.BFlow;
@@ -27,6 +30,9 @@ import com.skynet.vmall.order.service.AppOrderService;
 
 @IocBean
 @At("/order/order")
+@Filters(
+{ @By(type = CheckSession.class, args =
+{ "sys_login_token", "/author/login/log.action" }) })
 public class OrderAction
 {
 	@Inject

@@ -13,8 +13,11 @@ import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.lang.Strings;
 import org.nutz.mvc.Mvcs;
 import org.nutz.mvc.annotation.At;
+import org.nutz.mvc.annotation.By;
+import org.nutz.mvc.annotation.Filters;
 import org.nutz.mvc.annotation.Ok;
 import org.nutz.mvc.annotation.Param;
+import org.nutz.mvc.filter.CheckSession;
 
 import com.skynet.framework.services.db.dybeans.DynamicObject;
 import com.skynet.framework.spec.GlobalConstants;
@@ -27,6 +30,9 @@ import com.skynet.vmall.goods.service.AppGoodsService;
 
 @IocBean
 @At("/goods/goods")
+@Filters(
+{ @By(type = CheckSession.class, args =
+{ "sys_login_token", "/author/login/log.action" }) })
 public class GoodsAction
 {
 	@Inject
