@@ -112,7 +112,7 @@
     <div class="formitems">
         <label class="fi-name"><span class="colorRed">*</span>支付状态：</label>
         <div class="form-controls">
-            <input type="text" class="input" name="paystate" value="${obj.order.paystate}">
+            <input type="text" class="input" name="paystate" value="${obj.order.paystate}" readonly>
             <span class="fi-help-text"></span>
         </div>
     </div>
@@ -120,7 +120,7 @@
     <div class="formitems">
         <label class="fi-name"><span class="colorRed">*</span>收款通知时间：</label>
         <div class="form-controls">
-            <input type="text" class="input" name="paynotifytime" value="<#if obj.order.paynotifytime!=''>${obj.order.paynotifytime!?datetime?string('yyyy-MM-dd HH:mm')}</#if>">
+            <input type="text" class="input" name="paynotifytime" value="<#if obj.order.paynotifytime!=''>${obj.order.paynotifytime!?datetime?string('yyyy-MM-dd HH:mm')}</#if>" readonly>
             <span class="fi-help-text"></span>
         </div>
     </div>
@@ -128,7 +128,7 @@
     <div class="formitems">
         <label class="fi-name"><span class="colorRed">*</span>微信平台交易号：</label>
         <div class="form-controls">
-            <input type="text" class="input large" name="thirdpaytradeno" value="${obj.order.thirdpaytradeno}">
+            <input type="text" class="input large" name="thirdpaytradeno" value="${obj.order.thirdpaytradeno}" readonly>
             <span class="fi-help-text"></span>
         </div>
     </div>
@@ -136,7 +136,7 @@
     <div class="formitems">
         <label class="fi-name"><span class="colorRed">*</span>微信交易类型：</label>
         <div class="form-controls">
-            <input type="text" class="input" name="wxpaytradetype" value="${obj.order.wxpaytradetype}">
+            <input type="text" class="input" name="wxpaytradetype" value="${obj.order.wxpaytradetype}" readonly>
             <span class="fi-help-text"></span>
         </div>
     </div>         
@@ -144,7 +144,7 @@
     <div class="formitems">
         <label class="fi-name"><span class="colorRed">*</span>支付银行类型：</label>
         <div class="form-controls">
-            <input type="text" class="input" name="wxpaybanktype" value="${obj.order.wxpaybanktype}">
+            <input type="text" class="input" name="wxpaybanktype" value="${obj.order.wxpaybanktype}" readonly>
             <span class="fi-help-text"></span>
         </div>
     </div>
@@ -152,7 +152,7 @@
     <div class="formitems">
         <label class="fi-name"><span class="colorRed">*</span>实际支付金额：</label>
         <div class="form-controls">
-            <input type="text" class="input mini" name="wxpaytotalfee" value="<#if obj.order.wxpaytotalfee!=''>${obj.order.wxpaytotalfee!?number/100}</#if>">
+            <input type="text" class="input mini" name="wxpaytotalfee" value="<#if obj.order.wxpaytotalfee!=''>${obj.order.wxpaytotalfee!?number/100}</#if>" readonly>
             <span>元</span>
             <span class="fi-help-text"></span>
         </div>
@@ -161,7 +161,7 @@
     <div class="formitems">
         <label class="fi-name"><span class="colorRed">*</span>是否关注：</label>
         <div class="form-controls">
-            <input type="text" class="input mini" name="wxpayissubscribe" value="${obj.order.wxpayissubscribe}">
+            <input type="text" class="input mini" name="wxpayissubscribe" value="${obj.order.wxpayissubscribe}" readonly>
             <span class="fi-help-text"></span>
         </div>
     </div> 
@@ -170,9 +170,9 @@
         <label class="fi-name"><span class="colorRed">*</span>交易结束时间：</label>
         <div class="form-controls">
             <#-- 
-            <input type="text" class="input" name="wxpaytimeend" value="<#if obj.order.wxpaytimeend!=''>${obj.order.wxpaytimeend!?datetime?string('yyyy-MM-dd HH:mm')}</#if>">
+            <input type="text" class="input" name="wxpaytimeend" value="<#if obj.order.wxpaytimeend!=''>${obj.order.wxpaytimeend!?datetime?string('yyyy-MM-dd HH:mm')}</#if>" readonly>
             -->
-           <input type="text" class="input" name="wxpaytimeend" value="${obj.order.wxpaytimeend}">
+           <input type="text" class="input" name="wxpaytimeend" value="${obj.order.wxpaytimeend}" readonly>
             
             <span class="fi-help-text"></span>
         </div>
