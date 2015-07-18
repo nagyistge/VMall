@@ -5,3 +5,8 @@
 /ShopCartGoodsService.class
 /OrderGoodsRebateService.class
 /DrawCashService.class
+/AppDrawCashService.class
+/AppOrderGoodsRebateService.class
+/AppOrderGoodsService.class
+/AppOrderService.class
+/AppShopCartService.class

@@ -6,3 +6,14 @@
 /GoodsPriceService.class
 /RunFlowService.class
 /RunFlowLogService.class
+/GoodsClassService.class
+/GoodsClassSpecService.class
+/GoodsClassSpecValueService.class
+/GoodsService.class
+/MemberService.class
+/OrderGoodsService.class
+/GoodsPhotoService.class
+/DrawCashService.class
+/OrderGoodsRebateService.class
+/ShopCartGoodsService.class
+/ShopCartService.class

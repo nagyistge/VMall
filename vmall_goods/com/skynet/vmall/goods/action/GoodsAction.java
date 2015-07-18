@@ -26,16 +26,19 @@ import com.skynet.framework.services.db.dybeans.DynamicObject;
 import com.skynet.framework.services.function.StringToolKit;
 import com.skynet.framework.services.function.Types;
 import com.skynet.framework.spec.GlobalConstants;
-import com.skynet.vmall.base.pojo.Event;
 import com.skynet.vmall.base.pojo.Goods;
 import com.skynet.vmall.base.service.EventItemGoodsService;
 import com.skynet.vmall.base.service.EventItemService;
 import com.skynet.vmall.base.service.EventService;
-import com.skynet.vmall.goods.service.GoodsClassService;
-import com.skynet.vmall.goods.service.GoodsClassSpecService;
-import com.skynet.vmall.goods.service.GoodsPhotoService;
-import com.skynet.vmall.goods.service.GoodsService;
-import com.skynet.vmall.member.service.MemberService;
+import com.skynet.vmall.base.service.GoodsClassService;
+import com.skynet.vmall.base.service.GoodsClassSpecService;
+import com.skynet.vmall.base.service.GoodsPhotoService;
+import com.skynet.vmall.base.service.GoodsService;
+import com.skynet.vmall.base.service.MemberService;
+import com.skynet.vmall.goods.service.AppGoodsClassService;
+import com.skynet.vmall.goods.service.AppGoodsClassSpecService;
+import com.skynet.vmall.goods.service.AppGoodsService;
+import com.skynet.vmall.member.service.AppMemberService;
 import com.skynet.vmall.wx.action.WXActionHelper;
 
 @IocBean
@@ -47,15 +50,24 @@ public class GoodsAction extends BaseAction
 	
 	@Inject
 	private MemberService memberService;
+	
+	@Inject
+	private AppGoodsClassSpecService appgoodsclassspecService;
 
+	@Inject
+	private AppGoodsClassService appgoodsclassService;
+	
 	@Inject
 	private GoodsClassSpecService goodsclassspecService;
 
 	@Inject
-	private GoodsClassService goodsclassService;
+	private GoodsClassService goodsclassService;	
+	
+	@Inject
+	private GoodsService goodsService;	
 
 	@Inject
-	private GoodsService goodsService;
+	private AppGoodsService appgoodsService;
 
 	@Inject
 	private GoodsPhotoService goodsphotoService;
@@ -73,7 +85,7 @@ public class GoodsAction extends BaseAction
 	@Ok("->:/page/goods/goods/index.ftl")
 	public Map index(@Param("..") Map map) throws Exception
 	{
-		List<DynamicObject> goods = goodsService.browse(map);
+		List<DynamicObject> goods = appgoodsService.browse(map);
 		ro.put("goods", goods);
 		return ro;
 	}
@@ -85,7 +97,7 @@ public class GoodsAction extends BaseAction
 		map.put("_page", Strings.sNull(page, "1"));
 		map.put("_pagesize", Strings.sNull(pagesize, "5"));
 		map.put("state", "新建");
-		List<DynamicObject> goods = goodsService.browse(map);
+		List<DynamicObject> goods = appgoodsService.browse(map);
 		ro.put("goods", goods);
 		ro.put("_page", page);
 		ro.put("_pagesize", pagesize);
@@ -127,7 +139,7 @@ public class GoodsAction extends BaseAction
 		map.put("ctype", "货品");
 		map.put("defspec", "是");
 		map.put("internal", goodsclass.getFormatAttr("internal"));
-		List<DynamicObject> goodses = goodsService.channel(map);
+		List<DynamicObject> goodses = appgoodsService.channel(map);
 
 		ro.put("supgoodsclass", supgoodsclass);
 		ro.put("goodsclass", goodsclass);
@@ -158,7 +170,7 @@ public class GoodsAction extends BaseAction
 	{
 		map.put("_page", Strings.sNull(page, "1"));
 		map.put("_pagesize", Strings.sNull(pagesize, "5"));
-		List<DynamicObject> goods = goodsService.browse(map);
+		List<DynamicObject> goods = appgoodsService.browse(map);
 		ro.put("goods", goods);
 		ro.put("_page", page);
 		ro.put("_pagesize", pagesize);
@@ -212,11 +224,11 @@ public class GoodsAction extends BaseAction
 //			ro.put("eventitemid", eventitemid);
 		}
 
-		List<DynamicObject> goodsclassspeces = goodsclassspecService.getGoodsClassSpeces(goods.getFormatAttr("classid"));
-		List<DynamicObject> goodsspecs = goodsService.findgoodsspec(goods.getFormatAttr("supid"));
-		List<DynamicObject> currentgoodsspecs = goodsService.findgoodsspec(goods.getFormatAttr("id"));
+		List<DynamicObject> goodsclassspeces = appgoodsclassspecService.getGoodsClassSpeces(goods.getFormatAttr("classid"));
+		List<DynamicObject> goodsspecs = appgoodsService.findgoodsspec(goods.getFormatAttr("supid"));
+		List<DynamicObject> currentgoodsspecs = appgoodsService.findgoodsspec(goods.getFormatAttr("id"));
 
-		List<DynamicObject> likegoodses = goodsService.guestlike(map);
+		List<DynamicObject> likegoodses = appgoodsService.guestlike(map);
 
 		ro.put("member", member);
 		ro.put("goods", goods);
@@ -233,7 +245,7 @@ public class GoodsAction extends BaseAction
 	@Ok("json")
 	public Map guestlike(@Param("..") Map map) throws Exception
 	{
-		List<DynamicObject> likegoodses = goodsService.guestlike(map);
+		List<DynamicObject> likegoodses = appgoodsService.guestlike(map);
 		ro.put("likegoodses", likegoodses);
 		return ro;
 	}
@@ -273,7 +285,7 @@ public class GoodsAction extends BaseAction
 			System.out.println(o);
 		}
 
-		DynamicObject goods = goodsService.getgoodsbyspec(supgoodsid, specs);
+		DynamicObject goods = appgoodsService.getgoodsbyspec(supgoodsid, specs);
 
 		return goods;
 	}

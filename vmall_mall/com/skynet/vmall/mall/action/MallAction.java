@@ -29,9 +29,8 @@ import com.skynet.vmall.base.pojo.Member;
 import com.skynet.vmall.base.service.EventItemGoodsService;
 import com.skynet.vmall.base.service.EventItemService;
 import com.skynet.vmall.base.service.EventService;
+import com.skynet.vmall.base.service.GoodsClassService;
 import com.skynet.vmall.base.service.TagService;
-import com.skynet.vmall.goods.service.GoodsClassService;
-import com.skynet.vmall.goods.service.GoodsService;
 import com.skynet.vmall.wx.action.WXActionHelper;
 
 @IocBean
@@ -43,12 +42,9 @@ public class MallAction extends BaseAction
 
 	@Inject
 	WXActionHelper myWxHelper;
-
+	
 	@Inject
 	private GoodsClassService goodsclassService;
-
-	@Inject
-	private GoodsService goodsService;
 
 	@Inject
 	private TagService tagService;

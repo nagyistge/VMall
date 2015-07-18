@@ -22,7 +22,7 @@ import com.skynet.app.organ.service.UserService;
 import com.skynet.framework.action.BaseAction;
 import com.skynet.framework.services.db.dybeans.DynamicObject;
 import com.skynet.framework.spec.GlobalConstants;
-import com.skynet.vmall.member.service.MemberService;
+import com.skynet.vmall.member.service.AppMemberService;
 import com.skynet.vmall.wx.action.WXActionHelper;
 
 @IocBean
@@ -44,7 +44,7 @@ public class LoginAction extends BaseAction
 	private GroupUserService groupuserService;
 	
 	@Inject
-	private MemberService memberService;
+	private AppMemberService appmemberService;
 
 	@At("/wxlogin")
 	@Ok(">>:/mall/mall/wxindex.action?info=${obj.info}")
@@ -58,7 +58,7 @@ public class LoginAction extends BaseAction
 		String newwxopenid = (String)wxinfo.get("openid"); // 当前会员
 		String oldwxopenid = (String)wxinfo.get("recommender");// 推荐会员 
 
-		DynamicObject obj = memberService.newwxuser(oldwxopenid, newwxopenid);
+		DynamicObject obj = appmemberService.newwxuser(oldwxopenid, newwxopenid);
 		session.setAttribute(GlobalConstants.sys_login_token, obj);
 		
 		return wxinfo;
@@ -103,37 +103,5 @@ public class LoginAction extends BaseAction
 
 		return ro;
 	}
-	
-	public OrganService getOrganService()
-	{
-		return organService;
-	}
-
-	public void setOrganService(OrganService organService)
-	{
-		this.organService = organService;
-	}
-
-	public UserService getUserService()
-	{
-		return userService;
-	}
-
-	public void setUserService(UserService userService)
-	{
-		this.userService = userService;
-	}
-
-	public GroupUserService getGroupuserService()
-	{
-		return groupuserService;
-	}
-
-	public void setGroupuserService(GroupUserService groupuserService)
-	{
-		this.groupuserService = groupuserService;
-	}
-	
-	
 
 }

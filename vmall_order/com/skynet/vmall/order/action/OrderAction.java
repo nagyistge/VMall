@@ -40,9 +40,12 @@ import com.skynet.vmall.base.author.AuthorService;
 import com.skynet.vmall.base.constants.VMallConstants;
 import com.skynet.vmall.base.filter.LogFilter;
 import com.skynet.vmall.base.pojo.Order;
-import com.skynet.vmall.order.service.OrderGoodsRebateService;
-import com.skynet.vmall.order.service.OrderGoodsService;
-import com.skynet.vmall.order.service.OrderService;
+import com.skynet.vmall.base.service.OrderGoodsRebateService;
+import com.skynet.vmall.base.service.OrderGoodsService;
+import com.skynet.vmall.base.service.OrderService;
+import com.skynet.vmall.order.service.AppOrderGoodsRebateService;
+import com.skynet.vmall.order.service.AppOrderGoodsService;
+import com.skynet.vmall.order.service.AppOrderService;
 import com.skynet.vmall.wx.action.WXActionHelper;
 
 @IocBean
@@ -59,7 +62,7 @@ public class OrderAction extends BaseAction
 
 	@Inject
 	WXActionHelper myWxHelper;
-
+	
 	@Inject
 	private OrderService orderService;
 
@@ -68,6 +71,15 @@ public class OrderAction extends BaseAction
 
 	@Inject
 	private OrderGoodsRebateService ordergoodsrebateService;
+
+	@Inject
+	private AppOrderService apporderService;
+
+	@Inject
+	private AppOrderGoodsService appordergoodsService;
+
+	@Inject
+	private AppOrderGoodsRebateService appordergoodsrebateService;
 
 	@At("/index")
 	@Ok("->:/page/order/order/index.ftl")
@@ -93,7 +105,7 @@ public class OrderAction extends BaseAction
 		ro.put("jscfg", wxinfo);
 
 		DynamicObject order = orderService.locate(id);
-		List<DynamicObject> ordergoodses = ordergoodsService.list(new DynamicObject("orderid", id));
+		List<DynamicObject> ordergoodses = appordergoodsService.list(new DynamicObject("orderid", id));
 
 		ro.put("keysignature", keysignature);
 		ro.put("order", order);
@@ -111,7 +123,7 @@ public class OrderAction extends BaseAction
 		DynamicObject login_token = (DynamicObject) session.getAttribute(GlobalConstants.sys_login_token);
 
 		DynamicObject order = orderService.locate(id);
-		List<DynamicObject> ordergoodses = ordergoodsService.list(new DynamicObject("orderid", id));
+		List<DynamicObject> ordergoodses = appordergoodsService.list(new DynamicObject("orderid", id));
 
 		ro.put("order", order);
 		ro.put("ordergoodses", ordergoodses);
@@ -131,7 +143,7 @@ public class OrderAction extends BaseAction
 		map.put("_pagesize", Types.parseInt(pagesize, VMallConstants.pagesize));
 		map.put("memberid", userid);
 
-		List<DynamicObject> orders = orderService.browse(map);
+		List<DynamicObject> orders = apporderService.browse(map);
 
 		DynamicObject ro = new DynamicObject();
 
@@ -175,7 +187,7 @@ public class OrderAction extends BaseAction
 			DynamicObject form = new DynamicObject();
 			form.put("id", id);
 			// 后继增加需要的参数及值
-			remap = orderService.forward(form, login_token);
+			remap = apporderService.forward(form, login_token);
 
 			return remap;
 		}
@@ -206,7 +218,7 @@ public class OrderAction extends BaseAction
 	public Map savetaker(@Param("..") Map map) throws Exception
 	{
 		String id = (String) map.get("id"); // 订单编号
-		Map remap = orderService.savetaker(map);
+		Map remap = apporderService.savetaker(map);
 		return remap;
 	}
 
@@ -226,7 +238,7 @@ public class OrderAction extends BaseAction
 	public Map savepayer(@Param("..") Map map) throws Exception
 	{
 		String id = (String) map.get("id"); // 订单编号
-		Map remap = orderService.savepayer(map);
+		Map remap = apporderService.savepayer(map);
 		return remap;
 	}
 
@@ -262,7 +274,7 @@ public class OrderAction extends BaseAction
 		String orderid = orderService.locateBy(Cnd.where("cno", "=", orderno)).getFormatAttr("id");
 		// 更新订单商品价格和金额（系统单位为元，需要乘以100转换为分）
 		Map paymap = new DynamicObject();
-		paymap = orderService.pay(orderid, login_token);
+		paymap = apporderService.pay(orderid, login_token);
 
 		if ("error".equals((String) paymap.get("state")))
 		{
@@ -357,7 +369,7 @@ public class OrderAction extends BaseAction
 				login_token.setAttr(GlobalConstants.sys_login_username, user.getCname());
 				login_token.setAttr(GlobalConstants.sys_login_userid, user.getId());
 				login_token.setAttr(GlobalConstants.sys_login_userwxopenid, user.getWxopenid());
-				orderService.paynotify(form, login_token);
+				apporderService.paynotify(form, login_token);
 			}
 		}
 		catch (Exception e)
@@ -378,7 +390,7 @@ public class OrderAction extends BaseAction
 	{
 		HttpSession session = Mvcs.getHttpSession(true);
 		DynamicObject login_token = (DynamicObject) session.getAttribute(GlobalConstants.sys_login_token);
-		Map remap = orderService.deleteorder(id, login_token);
+		Map remap = apporderService.deleteorder(id, login_token);
 		return remap;
 	}
 
@@ -417,7 +429,7 @@ public class OrderAction extends BaseAction
 	{
 		HttpSession session = Mvcs.getHttpSession(true);
 		DynamicObject login_token = (DynamicObject) session.getAttribute(GlobalConstants.sys_login_token);
-		Map remap = orderService.savetakeover(map, login_token);
+		Map remap = apporderService.savetakeover(map, login_token);
 		return remap;
 	}
 
@@ -427,7 +439,7 @@ public class OrderAction extends BaseAction
 	{
 		HttpSession session = Mvcs.getHttpSession(true);
 		DynamicObject login_token = (DynamicObject) session.getAttribute(GlobalConstants.sys_login_token);
-		Map remap = orderService.savealltakeover(map, login_token);
+		Map remap = apporderService.savealltakeover(map, login_token);
 		return remap;
 	}
 

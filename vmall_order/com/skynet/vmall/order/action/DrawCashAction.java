@@ -21,12 +21,16 @@ import com.skynet.framework.spec.GlobalConstants;
 import com.skynet.vmall.base.author.AuthorService;
 import com.skynet.vmall.base.filter.LogFilter;
 import com.skynet.vmall.base.pojo.DrawCash;
-import com.skynet.vmall.member.service.MemberService;
-import com.skynet.vmall.order.service.DrawCashService;
+import com.skynet.vmall.base.service.DrawCashService;
+import com.skynet.vmall.base.service.MemberService;
+import com.skynet.vmall.member.service.AppMemberService;
+import com.skynet.vmall.order.service.AppDrawCashService;
 
 @IocBean
 @At("/order/drawcash")
-@Filters({@By(type=CheckSession.class, args={"sys_login_token", "/checksession.html"})})	
+@Filters(
+{ @By(type = CheckSession.class, args =
+{ "sys_login_token", "/checksession.html" }) })
 public class DrawCashAction extends BaseAction
 {
 	@Inject
@@ -34,6 +38,12 @@ public class DrawCashAction extends BaseAction
 
 	@Inject
 	private MemberService memberService;
+
+	@Inject
+	private AppDrawCashService appdrawcashService;
+
+	@Inject
+	private AppMemberService appmemberService;
 
 	@At("/memberdraw")
 	@Ok("->:/page/order/drawcash/memberdraw.ftl")
@@ -43,23 +53,26 @@ public class DrawCashAction extends BaseAction
 		DynamicObject login_token = (DynamicObject) session.getAttribute(GlobalConstants.sys_login_token);
 		String userid = login_token.getFormatAttr(GlobalConstants.sys_login_userid);
 		map.put("memberid", userid);
-		List<DynamicObject> drawcashs = drawcashService.browse(map);
+		List<DynamicObject> drawcashs = appdrawcashService.browse(map);
 		ro.put("drawcashs", drawcashs);
 		return ro;
 	}
 
 	@At("/apply")
 	@Ok("->:/page/order/drawcash/apply.ftl")
-	@Filters({@By(type=LogFilter.class, args={"提现申请"}), @By(type=CheckSession.class, args={"sys_login_token", "/checksession.html"})})	
+	@Filters(
+	{ @By(type = LogFilter.class, args =
+	{ "提现申请" }), @By(type = CheckSession.class, args =
+	{ "sys_login_token", "/checksession.html" }) })
 	public Map apply(@Param("..") Map map) throws Exception
 	{
 		HttpSession session = Mvcs.getHttpSession(true);
 		DynamicObject login_token = (DynamicObject) session.getAttribute(GlobalConstants.sys_login_token);
 		String userid = login_token.getFormatAttr(GlobalConstants.sys_login_userid);
-		
+
 		String userwxopenid = login_token.getFormatAttr(GlobalConstants.sys_login_userwxopenid);
 		String keysignature = AuthorService.encode(AuthorService.gentext(AuthorService.getip(Mvcs.getReq()), userwxopenid));
-		
+
 		DynamicObject member = memberService.locate(userid);
 
 		ro.put("member", member);
@@ -69,7 +82,10 @@ public class DrawCashAction extends BaseAction
 
 	@At("/insert")
 	@Ok("json")
-	@Filters({@By(type=LogFilter.class, args={"提现记录"}), @By(type=CheckSession.class, args={"sys_login_token", "/checksession.html"})})	
+	@Filters(
+	{ @By(type = LogFilter.class, args =
+	{ "提现记录" }), @By(type = CheckSession.class, args =
+	{ "sys_login_token", "/checksession.html" }) })
 	public Map insert(@Param("..") DrawCash drawcash, String keysignature) throws Exception
 	{
 		HttpSession session = Mvcs.getHttpSession(true);
@@ -81,20 +97,20 @@ public class DrawCashAction extends BaseAction
 		drawcash.setMemberid(userid);
 		drawcash.setMembercname(username);
 		drawcash.setMemberwxopenid(userwxopenid);
-		
+
 		Map remap = new DynamicObject();
 
 		try
 		{
 			String decode = AuthorService.decode(keysignature);
 			String ip = AuthorService.getip(Mvcs.getReq());
-			remap = drawcashService.checksignature(decode, ip, userwxopenid);
-			if(!("success".equals(remap.get("state"))))
+			remap = appdrawcashService.checksignature(decode, ip, userwxopenid);
+			if (!("success".equals(remap.get("state"))))
 			{
 				return remap;
 			}
-			
-			remap = drawcashService.insert(drawcash, login_token, decode);
+
+			remap = appdrawcashService.insert(drawcash, login_token, decode);
 		}
 		catch (Exception e)
 		{

@@ -23,10 +23,10 @@ import com.skynet.framework.action.BaseAction;
 import com.skynet.framework.services.db.dybeans.DynamicObject;
 import com.skynet.framework.spec.GlobalConstants;
 import com.skynet.vmall.base.author.AuthorService;
-import com.skynet.vmall.base.filter.CheckSignatureFilter;
 import com.skynet.vmall.base.filter.LogFilter;
-import com.skynet.vmall.order.service.ShopCartGoodsService;
-import com.skynet.vmall.order.service.ShopCartService;
+import com.skynet.vmall.base.service.ShopCartGoodsService;
+import com.skynet.vmall.base.service.ShopCartService;
+import com.skynet.vmall.order.service.AppShopCartService;
 import com.skynet.vmall.wx.action.WXActionHelper;
 
 @IocBean
@@ -38,7 +38,10 @@ public class ShopCartAction extends BaseAction
 	WXActionHelper myWxHelper;
 	
 	@Inject
-	private ShopCartService shopcartService;
+	private ShopCartService shopcartService;	
+	
+	@Inject
+	private AppShopCartService appshopcartService;
 	
 	@Inject
 	private ShopCartGoodsService shopcartgoodsService;	
@@ -54,7 +57,7 @@ public class ShopCartAction extends BaseAction
 		String keysignature = AuthorService.encode(AuthorService.gentext(AuthorService.getip(Mvcs.getReq()), userwxopenid));
 		
 		map.put("memberid", userid);
-		List<DynamicObject> shopcartgoods = shopcartService.browse(map);
+		List<DynamicObject> shopcartgoods = appshopcartService.browse(map);
 
 		ro.put("keysignature", keysignature);		
 		ro.put("shopcartgoods", shopcartgoods);
@@ -68,7 +71,7 @@ public class ShopCartAction extends BaseAction
 		HttpSession session = Mvcs.getHttpSession(true);
 		DynamicObject login_token = (DynamicObject) session.getAttribute(GlobalConstants.sys_login_token);
 
-		Map remap = shopcartService.addtocart(new DynamicObject(map), login_token);
+		Map remap = appshopcartService.addtocart(new DynamicObject(map), login_token);
 		return remap;
 	}
 
@@ -78,7 +81,7 @@ public class ShopCartAction extends BaseAction
 	{
 		HttpSession session = Mvcs.getHttpSession(true);
 		DynamicObject login_token = (DynamicObject) session.getAttribute(GlobalConstants.sys_login_token);
-		Map remap = shopcartService.delfromcart(id, login_token);
+		Map remap = appshopcartService.delfromcart(id, login_token);
 		return remap;
 	}
 
@@ -113,7 +116,7 @@ public class ShopCartAction extends BaseAction
 //				return remap;
 //			}
 			
-			remap = shopcartService.placeorder(form, login_token);
+			remap = appshopcartService.placeorder(form, login_token);
 			
 			return remap;
 		}
@@ -148,7 +151,7 @@ public class ShopCartAction extends BaseAction
 		Map remap = new DynamicObject();
 		try
 		{
-			remap = shopcartService.placeorder(form, login_token);
+			remap = appshopcartService.placeorder(form, login_token);
 			
 			return remap;
 		}
