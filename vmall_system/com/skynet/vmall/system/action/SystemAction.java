@@ -2,7 +2,6 @@ package com.skynet.vmall.system.action;
 
 import java.util.Map;
 
-import org.nutz.dao.util.Daos;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.mvc.annotation.At;
@@ -10,6 +9,8 @@ import org.nutz.mvc.annotation.Ok;
 
 import com.skynet.app.organ.service.OrganService;
 import com.skynet.framework.action.BaseAction;
+import com.skynet.vmall.base.pojo.Material;
+import com.skynet.vmall.base.pojo.MaterialItem;
 import com.skynet.vmall.base.pojo.Order;
 import com.skynet.vmall.base.pojo.OrderGoods;
 import com.skynet.vmall.base.pojo.OrderGoodsRebate;
@@ -45,10 +46,13 @@ public class SystemAction extends BaseAction
 		organService.dao().create(OrderGoodsRebate.class, true);	
 		organService.dao().create(ShopCart.class, true);
 		organService.dao().create(ShopCartGoods.class, true);
+		
+		organService.dao().create(Material.class, true);
+		organService.dao().create(MaterialItem.class, true);		
 //		organService.dao().create(RunFlow.class, true);
 //		organService.dao().create(RunFlowLog.class, true);
 		
-		Daos.createTablesInPackage(organService.dao(), "com.skynet.app.flow.pojo", true);
+//		Daos.createTablesInPackage(organService.dao(), "com.skynet.app.flow.pojo", true);
 		
 		return ro;
 	}

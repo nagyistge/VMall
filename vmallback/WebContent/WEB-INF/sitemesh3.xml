@@ -2,5 +2,4 @@
 	<mapping path="/*.action" decorator="/decorator/mainframe.ftl"/>
 	<mapping path="*.ftl" exclue="true"/>
 	<mapping path="/author/login/log.action" exclue="true" />
-	  
 </sitemesh>
