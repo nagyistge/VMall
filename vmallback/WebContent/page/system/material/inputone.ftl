@@ -84,7 +84,7 @@
     <!-- end tpl_material_con -->
 	
 	<script type="text/j-template" id="tpl_material_ctrl">
-        <form action="${base}/system/material/saveone.action" method="post" id="form1"  >
+        <form action="${base}/system/material/saveone.action" method="post" id="form1" enctype="multipart/form-data" >
         <div class="material-item fr" data-origin="header">
             <div class="formitems">
                 <label class="fi-name"><span class="colorRed">*</span>标题：</label>
@@ -104,7 +104,7 @@
                 <label class="fi-name"><span class="colorRed">*</span>封面：</label>
                 <div class="form-controls">
                     <img src="" class="img-cover " style="display:none;" id="img-cover-img">
-                    <input type="file" class="btn btn-primary btn-small btn-imgcover j-imgcover" id="j-imgcover" />
+                    <input type="file" class="btn btn-primary btn-small btn-imgcover j-imgcover" id="j-imgcover" name="fupload"/>
                     <span class="fi-help-text mgl90">大图片建议尺寸：900像素 × 500像素</span>
 
                     <input class="validate[required]" type="text" style="width: 1px;border: 0;height: 1px;display: inline" name="cover_img" value="<%=initData.cover_img%>" id="cover_img"  data-errormessage="上传图片才行哦" >

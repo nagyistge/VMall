@@ -40,50 +40,69 @@
 	var reRender_material_ctrl=function(){
 		var html=_.template(tpl_material_ctrl,initData);
 		$("#j-render-ctrl").empty().append(html);
+		
+		console.log(initData['link_id']);
 
-        //选择文件
-        $("#j-imgcover").uploadify({
-            "debug": false,
-            "auto": true,
-            "formData": {"PHPSESSID": ""},
-            "width": 75,
-            "multi": false,
-            'swf': '/Public/plugins/uploadify/uploadify.swf',
-            "buttonImage": "/Public/plugins/uploadify/uploadify-image.png",
-            'uploader': '/Design/uploadFileWx', //接口名称
-            "buttonText": "+",
-            "fileSizeLimit": "5MB",
-            "fileTypeExts": "*.jpg; *.jpeg; *.png; *.gif; *.bmp",
-            'onSelectError': function(file, errorCode, errorMsg) {
-                switch (errorCode) {
-                    case -100:
-                        HYD.hint("danger", "对不起，系统只允许您一次最多上传10个文件");
-                        break;
-                    case -110:
-                        HYD.hint("danger", "对不起，文件 [" + file.name + "] 大小超出5MB！");
-                        break;
-                    case -120:
-                        HYD.hint("danger", "文件 [" + file.name + "] 大小异常！");
-                        break;
-                    case -130:
-                        HYD.hint("danger", "文件 [" + file.name + "] 类型不正确！");
-                        break;
-                }
-            },
-            'onFallback': function() {
-                HYD.hint("danger", "您未安装FLASH控件，无法上传图片！请安装FLASH控件后再试。");
-            },
-            'onUploadSuccess': function(file, data, response) {
-                
-                var data = eval('(' + data + ')')
-                initData["coverimg"] = data.file_path;
-                $("#cover_img").val(data.file_path);
-                reRender_material_con();
-            },
-            onUploadError: function(file, errorCode, errorMsg, errorString) {
-                HYD.hint("danger", "对不起：" + file.name + "上传失败：" + errorString);
-            }
-        });
+	        //选择文件
+	        $("#j-imgcover").uploadify({
+	            "debug": false,
+	            "auto": true,
+	            "formData": {'cclass':'Material', 'kid':'test'},	            
+	            "width": 75,
+	            "multi": false,
+	            'swf': '/Public/plugins/uploadify/uploadify.swf',
+	            "buttonImage": "/Public/plugins/uploadify/uploadify-image.png",
+	            'uploader': '/vmallback/system/attach/upload.action', //接口名称
+	            "buttonText": "+",
+	            "fileSizeLimit": "5MB",
+	            "fileTypeExts": "*.jpg; *.jpeg; *.png; *.gif; *.bmp",
+	            "fileObjName": "fupload",
+	            'onSelectError': function(file, errorCode, errorMsg) {
+	                switch (errorCode) {
+	                    case -100:
+	                        HYD.hint("danger", "对不起，系统只允许您一次最多上传10个文件");
+	                        break;
+	                    case -110:
+	                        HYD.hint("danger", "对不起，文件 [" + file.name + "] 大小超出5MB！");
+	                        break;
+	                    case -120:
+	                        HYD.hint("danger", "文件 [" + file.name + "] 大小异常！");
+	                        break;
+	                    case -130:
+	                        HYD.hint("danger", "文件 [" + file.name + "] 类型不正确！");
+	                        break;
+	                }
+	            },
+	            'onFallback': function() {
+	                HYD.hint("danger", "您未安装FLASH控件，无法上传图片！请安装FLASH控件后再试。");
+	            },
+	            'onUploadSuccess': function(file, data, response) {
+	                
+	                var data = eval('(' + data + ')')
+	                initData["coverimg"] = data.file_path;
+	                $("#cover_img").val(data.file_path);
+	                reRender_material_con();
+	            },
+	            onUploadError: function(file, errorCode, errorMsg, errorString) {
+	                HYD.hint("danger", "对不起：" + file.name + "上传失败：" + errorString);
+	            },
+	            'onUploadStart': function (file) {  
+                    $("#j-imgcover").uploadify("settings", "formData", {'cclass':'Material', 'kid':initData['link_id']});  
+                    //在onUploadStart事件中，也就是上传之前，把参数写好传递到后台。  
+                }  
+	        });			
+
+	        
+			if(initData==false || initData['link_id']=="")
+			{
+				$("#j-imgcover").hide();
+			}
+			else
+			{
+				$("#j-imgcover").show();
+			}
+		
+
 
         setVal();
 
