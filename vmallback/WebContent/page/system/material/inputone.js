@@ -258,7 +258,7 @@
 
             //赋值link_type
             initData['link_type'] = link_type;
-            // initData['link_id'] = link_id;
+            initData['link_id'] = link_id;
             initData['link_name'] = TextVal;
             initData['redirect'] = LinkVal;
             $('.J-link_type').val(link_type);
@@ -284,7 +284,7 @@
 
             //赋值link_type
             initData['link_type'] = link_type;
-            // initData['link_id'] = link_id;
+            initData['link_id'] = link_id;
             initData['link_name'] = TextVal;
             initData['redirect'] = LinkVal;
             $('.J-link_type').val(link_type);

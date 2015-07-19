@@ -2,7 +2,6 @@ package com.skynet.vmall.system.action;
 
 import java.io.File;
 import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.Map;
@@ -67,7 +66,7 @@ public class AttachAction
 
 		String kid = (String) form.get("kid");
 		String cclass = (String) form.get("cclass");
-
+		String curl = "";
 		// 保存上传附件
 		String dir = String.valueOf(new GregorianCalendar().get(Calendar.YEAR)) + "\\" + cclass;
 
@@ -88,22 +87,32 @@ public class AttachAction
 			attach.setCreatetime(nowtime);
 
 			appattachService.uploadref(attach, kid, cclass);
-
+			
+			String weburl = Mvcs.getReq().getContextPath() + "/upload/" + attach.getCurl() + "/" + attach.getFilename();
+			System.out.println(weburl);
+			
+			DynamicObject ro = new DynamicObject();
+			ro.put("state", "success");
+			ro.put("file_path", weburl);
+			return ro;
+			
 			// 返回
-			SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-			HttpServletResponse response = Mvcs.getResp();
+			// SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+			// HttpServletResponse response = Mvcs.getResp();
 			// response.getWriter().flush();
-			response.getWriter().append("['" + attach.getCurl() + "','" + attach.getId() + "','" + attach.getCname() + "','" + attach.getCreateuser() + "','" + simpleDateFormat.format(attach.getCreatetime()) + "']");
-
+			// response.getWriter().append("['" + attach.getCurl() + "','" + attach.getId() + "','" + attach.getCname() + "','" + attach.getCreateuser() + "','" + simpleDateFormat.format(attach.getCreatetime()) + "']");
+			
 		}
 		catch (Exception e)
 		{
 			// 返回
-			HttpServletResponse response = Mvcs.getResp();
-			response.getWriter().append(e.getMessage());
+//			HttpServletResponse response = Mvcs.getResp();
+//			response.getWriter().append(e.getMessage());
+			DynamicObject ro = new DynamicObject();
+			ro.put("state", "error");
+			ro.put("message",e.getMessage());	
+			return ro;
 		}
-
-		return null;
 	}
 
 	protected Map<String, String> uploaddoc(String dir) throws Exception

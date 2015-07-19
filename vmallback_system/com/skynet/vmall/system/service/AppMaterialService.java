@@ -99,27 +99,16 @@ public class AppMaterialService extends SkynetDaoService
 		String coverimg = (String)map.get("cover_img");
 		String linkname = (String)map.get("link_name");
 		
-		Material materialitem = materialService.get(id);
-		materialitem.setTitle(title);
-		materialitem.setDescription(summary);
-		materialitem.setContent(content);
-		materialitem.setAuthor(author);
-		materialitem.setLinkurl(redirect);
-		materialitem.setPic(coverimg);
-		materialitem.setLinkname(linkname);
+		Material material = materialService.get(id);
+		material.setTitle(title);
+		material.setDescription(summary);
+		material.setContent(content);
+		material.setAuthor(author);
+		material.setLinkurl(redirect);
+		material.setPic(coverimg);
+		material.setLinkname(linkname);
 		
-		sdao().update(materialitem);		
-		
-//		MaterialItem materialitem = materialitemService.fetch(Cnd.where("materialid", "=", id));
-//		materialitem.setTitle(title);
-//		materialitem.setDescription(summary);
-//		materialitem.setContent(content);
-//		materialitem.setAuthor(author);
-//		materialitem.setLinkurl(redirect);
-//		materialitem.setPic(coverimg);
-//		materialitem.setLinkname(linkname);
-//		
-//		sdao().update(materialitem);
+		sdao().update(material);		
 		
 		return id;
 	}

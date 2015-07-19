@@ -195,6 +195,7 @@
 	<![endif]-->
 	
 	<script>
+	alert("${obj.id}");
 	<#if obj.id=="">
 	initData = false;
 	<#else>

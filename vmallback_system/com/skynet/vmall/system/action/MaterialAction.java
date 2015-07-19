@@ -78,9 +78,8 @@ public class MaterialAction
 	@Ok("->:/page/system/material/inputone.ftl")
 	public Map inputone(@Param("..") Map map) throws Exception
 	{
-		String id = StringToolKit.formatText((String)map.get("id"));
 		Map ro = new DynamicObject();
-		ro.put("id", id);
+		ro.put("id", "");
 		return ro;
 	}
 	
@@ -102,12 +101,11 @@ public class MaterialAction
 		}
 		
 		DynamicObject material = materialService.locate(id);
-//		DynamicObject materialitem = materialitemService.locateBy(Cnd.where("materialid", "=", id));
 		
 		Map ro = new DynamicObject();
 		ro.put("id", id);
 		ro.put("material", material);
-//		ro.put("materialitem", materialitem);
+
 		return ro;
 	}
 
