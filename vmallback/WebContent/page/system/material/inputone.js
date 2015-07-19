@@ -82,6 +82,7 @@
 	                initData["coverimg"] = data.file_path;
 	                $("#cover_img").val(data.file_path);
 	                reRender_material_con();
+	              
 	            },
 	            onUploadError: function(file, errorCode, errorMsg, errorString) {
 	                HYD.hint("danger", "对不起：" + file.name + "上传失败：" + errorString);

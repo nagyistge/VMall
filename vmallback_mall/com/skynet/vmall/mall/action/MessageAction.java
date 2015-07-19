@@ -18,9 +18,9 @@ import org.nutz.mvc.filter.CheckSession;
 import com.blue.wxmp.sdk.api.ApiConfigKit;
 import com.blue.wxmp.sdk.api.WxApi;
 import com.blue.wxmp.sdk.encrypt.BlueDes;
+import com.skynet.app.dictionary.service.DictionaryService;
 import com.skynet.framework.services.db.dybeans.DynamicObject;
 import com.skynet.framework.services.function.StringToolKit;
-import com.skynet.vmall.base.pojo.Material;
 import com.skynet.vmall.base.pojo.Member;
 import com.skynet.vmall.base.service.MaterialService;
 import com.skynet.vmall.base.service.MemberService;
@@ -41,6 +41,11 @@ public class MessageAction
 
 	@Inject
 	MaterialService materialService;
+	
+	@Inject
+	DictionaryService dictionaryService;
+	
+	private String serverprefix;
 
 	@At("/input")
 	@Ok("->:/page/mall/message/input.ftl")
@@ -55,7 +60,11 @@ public class MessageAction
 	@Ok("raw")
 	public String sendmsg(@Param("..") Map map) throws Exception
 	{
-
+		if(StringToolKit.isBlank(serverprefix))
+		{
+			serverprefix = dictionaryService.locateBy(Cnd.where("dkey", "=", "app.system.material.serverprefix")).getFormatAttr("dvalue");
+		}
+		
 		List<Member> members = memberService.sdao().query(Member.class, Cnd.where("1", "=", 1));
 
 		String materialid = StringToolKit.formatText((String) map.get("material_id"));
@@ -89,7 +98,7 @@ public class MessageAction
 		String enurl = ApiConfigKit.apiConfig.getServercontext() + "/oauth.action?info=" + BlueDes.encrypt(realurl);
 
 		String lasturl = String.format(url, ApiConfigKit.apiConfig.getAppId(), enurl);
-		String picurl = getpicurl;
+		String picurl = serverprefix + "/" + getpicurl;
 
 		n.put("url", lasturl);
 		n.put("picurl", picurl);

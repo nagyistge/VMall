@@ -238,7 +238,7 @@ $(function(){
 			<h1 class="single-title first-t"><%= title %></h1>
 			<p class="single-datetime first-d"><%= datetime %></p>
 			<div class="cover-wrap">
-				<img src="<%= coverimg %>" >
+				<img src="${base}/<%= coverimg %>" >
 			</div>
 			<p class="single-summary first-p"><%= summary %></p>
 			<a href="<%= link %>" target="_blank" class="single-link clearfix first-a">

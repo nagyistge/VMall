@@ -72,7 +72,7 @@
                             <dt>
                                 <h1 class="single-title cor8d"><%= title %></h1>
                                 <p class="single-datetime pd5_0"><%= datetime %></p>
-                                <div class="coer_img"><img src="<%= coverimg %>" ></div>
+                                <div class="coer_img"><img src="${base}/<%= coverimg %>" ></div>
                                 <p class="single-summary b0 cor8d"><%= summary %></p>
                             </dt>
                         </dl>
@@ -84,7 +84,7 @@
     <!-- end tpl_material_con -->
 	
 	<script type="text/j-template" id="tpl_material_ctrl">
-        <form action="${base}/system/material/saveone.action" method="post" id="form1" enctype="multipart/form-data" >
+        <form action="${base}/system/material/saveone.action" method="post" id="form1">
         <div class="material-item fr" data-origin="header">
             <div class="formitems">
                 <label class="fi-name"><span class="colorRed">*</span>标题：</label>
@@ -214,7 +214,7 @@
 	};
 	</#if>
     </script>
-	
+    
 	<script src="${base}/page/system/material/inputone.js"></script>
 	<!-- 配置文件 -->
     <script src="/Public/plugins/uploadify/jquery.uploadify.min.js?ver=5429"></script>

@@ -88,7 +88,7 @@ public class AttachAction
 
 			appattachService.uploadref(attach, kid, cclass);
 			
-			String weburl = Mvcs.getReq().getContextPath() + "/upload/" + attach.getCurl() + "/" + attach.getFilename();
+			String weburl = "upload/" + attach.getCurl() + "/" + attach.getFilename();
 			System.out.println(weburl);
 			
 			DynamicObject ro = new DynamicObject();

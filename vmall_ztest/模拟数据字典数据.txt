@@ -1,3 +1,5 @@
 delete from t_sys_dictionary;
 insert into t_sys_dictionary(id, dkey, dvalue, dtext) 
 values(uuid(), 'app.system.attach.root', 'e:\\', 'e:\\');
+insert into t_sys_dictionary(id, dkey, dvalue, dtext) 
+values(uuid(), 'app.system.material.serverprefix', 'http://www.rbtalking.com/vmall/', 'http://www.rbtalking.com/vmall');
