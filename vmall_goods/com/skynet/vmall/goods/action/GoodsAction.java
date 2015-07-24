@@ -20,6 +20,7 @@ import org.nutz.mvc.annotation.At;
 import org.nutz.mvc.annotation.Ok;
 import org.nutz.mvc.annotation.Param;
 
+import com.blue.wxmp.sdk.encrypt.BlueDes;
 import com.skynet.framework.action.BaseAction;
 import com.skynet.framework.services.db.SQLParser;
 import com.skynet.framework.services.db.dybeans.DynamicObject;
@@ -183,16 +184,20 @@ public class GoodsAction extends BaseAction
 	@Ok("->:/page/goods/goods/look.ftl")
 	public Map look(@Param("..") Map map) throws Exception
 	{
+		HttpSession session = Mvcs.getHttpSession(true);
+		DynamicObject login_token = (DynamicObject) session.getAttribute(GlobalConstants.sys_login_token);
+		String userwxopenid = login_token.getFormatAttr(GlobalConstants.sys_login_userwxopenid);
+		
+		map.put("openid", userwxopenid);
 		HttpServletRequest req = Mvcs.getReq();
 		String uri = myWxHelper.wx_uri(req);
-		String shareurl =  myWxHelper.wx_shareurl(uri, new NutMap(map));
+		String shareurl =  myWxHelper.wx_shareurl("goods/goods/sharelook.action", map);
 		NutMap jscfg =  myWxHelper.wx_jsconfig(uri);
 		ro.put("shareurl", shareurl);
 		ro.put("jscfg", jscfg);
 		
-		HttpSession session = Mvcs.getHttpSession(true);
-		DynamicObject login_token = (DynamicObject) session.getAttribute(GlobalConstants.sys_login_token);
-		String userwxopenid = login_token.getFormatAttr(GlobalConstants.sys_login_userwxopenid);
+
+
 		DynamicObject member = memberService.locateBy(Cnd.where("wxopenid", "=", userwxopenid));
 
 		String id = StringToolKit.formatText((String) map.get("id")); // 商品标识
@@ -238,6 +243,19 @@ public class GoodsAction extends BaseAction
 		ro.put("likegoodses", likegoodses);
 
 		return ro;
+	}
+	
+	// 活动商品查看
+	@At("/sharelook")
+	@Ok(">>:/goods/goods/look.action?id=${obj.id}")
+	public Map sharelook(String info) throws Exception
+	{
+		HttpServletRequest req = Mvcs.getReq();
+		Map map = myWxHelper.decrypt_info(info);
+		
+		String goodsid = (String)map.get("id");
+		map.put("id", goodsid);
+		return map;
 	}
 
 	// 商品浏览

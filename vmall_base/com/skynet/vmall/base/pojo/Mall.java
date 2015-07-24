@@ -30,6 +30,9 @@ public class Mall extends IdEntity
 
 	@Column
 	private String email; // 电子邮件
+	
+	@Column
+	private String country; // 国家
 
 	@Column
 	private String province; // 省份（直辖市）
@@ -71,7 +74,10 @@ public class Mall extends IdEntity
 	private String wxnickname; // 微信昵称
 	
 	@Column
-	private Timestamp createtime; // 创建时间	
+	private Timestamp createtime; // 创建时间
+	
+	@Column
+	private String wxheadimgurl; // 微信头像		
 
 	public String getCname()
 	{
@@ -141,6 +147,16 @@ public class Mall extends IdEntity
 	public void setEmail(String email)
 	{
 		this.email = email;
+	}
+
+	public String getCountry()
+	{
+		return country;
+	}
+
+	public void setCountry(String country)
+	{
+		this.country = country;
 	}
 
 	public String getProvince()
@@ -281,6 +297,16 @@ public class Mall extends IdEntity
 	public void setCreatetime(Timestamp createtime)
 	{
 		this.createtime = createtime;
+	}
+
+	public String getWxheadimgurl()
+	{
+		return wxheadimgurl;
+	}
+
+	public void setWxheadimgurl(String wxheadimgurl)
+	{
+		this.wxheadimgurl = wxheadimgurl;
 	}
 
 }

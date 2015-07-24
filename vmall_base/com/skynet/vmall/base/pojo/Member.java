@@ -6,6 +6,10 @@ import org.nutz.dao.entity.annotation.Table;
 @Table("T_APP_MEMBER")
 public class Member extends Dealer
 {
+
+	@Column
+	private String sex; // 性别
+
 	@Column
 	private String mobile; // 手机号
 	
@@ -23,7 +27,17 @@ public class Member extends Dealer
 	
 	@Column
 	private int score; // 累计积分
-	
+
+	public String getSex()
+	{
+		return sex;
+	}
+
+	public void setSex(String sex)
+	{
+		this.sex = sex;
+	}
+
 	public String getMobile()
 	{
 		return mobile;

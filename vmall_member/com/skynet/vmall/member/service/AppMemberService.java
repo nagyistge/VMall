@@ -14,6 +14,7 @@ import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
 
 import com.skynet.app.organ.pojo.User;
+import com.skynet.framework.common.encrypt.MD5;
 import com.skynet.framework.common.generator.FormatKey;
 import com.skynet.framework.common.generator.RandomGenerator;
 import com.skynet.framework.common.generator.SNGenerator;
@@ -48,6 +49,8 @@ public class AppMemberService extends SkynetDaoService
 	}
 
 	public static int level_rebate = 3; // 返利总计层级数
+	
+	public final static Map wx_sexs = new DynamicObject(new String[]{"0", "1"}, new String[]{"女", "男"}); 
 
 	@Inject
 	GeneratorService generatorService;
@@ -119,6 +122,95 @@ public class AppMemberService extends SkynetDaoService
 
 		return obj;
 	}
+	
+	
+	public DynamicObject newwxuser(Map oldui, Map newui) throws Exception
+	{
+		String oldwxopenid = StringToolKit.formatText((String)oldui.get("openid"));
+		String newwxopenid = StringToolKit.formatText((String)newui.get("openid"));
+		
+		// 如果没有推荐人，该用户直接加入至商城下账号
+		if (StringToolKit.isBlank(oldwxopenid))
+		{
+			Member vmall = sdao().fetch(Member.class, Cnd.where("supid", "=", "R0"));
+			if (vmall != null)
+			{
+				oldwxopenid = vmall.getWxopenid();
+			}
+		}
+
+		// 检查微信标识是否为空
+		if (StringToolKit.isBlank(newwxopenid))
+		{
+			return null;
+		}
+
+		// 检查推荐人是否正常
+		Member oldmember = sdao().fetch(Member.class, Cnd.where("wxopenid", "=", oldwxopenid));
+		if (oldmember == null || StringToolKit.isBlank(oldmember.getId()))
+		{
+			return null;
+		}
+
+		// 检查被推荐人是否新微信用户
+		Member newmember = sdao().fetch(Member.class, Cnd.where("wxopenid", "=", newwxopenid));
+		if (newmember == null || StringToolKit.isBlank(newmember.getId()))
+		{
+			
+			String newsex = (String)wx_sexs.get(String.valueOf(newui.get("sex")));
+			String newnickname = (String)newui.get("nickname");
+			String newcountry = (String)newui.get("country");
+			String newprovince = (String)newui.get("province");
+			String newcity = (String)newui.get("city");
+			String newheadimgurl = (String)newui.get("headimgurl");
+			
+			String cno = SNGenerator.getValue(8);
+			User newuser = new User();
+			String newuserid = UUIDGenerator.getInstance().getNextValue();
+			newuser.setId(newuserid);
+			newuser.setWxopenid(newwxopenid);
+			newuser.setLoginname(cno);
+			newuser.setCreatetime(new Timestamp(System.currentTimeMillis()));
+			newuser.setPassword(MD5.GenMD5("kkxl7608")); // 上线前改为加密
+			
+			newuser.setWxnickname(newnickname);
+			newuser.setSex(newsex);
+			sdao().insert(newuser);
+
+			newmember = new Member();
+			newmember.setId(newuserid);
+			newmember.setSupid(oldmember.getId());
+			newmember.setInternal(oldmember.getInternal() + FormatKey.format(RandomGenerator.getValue(4), 4));
+			newmember.setLevel(oldmember.getLevel() + 1);
+			newmember.setWxopenid(newwxopenid);
+			newmember.setCno(cno);
+			newmember.setCreatetime(newuser.getCreatetime());
+			newmember.setCtype("会员");
+			newmember.setScore(0);
+			
+			newmember.setWxnickname(newnickname);
+			newmember.setSex(newsex);
+			newmember.setCountry(newcountry);
+			newmember.setProvince(newprovince);
+			newmember.setCity(newcity);
+			newmember.setWxheadimgurl(newheadimgurl);
+			
+			sdao().insert(newmember);
+		}
+
+		follow(newwxopenid, null, oldwxopenid, null); // 记录关注信息
+
+		DynamicObject user = sdao().locateBy("t_sys_user", Cnd.where("id", "=", newmember.getId()));
+
+		DynamicObject obj = new DynamicObject();
+		obj.setAttr(GlobalConstants.sys_login_user, user.getFormatAttr("loginname"));
+		obj.setAttr(GlobalConstants.sys_login_username, user.getFormatAttr("cname"));
+		obj.setAttr(GlobalConstants.sys_login_userid, user.getFormatAttr("id"));
+		obj.setAttr(GlobalConstants.sys_login_userwxopenid, user.getFormatAttr("wxopenid"));
+
+		return obj;
+	}
+	
 
 	// 关注
 	// swxopenid 关注人微信标识（关注别人 新会员 粉丝）

@@ -16,6 +16,9 @@ public class User extends IdEntity
 
 	@Column
 	private String cname; // 姓名
+	
+	@Column
+	private String sex; // 性别	
 
 	@Column
 	private String password; // 密码
@@ -59,6 +62,16 @@ public class User extends IdEntity
 	public void setCname(String cname)
 	{
 		this.cname = cname;
+	}
+
+	public String getSex()
+	{
+		return sex;
+	}
+
+	public void setSex(String sex)
+	{
+		this.sex = sex;
 	}
 
 	public String getPassword()
