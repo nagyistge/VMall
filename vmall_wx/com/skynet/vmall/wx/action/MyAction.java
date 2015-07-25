@@ -38,17 +38,17 @@ public class MyAction extends AbstractMsgAction
 		return myHandle;
 	}
 
-	protected void set_author(String oldwxopenid, String newwxopenid) throws Exception
-	{
-		HttpSession session = Mvcs.getHttpSession(true);
-		session.removeAttribute(GlobalConstants.sys_login_token);
-		
-		oldwxopenid = StringToolKit.formatText(oldwxopenid);
-		newwxopenid = StringToolKit.formatText(newwxopenid);
-		
-		DynamicObject obj = appmemberService.newwxuser(oldwxopenid, newwxopenid);
-		session.setAttribute(GlobalConstants.sys_login_token, obj);			
-	}
+//	protected void set_author(String oldwxopenid, String newwxopenid) throws Exception
+//	{
+//		HttpSession session = Mvcs.getHttpSession(true);
+//		session.removeAttribute(GlobalConstants.sys_login_token);
+//		
+//		oldwxopenid = StringToolKit.formatText(oldwxopenid);
+//		newwxopenid = StringToolKit.formatText(newwxopenid);
+//		
+//		DynamicObject obj = appmemberService.newwxuser(oldwxopenid, newwxopenid);
+//		session.setAttribute(GlobalConstants.sys_login_token, obj);			
+//	}
 
 	@Override
 	protected void set_author(Map oldui, Map newui) throws Exception

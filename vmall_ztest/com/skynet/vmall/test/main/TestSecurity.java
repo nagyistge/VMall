@@ -1,13 +1,15 @@
 package com.skynet.vmall.test.main;
 
 import com.skynet.framework.common.encrypt.DES;
+import com.skynet.framework.common.encrypt.MD5;
 
 public class TestSecurity
 {
 
 	public static void main(String[] args) throws Exception
 	{
-		test();
+		System.out.println(MD5.GenMD5("kkxl7608"));
+		//test();
 	}
 	
 	public static void test() throws Exception

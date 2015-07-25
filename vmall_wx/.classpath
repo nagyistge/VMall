@@ -9,5 +9,6 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/skynet_organ"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/vmall_member"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/vmall_base"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/skynet_log"/>
 	<classpathentry kind="output" path=""/>
 </classpath>

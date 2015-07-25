@@ -13,8 +13,10 @@ import org.nutz.ioc.annotation.InjectName;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
 
+import com.skynet.app.organ.pojo.GroupUser;
 import com.skynet.app.organ.pojo.User;
-import com.skynet.framework.common.encrypt.MD5;
+import com.skynet.app.organ.service.GroupUserService;
+import com.skynet.app.organ.service.RoleService;
 import com.skynet.framework.common.generator.FormatKey;
 import com.skynet.framework.common.generator.RandomGenerator;
 import com.skynet.framework.common.generator.SNGenerator;
@@ -48,15 +50,26 @@ public class AppMemberService extends SkynetDaoService
 		// TODO Auto-generated constructor stub
 	}
 
-	public static int level_rebate = 3; // 返利总计层级数
 	
-	public final static Map wx_sexs = new DynamicObject(new String[]{"0", "1"}, new String[]{"女", "男"}); 
+	public final static int internal_length = 8; // 返利总计层级数
+	
+	public final static int level_rebate = 3; // 返利总计层级数
+	
+	private final static String password = "d757fcb1c0f43c34f4a36d4c7c56f02d";
+	
+	public final static Map wx_sexs = new DynamicObject(new String[]{"1","2"}, new String[]{"男","女"}); 
 
 	@Inject
 	GeneratorService generatorService;
 	
 	@Inject
 	MemberService memberService;	
+	
+	@Inject
+	GroupUserService groupuserService;	
+	
+	@Inject
+	RoleService roleService;	
 
 	public DynamicObject newwxuser(String oldwxopenid, String newwxopenid) throws Exception
 	{
@@ -73,14 +86,14 @@ public class AppMemberService extends SkynetDaoService
 		// 检查微信标识是否为空
 		if (StringToolKit.isBlank(newwxopenid))
 		{
-			return null;
+			return new DynamicObject();
 		}
 
 		// 检查推荐人是否正常
 		Member oldmember = sdao().fetch(Member.class, Cnd.where("wxopenid", "=", oldwxopenid));
 		if (oldmember == null || StringToolKit.isBlank(oldmember.getId()))
 		{
-			return null;
+			return new DynamicObject();
 		}
 
 		// 检查被推荐人是否新微信用户
@@ -94,13 +107,13 @@ public class AppMemberService extends SkynetDaoService
 			newuser.setWxopenid(newwxopenid);
 			newuser.setLoginname(cno);
 			newuser.setCreatetime(new Timestamp(System.currentTimeMillis()));
-			newuser.setPassword("1111"); // 上线前改为加密
+			newuser.setPassword(password); // 上线前改为加密
 			sdao().insert(newuser);
 
 			newmember = new Member();
 			newmember.setId(newuserid);
 			newmember.setSupid(oldmember.getId());
-			newmember.setInternal(oldmember.getInternal() + FormatKey.format(RandomGenerator.getValue(4), 4));
+			newmember.setInternal(oldmember.getInternal() + FormatKey.format(RandomGenerator.getValue(internal_length), internal_length));
 			newmember.setLevel(oldmember.getLevel() + 1);
 			newmember.setWxopenid(newwxopenid);
 			newmember.setCno(cno);
@@ -108,10 +121,23 @@ public class AppMemberService extends SkynetDaoService
 			newmember.setCtype("会员");
 			newmember.setScore(0);
 			sdao().insert(newmember);
+			
+			DynamicObject role = roleService.locateBy(Cnd.where("cname", "=", "会员"));
+			
+			GroupUser groupuser = new GroupUser();
+			groupuser.setId(UUIDGenerator.getInstance().getNextValue());
+			groupuser.setGroupid(role.getFormatAttr("id"));
+			groupuser.setGroupname(role.getFormatAttr("cname"));
+			groupuser.setGrouptype("ROLE");
+			groupuser.setUserid(newmember.getId());
+			groupuser.setLoginname(newmember.getCno());
+			groupuser.setUsername(newmember.getCname());
+			
+			sdao().insert(groupuser);
 		}
 
 		follow(newwxopenid, null, oldwxopenid, null); // 记录关注信息
-
+		
 		DynamicObject user = sdao().locateBy("t_sys_user", Cnd.where("id", "=", newmember.getId()));
 
 		DynamicObject obj = new DynamicObject();
@@ -129,10 +155,10 @@ public class AppMemberService extends SkynetDaoService
 		String oldwxopenid = StringToolKit.formatText((String)oldui.get("openid"));
 		String newwxopenid = StringToolKit.formatText((String)newui.get("openid"));
 		
+		Member vmall = sdao().fetch(Member.class, Cnd.where("supid", "=", "R0"));	
 		// 如果没有推荐人，该用户直接加入至商城下账号
 		if (StringToolKit.isBlank(oldwxopenid))
 		{
-			Member vmall = sdao().fetch(Member.class, Cnd.where("supid", "=", "R0"));
 			if (vmall != null)
 			{
 				oldwxopenid = vmall.getWxopenid();
@@ -142,14 +168,16 @@ public class AppMemberService extends SkynetDaoService
 		// 检查微信标识是否为空
 		if (StringToolKit.isBlank(newwxopenid))
 		{
-			return null;
+			return new DynamicObject();
 		}
 
 		// 检查推荐人是否正常
 		Member oldmember = sdao().fetch(Member.class, Cnd.where("wxopenid", "=", oldwxopenid));
 		if (oldmember == null || StringToolKit.isBlank(oldmember.getId()))
 		{
-			return null;
+			oldmember = vmall;
+			oldwxopenid = vmall.getWxopenid();
+			oldui.put("openid", vmall.getWxopenid());
 		}
 
 		// 检查被推荐人是否新微信用户
@@ -171,7 +199,7 @@ public class AppMemberService extends SkynetDaoService
 			newuser.setWxopenid(newwxopenid);
 			newuser.setLoginname(cno);
 			newuser.setCreatetime(new Timestamp(System.currentTimeMillis()));
-			newuser.setPassword(MD5.GenMD5("kkxl7608")); // 上线前改为加密
+			newuser.setPassword(password);
 			
 			newuser.setWxnickname(newnickname);
 			newuser.setSex(newsex);
@@ -180,7 +208,7 @@ public class AppMemberService extends SkynetDaoService
 			newmember = new Member();
 			newmember.setId(newuserid);
 			newmember.setSupid(oldmember.getId());
-			newmember.setInternal(oldmember.getInternal() + FormatKey.format(RandomGenerator.getValue(4), 4));
+			newmember.setInternal(oldmember.getInternal() + FormatKey.format(RandomGenerator.getValue(internal_length), internal_length));
 			newmember.setLevel(oldmember.getLevel() + 1);
 			newmember.setWxopenid(newwxopenid);
 			newmember.setCno(cno);
@@ -196,10 +224,24 @@ public class AppMemberService extends SkynetDaoService
 			newmember.setWxheadimgurl(newheadimgurl);
 			
 			sdao().insert(newmember);
+			
+			
+			DynamicObject role = roleService.locateBy(Cnd.where("cname", "=", "会员"));
+			
+			GroupUser groupuser = new GroupUser();
+			groupuser.setId(UUIDGenerator.getInstance().getNextValue());
+			groupuser.setGroupid(role.getFormatAttr("id"));
+			groupuser.setGroupname(role.getFormatAttr("cname"));
+			groupuser.setGrouptype("ROLE");
+			groupuser.setUserid(newmember.getId());
+			groupuser.setLoginname(newmember.getCno());
+			groupuser.setUsername(newmember.getCname());
+			
+			sdao().insert(groupuser);
 		}
 
 		follow(newwxopenid, null, oldwxopenid, null); // 记录关注信息
-
+		
 		DynamicObject user = sdao().locateBy("t_sys_user", Cnd.where("id", "=", newmember.getId()));
 
 		DynamicObject obj = new DynamicObject();
@@ -268,36 +310,36 @@ public class AppMemberService extends SkynetDaoService
 
 		sdao().insert(follow);
 	}
-
-	// 生成会员内部编码
-	public String gen_internal(String supid) throws Exception
-	{
-		String internal = new String();
-		if (!supid.equals("R0"))
-
-		{
-			Member supmember = sdao().fetch(Member.class, supid);
-			internal = supmember.getInternal();
-		}
-		else
-		{
-			internal = "0000";
-		}
-
-		Map map = new HashMap();
-		map.put("field_names", new String[]
-		{ "internal", "supid" });
-		map.put("field_values", new String[]
-		{ internal, supid });
-
-		String csql = " select substring(max(internal),length(max(internal))-3, 4) as internal from t_app_member where supid = :supid";
-		String express = "$internal####";
-
-		map.put("csql", csql);
-		map.put("express", express);
-
-		return generatorService.getNextValue(map);
-	}
+	
+//	// 生成会员内部编码
+//	public String gen_internal(String supid) throws Exception
+//	{
+//		String internal = new String();
+//		if (!supid.equals("R0"))
+//
+//		{
+//			Member supmember = sdao().fetch(Member.class, supid);
+//			internal = supmember.getInternal();
+//		}
+//		else
+//		{
+//			internal = "0000";
+//		}
+//
+//		Map map = new HashMap();
+//		map.put("field_names", new String[]
+//		{ "internal", "supid" });
+//		map.put("field_values", new String[]
+//		{ internal, supid });
+//
+//		String csql = " select substring(max(internal),length(max(internal))-3, 4) as internal from t_app_member where supid = :supid";
+//		String express = "$internal####";
+//
+//		map.put("csql", csql);
+//		map.put("express", express);
+//
+//		return generatorService.getNextValue(map);
+//	}
 
 	// 查找给定层级数范围内上级会员
 	public List<DynamicObject> findsupmembers(String memberid, int findlevel) throws Exception
@@ -796,5 +838,7 @@ public class AppMemberService extends SkynetDaoService
 		remap.put("state", "success");
 		return remap;
 	}
+	
+	
 
 }

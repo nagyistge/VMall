@@ -73,15 +73,18 @@ public abstract class AbstractMsgAction
 			url = murl.get("original_url") + "?info=" + BlueDes.encrypt(Json.toJson(murl));
 			log.debugf("encrypt url = %s", url);
 			
-			HashMap<String, String> oldui = new HashMap<String, String>();
-			log.debugf("oldui=%s", oldui); // 增加个人详细信息
-			
-			HashMap<String, String> newui =OAuthAccessTokenApi.getUserinfo(ac.get("access_token"), ac.get("openid"));
-			log.debugf("newui=%s", newui); // 增加个人详细信息
 			
 			// 蒲剑增加
 			String newwxopenid = StringToolKit.formatText(ac.get("openid"));
 			String oldwxopenid = StringToolKit.formatText(murl.get("recommender"));
+			
+			HashMap<String, String> oldui = new HashMap<String, String>();
+			oldui.put("openid", oldwxopenid);
+			log.debugf("oldui=%s", oldui); // 增加个人详细信息
+			
+			HashMap<String, String> newui =OAuthAccessTokenApi.getUserinfo(ac.get("access_token"), newwxopenid);
+			log.debugf("newui=%s", newui); // 增加个人详细信息
+
 			// set_author(oldwxopenid, newwxopenid);
 			set_author(oldui, newui);
 			
@@ -91,7 +94,7 @@ public abstract class AbstractMsgAction
 
 	}
 	
-	protected abstract void set_author(String oldwxopenid, String newwxopenid) throws Exception;
+//	protected abstract void set_author(String oldwxopenid, String newwxopenid) throws Exception;
 	
 	protected abstract void set_author(Map oldui, Map newui) throws Exception;
 }
