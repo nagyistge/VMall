@@ -61,6 +61,7 @@
 </div>
 
 <script type="text/javascript">
+var type = "";
 $(function(){
 	
 	$("#submit").click(function() {page_applydraw()});
@@ -74,7 +75,7 @@ $(function(){
 		$(".tabs>div").removeClass("active");
 		$(this).addClass("active");
 
-		var type = $(this).attr("type");
+		type = $(this).attr("type");
 		
 		document.getElementById("by"+type).style.display="block";
 		
@@ -259,6 +260,13 @@ function page_showsum_rebate()
 
 function page_applydraw()
 {
+	var lis = $("#by"+type+" ul li");
+	if(lis.length==0)
+	{
+		alert("亲，好像没有看到你的积分啊，无法体现哦。");
+		return;
+	}
+	
 	window.location = "${base}/order/drawcash/apply.action";
 }
 

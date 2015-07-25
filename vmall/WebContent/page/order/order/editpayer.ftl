@@ -113,7 +113,7 @@ function page_submiteditform()
 			}
 			else
 			{
-				alert("保存收货人失败！");
+				alert(json.message);
 			}
 		},
 		error:function(data)

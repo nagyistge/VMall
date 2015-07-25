@@ -189,6 +189,8 @@ public class AppOrderService extends SkynetDaoService
 		String username = login_token.getFormatAttr(GlobalConstants.sys_login_username);
 
 		Order order = sdao().fetch(Order.class, orderid);
+		order.setPaystate("正支付"); // 先设置状态为正支付，预防重复提交订单；
+		sdao().update(order);
 
 		List<OrderGoods> ordergoodses = sdao().query(OrderGoods.class, Cnd.where("orderid", "=", orderid));
 		for (int i = 0; i < ordergoodses.size(); i++)
@@ -337,6 +339,7 @@ public class AppOrderService extends SkynetDaoService
 		order.setAmountsale(amountsale_all);
 		order.setAmountpromote(amountpromote_all);
 		order.setAmount(amount_all);
+		
 		sdao().update(order);
 
 		Map remap = new DynamicObject();
@@ -422,21 +425,21 @@ public class AppOrderService extends SkynetDaoService
 		if (StringToolKit.isBlank(takercname))
 		{
 			remap.put("state", "error");
-			remap.put("error", "请填写收货人姓名。");
+			remap.put("message", "请填写收货人姓名。");
 			return remap;
 		}
 
 		if (StringToolKit.isBlank(takermobile))
 		{
 			remap.put("state", "error");
-			remap.put("error", "请填写收货人联系电话。");
+			remap.put("message", "请填写收货人联系电话。");
 			return remap;
 		}
 
 		if (StringToolKit.isBlank(takeaddress))
 		{
 			remap.put("state", "error");
-			remap.put("error", "请填写收货地址。");
+			remap.put("message", "请填写收货地址。");
 			return remap;
 		}
 
@@ -444,9 +447,23 @@ public class AppOrderService extends SkynetDaoService
 		if (order == null)
 		{
 			remap.put("state", "error");
-			remap.put("error", "订单信息异常，未找到当前订单。");
+			remap.put("message", "订单信息异常，未找到当前订单。");
 			return remap;
 		}
+		
+		if ("正支付".equals(order.getPaystate()))
+		{
+			remap.put("state", "error");
+			remap.put("message", "亲，你的订单正在付款中，不能再修改了。");
+			return remap;
+		}	
+		
+		if (!"下单".equals(order.getState()))
+		{
+			remap.put("state", "error");
+			remap.put("message", "亲，你的订单已经下过单了，不能再修改了。");
+			return remap;
+		}		
 
 		order.setTakercname(takercname);
 		order.setTakermobile(takermobile);
@@ -475,14 +492,14 @@ public class AppOrderService extends SkynetDaoService
 		if (StringToolKit.isBlank(membercname))
 		{
 			remap.put("state", "error");
-			remap.put("error", "未填写会员姓名，请检查个人资料后，重新下单。");
+			remap.put("message", "未填写会员姓名，请检查个人资料后，重新下单。");
 			return remap;
 		}
 
 		if (StringToolKit.isBlank(phone))
 		{
 			remap.put("state", "error");
-			remap.put("error", "请填写购买人联系电话。");
+			remap.put("message", "请填写购买人联系电话。");
 			return remap;
 		}
 
@@ -491,24 +508,38 @@ public class AppOrderService extends SkynetDaoService
 		if (order == null)
 		{
 			remap.put("state", "error");
-			remap.put("error", "订单信息异常，未找到当前订单。");
+			remap.put("message", "订单信息异常，未找到当前订单。");
 			return remap;
 		}
-
+		
+		if ("正支付".equals(order.getPaystate()))
+		{
+			remap.put("state", "error");
+			remap.put("message", "亲，你的订单正在付款中，不能再修改了。");
+			return remap;
+		}	
+		
+		if (!"下单".equals(order.getState()))
+		{
+			remap.put("state", "error");
+			remap.put("message", "亲，你的订单已经下过单了，不能再修改了。");
+			return remap;
+		}
+		
 		String memberid = order.getMemberid();
 		String wxopenid = order.getWxopenid();
 
 		if (StringToolKit.isBlank(memberid))
 		{
 			remap.put("state", "error");
-			remap.put("error", "会员资料异常，请检查资料后，重新下单。");
+			remap.put("message", "会员资料异常，请检查资料后，重新下单。");
 			return remap;
 		}
 
 		if (StringToolKit.isBlank(wxopenid))
 		{
 			remap.put("state", "error");
-			remap.put("error", "会员未注册微信账号，请检查资料后，重新下单。");
+			remap.put("message", "会员未注册微信账号，请检查资料后，重新下单。");
 			return remap;
 		}
 

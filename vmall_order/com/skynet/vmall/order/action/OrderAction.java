@@ -267,9 +267,17 @@ public class OrderAction extends BaseAction
 		{
 			Map remap = new DynamicObject();
 			remap.put("state", "error");
-			remap.put("message", "亲，这个订单不能再拍了，看看是不是已经付过款了。");
+			remap.put("message", "亲，这个订单不能再拍了，看看是不是已经拍过了。");
 			return remap;
 		}
+		
+		if (!"未支付".equals(order.getFormatAttr("paystate")))
+		{
+			Map remap = new DynamicObject();
+			remap.put("state", "error");
+			remap.put("message", "亲，这个订单不能再拍了，看看是不是已经付款了。");
+			return remap;
+		}		
 
 		String orderid = orderService.locateBy(Cnd.where("cno", "=", orderno)).getFormatAttr("id");
 		// 更新订单商品价格和金额（系统单位为元，需要乘以100转换为分）

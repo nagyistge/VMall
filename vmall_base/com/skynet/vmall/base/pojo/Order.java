@@ -111,7 +111,7 @@ public class Order extends IdEntity
 
 	// 订单支付信息
 	@Column
-	private String paystate; // 订单收款支付状态（未支付、已支付）
+	private String paystate; // 订单收款支付状态（未支付、正支付、已支付）
 
 	@Column
 	private Timestamp paynotifytime; // 订单收款支付通知时间
