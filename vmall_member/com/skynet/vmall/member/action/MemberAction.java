@@ -200,7 +200,7 @@ public class MemberAction extends BaseAction
 		DynamicObject login_token = (DynamicObject) session.getAttribute(GlobalConstants.sys_login_token);
 		String userid = login_token.getFormatAttr(GlobalConstants.sys_login_userid);
 		map.put("memberid", userid);
-		List<DynamicObject> members = appmemberService.findsubmembers(userid, 1);
+		List<DynamicObject> members = appmemberService.findmembers(userid);
 		ro.put("members", members);
 		return ro;
 	}

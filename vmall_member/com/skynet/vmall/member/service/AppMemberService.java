@@ -340,6 +340,18 @@ public class AppMemberService extends SkynetDaoService
 //
 //		return generatorService.getNextValue(map);
 //	}
+	
+	public List<DynamicObject> findmembers(String memberid) throws Exception
+	{
+		List<DynamicObject> supmembers = findsupmembers(memberid, 1);
+		List<DynamicObject> submembers = findsubmembers(memberid, 3);
+		List<DynamicObject> members = new ArrayList<DynamicObject>();
+		DynamicObject member = memberService.locate(memberid);
+		members.addAll(supmembers);
+		members.add(member);
+		members.addAll(submembers);
+		return members;
+	}
 
 	// 查找给定层级数范围内上级会员
 	public List<DynamicObject> findsupmembers(String memberid, int findlevel) throws Exception
@@ -349,7 +361,7 @@ public class AppMemberService extends SkynetDaoService
 		int len = internal.length();
 		for (int i = 1; i <= findlevel; i++)
 		{
-			int last = len - (i * 4);
+			int last = len - (i * internal_length);
 			if (last >= 0)
 			{
 				DynamicObject supmember = memberService.locateBy(Cnd.where("internal", "=", internal.substring(0, last)));
@@ -367,16 +379,16 @@ public class AppMemberService extends SkynetDaoService
 	}
 
 	// 查找给定层级数范围内下级会员
-	public List<DynamicObject> findsubmembers(String memberid, int findlevel) throws Exception
+	public List<DynamicObject> findsubmembers(String memberid, int findsublevel) throws Exception
 	{
 		String internal = memberService.locate(memberid).getFormatAttr("internal");
 		int len = internal.length();
-		int minlen = len + 4;
+		int minlen = len + AppMemberService.internal_length;
 		if (minlen < 0)
 		{
 			minlen = 0;
 		}
-		int maxlen = len + (findlevel * 4);
+		int maxlen = len + (findsublevel * AppMemberService.internal_length);
 		if (maxlen < 0)
 		{
 			maxlen = 0;
@@ -388,11 +400,11 @@ public class AppMemberService extends SkynetDaoService
 		sql.append("    and internal like '" + internal + "%' ").append("\n");
 		sql.append("    and length(internal) >= " + minlen).append("\n");
 		sql.append("    and length(internal) <= " + maxlen).append("\n");
-		sql.append("  order by internal ").append("\n");
+		sql.append("  order by level, internal ").append("\n");
 
 		submembers = sdao().queryForList(sql.toString());
 
-		return submembers;
+		return submembers;		
 	}
 
 	// 浏览我的订单

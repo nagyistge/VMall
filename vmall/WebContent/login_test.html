@@ -14,10 +14,13 @@
     <link href="logo76.png" rel="apple-touch-icon" sizes="76x76">
     <link href="logo120.png" rel="apple-touch-icon" sizes="120x120">
     <link href="logo152.png" rel="apple-touch-icon" sizes="152x152">
+	<script src="/vmall/lib/md5.js"></script>
+	    
   </head>
   <body>
     <div id="formContainer">
-      <form action="/vmall/author/login/login_test.action" method="post" class="form-signin">
+      <form action="/vmall/author/login/login_test.action" method="post" class="form-signin" id="loginform">
+      <input type="hidden" name="password" id="password">
        <h3>模拟微信 微商城分销管理系统</h3>
         <div id="qrcodeWrapper"></div>
         <div id="formBlock">
@@ -25,16 +28,26 @@
             <input id="username" name="username" type="text" placeholder="用户名" autofocus class="form-control" value="vmall">
           </label>
           <label class="password"><i class="fa fa-key"></i>
-            <input id="password" name="password" type="password" placeholder="密码" class="form-control" value="b59c67bf196a4758191e42f76670ceba">
+            <input id="pwd" name="pwd" type="password" placeholder="密码" class="form-control" value="b59c67bf196a4758191e42f76670ceba">
           </label>
           <label class="checkbox remember">
             <input id="remember" type="checkbox" name="remember" value="1">记住密码
           </label>
-          <button type="submit" class="btn btn-primary btn-block">登录</button>
+          
         </div>
       </form>
+      <button id="btn_login" class="btn btn-primary btn-block">登录</button>
     </div>
 <script src="lib/qrcode.min.js"></script>
+<script>
+$('#btn_login').click(function(){ page_login()});
+function page_login()
+{
+	var password = hex_md5($('#pwd').val());
+	$("#password").val(password);
+	$("#loginform").submit();
+}
+
 </script>
 </body>
 </html>

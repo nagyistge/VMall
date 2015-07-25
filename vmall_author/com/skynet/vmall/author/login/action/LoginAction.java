@@ -93,13 +93,13 @@ public class LoginAction extends BaseAction
 		obj.setAttr(GlobalConstants.sys_login_userid, user.getFormatAttr("id"));
 		obj.setAttr(GlobalConstants.sys_login_userwxopenid, user.getFormatAttr("wxopenid"));
 
-		obj.setAttr(GlobalConstants.sys_login_dept, dept.getFormatAttr("id"));
-		obj.setAttr(GlobalConstants.sys_login_deptname, dept.getFormatAttr("cname"));
-		obj.setAttr(GlobalConstants.sys_login_dept_internal, dept.getFormatAttr("internal"));
-
-		obj.setAttr(GlobalConstants.sys_login_org, org.getFormatAttr("id"));
-		obj.setAttr(GlobalConstants.sys_login_orgname, org.getFormatAttr("cname"));
-		obj.setAttr(GlobalConstants.sys_login_org_internal, org.getFormatAttr("internal"));
+//		obj.setAttr(GlobalConstants.sys_login_dept, dept.getFormatAttr("id"));
+//		obj.setAttr(GlobalConstants.sys_login_deptname, dept.getFormatAttr("cname"));
+//		obj.setAttr(GlobalConstants.sys_login_dept_internal, dept.getFormatAttr("internal"));
+//
+//		obj.setAttr(GlobalConstants.sys_login_org, org.getFormatAttr("id"));
+//		obj.setAttr(GlobalConstants.sys_login_orgname, org.getFormatAttr("cname"));
+//		obj.setAttr(GlobalConstants.sys_login_org_internal, org.getFormatAttr("internal"));
 
 		session.setAttribute(GlobalConstants.sys_login_token, obj);
 
