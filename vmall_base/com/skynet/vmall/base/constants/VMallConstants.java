@@ -2,6 +2,8 @@ package com.skynet.vmall.base.constants;
 
 public class VMallConstants
 {
+	public final static String vmallname = "四季豆.微商城"; // 商城名称
+	
 	public static int pagesize = 10; // 单页显示记录行数
 	
 	public static int pagenavnums = 10; // 分页导航页码个数	

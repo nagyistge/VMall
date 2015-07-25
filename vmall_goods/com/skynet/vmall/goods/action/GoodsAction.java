@@ -20,6 +20,7 @@ import org.nutz.mvc.annotation.At;
 import org.nutz.mvc.annotation.Ok;
 import org.nutz.mvc.annotation.Param;
 
+import com.blue.wxmp.sdk.api.ApiConfigKit;
 import com.blue.wxmp.sdk.encrypt.BlueDes;
 import com.skynet.framework.action.BaseAction;
 import com.skynet.framework.services.db.SQLParser;
@@ -27,6 +28,7 @@ import com.skynet.framework.services.db.dybeans.DynamicObject;
 import com.skynet.framework.services.function.StringToolKit;
 import com.skynet.framework.services.function.Types;
 import com.skynet.framework.spec.GlobalConstants;
+import com.skynet.vmall.base.constants.VMallConstants;
 import com.skynet.vmall.base.pojo.Goods;
 import com.skynet.vmall.base.service.EventItemGoodsService;
 import com.skynet.vmall.base.service.EventItemService;
@@ -187,29 +189,17 @@ public class GoodsAction extends BaseAction
 		HttpSession session = Mvcs.getHttpSession(true);
 		DynamicObject login_token = (DynamicObject) session.getAttribute(GlobalConstants.sys_login_token);
 		String userwxopenid = login_token.getFormatAttr(GlobalConstants.sys_login_userwxopenid);
-		
 		map.put("openid", userwxopenid);
-		HttpServletRequest req = Mvcs.getReq();
-		String uri = myWxHelper.wx_uri(req);
-		String shareurl =  myWxHelper.wx_shareurl("goods/goods/sharelook.action", map);
-		NutMap jscfg =  myWxHelper.wx_jsconfig(uri);
-		ro.put("shareurl", shareurl);
-		ro.put("jscfg", jscfg);
 		
-
-
-		DynamicObject member = memberService.locateBy(Cnd.where("wxopenid", "=", userwxopenid));
+	
 
 		String id = StringToolKit.formatText((String) map.get("id")); // 商品标识
-//		String eventid = StringToolKit.formatText((String) map.get("eventid")); //活动标识
-//		String eventitemid = StringToolKit.formatText((String) map.get("eventitemid")); //活动项目标识
-		String eventitemgoodsid = StringToolKit.formatText((String) map.get("eventitemgoodsid")); //活动项目商品标识
-		
 		// 记录浏览人气值
 		DynamicObject goods = goodsService.locate(id);
 		goodsService.sdao().update(Goods.class, Chain.make("popular", Types.parseInt(goods.getFormatAttr("popular"), 0) + 1), Cnd.where("id", "=", id));
 		
-//		ro.put("eventitemid", eventitemid);
+		String eventitemgoodsid = StringToolKit.formatText((String) map.get("eventitemgoodsid")); //活动项目商品标识
+		
 		ro.put("eventitemgoodsid", eventitemgoodsid);
 		
 		// 如果从参与活动入口，产品价格按照参与活动价格为准。
@@ -218,15 +208,7 @@ public class GoodsAction extends BaseAction
 			DynamicObject eventitemgoods = eventitemgoodsService.locate(eventitemgoodsid);
 			goods.setAttr("saleprice", eventitemgoods.getFormatAttr("saleprice"));
 			goods.setAttr("promoteprice", eventitemgoods.getFormatAttr("promoteprice"));
-			
-//			DynamicObject event = eventService.locate(eventid);
-//			DynamicObject eventitem = eventitemService.locate(eventitemid);
-
-//			ro.put("event", event);
-//			ro.put("eventitem", eventitem);
 			ro.put("eventitemgoods", eventitemgoods);
-			
-//			ro.put("eventitemid", eventitemid);
 		}
 
 		List<DynamicObject> goodsclassspeces = appgoodsclassspecService.getGoodsClassSpeces(goods.getFormatAttr("classid"));
@@ -234,6 +216,15 @@ public class GoodsAction extends BaseAction
 		List<DynamicObject> currentgoodsspecs = appgoodsService.findgoodsspec(goods.getFormatAttr("id"));
 
 		List<DynamicObject> likegoodses = appgoodsService.guestlike(map);
+
+		DynamicObject member = memberService.locateBy(Cnd.where("wxopenid", "=", userwxopenid));
+
+		
+		String goodsname = goods.getFormatAttr("cname");
+		String pic = goods.getFormatAttr("pic");
+		
+		ro.put("jscfg", jscfg());
+		ro.put("wxshare", shareurl_look(goodsname, pic, map));
 
 		ro.put("member", member);
 		ro.put("goods", goods);
@@ -323,6 +314,32 @@ public class GoodsAction extends BaseAction
 		map.put("id", goodsid);
 		
 		return look(map);
+	}
+	
+	protected Map jscfg() throws Exception
+	{
+		HttpServletRequest req = Mvcs.getReq();
+		String uri = myWxHelper.wx_uri(req);
+		NutMap jscfg =  myWxHelper.wx_jsconfig(uri);
+		return jscfg;
+	}
+	
+	protected Map shareurl_look(String desc, String pic, Map map) throws Exception
+	{
+		HttpServletRequest req = Mvcs.getReq();
+
+		String shareurl =  myWxHelper.wx_shareurl("goods/goods/sharelook.action", map);
+
+		String title = VMallConstants.vmallname;
+		String imgurl = ApiConfigKit.apiConfig.getServercontext() + "/" + pic;
+
+		DynamicObject wxshare = new DynamicObject();
+		wxshare.put("title", StringToolKit.formatText(title));
+		wxshare.put("desc", StringToolKit.formatText(desc));
+		wxshare.put("imgUrl", StringToolKit.formatText(imgurl));
+		wxshare.put("shareurl", shareurl);
+		
+		return wxshare;
 	}
 
 }
