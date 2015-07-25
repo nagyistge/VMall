@@ -1,5 +1,6 @@
 package com.skynet.vmall.order.service;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
@@ -18,6 +19,7 @@ import com.skynet.framework.service.SkynetDaoService;
 import com.skynet.framework.services.db.SQLParser;
 import com.skynet.framework.services.db.dybeans.DynamicObject;
 import com.skynet.framework.services.function.StringToolKit;
+import com.skynet.framework.spec.GlobalConstants;
 import com.skynet.vmall.base.constants.VMallConstants;
 import com.skynet.vmall.base.pojo.Order;
 import com.skynet.vmall.base.query.QueryHelper;
@@ -178,6 +180,97 @@ public class AppOrderService extends SkynetDaoService
 		}
 
 		return sign;
+	}
+	
+	// 保存运费
+	public Map savefreight(Map map, DynamicObject login_token) throws Exception
+	{
+		String userid = login_token.getFormatAttr(GlobalConstants.sys_login_userid);
+
+		String id = (String) map.get("id");
+
+		Order order = orderService.fetch(id);
+		// 订单下单阶段才可以修改运费
+		if(!("下单".equals(order.getState())))
+		{
+			Map remap = new DynamicObject();
+			remap.put("state", "error");
+			remap.put("message", "订单在下单阶段才能修改运费！");
+			return remap;			
+		}
+		
+		// 订单付款前才可以修改运费
+		if(!("未支付".equals(order.getPaystate())))
+		{
+			Map remap = new DynamicObject();
+			remap.put("state", "error");
+			remap.put("message", "订单在付款前才能修改运费！");
+			return remap;			
+		}
+		
+		// 订单付款前才可以修改运费
+		if("结束".equals(order.getState()))
+		{
+			Map remap = new DynamicObject();
+			remap.put("state", "error");
+			remap.put("message", "订单已结束，不能再修改运费！");
+			return remap;			
+		}
+		
+		String nofreight = (String)map.get("nofreight");
+		String freighttype = (String)map.get("freighttype");	
+		BigDecimal freight = new BigDecimal((String)map.get("freight"));	
+		
+		order.setNofreight(nofreight);
+		order.setFreighttype(freighttype);
+		order.setFreight(freight);
+		
+		sdao().update(order);
+		
+		Map remap = new DynamicObject();
+		remap.put("state", "success");
+		remap.put("id", id);
+		return remap;
+		
+	}
+	
+	// 保存物流
+	public Map savelogistics(Map map, DynamicObject login_token) throws Exception
+	{
+		String id = (String) map.get("id");
+
+		Order order = orderService.fetch(id);
+		// 订单发货阶段才可以修改物流
+		if(!"发货".equals(order.getState()))
+		{
+			Map remap = new DynamicObject();
+			remap.put("state", "error");
+			remap.put("message", "订单在发货阶段才能修改物流单据！");
+			return remap;			
+		}
+		
+		// 订单未结束才可以修改物流
+		if("结束".equals(order.getState()))
+		{
+			Map remap = new DynamicObject();
+			remap.put("state", "error");
+			remap.put("message", "订单已结束，不能再修改物流单据！");
+			return remap;			
+		}
+		
+		String logisticscomp = (String)map.get("logisticscomp");
+		String expressno = (String)map.get("expressno");	
+		
+		order.setLogisticscomp(logisticscomp);
+		order.setExpressno(expressno);
+		
+		sdao().update(order);
+		
+		Map remap = new DynamicObject();
+		remap.put("state", "success");
+		remap.put("id", id);
+		return remap;
+		
 	}
 
 }

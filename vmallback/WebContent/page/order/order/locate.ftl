@@ -182,19 +182,42 @@
 
 <div class="panel-single panel-single-light mgt20">
     <h3 class="cst_h3 mgb20">发货信息</h3>
+    
+    <div class="formitems">
+        <label class="fi-name"><span class="colorRed">*</span>免物流：</label>
+        <div class="form-controls">
+            <div class="radio-group">
+                <label><input type="radio" class="j-feight" value="是" name="nofreight" <#if obj.order.nofreight=="是">checked</#if>>是</label>
+                <label><input type="radio" class="j-feight" value="否" name="nofreight" <#if obj.order.nofreight=="否">checked</#if>>否</label>
+            </div>
+            <span class="fi-help-text"></span>
+        </div>
+    </div> 
+        
     <div class="formitems">
         <label class="fi-name"><span class="colorRed">*</span>运费：</label>
         <div class="form-controls">
-            <input type="text" class="input" name="freighttype" value="${obj.order.freighttype}">
-            <input type="text" class="input" name="freight" value="${obj.order.freight}">
-            <span class="fi-help-text"></span>
+            <div class="radio-group">
+                <label><input type="radio" class="j-feight" value="包邮" name="freighttype" <#if obj.order.freighttype=="包邮">checked</#if>>包邮</label>
+                <label><input type="radio" class="j-feight" value="自定义" name="freighttype" <#if obj.order.freighttype=="自定义">checked</#if>>自定义</label>
+            </div>
+            <input type="text" class="input mini" name="freight" value="${obj.order.freight}">（元）
+            <#if obj.issavefreight??==true><button id="bt_savefreight" type="button" class="btn btn-primary">修改</button></#if>
+            <span class="fi-help-text">以上内容用户订单付款前可修改</span>
         </div>
     </div>
     
     <div class="formitems">
         <label class="fi-name"><span class="colorRed">*</span>物流公司：</label>
         <div class="form-controls">
+
             <input type="text" class="input" name="logisticscomp" value="${obj.order.logisticscomp}">
+        	<select name="logisticscompselect" class="select">
+                    <option value="其它">其它</option>
+                    <option value="顺丰">顺丰</option>
+                    <option value="申通">申通</option>
+                    <option value="圆通">圆通</option>
+            </select>            
             <span class="fi-help-text"></span>
         </div>
     </div>  
@@ -203,7 +226,8 @@
         <label class="fi-name"><span class="colorRed">*</span>快递单号：</label>
         <div class="form-controls">
             <input type="text" class="input" name="expressno" value="${obj.order.expressno}">
-            <span class="fi-help-text"></span>
+            <#if obj.issavelogistics??==true><button id="bt_savelogistics" type="button" class="btn btn-primary">修改</button></#if>
+            <span class="fi-help-text">以上内容在物流发货后由订单发货员负责填写</span>
         </div>
     </div>      
 </div>    
@@ -413,7 +437,7 @@ $(function(){
 
 
 
-$("#leftMenu").load('${base}/page/order/leftmenu.ftl');
+$("#leftMenu").load('${base}/order/order/leftmenu.action');
 
 $("#tabs a").click(function() {
 	var oid = $(this).attr('tab');
@@ -428,6 +452,11 @@ $("#tab_dd").click(function() {page_do_dd()});
 $("#tab_sp").click(function() {page_do_sp()});
 $("#tab_lc").click(function() {page_do_lc()});
 
+$(".j-feight[name='nofreight']").click(function(){page_nofreight()});
+$(".j-feight[name='freighttype']").click(function(){page_freighttype()});
+$(".select[name='logisticscompselect']").change(function(){page_logisticscompselect()});
+$("#bt_savefreight").click(function(){page_savefreight()});
+$("#bt_savelogistics").click(function(){page_savelogistics()});
 var page_do_dd = function()
 {
 	console.log("page_do_dd");
@@ -519,8 +548,127 @@ function page_forward()
 		}
 	})
 }
+
+function page_nofreight()
+{
+	var e = event.target;
+	console.log($(".j-feight[name='freight']"));
+	if("是"==e.value)
+	{
+		$(".j-feight[name='freighttype']").each(function() {$(this).removeAttr("checked")});
+		$(".j-feight[name='freighttype']").each(function() {$(this).prop("disabled", true)});
+		$(".j-feight[name='freighttype'][value='包邮']").prop("checked", true);
+		$("input[name='freight']").val("0");
+		$("input[name='freight']").prop("readonly", true);
+	}
+	else
+	{
+		$(".j-feight[name='freighttype']").each(function() {$(this).removeAttr("disabled")});
+		$(".j-feight[name='freighttype'][value='包邮']").prop("checked", true);
+		$("input[name='freight']").removeAttr("readonly");	
+	}
+}
+
+function page_freighttype()
+{
+	var e = event.target;
+	if("包邮"==e.value)
+	{
+		$("input[name='freight']").val("0");
+		$("input[name='freight']").prop("readonly", true);
+	}
+	else
+	{
+		$("input[name='freight']").removeAttr("readonly");	
+	}
+}
 	
-	
+function page_logisticscompselect()
+{
+	var e = event.target;
+	console.log(e.options[e.options.selectedIndex].value);
+	$("input[name='logisticscomp']").val(e.options[e.options.selectedIndex].value);
+}	
+
+function page_savefreight()
+{
+	var nofreight = $(".j-feight[name='nofreight']:checked").val();
+	var freighttype = $(".j-feight[name='freighttype']:checked").val();
+	var freight = Number($(".input[name='freight']").val());
+	console.log(nofreight);
+	console.log(freighttype);
+	console.log(freight);
+
+	$.ajax({
+		type:'post',
+		url:'${base}/order/order/savefreight.action',
+		data:{'id':'${obj.order.id}', 'nofreight':nofreight, 'freighttype':freighttype, 'freight':freight},
+		cache:false,
+		async:true,
+		success:function(data)
+		{
+			console.log(data);
+			if(data=="")
+			{
+				alert("保存异常！");
+				return;
+			}
+			var json = eval("(" + data + ")");
+			if(json.state=="success")
+			{
+				alert("保存成功！");
+				// window.location = "${base}/order/order/locate.action?id=${obj.order.id}";
+			}
+			else
+			{
+				alert(json.message);
+			}
+		},
+		error:function(data)
+		{
+			console.log(data);
+			alert("服务请求异常！");
+		}
+	})	
+}
+
+function page_savelogistics()
+{
+	var logisticscomp = $(".input[name='logisticscomp']").val();
+	var expressno = $(".input[name='expressno']").val();
+
+	$.ajax({
+		type:'post',
+		url:'${base}/order/order/savelogistics.action',
+		data:{'id':'${obj.order.id}', 'logisticscomp':logisticscomp, 'expressno':expressno},
+		cache:false,
+		async:true,
+		success:function(data)
+		{
+			console.log(data);
+			if(data=="")
+			{
+				alert("保存异常！");
+				return;
+			}
+			var json = eval("(" + data + ")");
+			if(json.state=="success")
+			{
+				alert("保存成功！");
+				// window.location = "${base}/order/order/locate.action?id=${obj.order.id}";
+			}
+			else
+			{
+				alert(json.message);
+			}
+		},
+		error:function(data)
+		{
+			console.log(data);
+			alert("服务请求异常！");
+		}
+	})	
+}
 	
 //////////	
 });

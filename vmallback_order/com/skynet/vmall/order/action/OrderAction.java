@@ -137,12 +137,16 @@ public class OrderAction
 		boolean isforward = isforward(map); // 是否可转发
 		boolean isbackward = isbackward(map); // 是否可回退
 		
+		boolean issavefreight = true; // 是否可修改运费
+		boolean issavelogistics = true; // 是否可修改物流
 		ro.put("isread", isread);
 		ro.put("isedit", isedit);
 		ro.put("issave", issave);
 		ro.put("isforward", isforward);
 		ro.put("isbackward", isbackward);
 		
+		ro.put("issavefreight", issavefreight);
+		ro.put("issavelogistics", issavelogistics);
 	}
 	
 	// 保存功能权限
@@ -203,6 +207,72 @@ public class OrderAction
 		
 		return sign;
 	}
+	
+	// 保存运费权限
+	public boolean issavefreight(Map map) throws Exception
+	{
+		boolean sign = true;
 
+		DynamicObject order = (DynamicObject) map.get("order");
+		DynamicObject login_token =  (DynamicObject) map.get("login_token");
+		
+		// 订单未在下单状态；
+		if (!("下单".equals(order.getFormatAttr("state"))))
+		{
+			sign = false;
+			return sign;
+		}
+		
+		if(!("未支付".equals(order.getFormatAttr("paystate"))))
+		{
+			sign = false;
+			return sign;		
+		}
+
+		// 订单处于结束状态；
+		if ("结束".equals(order.getFormatAttr("state")))
+		{
+			sign = false;
+			return sign;
+		}
+		
+		return sign;
+	}
+	
+	@At("/savefreight")
+	@Ok("json")
+	public Map savefreight(@Param("..") Map map) throws Exception
+	{
+		// 更新订单运费信息
+		HttpSession session = Mvcs.getHttpSession(true);
+		DynamicObject login_token = (DynamicObject) session.getAttribute(GlobalConstants.sys_login_token);
+		Map remap = apporderService.savefreight(map, login_token);
+		return remap;
+	}
+	
+	@At("/savelogistics")
+	@Ok("json")
+	public Map savelogistics(@Param("..") Map map) throws Exception
+	{
+		// 更新订单运费信息
+		HttpSession session = Mvcs.getHttpSession(true);
+		DynamicObject login_token = (DynamicObject) session.getAttribute(GlobalConstants.sys_login_token);
+		Map remap = apporderService.savelogistics(map, login_token);
+		return remap;
+	}
+	
+	
+	@At("/leftmenu")
+	@Ok("->:/page/order/leftmenu.ftl")
+	public Map lefmenu(String id) throws Exception
+	{
+		DynamicObject ro = new DynamicObject();
+		return ro;
+	}
+	
+	
+	
+	
+	
 
 }

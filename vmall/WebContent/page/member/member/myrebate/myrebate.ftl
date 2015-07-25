@@ -13,7 +13,7 @@
 </head>
 <body id="body" style="background:#ffffff">
 <style>
-.sum{height:30px;width:25%;float:left;font-size:10px;color:#dedede}
+.sum{height:30px;width:25%;float:left;font-size:12px;color:#dedede}
 </style>
 <#include "/decorator/include/navmain.ftl">
 

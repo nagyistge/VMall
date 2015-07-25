@@ -64,29 +64,40 @@
         </div>
         <table class="wxtables table-order mgt20">
             <colgroup>
-                <col width="15%">
-                    <col width="30%">
-                        <col width="10%">
-                            <col width="10%">
-                                <col width="25%">
+                <col width="15%" />
+                <col width="30%" />
+                <col width="10%" />
+                <col width="8%" />
+                <col width="8%" />
+                <col width="8%" />
+                <col width="8%" />
+                <col width="8%" />
             </colgroup>
             <thead>
                 <tr>
                 	<td>订单号</td>
                     <td>商品</td>
-                    <td>收货人</td>
                     <td>金额</td>
-                    <td>买家留言</td>
+                    <td>支付</td>
+                    <td>支付状态</td>
+                    <td>收货人</td>
+                    <td>签收</td>
+                    
+                    <td>状态</td>
                 </tr>
             </thead>
-            <tbody>
+            <tbody id="tbody">
             <#list obj.orders as order>
-                    <tr>
+                    <tr sid="${order.id}">
                  	<td><a href="${base}/order/order/locate.action?id=${order.id}" style="color:#0055ee">${order.cno}</a></td>
-                    <td></td>
-                    <td>${order.takercname}</td>
+                    <td class="goods"></td>
                     <td>${order.amount}</td>
-                    <td></td>
+                    <td>${order.wxpaytotalfee}</td>
+                    <td>${order.paystate}</td>                  
+                    <td>${order.takercname}</td>
+                    <td>${order.takeover}</td>
+
+                    <td>${order.state}</td>
                     </tr>
             </#list>        
             </tbody>
@@ -755,7 +766,7 @@ $(function(){
 
 <script>
 $(function(){
-	$("#leftMenu").load('${base}/page/order/leftmenu.ftl');
+	$("#leftMenu").load('${base}/order/order/leftmenu.action');
 });
 </script>
 
@@ -819,18 +830,62 @@ $(function(){
 
 <!-- pujian add -->
 <script>
+var ordergoods;
+</script>
+<script type="text/j-template" id="tpl_ordergoods">
+<% _.each(ordergoods,function(item){ %>
+<ul>
 
+
+    <div class="goodsList-info">
+        <p class="colorGray"><%= item.goodsname %></p>
+		<span class="colorGray">&yen;：<span class="colorRed"><%= item.realprice %></span></span>
+        <span class="colorGray">数量：<span class="colorRed"><%= item.nums %></span></span>
+    </div>
+
+</ul>        	
+<% }) %>
+</script>
+
+<script>
 $(function(){
 
 //////////
 
 $("#tabs a").click(function() {
-	console.log($(this));
-	console.log($(this).attr("state"));
 	$("#state").val($(this).attr("state"));
 	$("#tabs a").removeClass("active");
 	$(this).addClass("active");
 	page_browse();
+})
+
+$("#tbody tr").each(function(){
+	var ctr = $(this);
+	var orderid = $(this).attr("sid");
+	console.log("orderid:"+orderid);
+	$.ajax({
+		type:'post',
+		url:'${base}/order/ordergoods/ajaxlist.action',
+		data:{"orderid":orderid},
+		cache:false,
+		async:true,
+		success:function(data)
+		{
+			ordergoods = eval("(" + data + ")");
+
+			//console.log(ordergoods);
+
+			var html = _.template($("#tpl_ordergoods").html(), ordergoods);
+
+			console.log(ctr.find("td.goods").html());
+			ctr.find("td.goods").html(html);
+		},
+		error:function(data)
+		{
+			console.log(data);
+			alert("服务请求异常！");
+		}
+	})
 })
 
 $("#bt_submit").click(function() {page_submit()});
@@ -839,6 +894,8 @@ function page_browse()
 {
 	$("#queryform").submit();
 }
+
+
 
 //////////
 })

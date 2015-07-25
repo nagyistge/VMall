@@ -66,6 +66,9 @@ public class Order extends IdEntity
 	
 	// 发货信息
 	@Column
+	private String nofreight; // 免物流（是、否）	
+	
+	@Column
 	private String freighttype; // 运费方式（免运费、自定义）
 	
 	@Column
@@ -313,6 +316,26 @@ public class Order extends IdEntity
 		this.paybankaccountno = paybankaccountno;
 	}
 
+	public String getNofreight()
+	{
+		return nofreight;
+	}
+
+	public void setNofreight(String nofreight)
+	{
+		this.nofreight = nofreight;
+	}
+
+	public String getFreighttype()
+	{
+		return freighttype;
+	}
+
+	public void setFreighttype(String freighttype)
+	{
+		this.freighttype = freighttype;
+	}
+
 	public BigDecimal getFreight()
 	{
 		return freight;
@@ -531,16 +554,6 @@ public class Order extends IdEntity
 	public void setWxpayissubscribe(String wxpayissubscribe)
 	{
 		this.wxpayissubscribe = wxpayissubscribe;
-	}
-
-	public String getFreighttype()
-	{
-		return freighttype;
-	}
-
-	public void setFreighttype(String freighttype)
-	{
-		this.freighttype = freighttype;
 	}
 
 	public String getWxpaytimeend()
