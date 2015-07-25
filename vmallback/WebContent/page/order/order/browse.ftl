@@ -4,29 +4,20 @@
 </head>
 <body>
 
-<style>
-    .ftnormal {line-height: 25px!important;}
-    .btn{vertical-align: baseline;}
-    .grounp_chenge_box{ padding:10px 0px; text-align:right;}
-    .grounp_chenge_box .grtt{ font-weight:900;}
-    .grounp_chenge_box .intem{ border:1px solid #CCC; color:#666; padding:2px 10px;}
-    .grounp_chenge_box .intem.cur{ border:1px solid #1C89D5; background:#1C89D5; color:#FFF;}
-	.infor_logistics_box{ display:none; position:absolute; width:260px; left:-105px;top:20px; border:1px solid #ccc; padding:15px; background:#fff; z-index:999;}
-	.arrow-top{ display:none;top: 15px;left: 30px;width: 11px;height: 6px;position: absolute;overflow: hidden; background:url(/Public/images/arrow_cut.png) no-repeat; z-index:9999;}
-	.infor_logistics_box .courier{margin-bottom: 8px;border-bottom: 1px solid #f1f1f1;color: #666;}
-	.infor_logistics_box .courier .name{ margin-right:10px;}
-	.infor_logistics_box .courier em{font-style: normal;font-weight: 400;}
-	.infor_logistics_box .address li{position: relative;padding: 0 25px 12px;}
-	.infor_logistics_box .address .current{ color:#f40;}
-	.infor_logistics_box .address .current .symbol{background:url(/Public/images/xlt.png) 0 0 no-repeat}
-	.infor_logistics_box .address .place{display: block;overflow: hidden;word-wrap: break-word;}
-	.infor_logistics_box .address .symbol{position: absolute;top: 6px;left: 8px;_left: -17px;width: 6px;height: 6px;overflow: hidden;background:url(/Public/images/xlt.png) 0 -11px no-repeat;}
-</style>
+<link rel="stylesheet" href="${base}/lib/bootstrap/css/bootstrap.min.css">
 
     <h1 class="content-right-title">所有订单<a class="gicon-info-sign gicon_linkother" href="javascript:void(0)" target="_blank"></a></h1>
     
     
     <form action="${base}/order/order/browse.action" method="post" id="queryform">
+
+		<input type="hidden" id="_page" name="_page" value="${obj._page}">
+		<input type="hidden" id="_pagesize" name="_pagesize" value="${obj._pagesize}">
+		<input type="hidden" id="_maxpage" name="_maxpage" value="${obj._maxpage}">
+		<input type="hidden" id="_startpage" name="_startpage" value="${obj._startpage}">
+		<input type="hidden" id="_endpage" name="_endpage" value="${obj._endpage}">    
+    
+    
     	<input type="hidden" id="state" name="state" value="${obj.state}">
         <div class="tables-searchbox">
             <input type="text" placeholder="输入收货人/手机号/订单号" class="input" name="mobile_orderno" value="">
@@ -45,23 +36,26 @@
             <button class="btn btn-primary"><i class="gicon-search white"></i>查询</button>
         </div>
     </form>
-        <div class="tabs clearfix mgt15" id="tabs">
-        <a href="javascript:void(0)" class="<#if obj.state=="">active</#if> tabs_a fl" state="">所有订单(0)</a>
-        <a href="javascript:void(0)" class="<#if obj.state=="下单">active</#if> tabs_a fl" state="下单">下单(0)</a>
-        <a href="javascript:void(0)" class="<#if obj.state=="收款">active</#if> tabs_a fl" state="收款">收款(0)</a>
-        <a href="javascript:void(0)" class="<#if obj.state=="发货">active</#if> tabs_a fl" state="发货">发货(0)</a>
-        <a href="javascript:void(0)" class="<#if obj.state=="收货">active</#if> tabs_a fl" state="收货">收货(0)</a>
-        <a href="javascript:void(0)" class="<#if obj.state=="结算">active</#if> tabs_a fl" state="结算">结算(0)</a>
-        <a href="javascript:void(0)" class="<#if obj.state=="结束">active</#if> tabs_a fl" state="结束">结束(0)</a>
-    </div>
-        <!-- end tabs -->
-        <div class="grounp_chenge_box mgt15">
-            <span class="grtt">每页显示订单数量:</span>
-            <a class="intem  cur " href="#">10</a>
-            <a class="intem  " href="#">20</a>
-            <a class="intem  " href="#">40</a>
-            <a class="intem  " href="#">50</a>
-        </div>
+    <div class="tabs clearfix mgt15" id="tabs">
+	    <a href="javascript:void(0)" class="<#if obj.state=="">active</#if> tabs_a fl" state="">所有订单(0)</a>
+	    <a href="javascript:void(0)" class="<#if obj.state=="下单">active</#if> tabs_a fl" state="下单">下单(0)</a>
+	    <a href="javascript:void(0)" class="<#if obj.state=="收款">active</#if> tabs_a fl" state="收款">收款(0)</a>
+	    <a href="javascript:void(0)" class="<#if obj.state=="发货">active</#if> tabs_a fl" state="发货">发货(0)</a>
+	    <a href="javascript:void(0)" class="<#if obj.state=="收货">active</#if> tabs_a fl" state="收货">收货(0)</a>
+	    <a href="javascript:void(0)" class="<#if obj.state=="结算">active</#if> tabs_a fl" state="结算">结算(0)</a>
+	    <a href="javascript:void(0)" class="<#if obj.state=="结束">active</#if> tabs_a fl" state="结束">结束(0)</a>
+	    
+	</div>
+    <!-- end tabs -->
+
+	<div class="grounp_chenge_box mgt15">
+        <span class="grtt">每页显示订单数量:</span>
+        <a class="intem <#if obj._pagesize==10>cur</#if>" pagesize="10" href="javascript:void(0)">10</a>
+        <a class="intem <#if obj._pagesize==20>cur</#if>" pagesize="20" href="javascript:void(0)">20</a>
+        <a class="intem <#if obj._pagesize==40>cur</#if>" pagesize="40" href="javascript:void(0)">40</a>
+        <a class="intem <#if obj._pagesize==50>cur</#if>" pagesize="50" href="javascript:void(0)">50</a>
+	</div>
+
         <table class="wxtables table-order mgt20">
             <colgroup>
                 <col width="15%" />
@@ -112,8 +106,19 @@
     <form action="" method="post" id="ids">
         <input type="hidden" name="ids" value="">
     </form>
-
-
+    
+    <div class="tables-btmctrl clearfix">
+	    <div class="fr">
+		    <div class="paginate">
+		    <a href="javascript:void(0)" pagenum="${obj._startpage?default("1")?number-10}" class="prev <#if obj._startpage?default("1")?number==1>disabled</#if>"></a>
+		    <#list obj._startpage .. obj._endpage as aobj>
+		    <a href="javascript:void(0)" pagenum="${aobj}" class="<#if aobj &gt; obj._maxpage>disabled</#if> <#if aobj==obj._page>cur</#if>">${aobj}</a>
+		    </#list>
+		    <a href="javascript:void(0)" pagenum="${obj._endpage?default("10")?number+10}" class="next <#if obj._endpage?default("10")?number&gt;=obj._maxpage>disabled</#if>"></a>
+		    </div>
+	    </div>            
+	</div>    
+    
 <script src="${base}/public/js/jquery/jquery-1.8.3.min.js"></script>
 <script>
 $(function(){
@@ -888,12 +893,25 @@ $("#tbody tr").each(function(){
 	})
 })
 
-$("#bt_submit").click(function() {page_submit()});
-
 function page_browse()
 {
 	$("#queryform").submit();
 }
+
+
+$('div .paginate a').on('click', function()
+{
+	var pagenum = $(this).attr("pagenum");
+	$("#_page").val(pagenum);
+	$("#queryform").submit();
+});
+
+$('.intem').on('click', function()
+{
+	var pagesize = $(this).attr("pagesize");
+	$("#_pagesize").val(pagesize);
+	$("#queryform").submit();
+});
 
 
 
