@@ -42,6 +42,12 @@ public class Log extends IdEntity
 	
 	@Column
 	private Timestamp logtime; // 日志记录时间
+	
+	@Column
+	private double locx; // 经度
+	
+	@Column
+	private double locy; // 纬度
 
 	public String getUserid()
 	{
@@ -152,4 +158,25 @@ public class Log extends IdEntity
 	{
 		this.logtime = logtime;
 	}
+
+	public double getLocx()
+	{
+		return locx;
+	}
+
+	public void setLocx(double locx)
+	{
+		this.locx = locx;
+	}
+
+	public double getLocy()
+	{
+		return locy;
+	}
+
+	public void setLocy(double locy)
+	{
+		this.locy = locy;
+	}
+
 }

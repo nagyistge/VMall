@@ -91,6 +91,9 @@ public class MyHandle extends AbstractWxHandle
 		int sport = req.getLocalPort();
 		Timestamp logtime = new Timestamp(System.currentTimeMillis());
 		
+		double locx = msg.getLocation_X();
+		double locy = msg.getLocation_Y();
+		
 		User user = userService.fetch(Cnd.where("wxopenid", "=", msg.getFromUserName()));
 		String userid = user.getId();
 		String username = user.getCname();
@@ -111,6 +114,8 @@ public class MyHandle extends AbstractWxHandle
 		log.setSip(sip);
 		log.setSport(sport);
 		log.setLogtime(logtime);
+		log.setLocx(locx);
+		log.setLocy(locy);
 
 		LogService logService = (LogService)Mvcs.getIoc().get(LogService.class, "logService");
 		logService.sdao().insert(log);
