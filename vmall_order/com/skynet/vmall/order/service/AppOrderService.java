@@ -187,8 +187,9 @@ public class AppOrderService extends SkynetDaoService
 		String userid = login_token.getFormatAttr(GlobalConstants.sys_login_userid);
 		String userwxopenid = login_token.getFormatAttr(GlobalConstants.sys_login_userwxopenid);
 		String username = login_token.getFormatAttr(GlobalConstants.sys_login_username);
-
+		
 		Order order = sdao().fetch(Order.class, orderid);
+
 		order.setPaystate("正支付"); // 先设置状态为正支付，预防重复提交订单；
 		sdao().update(order);
 

@@ -107,7 +107,7 @@ public class DrawCashAction extends BaseAction
 			remap = appdrawcashService.checksignature(decode, ip, userwxopenid);
 			if (!("success".equals(remap.get("state"))))
 			{
-				return remap;
+				//return remap;
 			}
 
 			remap = appdrawcashService.insert(drawcash, login_token, decode);

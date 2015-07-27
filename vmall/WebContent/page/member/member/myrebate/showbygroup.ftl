@@ -11,13 +11,14 @@
 			</span>
         </div>
         <div class="shp-cart-item-core">
-            <a class="cart-product-cell-1" href="${base}/member/member/look.action?id=${rebate.submemberid}">
-                <img class="cart-photo-thumb" alt="" src="${base}/css/img/default.png">
+            <a class="cart-product-cell-1">
+                <img class="cart-photo-thumb" alt="" src="<#if rebate.wxheadimgurl=="">${base}/css/img/default.png<#else>${rebate.wxheadimgurl}</#if>">
             </a>
             
             <div class="cart-product-cell-2">
                 <div class="cart-product-name">
-                    <p><span style="font-size:16px">${rebate.cname}</span></p>
+                    <p><span style="font-size:16px">&nbsp;${rebate.cname}</span></p>
+                    <p><span style="font-size:16px">&nbsp;${rebate.wxnickname}</span></p>
            		</div>
        		</div>
        		

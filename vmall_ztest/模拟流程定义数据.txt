@@ -19,3 +19,15 @@ insert into t_sys_fbactowner(id, bflowid, bactid, groupid, grouptype, groupname)
 insert into t_sys_fbactowner(id, bflowid, bactid, groupid, grouptype, groupname) values('ORDER_SHOUHUO_01','ORDER','ORDER_SHOUHUO','HY','ROLE','会员');
 insert into t_sys_fbactowner(id, bflowid, bactid, groupid, grouptype, groupname) values('ORDER_JIESUAN_01','ORDER','ORDER_JIESUAN','DDJS','ROLE','订单结算');
 
+
+insert into t_sys_fbflow(id, cname) values('DRAWCASH', '提现');
+insert into t_sys_fbact(id, bflowid, sno, cname) values('DRAWCASH_SHENQING', 'DRAWCASH', 1, '申请');
+insert into t_sys_fbact(id, bflowid, sno, cname) values('DRAWCASH_SHOULI', 'DRAWCASH', 2, '受理');
+insert into t_sys_fbact(id, bflowid, sno, cname) values('DRAWCASH_SHENHE', 'DRAWCASH', 3, '审核');
+insert into t_sys_fbact(id, bflowid, sno, cname) values('DRAWCASH_FUKUAN', 'DRAWCASH', 4, '付款');
+insert into t_sys_fbact(id, bflowid, sno, cname) values('DRAWCASH_JIESHU', 'DRAWCASH', 5, '结束');
+
+insert into t_sys_fbactowner(id, bflowid, bactid, groupid, grouptype, groupname) values('DRAWCASH_SHENQING_01','DRAWCASH','DRAWCASH_XIADAN','HY','ROLE','会员');
+insert into t_sys_fbactowner(id, bflowid, bactid, groupid, grouptype, groupname) values('DRAWCASH_SHOULI_01','DRAWCASH','DRAWCASH_SHOULI','TXSL','ROLE','提现受理');
+insert into t_sys_fbactowner(id, bflowid, bactid, groupid, grouptype, groupname) values('DRAWCASH_SHENHE_01','DRAWCASH','DRAWCASH_SHENHE','TXSH','ROLE','提现审核');
+insert into t_sys_fbactowner(id, bflowid, bactid, groupid, grouptype, groupname) values('DRAWCASH_FUKUAN_01','DRAWCASH','DRAWCASH_FUKUAN','TXFK','ROLE','提现付款');

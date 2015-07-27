@@ -527,24 +527,24 @@ function page_forward()
 			console.log(data);
 			if(data=="")
 			{
-				alert("转发异常！");
+				pub_alert("转发异常！");
 				return;
 			}
 			var json = eval("(" + data + ")");
 			if(json.state=="success")
 			{
-				alert("转发成功！");
+				pub_alert("转发成功！");
 				window.location = "${base}/order/order/locate.action?id=${obj.order.id}";
 			}
 			else
 			{
-				alert(json.message);
+				pub_alert(json.message);
 			}
 		},
 		error:function(data)
 		{
 			console.log(data);
-			alert("服务请求异常！");
+			pub_alert("服务请求异常！");
 		}
 	})
 }

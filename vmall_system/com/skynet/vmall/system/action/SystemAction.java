@@ -9,15 +9,7 @@ import org.nutz.mvc.annotation.Ok;
 
 import com.skynet.app.organ.service.OrganService;
 import com.skynet.framework.action.BaseAction;
-import com.skynet.vmall.base.pojo.Attach;
-import com.skynet.vmall.base.pojo.AttachRef;
-import com.skynet.vmall.base.pojo.Material;
-import com.skynet.vmall.base.pojo.MaterialItem;
-import com.skynet.vmall.base.pojo.Order;
-import com.skynet.vmall.base.pojo.OrderGoods;
-import com.skynet.vmall.base.pojo.OrderGoodsRebate;
-import com.skynet.vmall.base.pojo.ShopCart;
-import com.skynet.vmall.base.pojo.ShopCartGoods;
+import com.skynet.vmall.base.pojo.DrawCash;
 
 @IocBean
 @At("/system/system")
@@ -43,17 +35,19 @@ public class SystemAction extends BaseAction
 
 //		organService.dao().create(GoodsPrice.class, true);
 		
-		organService.dao().create(Order.class, true);	
-		organService.dao().create(OrderGoods.class, true);		
-		organService.dao().create(OrderGoodsRebate.class, true);	
-		organService.dao().create(ShopCart.class, true);
-		organService.dao().create(ShopCartGoods.class, true);
+//		organService.dao().create(Order.class, true);	
+//		organService.dao().create(OrderGoods.class, true);		
+//		organService.dao().create(OrderGoodsRebate.class, true);	
+//		organService.dao().create(ShopCart.class, true);
+//		organService.dao().create(ShopCartGoods.class, true);
 		
-		organService.dao().create(Material.class, true);
-		organService.dao().create(MaterialItem.class, true);	
+		organService.dao().create(DrawCash.class, true);	
 		
-		organService.dao().create(Attach.class, true);
-		organService.dao().create(AttachRef.class, true);		
+//		organService.dao().create(Material.class, true);
+//		organService.dao().create(MaterialItem.class, true);	
+//		
+//		organService.dao().create(Attach.class, true);
+//		organService.dao().create(AttachRef.class, true);		
 //		organService.dao().create(RunFlow.class, true);
 //		organService.dao().create(RunFlowLog.class, true);
 		

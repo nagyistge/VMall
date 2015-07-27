@@ -14,7 +14,7 @@
                 <li class="fl "><a href="${base}/order/order/browse.action">订单</a></li>
                 <li class="fl "><a href="javascript:void(0)">会员</a></li>
                 <li class="fl "><a href="javascript:void(0)">分销商</a></li>
-                <li class="fl "><a href="javascript:void(0)">财务</a></li>
+                <li class="fl "><a href="${base}/finance/drawcash/browse.action">财务</a></li>
                 <li class="fl "><a href="${base}/mall/message/input.action">营销</a></li>
                 <li class="fl "><a href="javascript:void(0)">设置</a></li>                
             </ul>

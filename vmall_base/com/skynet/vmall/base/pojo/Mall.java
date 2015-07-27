@@ -48,6 +48,9 @@ public class Mall extends IdEntity
 
 	@Column
 	private String postcode; // 邮政编码
+	
+	@Column
+	private String accounttype; // 账号类型	
 
 	@Column
 	private String bank; // 所属银行
@@ -207,6 +210,16 @@ public class Mall extends IdEntity
 	public void setPostcode(String postcode)
 	{
 		this.postcode = postcode;
+	}
+
+	public String getAccounttype()
+	{
+		return accounttype;
+	}
+
+	public void setAccounttype(String accounttype)
+	{
+		this.accounttype = accounttype;
 	}
 
 	public String getBank()

@@ -15,7 +15,7 @@ public class VMallConstants
 	public static final String[] flow_order = new String[]
 	{ "下单", "收款", "发货", "收货", "结算", "结束" };
 	public static final String[] flow_drawcash = new String[]
-	{ "申请", "受理", "付款", "收款", "结束" };
+	{ "申请", "受理", "审核", "付款", "结束" };
 	
 	public static final String flow_create = "创建";
 	

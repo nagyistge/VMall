@@ -1,17 +1,21 @@
 <!DOCTYPE html>
 <html>
 <head>
-<link rel="stylesheet" type="text/css" href="${base}/lib/jd/order/css/base.css" charset="gbk">
-<link rel="stylesheet" type="text/css" href="${base}/lib/jd/order/css/order.css" charset="gbk">
 
-<link rel="stylesheet" type="text/css" href="${base}/lib/jd/order/css/extend.css" charset="gbk">
-<link rel="stylesheet" type="text/css" href="${base}/lib/jd/order/css/hotel.css" charset="gbk">
-<link rel="stylesheet" type="text/css" href="${base}/lib/jd/order/css/airline.css" charset="gbk">
-	
-<link rel="stylesheet" href="${base}/lib/jd/order/misc/css/base.css?v=20150604">
-<link rel="stylesheet" href="${base}/lib/jd/order/misc/css/pay.css?v=20150604">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+<meta content="telephone=no" name="format-detection" />
+
+<link rel="stylesheet" type="text/css" href="${base}/lib/jd/order/css/order.css" charset="gbk">
 <link href="${base}/lib/jd/cart/css/shopping-cart.css" media="all" rel="stylesheet" type="text/css">
-<#include "/decorator/include/header.ftl">
+
+
+<link rel="stylesheet" type="text/css" href="${base}/lib/jd/css/layout.min.css">
+<link rel="stylesheet" type="text/css" href="${base}/lib/jd/css/common.min.css">
+
+
+<script src="${base}/lib/jquery-2.1.1.min.js"></script>
+<script src="${base}/lib/jquery-ui.min.js"></script>
 </head>
 <body id="body" style="background:#ffffff">
 <#include "/decorator/include/navmain.ftl">
@@ -42,16 +46,35 @@
 	    <span class="tbl-cell"><span><input type="text" maxlength="11" class="new-input" name="phone" id="phone" value="${obj.member.phone}" title="电话" required readonly></span></span>
 	</div>
 	</div>
+	
+	<div class="info pd">
+	<div class="tbl-type">
+		<span class="tbl-cell w70"><span>账户类型：</span></span>
+	    <span class="tbl-cell">
+		    <span>
+		    <input type="radio" name="accounttype" value="银行" required>&nbsp;银行账号		    
+		    <input type="radio" name="accounttype" value="支付宝" required>&nbsp;支付宝		    
+		    <input type="radio" name="accounttype" value="微信" required>&nbsp;微信支付		  
+		    </span>
+	    </span>
+	</div>
+	</div>	
 
 	<div class="info pd">
 	<div class="tbl-type">
 	<span class="tbl-cell w70"><span>所属银行：</span></span>
         <span class="tbl-cell">
         	<span>
-            <select name="bank" id="bank" style="width:200px" disabled><option selected="" id="option_add_1" value="1">中国工商银行</option><option id="option_add_2" value="2">中国建设银行</option><option id="option_add_3" value="3">中国交通银行</option><option id="option_add_4" value="4">中国农业银行</option></select>
+            <select name="bank" id="bank" style="width:200px">
+            	<option selected="" id="option_add_1" value="1">中国工商银行</option>
+            	<option id="option_add_2" value="2">中国建设银行</option>
+            	<option id="option_add_3" value="3">中国交通银行</option>
+            	<option id="option_add_4" value="4">中国农业银行</option>
+            	<option id="option_add_5" value="2">中国银行</option>
+            	<option id="option_add_6" value="2">其它</option>
+            	</select>
             </span>
         </span>
-	    <span class="tbl-cell"><span><a href="${base}/member/member/myinfo.action" style="color:#0088ff">修改</a></span></span>
     </div>
     </div>
     
@@ -83,7 +106,7 @@
 </div>
 </div>
 <br/>    
-<p>亲，请你仔细核对申请提现的账户信息！</p>    
+<p>亲，请你注意核对提现的账户信息哦</p>    
 </div>
 		
 	    

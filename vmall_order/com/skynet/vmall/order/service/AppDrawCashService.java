@@ -11,6 +11,9 @@ import org.nutz.ioc.annotation.InjectName;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
 
+import com.skynet.app.flow.service.AppFlowService;
+import com.skynet.app.flow.service.BFlowService;
+import com.skynet.app.flow.service.RFlowService;
 import com.skynet.framework.common.generator.SNGenerator;
 import com.skynet.framework.common.generator.UUIDGenerator;
 import com.skynet.framework.service.GeneratorService;
@@ -21,6 +24,7 @@ import com.skynet.framework.services.function.StringToolKit;
 import com.skynet.framework.services.function.Types;
 import com.skynet.framework.spec.GlobalConstants;
 import com.skynet.vmall.base.author.AuthorService;
+import com.skynet.vmall.base.constants.VMallConstants;
 import com.skynet.vmall.base.pojo.DrawCash;
 import com.skynet.vmall.base.pojo.Member;
 import com.skynet.vmall.base.pojo.OrderGoodsRebate;
@@ -47,6 +51,15 @@ public class AppDrawCashService extends SkynetDaoService
 	
 	@Inject
 	GeneratorService generatorService;
+	
+	@Inject
+	BFlowService bflowService;
+
+	@Inject
+	RFlowService rflowService;	
+
+	@Inject
+	AppFlowService appflowService;	
 	
 	// 浏览提现
 	public List<DynamicObject> browse(Map map) throws Exception
@@ -120,6 +133,7 @@ public class AppDrawCashService extends SkynetDaoService
 		Member member = sdao().fetch(Member.class, userid);
 		
 		drawcash.setMemberphone(member.getPhone());
+		drawcash.setAccounttype(member.getAccounttype());
 		drawcash.setBank(member.getBank());
 		drawcash.setBankaccountno(member.getBankaccountno());
 		drawcash.setBankaccountcname(member.getBankaccountcname());
@@ -148,6 +162,35 @@ public class AppDrawCashService extends SkynetDaoService
 		sql.append("    and state is null ").append("\n");
 		
 		sdao().execute(Sqls.create(sql.toString()));
+		
+		sql = new StringBuffer();
+		sql.append(" update t_app_drawcash ").append("\n");
+		sql.append("   set amount = ");
+		sql.append(" ( ").append("\n");
+		sql.append(" select sum(score) score ").append("\n");
+		sql.append("   from t_app_ordergoodsrebate ").append("\n");
+		sql.append(" where 1 = 1 ").append("\n");
+		sql.append("   and drawcashcno = ").append(SQLParser.charValue(drawcash.getCno())).append("\n");
+		sql.append("   and supmemberid = ").append(SQLParser.charValue(drawcash.getMemberid())).append("\n");
+		sql.append("   and supwxopenid = ").append(SQLParser.charValue(drawcash.getMemberwxopenid())).append("\n");
+		sql.append(" ) ").append("\n");
+		sql.append(" where 1 = 1 ");
+		sql.append("   and cno = ").append(SQLParser.charValue(drawcash.getCno())).append("\n");
+		
+		sdao().execute(Sqls.create(sql.toString()));
+		
+		String bflowid = bflowService.fetch(Cnd.where("cname", "=", VMallConstants.flow_drawcash_name)).getId();
+		String dataid = drawcash.getId();
+
+		DynamicObject swapflow = new DynamicObject();
+		swapflow.setAttr("bflowid", bflowid);
+		swapflow.setAttr("dataid", dataid);
+
+		String runflowkey = appflowService.create(swapflow, login_token);
+		String nextstate = rflowService.locate(runflowkey).getFormatAttr("state");
+
+		drawcash.setState(nextstate);
+		sdao().update(drawcash);		
 		
 		remap.put("state", "success");
 		remap.put("drawcash", drawcash);

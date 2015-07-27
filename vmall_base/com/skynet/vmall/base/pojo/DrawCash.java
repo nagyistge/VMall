@@ -18,6 +18,9 @@ public class DrawCash extends IdEntity
 	private String memberid; // 提现会员标识
 	
 	@Column
+	private String membercno; // 会员编号
+	
+	@Column
 	private String membercname; // 会员姓名
 	
 	@Column
@@ -27,13 +30,16 @@ public class DrawCash extends IdEntity
 	private String memberphone; // 会员联系电话	
 	
 	@Column
-	private String bank; // 所属银行
+	private String accounttype; // 提现账号类型	
+	
+	@Column
+	private String bank; // 提现账号
 
 	@Column
 	private String openbank; // 开户银行
 	
 	@Column
-	private String bankaccountno; // 银行账号
+	private String bankaccountno; // 银行账号（支付账号/银行账号/openid）
 	
 	@Column
 	private String bankaccountcname; // 银行名称
@@ -45,7 +51,7 @@ public class DrawCash extends IdEntity
 	private BigDecimal amount; // 提现总金额
 	
 	@Column
-	private String state; // 状态（申请、受理、审核、办理、确认、结束）
+	private String state; // 状态（申请、受理、审核、付款、结束）
 	
 	@Column
 	private String billno; // 交付凭据号（汇款单号）
@@ -63,10 +69,10 @@ public class DrawCash extends IdEntity
 	private String auditercname; // 审核人姓名
 	
 	@Column
-	private String handler; // 办理人用户名
+	private String handler; // 付款人用户名
 	
 	@Column
-	private String handlercname; // 办理人姓名
+	private String handlercname; // 付款人姓名
 	
 	@Column
 	private Timestamp applytime; // 申请时间
@@ -78,7 +84,22 @@ public class DrawCash extends IdEntity
 	private Timestamp audittime; // 审核时间	
 
 	@Column
-	private Timestamp handletime; // 办理时间
+	private Timestamp handletime; // 付款时间
+	
+	@Column
+	private String paystate; // 支付状态
+	
+	@Column
+	private Timestamp paytime; // 支付时间（实际付款时间）
+	
+	@Column
+	private String payaccountno; // 支付账号（实际付款账号）
+	
+	@Column
+	private String payaccounttype; // 支付账号类型（实际付款账号类型）
+	
+	@Column
+	private String paybillcno; // 付款单据号（实际付款单号）
 
 	public String getCno()
 	{
@@ -98,6 +119,16 @@ public class DrawCash extends IdEntity
 	public void setMemberid(String memberid)
 	{
 		this.memberid = memberid;
+	}
+
+	public String getMembercno()
+	{
+		return membercno;
+	}
+
+	public void setMembercno(String membercno)
+	{
+		this.membercno = membercno;
 	}
 
 	public String getMembercname()
@@ -128,6 +159,16 @@ public class DrawCash extends IdEntity
 	public void setMemberphone(String memberphone)
 	{
 		this.memberphone = memberphone;
+	}
+
+	public String getAccounttype()
+	{
+		return accounttype;
+	}
+
+	public void setAccounttype(String accounttype)
+	{
+		this.accounttype = accounttype;
 	}
 
 	public String getBank()
@@ -309,5 +350,55 @@ public class DrawCash extends IdEntity
 	{
 		this.handletime = handletime;
 	}
-	
+
+	public String getPaystate()
+	{
+		return paystate;
+	}
+
+	public void setPaystate(String paystate)
+	{
+		this.paystate = paystate;
+	}
+
+	public Timestamp getPaytime()
+	{
+		return paytime;
+	}
+
+	public void setPaytime(Timestamp paytime)
+	{
+		this.paytime = paytime;
+	}
+
+	public String getPayaccountno()
+	{
+		return payaccountno;
+	}
+
+	public void setPayaccountno(String payaccountno)
+	{
+		this.payaccountno = payaccountno;
+	}
+
+	public String getPayaccounttype()
+	{
+		return payaccounttype;
+	}
+
+	public void setPayaccounttype(String payaccounttype)
+	{
+		this.payaccounttype = payaccounttype;
+	}
+
+	public String getPaybillcno()
+	{
+		return paybillcno;
+	}
+
+	public void setPaybillcno(String paybillcno)
+	{
+		this.paybillcno = paybillcno;
+	}
+
 }

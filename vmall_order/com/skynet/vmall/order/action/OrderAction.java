@@ -4,6 +4,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -32,6 +33,7 @@ import com.blue.wxmp.sdk.api.ApiConfigKit;
 import com.blue.wxmp.sdk.api.WxApi;
 import com.skynet.app.organ.pojo.User;
 import com.skynet.framework.action.BaseAction;
+import com.skynet.framework.common.generator.RandomGenerator;
 import com.skynet.framework.services.db.dybeans.DynamicObject;
 import com.skynet.framework.services.function.StringToolKit;
 import com.skynet.framework.services.function.Types;
@@ -40,6 +42,7 @@ import com.skynet.vmall.base.author.AuthorService;
 import com.skynet.vmall.base.constants.VMallConstants;
 import com.skynet.vmall.base.filter.LogFilter;
 import com.skynet.vmall.base.pojo.Order;
+import com.skynet.vmall.base.service.MemberService;
 import com.skynet.vmall.base.service.OrderGoodsRebateService;
 import com.skynet.vmall.base.service.OrderGoodsService;
 import com.skynet.vmall.base.service.OrderService;
@@ -62,6 +65,9 @@ public class OrderAction extends BaseAction
 
 	@Inject
 	WXActionHelper myWxHelper;
+	
+	@Inject
+	MemberService memberService;
 	
 	@Inject
 	private OrderService orderService;
@@ -391,6 +397,77 @@ public class OrderAction extends BaseAction
 
 		return String.format(returnstr, returncode_success, return_msg);
 	}
+	
+	@At("/paynotifytest")
+	@Ok("raw")
+	@Filters(
+	{ @By(type = LogFilter.class, args =
+	{ "测试订单付款回执通知" }) })
+	public String paynotifytest(String orderno)
+	{
+
+		try
+		{
+			Map wr = new HashMap();
+			wr.put("out_trade_no", orderno);
+			wr.put("transaction_id", "TEST"+RandomGenerator.getValue(8));
+			wr.put("total_fee", "0");
+			
+			log.debugf("get pay notify return object :\n %s", wr);
+
+			// String orderno = (String) wr.get("out_trade_no");
+			String deviceinfo = (String) wr.get("device_info"); // 微信支付分配的终端设备号
+
+			String wxtransactionid = (String) wr.get("transaction_id");
+			String tradetype = (String) wr.get("trade_type"); // 交易类型
+			String banktype = (String) wr.get("bank_type"); // 付款银行
+			String totalfee = (String) wr.get("total_fee");
+			String issubscribe = (String) wr.get("is_subscribe"); // 是否关注公众号
+			// String openid = (String) wr.get("openid");
+			String timeend = (String) wr.get("time_end"); // 交易完成时间
+
+			log.debugf("orderno :\n %s", orderno);
+
+			Order order = orderService.fetch(Cnd.where("cno", "=", orderno));
+			String openid = memberService.fetch(order.getMemberid()).getWxopenid();
+			
+			
+			String id = order.getId();
+			// 检查是否已经成功回执过
+			if (StringToolKit.isBlank(order.getThirdpaytradeno())&&StringToolKit.isBlank(order.getWxpaytimeend()))
+			{
+				DynamicObject form = new DynamicObject();
+				form.setAttr("id", id);
+				form.setAttr("wxpayorderno", orderno);
+				form.setAttr("wxpaydeviceinfo", deviceinfo);
+				form.setAttr("wxpaytransactionid", wxtransactionid);
+				form.setAttr("wxpaytradetype", tradetype);
+				form.setAttr("wxpaybanktype", banktype);
+				form.setAttr("wxpaytotalfee", totalfee);
+				form.setAttr("wxpayissubscribe", issubscribe);
+				form.setAttr("wxpaytimeend", timeend);
+				form.setAttr("wxpayopenid", openid);
+
+				// 该请求为微信支付平台发出，用户信息现取，不能从会话取出。
+				DynamicObject login_token = new DynamicObject();
+
+				User user = orderService.sdao().fetch(User.class, Cnd.where("wxopenid", "=", openid));
+				login_token.setAttr(GlobalConstants.sys_login_user, user.getLoginname());
+				login_token.setAttr(GlobalConstants.sys_login_username, user.getCname());
+				login_token.setAttr(GlobalConstants.sys_login_userid, user.getId());
+				login_token.setAttr(GlobalConstants.sys_login_userwxopenid, user.getWxopenid());
+				apporderService.paynotify(form, login_token);
+			}
+		}
+		catch (Exception e)
+		{
+			// TODO: handle exception
+			log.debug(e.toString());
+			return "ERROR";
+		}
+
+		return "SUCCESS";
+	}	
 
 	@At("/delete")
 	@Ok("json")

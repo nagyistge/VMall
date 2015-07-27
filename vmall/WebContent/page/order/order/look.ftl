@@ -25,8 +25,9 @@
 				<div class="w checkout" style="padding:0px;">
 					<div class="step1 border-1px" id="taker_info">
 						<div class="m step1-in ">
+							<div class="mt_new"><div class="mt_new"><span style="margin-right:20px">编号：${obj.order.cno}</span><span>状态：${obj.order.state}</span></div></div>
+
 							<a href="javascript:void(0)" class="s-href" <#if obj.order.state=="下单">onclick="page_edittaker()"</#if>>
-								<div class="mt_new"><div class="mt_new"><span style="margin-right:20px">编号：${obj.order.cno}</span><span>状态：${obj.order.state}</span></div></div>
 								<div class="mt_new"><div class="mc">收货人：${obj.order.takercname}</div></div>
 								<div class="mt_new"><div class="mc">联系电话：${obj.order.takermobile}</div></div>
 								<div class="mt_new"><div class="mc step1-in-con">收货地址：${obj.order.takeaddress}</div></div>
