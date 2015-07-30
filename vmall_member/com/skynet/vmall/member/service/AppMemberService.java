@@ -747,6 +747,7 @@ public class AppMemberService extends SkynetDaoService
 		member.setAddr(newmember.getAddr());
 		member.setPostcode(newmember.getPostcode());
 
+		member.setAccounttype(newmember.getAccounttype());
 		member.setBank(newmember.getBank());
 		member.setOpenbank(newmember.getOpenbank());
 		member.setBankaccountno(newmember.getBankaccountno());

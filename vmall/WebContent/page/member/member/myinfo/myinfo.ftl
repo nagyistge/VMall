@@ -153,20 +153,38 @@
 <div class="detail" id="bybank" style="display:none;font-size:14px">
 
 	<div class="info-list">
+	
+		<div class="info pd">
+		<div class="tbl-type">
+			<span class="tbl-cell w70"><span>账户类型：</span></span>
+		    <span class="tbl-cell">
+			    <span>
+			    <select name="accounttype" id="accounttype" class="new-input" style="width:200px" required>
+			    <option <#if obj.member.accounttype=="银行账号">selected</#if> value="银行账号">银行账号</option>
+			    </select>
+			    <#--
+			    <input type="radio" name="accounttype" value="银行" required>&nbsp;银行账号	    
+			    <input type="radio" name="accounttype" value="支付宝" required>&nbsp;支付宝		    
+			    <input type="radio" name="accounttype" value="微信" required>&nbsp;微信支付	
+			    -->	  
+			    </span>
+		    </span>
+		</div>
+		</div>
 
 		<div class="info pd">
 			<div class="tbl-type">
 		    	<span class="tbl-cell w70"><span>所属银行：</span></span>
                 <span class="tbl-cell">
 	            	<span>
-	            	<#--
-	                <select name="bank" id="bank" style="width:200px">
-	                <option selected="" id="option_add_1" value="1">中国工商银行</option>
-	                <option id="option_add_2" value="2">中国建设银行</option>
-	                <option id="option_add_3" value="3">中国交通银行</option>
-	                <option id="option_add_4" value="4">中国农业银行</option>
-	                </select>
-	                -->
+	                <select name="bank" id="bank" class="new-input" style="width:200px" required>
+		        	<option <#if obj.member.bank=="中国工商银行">selected</#if> value="中国工商银行">中国工商银行</option>
+		        	<option <#if obj.member.bank=="中国建设银行">selected</#if> value="中国建设银行">中国建设银行</option>
+		        	<option <#if obj.member.bank=="中国交通银行">selected</#if> value="中国交通银行">中国交通银行</option>
+		        	<option <#if obj.member.bank=="中国农业银行">selected</#if> value="中国农业银行">中国农业银行</option>
+		        	<option <#if obj.member.bank=="中国银行">selected</#if> value="中国银行">中国银行</option>
+		        	<option <#if obj.member.bank=="其它">selected</#if> value="其它">其它</option>
+		        	</select>
 	                </span>
                 </span>
 		    </div>

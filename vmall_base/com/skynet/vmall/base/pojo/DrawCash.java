@@ -33,7 +33,7 @@ public class DrawCash extends IdEntity
 	private String accounttype; // 提现账号类型	
 	
 	@Column
-	private String bank; // 提现账号
+	private String bank; // 所属银行
 
 	@Column
 	private String openbank; // 开户银行
@@ -42,7 +42,7 @@ public class DrawCash extends IdEntity
 	private String bankaccountno; // 银行账号（支付账号/银行账号/openid）
 	
 	@Column
-	private String bankaccountcname; // 银行名称
+	private String bankaccountcname; // 银行账户名称
 	
 	@Column
 	private String bankaccountphone; // 银行账号关联电话

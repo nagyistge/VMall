@@ -50,11 +50,11 @@
 <div id="paymentp"></div>
 <div class="payment-total-bar" id="payment">
     <div class="shp-chk">
-        <span onclick="checkAllHandler();" class="cart-checkbox checked" id="checkIcon-1"></span>
+        <#-- <span class="cart-checkbox checked" id="checkIcon-1"></span> -->
     </div>
     <div class="shp-cart-info">
-        <strong class="shp-cart-total">本周累计：￥<span class="" id="sum_week"></span></strong>
-        <span class="sale-off">本月累计：<b>￥<span class="bottom-bar-price" id="sum_month"></b></span>
+        <strong class="shp-cart-total"><#-- 本周累计：￥<span class="" id="sum_week"></span>--></strong>
+        <span class="sale-off"><#--本月累计：<b>￥<span class="bottom-bar-price" id="sum_month"></b>--></span>
     </div>
     <a class="btn-right-block" id="submit" style="width:150px;background-color: rgb(192, 0, 0); background-position: initial initial; background-repeat: initial initial;">申请提现：￥<span id="sum_apply"></span></a>
 </div>
@@ -267,7 +267,41 @@ function page_applydraw()
 		return;
 	}
 	
-	window.location = "${base}/order/drawcash/apply.action";
+	// window.location = "${base}/order/drawcash/apply.action";
+	
+	
+	$.ajax({
+		type:'POST',
+		url:'${base}/order/drawcash/apply.action',
+		data:$("#form_draw").serialize(),
+		cache:false,
+		async:true,
+		success:function(data)
+		{
+			console.log(data);
+			if(data=="")
+			{
+				alert("提现申请异常，请检查后再试！");
+				return;
+			}
+			json = eval("(" + data + ")");
+			if(json.state=="success")
+			{
+//				alert("申请提现成功！");
+				window.location = "${base}/order/drawcash/locate.action?id=" + json.drawcash.id;
+			}
+			else
+			{
+				alert(json.message);
+			}
+		},
+		error:function(data)
+		{
+			console.log(data);
+			alert("服务请求异常！");
+		}
+	})
+	
 }
 
 </script>
