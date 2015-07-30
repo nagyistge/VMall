@@ -224,16 +224,12 @@
 </div>
 <!-- end 标签页主体页面 -->
 
-
-
 <script src="${base}/public/js/dist/lib-min.js"></script>
 <script src="${base}/public/plugins/jbox/jquery.jbox-min.js"></script>
 <script src="${base}/public/plugins/zclip/jquery.zclip-min.js"></script>
 <script src="${base}/public/plugins/uploadify/jquery.uploadify.min.js"></script>
 
 <script src="${base}/public/js/dist/component-min.js"></script>
-
-
 
 <!--[if lt IE 10]>
 <script src="${base}/public/js/jquery/jquery.placeholder-min.js"></script>

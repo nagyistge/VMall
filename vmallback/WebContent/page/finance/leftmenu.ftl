@@ -4,19 +4,19 @@
                 <span id="shop_9" data-id="9">分销财务</span>
             </dt>
             <dd class="subshop_0 active">
-                    <a href="/Dist/apply_list">提现申请管理</a>
+                    <a href="${base}/finance/drawcash/browse.action">提现申请管理</a>
                                     </dd><dd class="subshop_2 ">
-                    <a href="/Dist/apply_log">提现记录</a>
+                    <a href="javascript:void(0)">提现记录</a>
                                     </dd><dd class="subshop_3 ">
-                    <a href="/Dist/redPackLog">红包记录</a>
+                    <a href="javascript:void(0)">红包记录</a>
                                     </dd><dd class="subshop_4 ">
-                    <a href="/Dist/recharge_log">账号充值记录</a>
+                    <a href="javascript:void(0)">账号充值记录</a>
                                     </dd><dd class="subshop_5 ">
-                    <a href="/Dist/commission_list">分销商佣金列表</a>
+                    <a href="javascript:void(0)">分销商佣金列表</a>
                                     </dd><dd class="subshop_14 ">
-                    <a href="/Dist/capital_log">资金监控日志</a>
+                    <a href="javascript:void(0)">资金监控日志</a>
                                     </dd><dd class="subshop_15 ">
-                    <a href="/Dist/rebate">返利统计</a>
+                    <a href="javascript:void(0)">返利统计</a>
                                     </dd><dd class="subshop_16 ">
-                    <a href="/Dist/commission_blance">佣金转余额审核列表</a>
+                    <a href="javascript:void(0)">佣金转余额审核列表</a>
                                     </dd>        </dl>

@@ -1,12 +1,12 @@
 <html>
 <head>
-<title>优品365.订单管理.订单查询</title>
+<title>优品365.提现管理.提现查询</title>
 </head>
 <body>
 
 <link rel="stylesheet" href="${base}/lib/bootstrap/css/bootstrap.min.css">
 
-    <h1 class="content-right-title">所有订单<a class="gicon-info-sign gicon_linkother" href="javascript:void(0)" target="_blank"></a></h1>
+    <h1 class="content-right-title">所有提现单<a class="gicon-info-sign gicon_linkother" href="javascript:void(0)" target="_blank"></a></h1>
     
     
     <form action="${base}/finance/drawcash/browse.action" method="post" id="queryform">
@@ -31,10 +31,10 @@
     </form>
     <div class="tabs clearfix mgt15" id="tabs">
 	    <a href="javascript:void(0)" class="<#if obj.state=="">active</#if> tabs_a fl" state="">所有订单(0)</a>
-	    <a href="javascript:void(0)" class="<#if obj.state=="下单">active</#if> tabs_a fl" state="申请">申请(0)</a>
-	    <a href="javascript:void(0)" class="<#if obj.state=="收款">active</#if> tabs_a fl" state="">受理(0)</a>
-	    <a href="javascript:void(0)" class="<#if obj.state=="发货">active</#if> tabs_a fl" state="发货">审核(0)</a>
-	    <a href="javascript:void(0)" class="<#if obj.state=="收货">active</#if> tabs_a fl" state="收货">付款(0)</a>
+	    <a href="javascript:void(0)" class="<#if obj.state=="申请">active</#if> tabs_a fl" state="申请">申请(0)</a>
+	    <a href="javascript:void(0)" class="<#if obj.state=="受理">active</#if> tabs_a fl" state="受理">受理(0)</a>
+	    <a href="javascript:void(0)" class="<#if obj.state=="审核">active</#if> tabs_a fl" state="审核">审核(0)</a>
+	    <a href="javascript:void(0)" class="<#if obj.state=="付款">active</#if> tabs_a fl" state="付款">付款(0)</a>
 	    <a href="javascript:void(0)" class="<#if obj.state=="结束">active</#if> tabs_a fl" state="结束">结束(0)</a>
 	</div>
     <!-- end tabs -->
@@ -51,20 +51,21 @@
             <colgroup>
                 <col width="15%" />
                 <col width="15%" />
-                <col width="30%" />
-                <col width="8%" />
-                <col width="8%" />
-                <col width="8%" />
-                <col width="8%" />
-                <col width="8%" />
+                <col width="10%" />
+                <col width="10%" />
+                <col width="5%" />
+                <col width="5%" />
+                <col width="5%" />
+                <col width="5%" />
+                <col width="5%" />
             </colgroup>
             <thead>
                 <tr>
                 	<td>提现单号</td>
                 	<td>昵称/手机号</td>
-                    <td>收款账号/开户行/OpenId</td>
-                    <td>账号类型</td>                   
-                    <td>申请金额</td>                    
+                    <td>账号类型</td>                   	
+                    <td>账号</td>
+                    <td>金额</td>                    
                     <td>收款人</td>
                     <td>付款人</td>
                     <td>状态</td>
@@ -75,12 +76,11 @@
                     <tr sid="${draw.id}">
                  	<td><a href="${base}/finance/drawcash/locate.action?id=${draw.id}" style="color:#0055ee">${draw.cno}</a></td>
                     <td>${draw.wxnickname}/${draw.memberphone}</td>
-                    <td>${draw.memberwxopenid}</td>
-                    <td></td>                    
+                    <td>${draw.accounttype}</td>
+                    <td>${draw.bankaccountno}</td>                   
                     <td>${draw.amount}</td>
                     <td>${draw.membercname}</td>
                     <td>${draw.handlercname}</td>
-
                     <td>${draw.state}</td>
                     </tr>
             </#list>        

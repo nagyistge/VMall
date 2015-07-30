@@ -73,14 +73,14 @@ public class AppDrawCashService extends SkynetDaoService
 		String applytimeend = (String) map.get("applytimeend");
 
 		StringBuffer sql = new StringBuffer();
-		sql.append(" select draw.*, member.wxnickname ");
+		sql.append(" select draw.*, member.wxnickname ").append("\n");
 		sql.append("  from t_app_drawcash draw, t_app_member member ").append("\n");
 		sql.append("  where 1 = 1 ").append("\n");
 		sql.append("   and draw.memberid = member.id ").append("\n");
 		// 增加查询过滤条件
 		if (!StringToolKit.isBlank(mobile_cno))
 		{
-			sql.append("  and ( ");
+			sql.append("  and ( ").append("\n");
 			sql.append("  membercname like ").append(SQLParser.charLikeValue(mobile_cno)).append("\n");
 			sql.append("  or memberphone like ").append(SQLParser.charLikeValue(mobile_cno)).append("\n");
 			sql.append("  or cno like ").append(SQLParser.charLikeValue(mobile_cno)).append("\n");
@@ -89,7 +89,7 @@ public class AppDrawCashService extends SkynetDaoService
 
 		if (!StringToolKit.isBlank(state))
 		{
-			sql.append("  and drawstate = ").append(SQLParser.charValue(state)).append("\n");
+			sql.append("  and draw.state = ").append(SQLParser.charValue(state)).append("\n");
 		}
 
 		if (!StringToolKit.isBlank(applytimebegin))
