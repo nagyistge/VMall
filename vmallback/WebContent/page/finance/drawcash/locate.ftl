@@ -95,18 +95,18 @@
     <h3 class="cst_h3 mgb20">支付信息</h3>
     
     <div class="formitems">
-        <label class="fi-name"><span class="colorRed">*</span>付款单据号：</label>
+        <label class="fi-name"><span class="colorRed">*</span>支付单据号：</label>
         <div class="form-controls">
-            <input type="text" class="input" name="paybillcno" value="${obj.drawcash.paybillcno}">
+            <input type="text" class="input" name="paybillcno" value="${obj.drawcash.paybillcno}" <#if obj.issavepay==true><#else>readonly</#if>>
             <span class="fi-help-text"></span>
         </div>
     </div>  
 
     <div class="formitems">
-        <label class="fi-name"><span class="colorRed">*</span>付款时间：</label>
+        <label class="fi-name"><span class="colorRed">*</span>支付时间：</label>
         <div class="form-controls">
-            <input type="text" class="input" name="paytime" value="<#if obj.drawcash.paytime!=''>${obj.drawcash.paytime!?datetime?string('yyyy-MM-dd HH:mm')}</#if>" readonly>
- 	        <#if obj.issavepay??==true><button id="bt_savepay" type="button" class="btn btn-primary">修改</button></#if>
+            <input type="text" class="input" name="paytime" value="<#if obj.drawcash.paytime!=''>${obj.drawcash.paytime!?datetime?string('yyyy-MM-dd HH:mm')}</#if>" <#if obj.issavepay==true><#else>readonly</#if>>
+ 	        <#if obj.issavepay==true><button id="bt_savepay" type="button" class="btn btn-primary">修改</button></#if>
             <span class="fi-help-text">由付款人员填写付款单据号及付款时间登记</span>
         </div>
     </div>       
@@ -122,12 +122,20 @@
     <div class="formitems">
         <label class="fi-name"><span class="colorRed">*</span>付款人：</label>
         <div class="form-controls">
-            <input type="text" class="input" name="handlercname" value="${obj.drawcash.handlercname}" readonly>
+            <input type="text" class="input" name="handlercname" value="<#if obj.issavepay && obj.drawcash.handlercname=="">${Session.sys_login_token.sys_login_username}<#else>${obj.drawcash.handlercname}</#if>" readonly>
             <span class="fi-help-text"></span>
         </div>
     </div>
+    
+    <div class="formitems">
+        <label class="fi-name"><span class="colorRed">*</span>付款时间：</label>
+        <div class="form-controls">
+            <input type="text" class="input" name="handletime" value="${obj.drawcash.handletime}" readonly>
+            <span class="fi-help-text"></span>
+        </div>
+    </div>    
 
-
+	<#--
     
     <div class="formitems">
         <label class="fi-name"><span class="colorRed">*</span>付款账号类型：</label>
@@ -145,6 +153,8 @@
         </div>
     </div>
     
+    -->
+    
 </div>
 <!-- end 支付信息 -->
 
@@ -157,21 +167,23 @@
 
     <table class="wxtables table-order mgt20" id="tb_ordergoods">
         <colgroup>
-	    <col width="40%">
+	    <col width="15%">
         <col width="10%">
-        <col width="10%">
-        <col width="10%">
-        <col width="10%">
-        <col width="10%">
+        <col width="5%">
+        <col width="50%">
+        <col width="5%">
+        <col width="5%">
+        <col width="5%">
         </colgroup>
         <thead>
             <tr>
-            	<td>商品名称</td>
+	            <td>订单号</td>
+	            <td>会员</td>
+                <td>级别</td>	            
+            	<td>商品</td>
                 <td>数量</td>            	
-                <td>现价（元）</td>
-                <td>金额（元）</td>
-                <td>签收状态</td>
-                <td>原因</td>
+                <td>返额</td>
+                <td>总额</td>
             </tr>
         </thead>
         <tbody>
@@ -237,12 +249,13 @@
 <script type="text/j-template" id="tpl_ordergoods">
 <%_.each(dataset, function(item) {%> 
 <tr>
-	<td><%=item.goodsname%></td>
+	<td><a href="${base}/order/order/locate.action?id=<%=item.orderid%>" target="_blank" style="color:#0055ee"><%=item.ordercno%></a></td>
+	<td><%=item.submembercname%></td>
+    <td><%=item.level%></td>	
+	<td><%=item.ordergoodsname%></td>
     <td><%=item.nums%></td>            	
-    <td><%=item.realprice%></td>
-    <td><%=item.amountreal%></td>
-    <td><%=item.takeover%></td>
-    <td><%=item.takeoverreason%></td>    
+    <td><%=item.rebate%></td>
+    <td><%=item.score%></td>
 </tr>
 <%});%>
 </script>
@@ -287,6 +300,7 @@ $(".j-feight[name='freighttype']").click(function(){page_freighttype()});
 $(".select[name='logisticscompselect']").change(function(){page_logisticscompselect()});
 $("#bt_savepay").click(function(){page_savepay()});
 $("#bt_savelogistics").click(function(){page_savelogistics()});
+
 var page_do_dd = function()
 {
 	console.log("page_do_dd");
@@ -296,12 +310,12 @@ var page_do_sp = function()
 {
 	console.log("page_do_sp");
 	
-	var orderid = '${obj.drawcash.id}';
+	var drawcashid = '${obj.drawcash.id}';
 	
 	$.ajax({
 		type:'POST',
-		url:'${base}/order/ordergoods/ajaxlist.action',
-		data:{"orderid":orderid},
+		url:'${base}/finance/drawcash/listgoodsrebate.action',
+		data:{"id":drawcashid},
 		cache:false,
 		async:true,
 		success:function(data)
@@ -322,12 +336,12 @@ var page_do_lc = function()
 {
 	console.log("page_do_lc");
 	
-	var orderid = '${obj.drawcash.id}';
+	var drawcashid = '${obj.drawcash.id}';
 	
 	$.ajax({
 		type:'POST',
 		url:'${base}/flow/flow/ajaxtrace.action',
-		data:{"dataid":orderid,"flowname":"订单"},
+		data:{"dataid":drawcashid,"flowname":"提现"},
 		cache:false,
 		async:true,
 		success:function(data)
@@ -442,14 +456,14 @@ function page_savepay()
 			console.log(data);
 			if(data=="")
 			{
-				pub_alert("保存异常！");
+				pub_alert("提现付款登记异常！");
 				return;
 			}
 			var json = eval("(" + data + ")");
 			if(json.state=="success")
 			{
-				pub_alert("保存成功！");
-				// window.location = "${base}/finance/drawcash/locate.action?id=${obj.drawcash.id}";
+				pub_alert("提现付款登记成功！");
+				window.location = "${base}/finance/drawcash/locate.action?id=${obj.drawcash.id}";
 			}
 			else
 			{

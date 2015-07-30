@@ -1,5 +1,6 @@
 package com.skynet.vmall.finance.service;
 
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.Map;
 
@@ -18,10 +19,12 @@ import com.skynet.framework.service.SkynetDaoService;
 import com.skynet.framework.services.db.SQLParser;
 import com.skynet.framework.services.db.dybeans.DynamicObject;
 import com.skynet.framework.services.function.StringToolKit;
+import com.skynet.framework.spec.GlobalConstants;
 import com.skynet.vmall.base.constants.VMallConstants;
-import com.skynet.vmall.base.pojo.Order;
+import com.skynet.vmall.base.pojo.DrawCash;
 import com.skynet.vmall.base.query.QueryHelper;
 import com.skynet.vmall.base.service.DrawCashService;
+import com.skynet.vmall.base.service.OrderGoodsRebateService;
 
 @InjectName("appdrawcashService")
 @IocBean(args =
@@ -39,6 +42,9 @@ public class AppDrawCashService extends SkynetDaoService
 	
 	@Inject
 	DrawCashService drawcashService;
+	
+	@Inject
+	OrderGoodsRebateService ordergoodsrebateService;	
 
 	public AppDrawCashService()
 	{
@@ -116,6 +122,18 @@ public class AppDrawCashService extends SkynetDaoService
 
 		return datas;
 	}
+	
+	public List<DynamicObject> listgoodsrebate(String drawcashid, String memberid) throws Exception
+	{
+		StringBuffer sql = new StringBuffer();
+		sql.append(" select rebate.* ");
+		sql.append("   from t_app_ordergoodsrebate rebate ").append("\n");
+		sql.append("  where 1 = 1 ").append("\n");
+		sql.append("    and rebate.drawcashid = " + SQLParser.charValue(drawcashid)).append("\n");
+		// sql.append("    and rebate.supmemberid = draw.memberid ").append("\n");	//此条件可以不用	
+		List datas = ordergoodsrebateService.queryForList(sql.toString());
+		return datas;
+	}
 
 	// 转发
 	public Map foward(DynamicObject form, DynamicObject login_token) throws Exception
@@ -139,7 +157,7 @@ public class AppDrawCashService extends SkynetDaoService
 			flownextstate = appflowService.forward(swapflow, login_token);
 
 			// 更新状态至下一环节
-			sdao().update(Order.class, Chain.make("state", flownextstate), Cnd.where("id", "=", id));
+			sdao().update(DrawCash.class, Chain.make("state", flownextstate), Cnd.where("id", "=", id));
 		}
 		catch(Exception e)
 		{
@@ -154,25 +172,39 @@ public class AppDrawCashService extends SkynetDaoService
 		ro.setAttr("flownextstate", flownextstate);
 		return ro;
 	}
-
-	// 当前用户是否为指定的角色
-	public boolean isarole(String loginname, String rolename)
+	
+	// 转发
+	public Map savepay(Map form, DynamicObject login_token) throws Exception
 	{
-		boolean sign = false;
+		String userid = login_token.getFormatAttr(GlobalConstants.sys_login_userid);
+		String username = login_token.getFormatAttr(GlobalConstants.sys_login_username);
+		
+		String id = (String)form.get("id");
+		String payaccounttype = (String)form.get("payaccounttype");
+		String payaccountno = (String)form.get("payaccountno");		
+		String paybillcno = (String)form.get("paybillcno");
+		Timestamp paytime = Timestamp.valueOf((String)form.get("paytime"));
+		DrawCash drawcash = drawcashService.fetch(id);
+		
+		drawcash.setPayaccounttype(payaccounttype);
+		drawcash.setPaybillcno(paybillcno);
+		drawcash.setPaytime(paytime);
+		drawcash.setPayaccountno(payaccountno);
+		drawcash.setPaystate("已支付");
+		
+		drawcash.setHandler(userid);
+		drawcash.setHandlercname(username);
+		drawcash.setHandletime(new Timestamp(System.currentTimeMillis()));
+		
+		sdao().update(drawcash);
+		
+		DynamicObject ro = new DynamicObject();
+		ro.setAttr("state", "success");
 
-		long num = 0;
-		// num = (Long)
-		// userRoleDao.findUnique(" select count(*) from UserRole a where 1 = 1 and a.rname = ? and userid = ? ",
-		// rolename, loginname);
-
-		if (num > 0)
-		{
-			sign = true;
-			return sign;
-		}
-
-		return sign;
+		return ro;
 	}
+
+
 	
 
 

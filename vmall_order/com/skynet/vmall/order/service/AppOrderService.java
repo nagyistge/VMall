@@ -306,8 +306,10 @@ public class AppOrderService extends SkynetDaoService
 				OrderGoodsRebate orderrebate = new OrderGoodsRebate();
 				String orderrebateid = UUIDGenerator.getInstance().getNextValue();
 				orderrebate.setId(orderrebateid);
+				orderrebate.setOrderid(orderid);
 				orderrebate.setOrdercno(order.getCno());
-				orderrebate.setOrdergoodsid(ordergoods.getGoodsid());
+				orderrebate.setOrdergoodsid(ordergoods.getId());
+				orderrebate.setGoodsid(ordergoods.getGoodsid());
 				orderrebate.setOrdergoodsname(ordergoods.getGoodsname());
 				orderrebate.setSupmemberid(supmemberid);
 				orderrebate.setSupwxopenid(supwxopenid);

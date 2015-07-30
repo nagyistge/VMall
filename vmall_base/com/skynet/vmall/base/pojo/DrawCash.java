@@ -87,7 +87,7 @@ public class DrawCash extends IdEntity
 	private Timestamp handletime; // 付款时间
 	
 	@Column
-	private String paystate; // 支付状态
+	private String paystate; // 支付状态 （未支付、已支付）
 	
 	@Column
 	private Timestamp paytime; // 支付时间（实际付款时间）

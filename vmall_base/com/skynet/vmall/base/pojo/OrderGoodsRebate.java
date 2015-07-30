@@ -12,10 +12,16 @@ import com.skynet.framework.pojo.IdEntity;
 public class OrderGoodsRebate extends IdEntity
 {
 	@Column
+	private String orderid; // 返利订单标识
+	
+	@Column
 	private String ordercno; // 返利订单编号
 	
 	@Column
 	private String ordergoodsid; // 订单明细商品标识
+	
+	@Column
+	private String goodsid; // 订单商品标识	
 	
 	@Column
 	private String ordergoodsname; // 订单明细商品名称
@@ -65,6 +71,16 @@ public class OrderGoodsRebate extends IdEntity
 	@Column
 	private String state; // 提现申请单状态	
 
+	public String getOrderid()
+	{
+		return orderid;
+	}
+
+	public void setOrderid(String orderid)
+	{
+		this.orderid = orderid;
+	}
+
 	public String getOrdercno()
 	{
 		return ordercno;
@@ -83,6 +99,16 @@ public class OrderGoodsRebate extends IdEntity
 	public void setOrdergoodsid(String ordergoodsid)
 	{
 		this.ordergoodsid = ordergoodsid;
+	}
+
+	public String getGoodsid()
+	{
+		return goodsid;
+	}
+
+	public void setGoodsid(String goodsid)
+	{
+		this.goodsid = goodsid;
 	}
 
 	public String getOrdergoodsname()

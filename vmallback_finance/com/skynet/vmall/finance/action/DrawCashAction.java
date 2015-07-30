@@ -23,7 +23,9 @@ import com.skynet.app.flow.service.BFlowService;
 import com.skynet.framework.services.db.dybeans.DynamicObject;
 import com.skynet.framework.services.function.Types;
 import com.skynet.framework.spec.GlobalConstants;
+import com.skynet.vmall.base.author.AuthorService;
 import com.skynet.vmall.base.constants.VMallConstants;
+import com.skynet.vmall.base.filter.LogFilter;
 import com.skynet.vmall.base.service.DrawCashService;
 import com.skynet.vmall.base.service.MemberService;
 import com.skynet.vmall.finance.service.AppDrawCashService;
@@ -35,6 +37,9 @@ import com.skynet.vmall.finance.service.AppDrawCashService;
 { "sys_login_token", "/author/login/log.action" }) })
 public class DrawCashAction
 {
+	@Inject
+	AuthorService authorService;
+	
 	@Inject
 	BFlowService bflowService;
 
@@ -114,9 +119,24 @@ public class DrawCashAction
 
 		return ro;
 	}
+	
+	@At("/listgoodsrebate")
+	@Ok("json")
+	public List<DynamicObject> listgoodsrebate(String id) throws Exception
+	{
+		HttpSession session = Mvcs.getHttpSession(true);
+		DynamicObject login_token = (DynamicObject) session.getAttribute(GlobalConstants.sys_login_token);
+		String userid = login_token.getFormatAttr(GlobalConstants.sys_login_userid);
+		List<DynamicObject> datas = appdrawcashService.listgoodsrebate(id, userid);
+		return datas;
+	}	
 
 	@At("/forward")
 	@Ok("json")
+	@Filters(
+	{ @By(type = LogFilter.class, args =
+	{ "提现付款转发" }), @By(type = CheckSession.class, args =
+	{ "sys_login_token", "/checksession.html" }) })		
 	public Map forward(String id) throws Exception
 	{
 		HttpSession session = Mvcs.getHttpSession(true);
@@ -125,6 +145,20 @@ public class DrawCashAction
 		form.setAttr("id", id);
 		Map map = appdrawcashService.foward(form, login_token);
 		return map;
+	}
+	
+	@At("/savepay")
+	@Ok("json")
+	@Filters(
+	{ @By(type = LogFilter.class, args =
+	{ "提现付款登记" }), @By(type = CheckSession.class, args =
+	{ "sys_login_token", "/checksession.html" }) })	
+	public Map savepay(@Param("..") Map map) throws Exception
+	{
+		HttpSession session = Mvcs.getHttpSession(true);
+		DynamicObject login_token = (DynamicObject) session.getAttribute(GlobalConstants.sys_login_token);
+		Map ro = appdrawcashService.savepay(map, login_token);
+		return ro;
 	}
 
 	// 设置操作权限
@@ -141,7 +175,7 @@ public class DrawCashAction
 		boolean isforward = isforward(map); // 是否可转发
 		boolean isbackward = isbackward(map); // 是否可回退
 
-		boolean issavepay = true; // 是否可修改付款信息
+		boolean issavepay = issavepay(map); // 是否可修改付款信息
 
 		ro.put("isread", isread);
 		ro.put("isedit", isedit);
@@ -210,6 +244,35 @@ public class DrawCashAction
 
 		return sign;
 	}
+	
+	// 保存付款功能权限
+	public boolean issavepay(Map map) throws Exception
+	{
+		boolean sign = false;
+
+		DynamicObject drawcash = (DynamicObject) map.get("drawcash");
+		DynamicObject login_token = (DynamicObject) map.get("login_token");
+		
+		String loginname = login_token.getFormatAttr(GlobalConstants.sys_login_user);
+		String rolename = "提现付款";
+		
+		// 不在付款阶段，没有该功能权限
+		if(!("付款".equals(drawcash.getFormatAttr("state"))))
+		{
+			sign = false;
+			return sign;
+		}
+		
+		// 不是提现付款角色，没有该功能权限
+		if(!authorService.isarole(loginname, rolename))
+		{
+			sign = false;
+			return sign;
+		}
+
+		sign = true;
+		return sign;
+	}	
 
 	@At("/leftmenu")
 	@Ok("->:/page/finance/leftmenu.ftl")
