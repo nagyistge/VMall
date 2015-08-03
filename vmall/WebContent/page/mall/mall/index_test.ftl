@@ -2,66 +2,108 @@
 <html>
 <head>
 <#include "/decorator/include/header.ftl">
+<link rel="stylesheet" type="text/css" href="${base}/lib/jd/order/css/base.css" charset="gbk">
+<link rel="stylesheet" type="text/css" href="${base}/lib/jd/order/css/extend.css" charset="gbk">
+
+<link href="${base}/lib/jd/cart/css/title-bar.css" media="all" rel="stylesheet" type="text/css">
+<link href="${base}/lib/jd/cart/css/cart/btn.css" media="all" rel="stylesheet" type="text/css">
+<link href="${base}/lib/jd/cart/css/checkbox.css" media="all" rel="stylesheet" type="text/css">
+<link href="${base}/lib/jd/cart/css/spinner.css" media="all" rel="stylesheet" type="text/css">
+<link href="${base}/lib/jd/cart/css/shopping-cart.css" media="all" rel="stylesheet" type="text/css">
+
 </head>
 <body id="body">
 <div class="viewport">
 <#include "/decorator/include/navmain.ftl">
-	<div class="content">
-		<div data-spm="1003" id="floor-nav" class="list-icon">
-		<h3>热门市场</h3>
-	    <div>
-	    <a class="item" href="/channel.html?id=1&amp;leftNav=true" target="_top"><i class="icon icon-woman-clear"></i>女装</a>
-		<a class="item" href="/channel.html?id=2&amp;leftNav=true" target="_top"><i class="icon icon-man-clear"></i>男装</a>
-		<a class="item" href="/channel.html?id=4&amp;leftNav=true" target="_top"><i class="icon icon-shoe-clear"></i>鞋品</a>
-		<a class="item" href="/channel.html?id=3&amp;leftNav=true" target="_top"><i class="icon icon-handbag-clear"></i>箱包</a>
-		<a class="item" href="/channel.html?id=5&amp;leftNav=true" target="_top"><i class="icon icon-infant-clear"></i>母婴</a>
-		<a class="item" href="/channel.html?id=6&amp;leftNav=true" target="_top"><i class="icon icon-home-furnishing-clear"></i>生活</a>
-		<a class="item" href="/channel.html?id=7&amp;leftNav=true" target="_top"><i class="icon icon-beauty-clear"></i>护肤</a>
-		<a class="item" href="/channel.html?id=8&amp;leftNav=true" target="_top"><i class="icon icon-food-clear"></i>美食</a>
+
+	<div data-spm="" class="content">
+	
+		<section class="waterfall">
+		
+		<div class="waterfall-list" id="waterfall-list">
+		
 		</div>
+		
+		</section>
+		
 	</div>
 	
-	<#list obj.goodsclasses as goodsclass>
-	
-	<div data-spm="${goodsclass.internal}" class="floor floor-man">
-        <h3><a href="${base}/goods/goods/channel.action?classid=${goodsclass.id}&amp;internal=${goodsclass.internal}" target="_top"><span></span>${goodsclass.cname}<span>${goodsclass.cname}</span></a></h3>
-        	<div class="hot-key">
-        		<#if goodsclass.subpostgoodsclasses?size &gt; 0>
-        		<#assign subpostgoodsclass = goodsclass.subpostgoodsclasses[0]>
-			    <a href="${base}/goods/goods/channel.action?classid=${subpostgoodsclass.id}" target="_top" class="hot-key-main">
-				    <img style="width:92px;height:96px;display:block;" class="" src="${base}/${subpostgoodsclass.pic!}">
-				    <p>最新单凉鞋</p>
-				    <p>最适合这天气的鞋</p>
-			    </a>
-			    </#if>
-			    <div class="hot-key-sub">
-			    	<#if goodsclass.subpostgoodsclasses?size &gt; 1>
-			    	<#assign subpostgoodsclass = goodsclass.subpostgoodsclasses[1]>
-				    <a href="${base}/goods/goods/channel.action?classid=${subpostgoodsclass.id}" target="_top">
-				    <img style="width:44px;height:44px;display:block;" class="" src="${base}/${subpostgoodsclass.pic!}">
-				    <p>${subpostgoodsclass.cname}</p>
-				    </a>
-				    </#if>
-			    	<#if goodsclass.subpostgoodsclasses?size &gt; 2>
-			    	<#assign subpostgoodsclass = goodsclass.subpostgoodsclasses[2]>
-				    <a href="${base}/goods/goods/channel.action?classid=${subpostgoodsclass.id}" target="_top">
-				    <img style="width:44px;height:44px;display:block;" class="" src="${base}/${subpostgoodsclass.pic!}">
-				    <p>${subpostgoodsclass.cname}</p>
-				    </a>
-				    </#if>
-		    	</div>
-			</div>
-		    <div data-id="4" data-count="8" data-keys="" style="height:90px" class="list-keys">
-		    	<#list goodsclass.subgoodsclasses as subclass>
-		    		<#if subclass_index &lt; 8>
-			        <a href="${base}/goods/goods/channel.action?classid=${subclass.id}&amp;internal=${subclass.internal}" target="_top" extra="" class="item">${subclass.cname}</a>
-		    		</#if>
-		    	</#list>
-		    </div>
 	
 	</div>
-	</#list>
+
 </div>
+
+<script type="text/j-template" id="tpl_topgoods">
+<% _.each(topgoods,function(item, index){ %>
+
+	<div class="waterfall-column" style="width:50%;" id="waterfall-column1">
+	
+	<% if (index%2==0) { %>
+	<a href="${base}/goods/goods/look.action?id=<%=item.id%>" class="waterfall-item auction">
+	<img style="display:block; width: 194px; height: 194px;" class="" src="<%if(item.pic=='') {%>${base}/css/img/default.png<%}else{%><%=item.pic%><%}%>" onerror="javascript:this.src='${base}/css/img/default.png'">
+	<h3 style="font-size:10px;color:#8e8e8e"><%=item.cname%></h3>
+	<p>¥<span class="promote-price"><%=item.promoteprice%></span>¥<del class="cost-price"><%=item.saleprice%></del></p>
+	<p><span class="info-sum">人气：<%=item.popular%>月销：<%=item.sales%></span><span class="info-freight"><#--免运费--></span></p>
+	</a>
+	<% } %>
+	
+	</div>
+	
+	<div class="waterfall-column" style="width:50%;" id="waterfall-column2">
+
+	<% if (index%2==1) { %>
+	<a href="${base}/goods/goods/look.action?id=<%=item.id%>" class="waterfall-item auction">
+	<img style="display:block; width: 194px; height: 194px;" class="" src="<%if(item.pic=='') {%>${base}/css/img/default.png<%}else{%><%=item.pic%><%}%>" onerror="javascript:this.src='${base}/css/img/default.png'">
+	<h3 style="font-size:10px;color:#8e8e8e"><%=item.cname%></h3>
+	<p>¥<span class="promote-price"><%=item.promoteprice%></span>¥<del class="cost-price"><%=item.saleprice%></del></p>
+	<p><span class="info-sum">人气：<%=item.popular%>月销：<%=item.sales%></span><span class="info-freight"><#--免运费--></span></p>
+	</a>
+	<% } %>
+	
+	</div>
+      	
+<% }) %>
+</script>
+
+<script>
+
+var topgoods;
+
+$(function(){
+
+//////////
+
+function page_topgoods()
+{
+	console.log("topgoods");
+	
+	$.ajax({
+		type:'post',
+		url:'${base}/mall/mall/topgoods.action',
+		cache:false,
+		async:true,
+		success:function(data)
+		{
+			topgoods = eval("(" + data + ")");
+			console.log(topgoods);
+			var html = _.template($("#tpl_topgoods").html(), topgoods);
+			// console.log(html);
+			$("#waterfall-list").html(html);
+		},
+		error:function(data)
+		{
+			console.log(data);
+			alert("服务请求异常！");
+		}
+	})
+}
+
+page_topgoods();
+
+//////////
+})
+
+</script>
 
 </body>
 </html>

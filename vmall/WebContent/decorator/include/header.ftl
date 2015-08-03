@@ -10,3 +10,4 @@
 
 <script src="${base}/lib/jquery-2.1.1.min.js"></script>
 <script src="${base}/lib/jquery-ui.min.js"></script>
+<script src="${base}/lib/underscore/underscore-min.js"></script>
