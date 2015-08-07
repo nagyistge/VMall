@@ -1,0 +1,9 @@
+delete from t_app_goodsclassspec;
+delete from t_app_goodsclassspecval;
+delete from t_app_goods;
+delete from t_app_goodschange;
+delete from t_app_goodsspec;
+
+
+insert into t_app_goodsclassspec(id, goodsclassid, sno, specclass) values('0007001000020001','000700100002',1,'说明');
+insert into t_app_goodsclassspecval(id, goodsclassid, goodsclassspecid, sno, cvalue) values('00070010000200010001','000700100002','0007001000020001',1,'分类1');

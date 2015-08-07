@@ -10,16 +10,16 @@ public class GoodsSpec extends IdEntity
 {
 	@Column
 	private String goodsid; // 商品标识
-	
+
 	@Column
-	private int sno; // 序号	
-	
+	private int sno; // 序号
+
 	@Column
 	private String spec; // 规格（白色、公斤等）
-	
+
 	@Column
-	private String speccode; // 规格编码（4位）	
-	
+	private String speccode; // 规格编码（4位）
+
 	@Column
 	private String specclass; // 规格类型（颜色、尺寸、重量等）
 
@@ -72,5 +72,4 @@ public class GoodsSpec extends IdEntity
 	{
 		this.specclass = specclass;
 	}
-	
 }

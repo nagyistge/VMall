@@ -35,7 +35,8 @@
         </dl>
     </li>
 </ul>
-<form action="${base}/goods/goods/insert.action" method="post" id="add_step2">
+<form action="" method="post" id="add_step2">
+<input type="hidden" name="id" value="${obj.goods.id}">
 <input type="hidden" name="classid" value="${obj.goodsclass.id}">
 <input type="hidden" name="jskuval" value="">
 <div class="panel-single panel-single-light mgt20">
@@ -324,7 +325,30 @@
     </div>
 </div>
 <!-- end 库存/规格 -->
-<!-- <button id="test">show sku</button> -->
+
+
+
+<div class="panel-single panel-single-light mgt20 j-emptyhide">
+    <h3 class="cst_h3 mgb20">（新测试）库存/规格</h3>
+    <div class="formitems">
+        <label for="" class="fi-name">sku类型：</label>
+        <div class="form-controls normsPanel">
+            <label for="sku1"><input type="radio" name="sku_style" value="0" id="sku1" class="j-skustyle" style="vertical-align:middle" checked><span>文字</span></label>
+            <label for="sku2"><input type="radio" name="sku_style" value="1" id="sku2" class="j-skustyle" style="vertical-align:middle" ><span>图片</span></label>
+        </div>
+    </div>
+    <div class="formitems">
+        <label class="fi-name">商品规格：</label>
+        <div class="form-controls normsPanel">
+		<a class="addspec" href="javascript:void(0)" style="color:#5e5eff">添加规格/型号</a>
+        </div>
+        
+        <div class="form-controls normsPanel" id="div_specvalues">
+		
+        </div>
+    </div>
+</div>
+
 
 <div class="panel-single panel-single-light mgt20 j-showinhyd">
     <h3 class="cst_h3 mgb20">物流及其它</h3>
@@ -583,6 +607,29 @@
         </div>
     </script>
     <!-- end tpl_add_step2_sku -->
+    
+    <script type="text/j-template" id="tpl_item_specvalue">
+	<% _.each(specvalues,function(aspec,index){ %>
+    <h3 class="form-controls-h3"></h3>
+    <div class="form-controls-sku">
+       <dl class="j-selectProps">
+            <dt class="j-selectAllProps">
+            <label><input type="checkbox" class="j-normsid" value="<%=aspec.specclass%>" data-name="<%=aspec.specclass%>"><%=aspec.specclass%></label>
+            </dt>
+            <dd>
+            <% _.each(aspec.specvalues,function(avalue,index_value){ %>
+                <label>
+                <input class="j-propid" type="checkbox" value="<%=avalue.cvalue%>" >
+                <span class="J-alias" data-v="<%=avalue.cvalue%>" data-n="<%=avalue.cvalue%>"><%=avalue.cvalue%></span>
+                </label>
+            <% }) %>
+            <a class="addspecvalue" href="javascript:void(0)" style="color:#5e5eff" specclass="<%=aspec.specclass%>">添加型号</a>
+            </dd>    
+       </dl>
+    </div>  		        	
+    <% }) %>
+    
+    </script>
 
 
 <!--end front template  -->
@@ -608,6 +655,40 @@ $(function(){
 	$("#leftMenu").load('${base}/page/goods/leftmenu.ftl');
 });
 </script>
+
+<script>
+var specvalues;
+var current_specclass;
+</script>
+
+<!-- 添加规格 -->
+<script type="text/j-template" id="tpl_add_spec">
+    <div class="formitems">
+        <label class="fi-name"><span class="colorRed">*</span>规格：</label>
+        <div class="form-controls">
+            <input type="text"  class="input" name="specclass">
+            <span class="fi-help-text"></span>
+        </div>
+    </div>
+</script>
+
+<!-- 添加型号 -->
+<script type="text/j-template" id="tpl_add_specvalue">
+    <div class="formitems">
+        <label class="fi-name"><span class="colorRed">*</span>规格：</label>
+        <div class="form-controls">
+            <input type="text"  class="input" name="specclass" value="<%=current_specclass%>" readonly>
+            <span class="fi-help-text"></span>
+        </div>
+    </div>
+    <div class="formitems">
+        <label class="fi-name"><span class="colorRed">*</span>型号：</label>
+        <div class="form-controls">
+            <input type="text"  class="input" name="spec">
+            <span class="fi-help-text"></span>
+        </div>
+    </div>
+</script>    
 
 <script>
 $(function(){
@@ -702,19 +783,7 @@ $(function(){
     });
 </script>
 <!-- end session hint -->
-<script>
-<#--
-	$(function () {
-		setTimeout(gggoup(),5000);
-		$('.gound_close').click(function(){
-			$('#gonggao').animate({bottom:"-270px"},1000);
-		});
-	});
-	function gggoup(){
-		$('#gonggao').animate({bottom:"3px"},1000);
-	};
--->	
-</script>
-<script src="${base}/page/goods/goods/input.js"></script>
+
+<script src="${base}/page/goods/goods/locate.js"></script>
 </body>
 </html>

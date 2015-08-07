@@ -15,6 +15,9 @@ public class GoodsClassSpecValue extends IdEntity
 	private String goodsclassspecid; // 商品分类规格标识	
 	
 	@Column
+	private String specclass; // 规格类型（颜色、尺寸、重量等）	
+	
+	@Column
 	private int sno; // 序号
 	
 	@Column
@@ -40,6 +43,16 @@ public class GoodsClassSpecValue extends IdEntity
 		this.goodsclassspecid = goodsclassspecid;
 	}
 
+	public String getSpecclass()
+	{
+		return specclass;
+	}
+
+	public void setSpecclass(String specclass)
+	{
+		this.specclass = specclass;
+	}
+
 	public int getSno()
 	{
 		return sno;
@@ -58,5 +71,6 @@ public class GoodsClassSpecValue extends IdEntity
 	public void setCvalue(String cvalue)
 	{
 		this.cvalue = cvalue;
-	}	
+	}
+
 }

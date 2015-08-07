@@ -21,3 +21,6 @@
 /MaterialItemService.class
 /AttachService.class
 /AttachRefService.class
+/GoodsSpecService.class
+/GoodsSpecValueService.class
+/GoodsSpecProudctService.class

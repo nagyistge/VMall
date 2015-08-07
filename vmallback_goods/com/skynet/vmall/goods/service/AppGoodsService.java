@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.nutz.dao.Cnd;
 import org.nutz.dao.Dao;
 import org.nutz.ioc.annotation.InjectName;
 import org.nutz.ioc.loader.annotation.IocBean;
@@ -22,6 +23,8 @@ import com.skynet.vmall.base.pojo.GoodsClass;
 import com.skynet.vmall.base.pojo.GoodsClassSpec;
 import com.skynet.vmall.base.pojo.GoodsClassSpecValue;
 import com.skynet.vmall.base.pojo.GoodsSpec;
+import com.skynet.vmall.base.pojo.GoodsSpecProduct;
+import com.skynet.vmall.base.pojo.GoodsSpecValue;
 import com.skynet.vmall.base.query.QueryHelper;
 
 @InjectName("appgoodsService")
@@ -113,7 +116,7 @@ public class AppGoodsService extends SkynetDaoService
 					String goodsclassspecid = classspecvalue.getGoodsclassspecid();
 					GoodsClassSpec classspec = sdao().fetch(GoodsClassSpec.class, goodsclassspecid);
 					
-					GoodsSpec goodsspec = new GoodsSpec();
+					GoodsSpecProduct goodsspec = new GoodsSpecProduct();
 					goodsspec.setId(UUIDGenerator.getInstance().getNextValue());
 					goodsspec.setGoodsid(id);
 					goodsspec.setSpecclass(classspec.getSpecclass());
@@ -210,7 +213,7 @@ public class AppGoodsService extends SkynetDaoService
 					GoodsClassSpec classspec = sdao().fetch(GoodsClassSpec.class, goodsclassspecid);
 					
 					// 新增货品规格
-					GoodsSpec spec = new GoodsSpec();
+					GoodsSpecProduct spec = new GoodsSpecProduct();
 					spec.setId(UUIDGenerator.getInstance().getNextValue());
 					spec.setGoodsid(subid);
 					spec.setSpecclass(classspec.getSpecclass());
@@ -258,6 +261,48 @@ public class AppGoodsService extends SkynetDaoService
 		helper.page(sql.toString(), page, pagesize, map);
 
 		return datas;
+	}
+	
+	// 添加规格
+	public Map addspec(Map map) throws Exception
+	{
+		String goodsid = (String)map.get("goodsid");
+		String specclass = (String)map.get("specclass");
+		
+		GoodsSpec goodsspec = new GoodsSpec();
+		goodsspec.setId(UUIDGenerator.getInstance().getNextValue());
+		goodsspec.setGoodsid(goodsid);
+		goodsspec.setSno(1);
+		goodsspec.setSpecclass(specclass);
+		
+		sdao().insert(goodsspec);
+		
+		DynamicObject ro = new DynamicObject();
+		ro.setAttr("state", "success");
+		ro.setObj("goodsspec", goodsspec);
+		return ro;
+	}
+	
+	// 添加规格型号
+	public Map addspecvalue(Map map) throws Exception
+	{
+		String goodsid = (String)map.get("goodsid");
+		String specclass = (String)map.get("specclass");
+		String spec = (String)map.get("spec");
+		
+		GoodsSpecValue goodsspecvalue = new GoodsSpecValue();
+		goodsspecvalue.setId(UUIDGenerator.getInstance().getNextValue());
+		goodsspecvalue.setGoodsid(goodsid);
+		goodsspecvalue.setSno(1);
+		goodsspecvalue.setSpecclass(specclass);
+		goodsspecvalue.setCvalue(spec);
+		
+		sdao().insert(goodsspecvalue);
+		
+		DynamicObject ro = new DynamicObject();
+		ro.setAttr("state", "success");
+		ro.setObj("goodsspecvalue", goodsspecvalue);
+		return ro;
 	}
 
 }

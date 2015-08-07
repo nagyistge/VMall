@@ -610,7 +610,7 @@ $(function(){
 	$("#leftMenu").load('${base}/page/goods/leftmenu.ftl');
 });
 </script>
-	
+
 <script>
 $(function(){
     $('.bhaide').on('click',function() {
@@ -703,19 +703,6 @@ $(function(){
     });
 </script>
 <!-- end session hint -->
-<script>
-<#--
-	$(function () {
-		setTimeout(gggoup(),5000);
-		$('.gound_close').click(function(){
-			$('#gonggao').animate({bottom:"-270px"},1000);
-		});
-	});
-	function gggoup(){
-		$('#gonggao').animate({bottom:"3px"},1000);
-	};
--->	
-</script>
 
 <script src="${base}/page/goods/goods/input.js"></script>
 </body>

@@ -10,6 +10,9 @@ import org.nutz.mvc.annotation.Ok;
 import com.skynet.app.organ.service.OrganService;
 import com.skynet.framework.action.BaseAction;
 import com.skynet.vmall.base.pojo.DrawCash;
+import com.skynet.vmall.base.pojo.GoodsSpec;
+import com.skynet.vmall.base.pojo.GoodsSpecProduct;
+import com.skynet.vmall.base.pojo.GoodsSpecValue;
 
 @IocBean
 @At("/system/system")
@@ -41,7 +44,10 @@ public class SystemAction extends BaseAction
 //		organService.dao().create(ShopCart.class, true);
 //		organService.dao().create(ShopCartGoods.class, true);
 		
-		organService.dao().create(DrawCash.class, true);	
+		organService.dao().create(DrawCash.class, true);
+		organService.dao().create(GoodsSpec.class, true);
+		organService.dao().create(GoodsSpecValue.class, true);		
+		organService.dao().create(GoodsSpecProduct.class, true);		
 		
 //		organService.dao().create(Material.class, true);
 //		organService.dao().create(MaterialItem.class, true);	

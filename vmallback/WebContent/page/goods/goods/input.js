@@ -169,14 +169,11 @@ $(function () {
         b.attr("checked", a.is(":checked")).change()
     })
 	
-
-	
 	$("#bt_submit").click(function() {page_submit()});
 	
 	function page_submit()
 	{
-		
 		$("#add_step2").submit();
-		// $("#add_step2").submit();
 	}
+
 })
