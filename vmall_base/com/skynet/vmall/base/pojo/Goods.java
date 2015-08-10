@@ -134,6 +134,8 @@ public class Goods extends IdEntity
 	private int consumpoint; // 消费送积分
 
 	private int joinleveldiscount; // 会员等级折扣（开启、关闭）
+	
+	private String state; // （新建、上架、下架);
 
 	public String getClassid()
 	{
@@ -563,6 +565,16 @@ public class Goods extends IdEntity
 	public void setJoinleveldiscount(int joinleveldiscount)
 	{
 		this.joinleveldiscount = joinleveldiscount;
+	}
+
+	public String getState()
+	{
+		return state;
+	}
+
+	public void setState(String state)
+	{
+		this.state = state;
 	}
 
 }
