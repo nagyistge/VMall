@@ -112,47 +112,6 @@ public class AppGoodsClassService extends SkynetDaoService
 		GoodsClass subgoodsclass = goodsclassService.fetch(goodsclassid);
 		String subinternal = subgoodsclass.getInternal();
 		
-//		StringBuffer sql = new StringBuffer();
-//		sql.append(" select spec.specclass, specvalue.cvalue ").append("\n");
-//		sql.append("   from t_app_goodsclassspec spec, t_app_goodsclass goodsclass, t_app_goodsclassspecval specvalue ").append("\n");
-//		sql.append("  where 1 = 1 ").append("\n");
-//		sql.append("    and spec.goodsclassid = goodsclass.id ").append("\n");
-//		sql.append("    and goodsclass.internal like concat("+SQLParser.charValue(subinternal)+", '%')").append("\n");
-//		sql.append("    and spec.id = specvalue.goodsclassspecid ").append("\n");
-//		sql.append("  union ").append("\n");
-//		sql.append(" select spec.specclass, specvalue.cvalue ").append("\n");
-//		sql.append("   from t_app_goodsspec spec, t_app_goodsspecval specvalue ").append("\n");
-//		sql.append("  where 1 = 1 ").append("\n");
-//		sql.append("    and spec.goodsid = ").append(SQLParser.charValue(goodsid)).append("\n");
-//		sql.append("    and spec.id = specvalue.goodsspecid ").append("\n");	
-//		sql.append("  order by specclass, cvalue ").append("\n");
-//		
-//		List<DynamicObject> specvalues = sdao().queryForList(sql.toString());
-//		List<DynamicObject> specs = new ArrayList<DynamicObject>();
-//		String old_specclass = new String();
-//		int index = 0;
-//		for(int i=0;i<specvalues.size();i++)
-//		{
-//			String current_specclass = specvalues.get(i).getFormatAttr("specclass");
-//			
-//			if(!old_specclass.equals(current_specclass))
-//			{
-//				DynamicObject newspec = new DynamicObject();
-//				newspec.setAttr("specclass", specvalues.get(i).getFormatAttr("specclass"));
-//				newspec.setObj("specvalues", new ArrayList<DynamicObject>());
-//				specs.add(newspec);
-//			}
-//
-//			((List<DynamicObject>)specs.get(index).getObj("specvalues")).add(new DynamicObject("cvalue", specvalues.get(i).getFormatAttr("cvalue")));
-//			
-//			if(!old_specclass.equals(current_specclass))
-//			{
-//				old_specclass = current_specclass;
-//				index++;
-//			}
-//		}
-		
-		
 		StringBuffer sql = new StringBuffer();
 		sql.append(" select spec.specclass ").append("\n");
 		sql.append("   from t_app_goodsclassspec spec, t_app_goodsclass goodsclass ").append("\n");
@@ -190,5 +149,40 @@ public class AppGoodsClassService extends SkynetDaoService
 			specclasses.get(i).setObj("specvalues", specvalues);
 		}
 		return specclasses;
+	}
+	
+	public List<DynamicObject> get_productspec(String goodsid) throws Exception
+	{
+		StringBuffer sql = new StringBuffer();
+		sql.append(" select id, cname, supid, saleprice, promoteprice, allstorenum ").append("\n");
+		sql.append("   from t_app_goods goods ").append("\n");
+		sql.append("  where 1 = 1 ").append("\n");
+		sql.append("    and goods.supid = ").append(SQLParser.charValue(goodsid)).append("\n");
+		List<DynamicObject> subgoodses = sdao().queryForList(sql.toString());
+		
+		for(int i=0;i<subgoodses.size();i++)
+		{
+			DynamicObject subgoods = subgoodses.get(i);
+			String subgoodsid = subgoods.getFormatAttr("id");
+			sql = new StringBuffer();
+			sql.append(" select specclass, spec ");
+			sql.append("   from t_app_goodspdspec pdspec");
+			sql.append("  where 1 = 1 ");
+			sql.append("    and goodsid = ").append(SQLParser.charValue(subgoodsid));
+			
+			List<DynamicObject> specvalues = sdao().queryForList(sql.toString());
+			
+			List<DynamicObject> tspecvalues = new ArrayList<DynamicObject>();
+			for(int j=0;j<specvalues.size();j++)
+			{
+				DynamicObject atspecvalue = new DynamicObject();
+				atspecvalue.put(specvalues.get(j).getFormatAttr("specclass"), specvalues.get(j).getFormatAttr("spec"));
+				tspecvalues.add(atspecvalue);
+			}
+			
+			subgoods.setObj("specvalues", tspecvalues);
+		}
+		
+		return subgoodses;
 	}
 }

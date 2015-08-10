@@ -38,3 +38,9 @@
 /AttachRef.class
 /GoodsSpecProduct.class
 /GoodsSpecValue.class
+/OrderGoodsProduct.class
+/GoodsProduct.class
+/ShopCartGoodsProduct.class
+/GoodsProductSpec.class
+/OrderGoodsProductSpec.class
+/ShopCartGoodsProductSpec.class

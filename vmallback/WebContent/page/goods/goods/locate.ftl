@@ -35,9 +35,9 @@
         </dl>
     </li>
 </ul>
-<form action="" method="post" id="add_step2">
+<form action="${base}/goods/goods/update.action" method="post" id="mainform">
 <input type="hidden" name="id" value="${obj.goods.id}">
-<input type="hidden" name="classid" value="${obj.goodsclass.id}">
+<input type="hidden" name="classid" value="${obj.goods.classid}">
 <input type="hidden" name="jskuval" value="">
 <div class="panel-single panel-single-light mgt20">
     <h3 class="cst_h3 mgb20">基本信息</h3>
@@ -289,62 +289,17 @@
     <div class="formitems">
         <label class="fi-name">商品规格：</label>
         <div class="form-controls normsPanel">
-   		        <#list obj.goodsclassspecs as aspec>
-    		    <h3 class="form-controls-h3"></h3>
-                <div class="form-controls-sku">
-                   <dl class="j-selectProps">
-                        <dt class="j-selectAllProps">
-                        <label><input type="checkbox" class="j-normsid" value="${aspec.id}" data-name="${aspec.specclass}">${aspec.specclass}</label>
-                        </dt>
-                        <dd>
-						<#list aspec.specvalues as avalue>
-                            <label>
-                            <input class="j-propid" type="checkbox" value="${avalue.id}" >
-                            <span class="J-alias" data-v="${avalue.id}" data-n="${avalue.cvalue}">${avalue.cvalue}</span>
-                            </label>
-                        </#list>
-                        </dd>    
-                   </dl>
-                </div>  		        	
-   		        </#list>
-   		        
-                <input type="hidden" id="j-normsVal" name="norms" value=''>
-	            <input type="hidden" id="j-propsVal" name="props" value=''>
-	            <input type="hidden" id="j-propsAlias" name="alias" value=''>
-
-        </div>
-    </div>
-
-
-
-    <div class="formitems">
-        <label class="fi-name"><span class="colorRed">*</span>商品库存：</label>
-        <div class="form-controls" id="j-skuPanel">
-            <input type="hidden" id="j-skuVal" name="sku_props" value=''>
-        </div>
-    </div>
-</div>
-<!-- end 库存/规格 -->
-
-
-
-<div class="panel-single panel-single-light mgt20 j-emptyhide">
-    <h3 class="cst_h3 mgb20">（新测试）库存/规格</h3>
-    <div class="formitems">
-        <label for="" class="fi-name">sku类型：</label>
-        <div class="form-controls normsPanel">
-            <label for="sku1"><input type="radio" name="sku_style" value="0" id="sku1" class="j-skustyle" style="vertical-align:middle" checked><span>文字</span></label>
-            <label for="sku2"><input type="radio" name="sku_style" value="1" id="sku2" class="j-skustyle" style="vertical-align:middle" ><span>图片</span></label>
-        </div>
-    </div>
-    <div class="formitems">
-        <label class="fi-name">商品规格：</label>
-        <div class="form-controls normsPanel">
-		<a class="addspec" href="javascript:void(0)" style="color:#5e5eff">添加规格/型号</a>
+		<a class="addspec" href="javascript:void(0)" style="color:#5e5eff">添加规格</a>
         </div>
         
         <div class="form-controls normsPanel" id="div_specvalues">
 		
+        </div>
+    </div>
+    
+    <div class="formitems">
+        <label class="fi-name"><span class="colorRed">*</span>商品库存：</label>
+        <div class="form-controls" id="div_sku">
         </div>
     </div>
 </div>
@@ -508,94 +463,6 @@
     </script>
     <!-- end tpl_add_step2_normslist -->
 
-    <script type="text/j-template" id="tpl_add_step2_sku">
-        <table class="wxtables wxtables-sku">
-            <thead>
-            <tr>
-                <% _.each(norms,function(item,index){ %>
-                    <td><%= item.name %></td>
-                <% }) %>
-                <td>原价</td>
-                <td>现价</td>
-                <td>库存</td>
-                <td>商品编码</td>
-                <td>销量</td>
-                <td>设置会员价</td>
-            </tr>
-            </thead>
-            <tbody>
-            <% for(var key in sku){ %>
-            <tr data-key="<%= key %>" data-skuId="<%= sku[key].skuId %>">
-                <% if(skustyle.skustyle == 0 || skustyle.skustyle ==undefined){ %>
-                    <% _.each(sku[key].props,function(id,item){ %>
-                        <td><%= props[id] %></td>
-                    <% }) %>
-                <% }else{ %>
-                    <% _.each(sku[key].props,function(id,item){ %>
-                        <% if(item == 0){ %>
-                            <td colspan="<%=sku[key].props.length%>">
-                                <div class="imgnav j-title-selectimg">
-                                    <img class="j-view_pic-ipt" style="display:block;cursor:pointer;margin:0 auto;" src="<% if(sku[key].sku_img){ %><%= sku[key].sku_img%><% }else{ %>/Public/images/diy/waitupload.png<% } %>"  width="30">
-                                </div>
-                            </td>
-                        <% } %>
-                    <% }) %>
-                <% } %>
-               
-                <td>
-                    <input type="text" class="input mini j-price-modify" data-name="o_price" value="<%= sku[key].o_price %>">元<br/>
-                                    </td>
-                <td>
-                    <input type="text" class="input mini j-price-modify" data-name="price" value="<%= sku[key].price %>">元<br/>
-                                    </td>
-                <td><input type="text" class="input mini j-price-modify" data-name="stock" value="<%= sku[key].stock %>"></td>
-                <td><input type="text" class="input mini j-price-modify" data-name="code" value="<%= sku[key].code %>"></td>
-                <td><%= sku[key].salenum %></td>
-                <td>
-                    <span class="setfxs-pic options">
-                         &nbsp; <a href="javascript:;" class="btn J-options-slideToggle">设置</a>
-                        <div class="setfxs-box">
-                            <table class="wxtables tables-form">
-                                <colgroup>
-                                    <col width="30%">
-                                    <col width="70%">
-                                </colgroup>
-                                <tr>
-                                        <td class="tables-form-title">店铺客户</td>
-                                        <td>
-                                            <input type="text" class="input mini" name="sku_rank_price[<%= sku[key].rank_props %>][2016860]" value="<%= sku[key].rank_price[2016860] %>">元
-                                        </td>
-                                    </tr><tr>
-                                        <td class="tables-form-title">普通会员</td>
-                                        <td>
-                                            <input type="text" class="input mini" name="sku_rank_price[<%= sku[key].rank_props %>][2016861]" value="<%= sku[key].rank_price[2016861] %>">元
-                                        </td>
-                                    </tr><tr>
-                                        <td class="tables-form-title">高级会员</td>
-                                        <td>
-                                            <input type="text" class="input mini" name="sku_rank_price[<%= sku[key].rank_props %>][2016862]" value="<%= sku[key].rank_price[2016862] %>">元
-                                        </td>
-                                    </tr><tr>
-                                        <td class="tables-form-title">VIP会员</td>
-                                        <td>
-                                            <input type="text" class="input mini" name="sku_rank_price[<%= sku[key].rank_props %>][2016863]" value="<%= sku[key].rank_price[2016863] %>">元
-                                        </td>
-                                    </tr><tr>
-                                        <td class="tables-form-title">至尊VIP会员</td>
-                                        <td>
-                                            <input type="text" class="input mini" name="sku_rank_price[<%= sku[key].rank_props %>][2016864]" value="<%= sku[key].rank_price[2016864] %>">元
-                                        </td>
-                                    </tr>                            </table>
-                        </div>
-                    </span>
-                </td>
-            </tr>
-            <% } %>
-            </tbody>
-        </table>
-    </script>
-    <!-- end tpl_add_step2_sku -->
-
     <script type="text/j-template" id="tpl_item_class">
         <div class="formitems">
             <label class="fi-name"><span class="colorRed"></span>选择分类：</label>
@@ -612,15 +479,15 @@
 	<% _.each(specvalues,function(aspec,index){ %>
     <h3 class="form-controls-h3"></h3>
     <div class="form-controls-sku">
-       <dl class="j-selectProps">
-            <dt class="j-selectAllProps">
-            <label><input type="checkbox" class="j-normsid" value="<%=aspec.specclass%>" data-name="<%=aspec.specclass%>"><%=aspec.specclass%></label>
+       <dl class="dlspec">
+            <dt class="dtspec">
+            <label><input type="checkbox" class="checkspec" value="<%=aspec.specclass%>" specclass="<%=aspec.specclass%>"><%=aspec.specclass%></label>
             </dt>
             <dd>
             <% _.each(aspec.specvalues,function(avalue,index_value){ %>
                 <label>
-                <input class="j-propid" type="checkbox" value="<%=avalue.cvalue%>" >
-                <span class="J-alias" data-v="<%=avalue.cvalue%>" data-n="<%=avalue.cvalue%>"><%=avalue.cvalue%></span>
+                <input class="checkspecvalue" type="checkbox" value="<%=avalue.cvalue%>" specclass="<%=aspec.specclass%>">
+                <span class=""><%=avalue.cvalue%></span>
                 </label>
             <% }) %>
             <a class="addspecvalue" href="javascript:void(0)" style="color:#5e5eff" specclass="<%=aspec.specclass%>">添加型号</a>
@@ -628,8 +495,59 @@
        </dl>
     </div>  		        	
     <% }) %>
-    
     </script>
+	<!-- end tpl_item_specvalue -->
+
+    <script type="text/j-template" id="tpl_item_sku">
+    	<input type="hidden" name="specproducts" value="">
+	    <table class="wxtables wxtables-sku">
+	    <thead>
+	    <tr>
+		<% _.each(checked_specclass,function(aspec,index){ %>
+			<td value="<%=aspec.specclass%>" data-name="<%=aspec.specclass%>"><%=aspec.specclass%></td>
+	    <% }) %>
+            <td>原价</td>
+            <td>现价</td>
+            <td>库存</td>
+            <td>商品编码</td>
+            <td>销量</td>
+            <td>设置会员价</td>	
+	    </tr>
+	    </thead>
+	    <tbody>
+	   	
+			<% _.each(checked_specvalues, function(apdspec,i){%>	
+			<% console.log("apdspec:"+apdspec)%>
+			<% console.log("checked_specclass:"+checked_specclass)%>	
+	    	<tr>
+				<% _.each(checked_specclass,function(aspec,j){ %>
+					<% console.log("j:"+j)%>
+					<% console.log(aspec); %>
+					<% _.each(apdspec.specvalues,function(aspecvalue,k){ %>
+					<% console.log("k:"+k)%>	
+					<% console.log(aspecvalue); %>
+						<% for (var key in aspecvalue) { %>
+							
+							<% if (key==aspec.specclass) { %>
+							<td><%=aspecvalue[key]%></td>
+							<% } %>
+						<% } %>
+
+					<% }) %>
+				<% }) %>	
+				<td><input name="pdsaleprice" type="text" class="input mini j-price-modify1" data-name="saleprice" value="<%=apdspec.saleprice%>">元<br/></td>
+	            <td><input name="pdpromoteprice" type="text" class="input mini j-price-modify1" data-name="promoteprice" value="<%=apdspec.promoteprice %>">元</td>
+	            <td><input name="pdallstorenum" type="text" class="input mini j-price-modify1" data-name="allstorenum" value="<%= apdspec.allstorenum %>"></td>
+	            <td></td>
+	            <td></td>
+	            <td></td>	    	
+	    	</tr>
+	    	<% }) %>	
+	    </tbody>	
+	    </table>
+		
+    </script>
+	<!-- end tpl_item_specvalue -->
 
 
 <!--end front template  -->
@@ -657,8 +575,14 @@ $(function(){
 </script>
 
 <script>
-var specvalues;
-var current_specclass;
+var specvalues = []; // 所有规格型号字典列表
+var current_specclass; // 记录要添加型号的规格；
+
+var checked_specclass=[]; // 记录所有选中的规格；
+
+var checked_specvalues = []; // 选中的规格型号字典列表
+var pdspecs; // 所有货品规格型号
+
 </script>
 
 <!-- 添加规格 -->

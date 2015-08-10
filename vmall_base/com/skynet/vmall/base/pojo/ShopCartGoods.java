@@ -29,6 +29,9 @@ public class ShopCartGoods extends IdEntity
 	private String goodsid; // 商品标识
 	
 	@Column
+	private String productid; // 货品标识	
+	
+	@Column
 	private String goodsname; // 商品名称
 	
 	@Column
@@ -134,6 +137,16 @@ public class ShopCartGoods extends IdEntity
 	public void setGoodsid(String goodsid)
 	{
 		this.goodsid = goodsid;
+	}
+
+	public String getProductid()
+	{
+		return productid;
+	}
+
+	public void setProductid(String productid)
+	{
+		this.productid = productid;
 	}
 
 	public String getGoodsname()
@@ -295,7 +308,5 @@ public class ShopCartGoods extends IdEntity
 	{
 		this.rebate5 = rebate5;
 	}
-
-
 
 }

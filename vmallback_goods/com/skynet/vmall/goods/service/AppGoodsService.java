@@ -2,14 +2,16 @@ package com.skynet.vmall.goods.service;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.nutz.dao.Cnd;
+import org.nutz.castor.Castors;
 import org.nutz.dao.Dao;
 import org.nutz.ioc.annotation.InjectName;
 import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.json.Json;
+import org.nutz.mapl.Mapl;
 
 import com.skynet.framework.common.generator.RandomGenerator;
 import com.skynet.framework.common.generator.UUIDGenerator;
@@ -22,8 +24,8 @@ import com.skynet.vmall.base.pojo.Goods;
 import com.skynet.vmall.base.pojo.GoodsClass;
 import com.skynet.vmall.base.pojo.GoodsClassSpec;
 import com.skynet.vmall.base.pojo.GoodsClassSpecValue;
+import com.skynet.vmall.base.pojo.GoodsProductSpec;
 import com.skynet.vmall.base.pojo.GoodsSpec;
-import com.skynet.vmall.base.pojo.GoodsSpecProduct;
 import com.skynet.vmall.base.pojo.GoodsSpecValue;
 import com.skynet.vmall.base.query.QueryHelper;
 
@@ -48,186 +50,74 @@ public class AppGoodsService extends SkynetDaoService
 	public String insert(Map form, DynamicObject login_token) throws Exception
 	{
 		String id = UUIDGenerator.getInstance().getNextValue();
-		String cname = (String) form.get("cname");
-		String classid = (String) form.get("classid");
-		
+		String classid = (String)form.get("classid");
 		GoodsClass goodsclass = sdao().fetch(GoodsClass.class, classid);
 		String classinternal = goodsclass.getInternal();
 
-		Goods goods = new Goods();
-		// 基本信息
+		Goods goods = (Goods)Mapl.maplistToObj(form, Goods.class);
 		goods.setId(id);
 		goods.setClassid(classid);
 		goods.setClassinternal(classinternal);
-		goods.setCname(cname);
 		goods.setCtype("商品");
-		goods.setSerial(Types.parseInt((String)form.get("serial"), 100));
-		goods.setDealerid(""); // 维护人员所属机构
-		goods.setDealername(""); // 维护人员所属机构
-		goods.setCode((String)form.get("code"));
-		goods.setBrand((String)form.get("brand"));	
-		
-		// 商品信息
-		goods.setSaleprice(new BigDecimal((String)form.get("saleprice")));
-		goods.setPromoteprice(new BigDecimal((String)form.get("promoteprice")));
-		goods.setAllstorenum(Types.parseBigDecimal(((String)form.get("allstorenum")), new BigDecimal(0))); //num
-		goods.setSalenum(new BigDecimal(0));
-		goods.setBasesalenum(Types.parseBigDecimal((String)form.get("basesalenum"), new BigDecimal(RandomGenerator.getValue(3)))); //num
-		goods.setPraisenum(0);
-		goods.setBasepraisenum(Types.parseInt((String)form.get("basepraisenum"), RandomGenerator.getValue(3)));
-		goods.setPopular(Types.parseInt((String)form.get("popular"), 0));
-		goods.setBasepopular(Types.parseInt((String)form.get("basepopular"), 0));
-		goods.setWeight(Types.parseBigDecimal((String)form.get("weight"), new BigDecimal(0)));
-		goods.setVolume(Types.parseBigDecimal((String)form.get("volume"), new BigDecimal(0)));		
-		
-		// 佣金信息
-		goods.setRebatetype((String)form.get("rebatetype"));
-		goods.setRebate1(new BigDecimal((String)form.get("rebate1")));
-		goods.setRebate2(new BigDecimal((String)form.get("rebate2")));
-		goods.setRebate3(new BigDecimal((String)form.get("rebate3")));		
-		
-		// 物流信息
-		goods.setIsfreelogistics((String)form.get("isfreelogistics")); // 是否免物流（是、否）
-		goods.setFreightpayer((String)form.get("freightpayer"));// 运费设置（包邮、统一运费、运费模板）
-		goods.setFullnummail(Types.parseInt((String)form.get("fullnummail"), 0));
-		goods.setHidestock((String)form.get("hidestock"));
-		goods.setQuota(Types.parseInt((String)form.get("quota"), 0));
-		goods.setBuyneedpoints(Types.parseInt((String)form.get("buyneedpoints"), 0));
-		goods.setConsumcoupon((String)form.get("consumcoupon"));
-		goods.setConsumpoint(Types.parseInt((String)form.get("consumpoint"), 0));	
-		goods.setJoinleveldiscount(Types.parseInt((String)form.get("joinleveldiscount"), 0));	
 		
 		sdao().insert(goods);
+
+		return id;
+	}
+	
+	public String update(Map form, DynamicObject login_token) throws Exception
+	{
+		Goods goods = (Goods)Mapl.maplistToObj(form, Goods.class);
+		sdao().update(goods);
 		
-		// 根据选中规格新增商品规格
-		String norms = (String) form.get("norms");
-		if (!StringToolKit.isBlank(norms))
-		{
-			List sku_norms = (ArrayList)Json.fromJson(norms);
-			for(int i=0;i<sku_norms.size();i++)
-			{
-				Map spec = (Map)sku_norms.get(i);
-				List props = (ArrayList)spec.get("props");
-				
-				for(int j=0;j<props.size();j++)
-				{
-					String specvalueid = (String)props.get(j);
-					GoodsClassSpecValue classspecvalue = sdao().fetch(GoodsClassSpecValue.class, specvalueid);
-					String goodsclassspecid = classspecvalue.getGoodsclassspecid();
-					GoodsClassSpec classspec = sdao().fetch(GoodsClassSpec.class, goodsclassspecid);
-					
-					GoodsSpecProduct goodsspec = new GoodsSpecProduct();
-					goodsspec.setId(UUIDGenerator.getInstance().getNextValue());
-					goodsspec.setGoodsid(id);
-					goodsspec.setSpecclass(classspec.getSpecclass());
-					goodsspec.setSpec(classspecvalue.getCvalue());
-					sdao().insert(goodsspec);
-				}
-				
-				System.out.println(props);
-				
-			}
-			System.out.println(sku_norms);
-		}
-
-		// 根据规格清单新增货品
-		String sku_props = (String) form.get("sku_props");
+		String s = (String)form.get("specproducts");
+		List<Map> products = (List<Map>)Json.fromJson(s);
 		
-		if (!StringToolKit.isBlank(sku_props))
+		String[] pdsaleprice = (String[])form.get("pdsaleprice");
+		String[] pdpromoteprice = (String[])form.get("pdpromoteprice");
+		String[] pdallstorenum = (String[])form.get("pdallstorenum");		
+		
+		for(int i=0;i<products.size();i++)
 		{
-			Map sku = (Map) Json.fromJson(sku_props);
-			Object[] keys = sku.keySet().toArray();
-
-			for (int i = 0; i < keys.length; i++)
+			Map product = products.get(i);
+			System.out.println(product);
+			List<Map> aspecs = (List<Map>)product.get("specvalues");
+			
+			// 新增货品
+			Goods subgoods = Castors.me().castTo(Json.toJson(goods),
+					Goods.class);
+			
+			subgoods.setId(UUIDGenerator.getInstance().getNextValue());
+			subgoods.setSupid(goods.getId());
+			subgoods.setCtype("货品");
+			subgoods.setSaleprice(Types.parseBigDecimal(pdsaleprice[i], new BigDecimal(0)));
+			subgoods.setPromoteprice(Types.parseBigDecimal(pdpromoteprice[i], new BigDecimal(0)));
+			subgoods.setAllstorenum(Types.parseBigDecimal(pdallstorenum[i], new BigDecimal(0)));			
+			sdao().insert(subgoods);
+			
+			// 新增货品规格
+			for(int j=0;j<aspecs.size();j++)
 			{
-				Goods subgoods = new Goods();
-				
-				String subid = UUIDGenerator.getInstance().getNextValue();
-
-				String akey = (String) keys[i];
-				Map asku = (Map) sku.get(akey);
-				BigDecimal o_price = new BigDecimal(String.valueOf(asku.get("o_price")));
-				BigDecimal price = new BigDecimal(String.valueOf(asku.get("price")));
-				BigDecimal stock = new BigDecimal(String.valueOf(asku.get("stock")));
-				
-				String defspec = "否";
-				if(i==0)
+				Map aspec = aspecs.get(j);
+				Iterator iter = aspec.keySet().iterator();
+				while(iter.hasNext())
 				{
-					defspec = "是";
-				}
-				// 基本信息
-				subgoods.setSerial(Types.parseInt((String)form.get("serial"), 100));
-				subgoods.setCode((String)form.get("code"));
-				subgoods.setBrand((String)form.get("brand"));	
-				
-				// 商品信息
-				subgoods.setSaleprice(new BigDecimal((String)form.get("saleprice")));
-				subgoods.setPromoteprice(new BigDecimal((String)form.get("promoteprice")));
-				
-				subgoods.setAllstorenum(stock); // 货品库存数从明细规格库存数读取
-				
-				subgoods.setSalenum(new BigDecimal(0));
-				subgoods.setBasesalenum(Types.parseBigDecimal((String)form.get("basesalenum"), new BigDecimal(RandomGenerator.getValue(3)))); //num
-				subgoods.setPraisenum(0);
-				subgoods.setBasepraisenum(Types.parseInt((String)form.get("basepraisenum"), RandomGenerator.getValue(3)));
-				subgoods.setPopular(Types.parseInt((String)form.get("popular"), 0));
-				subgoods.setBasepopular(Types.parseInt((String)form.get("basepopular"), 0));
-				subgoods.setWeight(Types.parseBigDecimal((String)form.get("weight"), new BigDecimal(0)));
-				subgoods.setVolume(Types.parseBigDecimal((String)form.get("volume"), new BigDecimal(0)));		
-				
-				// 佣金信息
-				subgoods.setRebatetype((String)form.get("rebatetype"));
-				subgoods.setRebate1(new BigDecimal((String)form.get("rebate1")));
-				subgoods.setRebate2(new BigDecimal((String)form.get("rebate2")));
-				subgoods.setRebate3(new BigDecimal((String)form.get("rebate3")));		
-				
-				// 物流信息
-				subgoods.setIsfreelogistics((String)form.get("isfreelogistics")); // 是否免物流（是、否）
-				subgoods.setFreightpayer((String)form.get("freightpayer"));// 运费设置（包邮、统一运费、运费模板）
-				subgoods.setFullnummail(Types.parseInt((String)form.get("fullnummail"), 0));
-				subgoods.setHidestock((String)form.get("hidestock"));
-				subgoods.setQuota(Types.parseInt((String)form.get("quota"), 0));
-				subgoods.setBuyneedpoints(Types.parseInt((String)form.get("buyneedpoints"), 0));
-				subgoods.setConsumcoupon((String)form.get("consumcoupon"));
-				subgoods.setConsumpoint(Types.parseInt((String)form.get("consumpoint"), 0));	
-				subgoods.setJoinleveldiscount(Types.parseInt((String)form.get("joinleveldiscount"), 0));				
-
-				subgoods.setId(subid);
-				subgoods.setClassid(classid);
-				subgoods.setClassinternal(classinternal);
-				subgoods.setCname(cname);
-				subgoods.setCtype("货品");
-				subgoods.setSupid(id);
-				subgoods.setSaleprice(o_price);
-				subgoods.setPromoteprice(price);
-				subgoods.setDefspec(defspec); // 
-				
-				sdao().insert(subgoods);
-
-				String[] skukeys = akey.split(";");
-				
-				for (int j = 0; j < skukeys.length; j++)
-				{
-					GoodsClassSpecValue classspecvalue = sdao().fetch(GoodsClassSpecValue.class, skukeys[j]);
-					String goodsclassspecid = classspecvalue.getGoodsclassspecid();
-					GoodsClassSpec classspec = sdao().fetch(GoodsClassSpec.class, goodsclassspecid);
+					String specclass = (String)iter.next();
+					String specvalue = (String)aspec.get(specclass);
 					
-					// 新增货品规格
-					GoodsSpecProduct spec = new GoodsSpecProduct();
+					GoodsProductSpec spec = new GoodsProductSpec();
 					spec.setId(UUIDGenerator.getInstance().getNextValue());
-					spec.setGoodsid(subid);
-					spec.setSpecclass(classspec.getSpecclass());
-					spec.setSpec(classspecvalue.getCvalue());
+					spec.setGoodsid(subgoods.getId());
+					spec.setSpecclass(specclass);
+					spec.setSpec(specvalue);
 					
 					sdao().insert(spec);
 				}
 			}
-
-			System.out.println(sku);
 		}
-
-		return id;
-	}
+		
+		return goods.getId();
+	}	
 
 	public List<DynamicObject> browse(Map map) throws Exception
 	{

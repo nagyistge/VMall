@@ -15,7 +15,7 @@ import com.skynet.framework.services.db.SQLParser;
 import com.skynet.framework.services.db.dybeans.DynamicObject;
 import com.skynet.framework.services.function.StringToolKit;
 import com.skynet.framework.services.function.Types;
-import com.skynet.vmall.base.pojo.GoodsSpecProduct;
+import com.skynet.vmall.base.pojo.GoodsProductSpec;
 import com.skynet.vmall.base.service.GoodsPriceService;
 import com.skynet.vmall.base.service.GoodsService;
 
@@ -187,7 +187,7 @@ public class AppGoodsService extends SkynetDaoService
 				sql = new StringBuffer();
 				aspec = specs.get(j);
 
-				nums += sdao().count(GoodsSpecProduct.class, Cnd.where("goodsid", "=", goodses.get(i).getFormatAttr("id")).and("specclass", "=", aspec.get(0)).and("spec", "=", aspec.get(1)));
+				nums += sdao().count(GoodsProductSpec.class, Cnd.where("goodsid", "=", goodses.get(i).getFormatAttr("id")).and("specclass", "=", aspec.get(0)).and("spec", "=", aspec.get(1)));
 			}
 			if (nums == specs.size())
 			{

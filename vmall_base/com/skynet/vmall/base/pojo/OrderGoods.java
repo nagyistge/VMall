@@ -26,7 +26,10 @@ public class OrderGoods extends IdEntity
 	private String sellername; // 厂商名称（卖家）	
 
 	@Column
-	private String goodsid; // 商品标识
+	private String goodsid; // 商品标识（目前实际是货品标识，后期改为商品标识）
+	
+	@Column
+	private String productid; // 货品标识（商品不同规格为货品）	
 	
 	@Column
 	private String goodsname; // 商品名称	
@@ -199,6 +202,16 @@ public class OrderGoods extends IdEntity
 	public void setGoodsid(String goodsid)
 	{
 		this.goodsid = goodsid;
+	}
+
+	public String getProductid()
+	{
+		return productid;
+	}
+
+	public void setProductid(String productid)
+	{
+		this.productid = productid;
 	}
 
 	public String getGoodsname()
@@ -570,5 +583,7 @@ public class OrderGoods extends IdEntity
 	{
 		this.takeoverreason = takeoverreason;
 	}
+
+
 
 }

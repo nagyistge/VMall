@@ -20,6 +20,7 @@ import org.nutz.mvc.filter.CheckSession;
 
 import com.skynet.framework.services.db.dybeans.DynamicObject;
 import com.skynet.framework.spec.GlobalConstants;
+import com.skynet.vmall.base.pojo.Goods;
 import com.skynet.vmall.base.service.GoodsClassService;
 import com.skynet.vmall.base.service.GoodsClassSpecService;
 import com.skynet.vmall.base.service.GoodsClassSpecValueService;
@@ -139,24 +140,48 @@ public class GoodsAction
 		DynamicObject goods = goodsService.locate(id);
 		String classid = goods.getFormatAttr("classid");
 		DynamicObject goodsclass = goodsclassService.locate(classid);
-		List<DynamicObject> goodsclassspecs = appgoodsclassService.get_all_spec(classid, new ArrayList<DynamicObject>());
 		
 		List<DynamicObject> specvalues = appgoodsclassService.get_all_specvalue(id);
+		List<DynamicObject> pdspecs = appgoodsclassService.get_productspec(id);
 
 		Map ro = new DynamicObject();
 
 		ro.put("goods", goods);
 		ro.put("goodsclass", goodsclass);
-		ro.put("goodsclassspecs", goodsclassspecs); // 后期取消
 		ro.put("specvalues", specvalues);
+		ro.put("pdspecs", pdspecs);
 		return ro;
 	}
+	
+	@At("/update")
+	@Ok(">>:/goods/goods/locate.action?id=${obj.id}")
+	public Map update(@Param("..") Map map) throws Exception
+	{
+		HttpSession session = Mvcs.getHttpSession(true);
+		DynamicObject login_token = (DynamicObject) session.getAttribute(GlobalConstants.sys_login_token);
+
+		String id = appgoodsService.update(map, login_token);
+
+		DynamicObject ro = new DynamicObject();
+
+		ro.setAttr("id", id);
+
+		return ro;
+	}	
 	
 	@At("/getspecvalue")
 	@Ok("json")
 	public List<DynamicObject> getspecvalue(String goodsid) throws Exception
 	{
 		List<DynamicObject> specvalues = appgoodsclassService.get_all_specvalue(goodsid);
+		return specvalues;
+	}
+	
+	@At("/getpdspec")
+	@Ok("json")
+	public List<DynamicObject> getpdspec(String goodsid) throws Exception
+	{
+		List<DynamicObject> specvalues = appgoodsclassService.get_productspec(goodsid);
 		return specvalues;
 	}
 
