@@ -1,8 +1,11 @@
 $(function(){
 
 	$("#bt_submit").click(function() {page_submit()});
+	$("#bt_onsale").click(function() {page_onsale()});
+	$("#bt_offsale").click(function() {page_offsale()});
+	
     $("a.addspec").click(function() {page_addspec()}); // 添加规格
-
+ 
     page_showspecvalue();
 
     function page_initspecclass()
@@ -22,8 +25,10 @@ $(function(){
     function page_initsku()
     {
         $("a.addspecvalue").each(function(index){$(this).click(function() {page_addspecvalue();})}); // 添加规格型号
-        $(":checkbox.checkspec").each(function(index){$(this).change(function() {page_checkspec();})}); // 选中规格
-        $(":checkbox.checkspecvalue").each(function(index){$(this).change(function() {page_checkspecvalue();})}); // 选中型号
+        $(":checkbox.checkspec").each(function(index){$(this).click(function() {page_checkspec();})}); // 选中规格
+        $(":checkbox.checkspecvalue").each(function(index){$(this).click(function() {page_checkspecvalue();})}); // 选中型号
+
+        $("a.defspec").each(function(index){$(this).click(function() {page_defspec();})}); // 添加规格型号
     }
     
     function page_showspecvalue()
@@ -77,9 +82,7 @@ $(function(){
 					return;
 				}
 				pdspecs = eval("(" + data + ")");
-				console.log(pdspecs);
 				checked_specvalues = pdspecs;
-				console.log(checked_specvalues);
 				$("#div_sku").html(_.template($("#tpl_item_sku").html()));
 				page_initsku();
 			},
@@ -195,8 +198,6 @@ $(function(){
     						console.log("服务请求异常！");
     					}
     				})
-            		
-
             	}
             }
         })
@@ -204,9 +205,18 @@ $(function(){
 	
 	function page_checkspec()
 	{
+		var e = event.target;
+		var $e = $(e);
+		$e.closest("dl").find(".checkspecvalue").each(function(){
+			$(this).prop("checked", $(e).prop("checked"));
+			page_checkspecvalue();
+		});		
+	}
+	
+	function page_checkspecvalue()
+	{
 		console.log("checkspec begin.");
 		
-		var e = event.target;
 		var i = 0;
 		var indexs = [];
 		$("input.checkspec").each(function(){
@@ -231,11 +241,6 @@ $(function(){
 		$("#div_sku").html(_.template($("#tpl_item_sku").html()));
 		
 		console.log("checkspec end.");
-	}
-	
-	function page_checkspecvalue()
-	{
-		
 	}
 	
 	function set(s, level, maxlevel, indexs, rows)
@@ -279,4 +284,121 @@ $(function(){
     	$("input[name='specproducts']").val(s);
 		$("#mainform").submit();
 	}
+    
+    function page_onsale()
+	{
+    	var goodsid = $("input[name='id']").val();
+    	
+		$.ajax({
+			type:'POST',
+			url:'/vmallback/goods/goods/onsale.action',
+			data:{"goodsid":goodsid},
+			cache:false,
+			async:true,
+			success:function(data)
+			{
+				console.log(data);
+				if(data=="")
+				{
+					pub_alert("商品上架异常，请检查后再试。");
+					return;
+				}
+				
+				var json = eval("(" + data + ")");
+				if(json.state=="success")
+				{
+					pub_alert("商品成功上架！");
+					//window.location.reload();
+				}
+				else
+				{
+					pub_alert(json.message);
+				}
+				
+			},
+			error:function(data)
+			{
+				console.log(data);
+				console.log("服务请求异常！");
+			}
+		})    	
+	}
+    
+    function page_offsale()
+	{
+    	var goodsid = $("input[name='id']").val();
+    	
+		$.ajax({
+			type:'POST',
+			url:'/vmallback/goods/goods/offsale.action',
+			data:{"goodsid":goodsid},
+			cache:false,
+			async:true,
+			success:function(data)
+			{
+				console.log(data);
+				if(data=="")
+				{
+					pub_alert("商品下架异常，请检查后再试。");
+					return;
+				}
+				
+				var json = eval("(" + data + ")");
+				if(json.state=="success")
+				{
+					pub_alert("商品下架完成！");
+					//window.location.reload();
+				}
+				else
+				{
+					pub_alert(json.message);
+				}
+			},
+			error:function(data)
+			{
+				console.log(data);
+				console.log("服务请求异常！");
+			}
+		})    	
+	}
+    
+    function page_defspec()
+	{
+    	var e = event.target;
+    	var $e = $(e);
+    	var goodsid = $e.attr("goodsid");
+    	
+		$.ajax({
+			type:'POST',
+			url:'/vmallback/goods/goods/defspec.action',
+			data:{"goodsid":goodsid},
+			cache:false,
+			async:true,
+			success:function(data)
+			{
+				console.log(data);
+				if(data=="")
+				{
+					return;
+				}
+				
+				var json = eval("(" + data + ")");
+				if(json.state=="success")
+				{
+					//window.location.reload();
+					$("a.defspec").each(function(){$(this).html("否")});
+					$e.html("是");
+				}
+				else
+				{
+					pub_alert(json.message);
+				}
+			},
+			error:function(data)
+			{
+				console.log(data);
+				console.log("服务请求异常！");
+			}
+		})    	
+	}   
 })

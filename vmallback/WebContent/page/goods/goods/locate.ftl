@@ -403,8 +403,9 @@
 </form>
 
 <div class="panel-single panel-single-light mgt20 txtCenter">
-    <a href="" class="btn">上一步</a>
-    <input type="button" class="btn btn-primary" value="下一步" id="bt_submit">
+    <input type="button" class="btn btn-primary" value="保存" id="bt_submit">
+    <input type="button" class="btn btn-primary" value="上架" id="bt_onsale">
+    <input type="button" class="btn btn-primary" value="下架" id="bt_offsale">
 </div>
 
 
@@ -512,6 +513,7 @@
             <td>商品编码</td>
             <td>销量</td>
             <td>设置会员价</td>	
+            <td>缺省</td>	
 	    </tr>
 	    </thead>
 	    <tbody>
@@ -535,12 +537,13 @@
 
 					<% }) %>
 				<% }) %>	
-				<td><input name="pdsaleprice" type="text" class="input mini j-price-modify1" data-name="saleprice" value="<%=apdspec.saleprice%>">元<br/></td>
-	            <td><input name="pdpromoteprice" type="text" class="input mini j-price-modify1" data-name="promoteprice" value="<%=apdspec.promoteprice %>">元</td>
-	            <td><input name="pdallstorenum" type="text" class="input mini j-price-modify1" data-name="allstorenum" value="<%= apdspec.allstorenum %>"></td>
+				<td><input name="pdsaleprice" type="text" class="input mini j-price-modify" data-name="saleprice" value="<%=apdspec.saleprice%>">元<br/></td>
+	            <td><input name="pdpromoteprice" type="text" class="input mini j-price-modify" data-name="promoteprice" value="<%=apdspec.promoteprice %>">元</td>
+	            <td><input name="pdallstorenum" type="text" class="input mini j-price-modify" data-name="allstorenum" value="<%= apdspec.allstorenum %>"></td>
+	            <td><input name="code" type="text" class="input mini j-price-modify" data-name="salenum" value="<%= apdspec.code %>"></td>
 	            <td></td>
 	            <td></td>
-	            <td></td>	    	
+	          	<td><a href="javascript:void(0)" class="defspec" goodsid="<%=apdspec.id%>"><% if(apdspec.defspec!="是"){%>否<%}else{%><%=apdspec.defspec%><%}%></a></td>    	
 	    	</tr>
 	    	<% }) %>	
 	    </tbody>	

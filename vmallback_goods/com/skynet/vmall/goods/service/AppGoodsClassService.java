@@ -154,7 +154,7 @@ public class AppGoodsClassService extends SkynetDaoService
 	public List<DynamicObject> get_productspec(String goodsid) throws Exception
 	{
 		StringBuffer sql = new StringBuffer();
-		sql.append(" select id, cname, supid, saleprice, promoteprice, allstorenum ").append("\n");
+		sql.append(" select id, cname, supid, saleprice, promoteprice, allstorenum, salenum, defspec ").append("\n");
 		sql.append("   from t_app_goods goods ").append("\n");
 		sql.append("  where 1 = 1 ").append("\n");
 		sql.append("    and goods.supid = ").append(SQLParser.charValue(goodsid)).append("\n");

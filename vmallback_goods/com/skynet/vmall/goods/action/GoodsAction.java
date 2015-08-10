@@ -20,7 +20,6 @@ import org.nutz.mvc.filter.CheckSession;
 
 import com.skynet.framework.services.db.dybeans.DynamicObject;
 import com.skynet.framework.spec.GlobalConstants;
-import com.skynet.vmall.base.pojo.Goods;
 import com.skynet.vmall.base.service.GoodsClassService;
 import com.skynet.vmall.base.service.GoodsClassSpecService;
 import com.skynet.vmall.base.service.GoodsClassSpecValueService;
@@ -140,7 +139,7 @@ public class GoodsAction
 		DynamicObject goods = goodsService.locate(id);
 		String classid = goods.getFormatAttr("classid");
 		DynamicObject goodsclass = goodsclassService.locate(classid);
-		
+
 		List<DynamicObject> specvalues = appgoodsclassService.get_all_specvalue(id);
 		List<DynamicObject> pdspecs = appgoodsclassService.get_productspec(id);
 
@@ -152,7 +151,7 @@ public class GoodsAction
 		ro.put("pdspecs", pdspecs);
 		return ro;
 	}
-	
+
 	@At("/update")
 	@Ok(">>:/goods/goods/locate.action?id=${obj.id}")
 	public Map update(@Param("..") Map map) throws Exception
@@ -167,7 +166,35 @@ public class GoodsAction
 		ro.setAttr("id", id);
 
 		return ro;
-	}	
+	}
+
+	@At("/onsale")
+	@Ok("json")
+	public Map onsale(String goodsid) throws Exception
+	{
+		Map ro = new DynamicObject();
+		ro = appgoodsService.onsale(goodsid);
+		return ro;
+	}
+
+	@At("/offsale")
+	@Ok("json")
+	public Map offsale(String goodsid) throws Exception
+	{
+		Map ro = new DynamicObject();
+		ro = appgoodsService.offsale(goodsid);
+		return ro;
+	}
+
+	@At("/defspec")
+	@Ok("json")
+	public Map defspec(String goodsid) throws Exception
+	{
+		Map ro = new DynamicObject();
+		ro = appgoodsService.defspec(goodsid);
+		return ro;
+	}
+
 	
 	@At("/getspecvalue")
 	@Ok("json")
@@ -176,7 +203,7 @@ public class GoodsAction
 		List<DynamicObject> specvalues = appgoodsclassService.get_all_specvalue(goodsid);
 		return specvalues;
 	}
-	
+
 	@At("/getpdspec")
 	@Ok("json")
 	public List<DynamicObject> getpdspec(String goodsid) throws Exception
@@ -192,7 +219,7 @@ public class GoodsAction
 		Map ro = appgoodsService.addspec(map);
 		return ro;
 	}
-	
+
 	@At("/addspecvalue")
 	@Ok("json")
 	public Map addspecvalue(@Param("..") Map map) throws Exception
