@@ -9,7 +9,6 @@ import javax.servlet.http.HttpSession;
 import org.nutz.dao.Cnd;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
-import org.nutz.lang.Strings;
 import org.nutz.mvc.Mvcs;
 import org.nutz.mvc.annotation.At;
 import org.nutz.mvc.annotation.By;
@@ -19,7 +18,9 @@ import org.nutz.mvc.annotation.Param;
 import org.nutz.mvc.filter.CheckSession;
 
 import com.skynet.framework.services.db.dybeans.DynamicObject;
+import com.skynet.framework.services.function.Types;
 import com.skynet.framework.spec.GlobalConstants;
+import com.skynet.vmall.base.constants.VMallConstants;
 import com.skynet.vmall.base.service.GoodsClassService;
 import com.skynet.vmall.base.service.GoodsClassSpecService;
 import com.skynet.vmall.base.service.GoodsClassSpecValueService;
@@ -82,16 +83,21 @@ public class GoodsAction
 	@Ok("->:/page/goods/goods/browse.ftl")
 	public Map browse(@Param("..") Map map, @Param("_page") String page, @Param("_pagesize") String pagesize) throws Exception
 	{
-		map.put("_page", Strings.sNull(page, "1"));
-		map.put("_pagesize", Strings.sNull(pagesize, "5"));
+		map.put("_page", Types.parseInt(page, 1));
+		map.put("_pagesize", Types.parseInt(pagesize, VMallConstants.pagesize));
 
-		List<DynamicObject> goods = appgoodsService.browse(map);
-
+		List<DynamicObject> goodses = appgoodsService.browse(map);
+	
 		DynamicObject ro = new DynamicObject();
 
-		ro.put("goods", goods);
-		ro.put("_page", page);
-		ro.put("_pagesize", pagesize);
+		ro.put("goodses", goodses);
+		ro.setAttr("state", (String)map.get("state"));
+		
+		ro.put("_page", map.get("_page"));
+		ro.put("_pagesize", map.get("_pagesize"));
+		ro.put("_maxpage", map.get("_maxpage"));
+		ro.put("_startpage", map.get("_startpage"));
+		ro.put("_endpage", map.get("_endpage"));
 
 		return ro;
 	}
@@ -237,6 +243,14 @@ public class GoodsAction
 			map.put(names[1], map.get(names[0]));
 		}
 		return map;
+	}
+	
+	@At("/leftmenu")
+	@Ok("->:/page/goods/leftmenu.ftl")
+	public Map lefmenu(String id) throws Exception
+	{
+		DynamicObject ro = new DynamicObject();
+		return ro;
 	}
 
 }

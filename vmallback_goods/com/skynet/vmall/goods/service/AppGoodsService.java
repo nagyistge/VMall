@@ -221,23 +221,44 @@ public class AppGoodsService extends SkynetDaoService
 		int startindex = (page - 1) * pagesize;
 		int endindex = page * pagesize;
 
-		String classid = (String) map.get("classid");
+
 		String cname = (String) map.get("cname");
+		String classname = (String) map.get("classname");
+		String dealername = (String) map.get("dealername");
+		String state = (String) map.get("state");
 
 		StringBuffer sql = new StringBuffer();
-		sql.append(" select * from t_app_goods ").append("\n");
+		sql.append(" select goods.id, goods.cname, goodsclass.cname classname, goods.dealername, goods.saleprice, goods.salenum, goods.popular ").append("\n");
+		sql.append("   from t_app_goods goods, t_app_goodsclass goodsclass ").append("\n");
 		sql.append("  where 1 = 1 ").append("\n");
+		sql.append("    and goods.ctype = '商品' ").append("\n");
+		sql.append("    and goods.classid = goodsclass.id ").append("\n");
 		// 增加查询过滤条件
-		if (!StringToolKit.isBlank(classid))
-		{
-			sql.append("  and classid = ").append(SQLParser.charValue(classid)).append("\n");
-		}
-
 		if (!StringToolKit.isBlank(cname))
 		{
 			sql.append("  and cname like ").append(SQLParser.charLikeRightValue(cname)).append("\n");
 		}
+		
+		if (!StringToolKit.isBlank(dealername))
+		{
+			sql.append("  and dealername like ").append(SQLParser.charLikeRightValue(state)).append("\n");
+		}		
+		
+		if (!StringToolKit.isBlank(state))
+		{
+			sql.append("  and state = ").append(SQLParser.charValue(state)).append("\n");
+		}
 
+//		if (!StringToolKit.isBlank(classname))
+//		{
+//			sql.append("  and exists( ").append("\n");
+//			sql.append("  select id from t_app_goodsclass goodsclass ").append("\n");
+//			sql.append("   where goods.classinternal like concat(goodsclass.internal, '%') ").append("\n");
+//			sql.append("     and goodsclass.cname like ").append(SQLParser.charLikeValue(classname)).append("\n");
+//			sql.append("     )").append("\n");
+//			sql.append(" ) ").append("\n");
+//		}
+		
 		List<DynamicObject> datas = sdao().queryForList(sql.toString(), startindex, endindex);
 
 		QueryHelper helper = new QueryHelper();

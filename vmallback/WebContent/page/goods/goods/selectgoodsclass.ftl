@@ -36,7 +36,7 @@
 
 <script>
 $(function(){
-	$("#leftMenu").load('${base}/page/goods/leftmenu.ftl');
+	$("#leftMenu").load('${base}/goods/goods/leftmenu.action');
 });
 </script>
 

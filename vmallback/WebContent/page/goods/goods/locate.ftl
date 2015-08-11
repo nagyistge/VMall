@@ -38,7 +38,7 @@
 <form action="${base}/goods/goods/update.action" method="post" id="mainform">
 <input type="hidden" name="id" value="${obj.goods.id}">
 <input type="hidden" name="classid" value="${obj.goods.classid}">
-<input type="hidden" name="jskuval" value="">
+
 <div class="panel-single panel-single-light mgt20">
     <h3 class="cst_h3 mgb20">基本信息</h3>
     <div class="formitems">
@@ -55,6 +55,14 @@
             <span class="fi-help-text error"></span>
         </div>
     </div>
+    <div class="formitems">
+        <label class="fi-name">类型：</label>
+        <div class="form-controls">
+            <input type="text" class="input mini" name="ctype" value="${obj.goods.ctype}" readonly>
+            <span class="fi-help-text"></span>
+        </div>
+    </div>    
+    
     <div class="formitems">
         <label class="fi-name">购买方式：</label>
         <div class="form-controls">
@@ -573,7 +581,7 @@
 
 <script>
 $(function(){
-	$("#leftMenu").load('${base}/page/goods/leftmenu.ftl');
+	$("#leftMenu").load('${base}/goods/goods/leftmenu.action');
 });
 </script>
 
