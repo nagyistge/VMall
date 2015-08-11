@@ -57,6 +57,7 @@ public class AppGoodsService extends SkynetDaoService
 		goods.setClassinternal(classinternal);
 		goods.setCtype("商品");
 		goods.setSalenum(new BigDecimal(0));
+		goods.setState("新建");
 
 		sdao().insert(goods);
 
