@@ -233,6 +233,15 @@ public class GoodsAction
 		Map ro = appgoodsService.addspecvalue(map);
 		return ro;
 	}
+	
+	@At("/selectphoto")
+	@Ok("->:/page/goods/goods/selectphoto.ftl")
+	public Map selectphoto(String goodsid) throws Exception
+	{
+		Map ro = new DynamicObject();
+		ro.put("goodsid", goodsid);
+		return ro;
+	}
 
 	public Map trans_attr(String[] nameparis, Map map)
 	{

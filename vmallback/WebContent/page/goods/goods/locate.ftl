@@ -518,10 +518,10 @@
             <td>原价</td>
             <td>现价</td>
             <td>库存</td>
-            <td>商品编码</td>
+            <td>编码</td>
             <td>销量</td>
-            <td>设置会员价</td>	
-            <td>缺省</td>	
+            <td>缺省</td>	            
+            <td></td>	
 	    </tr>
 	    </thead>
 	    <tbody>
@@ -549,9 +549,9 @@
 	            <td><input name="pdpromoteprice" type="text" class="input mini j-price-modify" data-name="promoteprice" value="<%=apdspec.promoteprice %>">元</td>
 	            <td><input name="pdallstorenum" type="text" class="input mini j-price-modify" data-name="allstorenum" value="<%= apdspec.allstorenum %>"></td>
 	            <td><input name="code" type="text" class="input mini j-price-modify" data-name="salenum" value="<%= apdspec.code %>"></td>
-	            <td></td>
-	            <td></td>
+	            <td><%=apdspec.salenum%></td>
 	          	<td><a href="javascript:void(0)" class="defspec" goodsid="<%=apdspec.id%>"><% if(apdspec.defspec!="是"){%>否<%}else{%><%=apdspec.defspec%><%}%></a></td>    	
+	            <td><a href="${base}/goods/goods/selectphoto.action?goodsid=<%=apdspec.id%>">图片</a></td>
 	    	</tr>
 	    	<% }) %>	
 	    </tbody>	

@@ -81,6 +81,7 @@ public class AttachAction
 			attach.setFileextname(map.get("fileextname"));
 			attach.setCname(fuploadFileName);
 			attach.setCurl(dir.replace('\\', '/'));
+			attach.setCclass(cclass);
 
 			attach.setCreateuser(username);
 			attach.setCreateuserid(loginname);
