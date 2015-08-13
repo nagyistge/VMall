@@ -95,6 +95,7 @@ public class AttachAction
 			DynamicObject ro = new DynamicObject();
 			ro.put("state", "success");
 			ro.put("file_path", weburl);
+			ro.put("attach", attach);
 			return ro;
 			
 			// 返回

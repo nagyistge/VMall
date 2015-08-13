@@ -242,6 +242,30 @@ public class GoodsAction
 		ro.put("goodsid", goodsid);
 		return ro;
 	}
+	
+	@At("/getphoto")
+	@Ok("json")
+	public Map getphoto(String goodsid) throws Exception
+	{
+		Map ro = appgoodsService.getphoto(goodsid);
+		return ro;
+	}	
+	
+	@At("/updatephoto")
+	@Ok("json")
+	public Map updatephoto(@Param("..") Map map) throws Exception
+	{
+		Map ro = appgoodsService.updatephoto(map);
+		return ro;
+	}	
+
+	@At("/leftmenu")
+	@Ok("->:/page/goods/leftmenu.ftl")
+	public Map lefmenu(String id) throws Exception
+	{
+		DynamicObject ro = new DynamicObject();
+		return ro;
+	}
 
 	public Map trans_attr(String[] nameparis, Map map)
 	{
@@ -252,14 +276,6 @@ public class GoodsAction
 			map.put(names[1], map.get(names[0]));
 		}
 		return map;
-	}
-	
-	@At("/leftmenu")
-	@Ok("->:/page/goods/leftmenu.ftl")
-	public Map lefmenu(String id) throws Exception
-	{
-		DynamicObject ro = new DynamicObject();
-		return ro;
 	}
 
 }

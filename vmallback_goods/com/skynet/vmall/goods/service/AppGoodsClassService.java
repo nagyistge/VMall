@@ -185,4 +185,7 @@ public class AppGoodsClassService extends SkynetDaoService
 		
 		return subgoodses;
 	}
+	
+	
+
 }

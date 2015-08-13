@@ -19,8 +19,10 @@ import com.skynet.framework.services.db.SQLParser;
 import com.skynet.framework.services.db.dybeans.DynamicObject;
 import com.skynet.framework.services.function.StringToolKit;
 import com.skynet.framework.services.function.Types;
+import com.skynet.vmall.base.pojo.Attach;
 import com.skynet.vmall.base.pojo.Goods;
 import com.skynet.vmall.base.pojo.GoodsClass;
+import com.skynet.vmall.base.pojo.GoodsPhoto;
 import com.skynet.vmall.base.pojo.GoodsProductSpec;
 import com.skynet.vmall.base.pojo.GoodsSpec;
 import com.skynet.vmall.base.pojo.GoodsSpecValue;
@@ -308,6 +310,67 @@ public class AppGoodsService extends SkynetDaoService
 		DynamicObject ro = new DynamicObject();
 		ro.setAttr("state", "success");
 		ro.setObj("goodsspecvalue", goodsspecvalue);
+		return ro;
+	}
+	
+	// 添加规格型号
+	public Map updatephoto(Map map) throws Exception
+	{
+		String goodsid = (String) map.get("goodsid");
+		String attachid = (String) map.get("attachid");
+		String goodsphotoid = (String) map.get("goodsphotoid"); 
+		String sno = (String) map.get("sno"); 
+		String ctype = (String) map.get("ctype");
+		
+		Attach attach = sdao().fetch(Attach.class, attachid);
+		String weburl = attach.getCurl() + "/" + attach.getFilename();
+		
+		GoodsPhoto goodsphoto = new GoodsPhoto();
+		goodsphoto.setId(UUIDGenerator.getInstance().getNextValue());
+		goodsphoto.setCtype(ctype);
+		goodsphoto.setGoodsid(goodsid);
+
+		if(!StringToolKit.isBlank(goodsphotoid))
+		{
+			goodsphoto = sdao().fetch(GoodsPhoto.class, goodsphotoid);
+			goodsphoto.setUrl(weburl);
+			sdao().update(goodsphoto);				
+		}
+		else
+		{
+			goodsphoto.setUrl(weburl);
+			sdao().insert(goodsphoto);			
+		}
+
+		DynamicObject ro = new DynamicObject();
+		ro.setAttr("state", "success");
+		ro.setObj("goodsphoto", goodsphoto);
+		return ro;
+	}
+	
+	public Map getphoto(String goodsid) throws Exception
+	{
+		StringBuffer sql = new StringBuffer();
+		sql.append(" select vd.ctype, vd.ismulti, vd.ordernum, photo.id, photo.goodsid, photo.url pic, photo.sno ").append("\n");
+		sql.append("   from ").append("\n");
+		sql.append(" ( ").append("\n");
+		sql.append(" select da.dvalue ctype, db.dvalue ismulti, da.ordernum ").append("\n");
+		sql.append("   from t_sys_dictionary da, t_sys_dictionary db ").append("\n");
+		sql.append("  where 1 = 1 ").append("\n");
+		sql.append("    and da.dkey = 'app.goods.goodsphoto.ctype' ").append("\n");
+		sql.append("    and db.dkey = 'app.goods.goodsphoto.ismulti' ").append("\n");
+		sql.append("    and da.ordernum = db.ordernum ").append("\n");
+		sql.append(" ) vd ").append("\n");
+		sql.append("   left join t_app_goodsphoto photo ").append("\n");
+		sql.append("     on vd.ctype = photo.ctype ").append("\n");
+		sql.append("    and photo.goodsid = ").append(SQLParser.charValue(goodsid)).append("\n");
+		sql.append("  order by ordernum ").append("\n");
+		List<DynamicObject> photos = sdao().queryForList(sql.toString());
+		
+		DynamicObject ro = new DynamicObject();
+		ro.setAttr("state", "success");
+		ro.setObj("photos", photos);		
+
 		return ro;
 	}
 

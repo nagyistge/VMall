@@ -18,111 +18,289 @@
 	<div class="mgt15" style="">
 	
 		<form action="" method="post" id="form_photo" style="">
+		<input type="hidden" name="goodsid" value="obj.goodsid">
+		<input type="hidden" name="cclass" value="GoodsPhoto">
 		<table class="wxtables table-order mgt20">
             <colgroup>
-                <col width="20%" />
-                <col width="60%" />
-                <col width="20%" />
-            </colgroup>
+                <col width="15%" />
+                <col width="10%" />
+                <col width="10%" />
+                <col width="50%" />
+                <col width="15%" />
+			</colgroup>
             <thead>
                 <tr>
                 	<td>图片类型</td>
+                	<td>序号</td>
+                    <td>允许多图</td>
                     <td>预览</td>
                     <td></td>
                 </tr>
             </thead>
             <tbody id="tbody">
-                <tr>
-                	<td>商品缩略图片（单张）</td>
-                  	<td><div class="coer_img"><img src="/Public/images/demo_news.gif"></div></td>                  	
-                	<td>
-						
-		                <div class="form-controls">
-	                    <img src="" class="img-cover " style="display:none;" id="img-cover-img">
-	                    <div id="j-imgcover" class="uploadify" style="height: 30px; width: 75px;"><object id="SWFUpload_0" type="application/x-shockwave-flash" data="/Public/plugins/uploadify/uploadify.swf?preventswfcaching=1439280451038" width="75" height="30" class="swfupload" style="position: absolute; z-index: 1;"><param name="wmode" value="transparent"><param name="movie" value="/Public/plugins/uploadify/uploadify.swf?preventswfcaching=1439280451038"><param name="quality" value="high"><param name="menu" value="false"><param name="allowScriptAccess" value="always"><param name="flashvars" value="movieName=SWFUpload_0&amp;uploadURL=%2Fvmallback%2Fsystem%2Fattach%2Fupload.action&amp;useQueryString=false&amp;requeueOnError=false&amp;httpSuccess=&amp;assumeSuccessTimeout=30&amp;params=cclass%3DMaterial%26amp%3Bkid%3Dtest&amp;filePostName=fupload&amp;fileTypes=*.jpg%3B%20*.jpeg%3B%20*.png%3B%20*.gif%3B%20*.bmp&amp;fileTypesDescription=All%20Files&amp;fileSizeLimit=5MB&amp;fileUploadLimit=0&amp;fileQueueLimit=999&amp;debugEnabled=false&amp;buttonImageURL=%2Fvmallback%2Fsystem%2Fmaterial%2F&amp;buttonWidth=75&amp;buttonHeight=30&amp;buttonText=&amp;buttonTextTopPadding=0&amp;buttonTextLeftPadding=0&amp;buttonTextStyle=color%3A%20%23000000%3B%20font-size%3A%2016pt%3B&amp;buttonAction=-100&amp;buttonDisabled=false&amp;buttonCursor=-2"></object><div id="j-imgcover-button" class="uploadify-button " style="background-image: url(http://localhost:9080/Public/plugins/uploadify/uploadify-image.png); text-indent: -9999px; height: 30px; line-height: 30px; width: 75px;"><span class="uploadify-button-text">+</span></div></div><div id="j-imgcover-queue" class="uploadify-queue"></div>
-	                    <span class="fi-help-text mgl90"></span>
-	
-	                    <input class="validate[required]" type="text" style="width: 1px;border: 0;height: 1px;display: inline" name="cover_img" value="" id="cover_img" data-errormessage="上传图片才行哦">
-	                    <span id="hidden-img-error" style="width: 150px;display: block"></span>
-            			</div>
-			            <i class="arrow arrow_out" style="margin-top: 0px;"></i>
-			            <i class="arrow arrow_in" style="margin-top: 0px;"></i>
-			            <input type="hidden" name="is_preview" value="0">
-                  	
-                	</td>
-				</tr> 
-                <tr>
-                	<td>商品详情介绍图片（多张）</td>
-                  	<td><div class="coer_img"><img src="/Public/images/demo_news.gif"></div></td>                  	
-                	<td>
 
-		                <div class="form-controls">
-	                    <img src="" class="img-cover " style="display:none;" id="img-cover-img">
-	                    <div id="j-imgcover" class="uploadify" style="height: 30px; width: 75px;"><object id="SWFUpload_0" type="application/x-shockwave-flash" data="/Public/plugins/uploadify/uploadify.swf?preventswfcaching=1439280451038" width="75" height="30" class="swfupload" style="position: absolute; z-index: 1;"><param name="wmode" value="transparent"><param name="movie" value="/Public/plugins/uploadify/uploadify.swf?preventswfcaching=1439280451038"><param name="quality" value="high"><param name="menu" value="false"><param name="allowScriptAccess" value="always"><param name="flashvars" value="movieName=SWFUpload_0&amp;uploadURL=%2Fvmallback%2Fsystem%2Fattach%2Fupload.action&amp;useQueryString=false&amp;requeueOnError=false&amp;httpSuccess=&amp;assumeSuccessTimeout=30&amp;params=cclass%3DMaterial%26amp%3Bkid%3Dtest&amp;filePostName=fupload&amp;fileTypes=*.jpg%3B%20*.jpeg%3B%20*.png%3B%20*.gif%3B%20*.bmp&amp;fileTypesDescription=All%20Files&amp;fileSizeLimit=5MB&amp;fileUploadLimit=0&amp;fileQueueLimit=999&amp;debugEnabled=false&amp;buttonImageURL=%2Fvmallback%2Fsystem%2Fmaterial%2F&amp;buttonWidth=75&amp;buttonHeight=30&amp;buttonText=&amp;buttonTextTopPadding=0&amp;buttonTextLeftPadding=0&amp;buttonTextStyle=color%3A%20%23000000%3B%20font-size%3A%2016pt%3B&amp;buttonAction=-100&amp;buttonDisabled=false&amp;buttonCursor=-2"></object><div id="j-imgcover-button" class="uploadify-button " style="background-image: url(http://localhost:9080/Public/plugins/uploadify/uploadify-image.png); text-indent: -9999px; height: 30px; line-height: 30px; width: 75px;"><span class="uploadify-button-text">+</span></div></div><div id="j-imgcover-queue" class="uploadify-queue"></div>
-	                    <span class="fi-help-text mgl90"></span>
-	
-	                    <input class="validate[required]" type="text" style="width: 1px;border: 0;height: 1px;display: inline" name="cover_img" value="" id="cover_img" data-errormessage="上传图片才行哦">
-	                    <span id="hidden-img-error" style="width: 150px;display: block"></span>
-            			</div>
-			            <i class="arrow arrow_out" style="margin-top: 0px;"></i>
-			            <i class="arrow arrow_in" style="margin-top: 0px;"></i>
-			            <input type="hidden" name="is_preview" value="0">
-                	
-                	</td>
-				</tr>				   				
             </tbody>
             
         </table>
 		
 		</form>
-   
-	
-	
-	<script src="/Public/js/dist/lib-min.js"></script>
-	<script src="/Public/plugins/jbox/jquery.jbox-min.js"></script>
-	<script src="/Public/plugins/zclip/jquery.zclip-min.js"></script>
-	<!-- 线上环境 -->
-	    <script src="/Public/js/dist/component-min.js"></script>
-	    <script src="/Public/modulesJs/scroll.js"></script>
-	<!--[if lt IE 10]>
-	<script src="/Public/js/jquery/jquery.placeholder-min.js"></script>
-	<script>
-	    $(function(){
-	        //修复IE下的placeholder
-	        $('.input,.textarea').placeholder();
-	    });
-	</script>
-	<![endif]-->
-	
-	<script>
-
-	initData = {
-		link:"链接",
-		title:"标题",
-		author:"",
-        datetime:"2015-08-11",
-        content:"",
-        link_type:"",
-        link_id:"1bccc859c0a80169787f7957e5000ab3",
-        link_name:"",
-		redirect:"",
-		coverimg:'/Public/images/demo_news.gif',
-		summary:"摘要"
-	};
-    </script>
-    
-	<script src="/vmallback/page/system/material/inputone.js"></script>
-	<!-- 配置文件 -->
-    <script src="/Public/plugins/uploadify/jquery.uploadify.min.js?ver=5429"></script>
-
-	
-
-	
-	
 	
 	</div>
-	<!-- end script template -->
 	
+	
+<script src="/Public/js/dist/lib-min.js"></script>
+<script src="/Public/plugins/jbox/jquery.jbox-min.js"></script>
+<script src="/Public/plugins/zclip/jquery.zclip-min.js"></script>
+<!-- 线上环境 -->
+    <script src="/Public/js/dist/component-min.js"></script>
+    <script src="/Public/modulesJs/scroll.js"></script>
+<!--[if lt IE 10]>
+<script src="/Public/js/jquery/jquery.placeholder-min.js"></script>
+<script>
+    $(function(){
+        //修复IE下的placeholder
+        $('.input,.textarea').placeholder();
+    });
+</script>
+<![endif]-->
+
+<!-- 配置文件 -->
+<script src="/Public/plugins/uploadify/jquery.uploadify.min.js?ver=5429"></script>	
+
+<script type="text/j-template" id="tpl_photos">
+	
+	<% for(var i=0;i<photos.length;i++) { %>
+		<% var aphoto = photos[i] %>    
+	<tr>
+		<input type="hidden" name="ctype" value="<%=aphoto.ctype%>">
+        <input type="hidden" name="goodsphotoid" value="<%=aphoto.id%>">
+        <input type="hidden" name="ismulti" value="<%=aphoto.ismulti%>">
+        <input type="hidden" name="sno" value="<%=aphoto.sno%>">
+		<td><%=aphoto.ctype%></td>
+	  	<td><%=aphoto.sno%></td>		
+	  	<td><%=aphoto.ismulti%></td>
+	  	<td>
+			<div class="j-render-con" id="upload_con<%=i%>">
+			</div>						
+	  	</td>                  	
+		<td>
+			<div class="j-render-ctrl" id="upload_ctrl<%=i%>">
+			</div>						
+		</td>
+	</tr> 
+	<%}%>
+
+</script>
+<!-- end tpl_photos -->
+
+<script type="text/j-template" id="tpl_ctrl">
+
+	<div class="formitems">
+	    <div class="form-controls">
+	        <img src="" class="img-cover " style="display:none;" id="img-cover-img">
+	        <input type="file" class="btn btn-primary btn-small btn-imgcover j-imgcover" id="j-imgcover<%=Math.floor(Math.random()*100)%>" name="fupload"/>
+	        <span class="fi-help-text mgl90"></span>
+	        <input class="validate[required]" type="text" name="cover_img" value="${base}/<%=pic%>" id="cover_img<%=Math.floor(Math.random()*100)%>" style="width: 1px;border: 0;height: 1px;display: inline" data-errormessage="上传图片才行哦" >
+	        <span id="hidden-img-error" style="width: 150px;display: block"></span>
+	    </div>
+	</div>
+
+</script>
+<!-- end tpl_material_ctrl -->
+
+<script type="text/j-template" id="tpl_con">
+	<div class="coer_img">
+	<img src="${base}/<%=pic%>">
+	</div>
+</script>
+<!-- end tpl_con -->
+
+
+<!-- end script template -->
+	
+
+<script>
+var files;
+var photos;
+$(function(){
+    
+    var kid = "${obj.goodsid}";
+	var goodsid = '${obj.goodsid}';
+	
+	function page_getphoto()
+	{
+	
+		$.ajax({
+			type:'post',
+			url:'${base}/goods/goods/getphoto.action',
+			data:{goodsid:goodsid},
+			cache:false,
+			async:true,
+			success:function(data)
+			{
+				console.log(data);
+				if(data=="")
+				{
+					pub_alert("读取图片异常！");
+					return;
+				}
+				var json = eval("(" + data + ")");
+				console.log(json);
+				if(json.state=="success")
+				{
+					files = {photos:json.photos};
+					photos = json.photos;
+					console.log(files);
+					render_files();
+				}
+				else
+				{
+					pub_alert(json.message);
+				}
+			},
+			error:function(data)
+			{
+				console.log(data);
+				pub_alert("服务请求异常！");
+			}
+		})		
+	}
+    
+    function render_files()
+	{
+		console.log("begin photos.");
+
+		var html=_.template($("#tpl_photos").html(),files);
+		
+		$("#tbody").empty().append(html);
+		console.log("end photos.");
+		
+		render_ctrl();
+    }
+    
+    // 渲染上传控件
+	function render_ctrl()
+	{
+		$(".j-render-ctrl").each(function(i, elment){
+			var aphoto = photos[i];
+			var html=_.template($("#tpl_ctrl").html(), aphoto);
+			$(this).empty().append(html);
+		});
+		
+		$(".j-imgcover").each(function(i, elment){
+		console.log(i);
+
+		var aphoto = photos[i];
+		
+		console.log(aphoto);
+		console.log(aphoto.ctype);
+		
+                var html=_.template($("#tpl_con").html(), aphoto);
+				$(($(".j-render-con")[i])).empty().append(html);		
+		
+		//选择文件
+
+        $(this).uploadify({
+            "debug": false,
+            "auto": true,
+            "formData": {'cclass':'GoodsPhoto', 'kid':aphoto.id},	            
+            "width": 75,
+            "multi": false,
+            'swf': '/Public/plugins/uploadify/uploadify.swf',
+            "buttonImage": "/Public/plugins/uploadify/uploadify-image.png",
+            'uploader': '/vmallback/system/attach/upload.action', //接口名称
+            "buttonText": "+",
+            "fileSizeLimit": "5MB",
+            "fileTypeExts": "*.jpg; *.jpeg; *.png; *.gif; *.bmp",
+            "fileObjName": "fupload",
+            'onSelectError': function(file, errorCode, errorMsg) {
+                switch (errorCode) {
+                    case -100:
+                        HYD.hint("danger", "对不起，系统只允许您一次最多上传10个文件");
+                        break;
+                    case -110:
+                        HYD.hint("danger", "对不起，文件 [" + file.name + "] 大小超出5MB！");
+                        break;
+                    case -120:
+                        HYD.hint("danger", "文件 [" + file.name + "] 大小异常！");
+                        break;
+                    case -130:
+                        HYD.hint("danger", "文件 [" + file.name + "] 类型不正确！");
+                        break;
+                }
+            },
+            'onFallback': function() {
+                HYD.hint("danger", "您未安装FLASH控件，无法上传图片！请安装FLASH控件后再试。");
+            },
+            'onUploadSuccess': function(file, data, response) {
+                
+                var json = eval('(' + data + ')');
+                console.log(json);
+                 console.log(aphoto["pic"]);
+                aphoto["pic"] = json.file_path;
+                console.log(aphoto["pic"]);
+                ($("input[name='cover_img']")[i]).value = json.file_path;
+                
+                var html=_.template($("#tpl_con").html(), aphoto);
+				$(($(".j-render-con")[i])).empty().append(html);
+				
+				var attachid = json.attach.id;
+				var ctype = aphoto.ctype;
+				var goodsphotoid = aphoto.id;
+				var sno = aphoto.sno;
+				
+				// 更新图片数据
+				$.ajax({
+					type:'post',
+					url:'${base}/goods/goods/updatephoto.action',
+					data:{goodsid:goodsid,attachid:attachid,goodsphotoid:goodsphotoid,sno:sno,ctype:ctype},
+					cache:false,
+					async:true,
+					success:function(data)
+					{
+						console.log(data);
+						if(data=="")
+						{
+							pub_alert("上传更新图片异常！");
+							return;
+						}
+						var json = eval("(" + data + ")");
+						if(json.state=="success")
+						{
+							// pub_alert("上传更新图片成功！");
+							page_getphoto();
+						}
+						else
+						{
+							pub_alert(json.message);
+						}
+					},
+					error:function(data)
+					{
+						console.log(data);
+						pub_alert("服务请求异常！");
+					}
+				})
+				
+            },
+            onUploadError: function(file, errorCode, errorMsg, errorString) {
+                HYD.hint("danger", "对不起：" + file.name + "上传失败：" + errorString);
+            },
+            'onUploadStart': function (file) {  
+                // $("#j-imgcover").uploadify("settings", "formData", {'cclass':'GoodsPhoto', 'kid':aphoto.id});  
+                //在onUploadStart事件中，也就是上传之前，把参数写好传递到后台。  
+            }  
+        });	
+		
+		});
+		
+	};
+	
+	page_getphoto();
+
+});
+
+</script>
 
 
 </body>

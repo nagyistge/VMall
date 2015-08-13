@@ -3,3 +3,15 @@ insert into t_sys_dictionary(id, dkey, dvalue, dtext)
 values(uuid(), 'app.system.attach.root', 'e:\\', 'e:\\');
 insert into t_sys_dictionary(id, dkey, dvalue, dtext) 
 values(uuid(), 'app.system.material.serverprefix', 'http://www.rbtalking.com/vmall/', 'http://www.rbtalking.com/vmall');
+
+insert into t_sys_dictionary(id, dkey, dvalue, dtext, ordernum) 
+values(uuid(), 'app.goods.goodsphoto.ctype', '商品缩略图片', '商品缩略图片', 1);
+
+insert into t_sys_dictionary(id, dkey, dvalue, dtext, ordernum) 
+values(uuid(), 'app.goods.goodsphoto.ctype', '商品详细介绍图片', '商品详细介绍图片', 2);
+
+insert into t_sys_dictionary(id, dkey, dvalue, dtext, ordernum) 
+values(uuid(), 'app.goods.goodsphoto.ismulti', '否', '否', 1);
+
+insert into t_sys_dictionary(id, dkey, dvalue, dtext, ordernum) 
+values(uuid(), 'app.goods.goodsphoto.ismulti', '是', '是', 2);
