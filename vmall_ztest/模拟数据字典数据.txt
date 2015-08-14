@@ -1,6 +1,10 @@
 delete from t_sys_dictionary;
 insert into t_sys_dictionary(id, dkey, dvalue, dtext) 
-values(uuid(), 'app.system.attach.root', 'e:\\', 'e:\\');
+values(uuid(), 'app.system.attach.root', 'e:\\upload', 'e:\\upload');
+
+insert into t_sys_dictionary(id, dkey, dvalue, dtext) 
+values(uuid(), 'app.system.attach.webroot', '/upload', '/upload');
+
 insert into t_sys_dictionary(id, dkey, dvalue, dtext) 
 values(uuid(), 'app.system.material.serverprefix', 'http://www.rbtalking.com/vmall/', 'http://www.rbtalking.com/vmall');
 

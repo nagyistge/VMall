@@ -12,6 +12,10 @@ public class VMallConstants
 	
 	public static final String flow_drawcash_name = "提现";
 	
+	public static final String rootdir_upload_default = "e:\\upload";
+
+	public static final String rootdir_upload_web_default = "/upload";	
+	
 	public static final String[] flow_order = new String[]
 	{ "下单", "收款", "发货", "收货", "结算", "结束" };
 	public static final String[] flow_drawcash = new String[]

@@ -23,7 +23,6 @@ import org.nutz.mvc.annotation.Param;
 import org.nutz.mvc.filter.CheckSession;
 import org.nutz.mvc.upload.UploadAdaptor;
 
-import com.skynet.app.dictionary.pojo.Dictionary;
 import com.skynet.app.dictionary.service.DictionaryService;
 import com.skynet.framework.common.generator.UUIDGenerator;
 import com.skynet.framework.services.db.dybeans.DynamicObject;
@@ -42,6 +41,10 @@ public class AttachAction
 	private File fupload;
 
 	private String fuploadFileName;
+	
+	public static String rootdir_upload;
+
+	public static String rootdir_upload_web;
 
 	@Inject
 	DictionaryService dictionaryService;
@@ -68,19 +71,23 @@ public class AttachAction
 		String cclass = (String) form.get("cclass");
 		String curl = "";
 		// 保存上传附件
-		String dir = String.valueOf(new GregorianCalendar().get(Calendar.YEAR)) + "\\" + cclass;
+		String dir = String.valueOf(new GregorianCalendar().get(Calendar.YEAR)) + File.separator + cclass;
 
 		try
 		{
 			Map<String, String> map = uploaddoc(dir);
 			// 保存附件记录;
+			
+			curl = get_rootdir_upload_web() + "/" + dir.replace(File.separatorChar, '/');
 
 			Attach attach = new Attach();
 
 			attach.setFilename(map.get("filename"));
 			attach.setFileextname(map.get("fileextname"));
 			attach.setCname(fuploadFileName);
-			attach.setCurl(dir.replace('\\', '/'));
+			// attach.setCurl(dir.replace('\\', '/'));
+			
+			attach.setCurl(curl);
 			attach.setCclass(cclass);
 
 			attach.setCreateuser(username);
@@ -89,8 +96,7 @@ public class AttachAction
 
 			appattachService.uploadref(attach, kid, cclass);
 			
-			String weburl = "upload/" + attach.getCurl() + "/" + attach.getFilename();
-			System.out.println(weburl);
+			String weburl = attach.getCurl() + "/" + attach.getFilename();
 			
 			DynamicObject ro = new DynamicObject();
 			ro.put("state", "success");
@@ -123,8 +129,7 @@ public class AttachAction
 		// 根据完整目录名创建附件目录，并上传附件至该目录；
 		Map map = new DynamicObject();
 
-		Dictionary dictionary = dictionaryService.fetch(Cnd.where("dkey", "=", "app.system.attach.root"));
-		String root = dictionary.getDvalue();
+		String root = get_rootdir_upload();
 
 		if (StringToolKit.isBlank(root))
 		{
@@ -132,8 +137,7 @@ public class AttachAction
 			throw new Exception("error");
 		}
 
-		String rootdir = root + "upload";
-		String webrootdir = "/upload";
+		String rootdir = root;
 
 		File rootdirfile = new File(rootdir);
 		if (!rootdirfile.isDirectory())
@@ -159,7 +163,7 @@ public class AttachAction
 
 		newFileName = UUIDGenerator.getInstance().getNextValue() + "." + extName;
 
-		File dirname = new File(rootdir + "\\" + dir);
+		File dirname = new File(rootdir + File.separator + dir);
 
 		if (!dirname.isDirectory())
 		{
@@ -167,13 +171,31 @@ public class AttachAction
 			dirname.mkdirs(); // 创建目录
 		}
 
-		fupload.renameTo(new File(rootdir + "\\" + dir + "\\" + newFileName));
+		fupload.renameTo(new File(rootdir + File.separator + dir + File.separator + newFileName));
 
 		map.put("filename", newFileName);
 		map.put("fileextname", extName);
 
 		return map;
 	}
+	
+	public String get_rootdir_upload()
+	{
+		if(StringToolKit.isBlank(rootdir_upload))
+		{
+			rootdir_upload  = dictionaryService.fetch(Cnd.where("dkey", "=", "app.system.attach.root")).getDvalue();
+		}
+		return rootdir_upload;
+	}
+	
+	public String get_rootdir_upload_web()
+	{
+		if(StringToolKit.isBlank(rootdir_upload_web))
+		{
+			rootdir_upload_web  = dictionaryService.fetch(Cnd.where("dkey", "=", "app.system.attach.webroot")).getDvalue();
+		}
+		return rootdir_upload_web;
+	}	
 
 	public File getFupload()
 	{
