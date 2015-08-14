@@ -85,7 +85,10 @@
 	  	</td>                  	
 		<td>
 			<div class="j-render-ctrl" id="upload_ctrl<%=i%>">
-			</div>						
+			</div>
+			
+			<div class="j-render-newctrl" id="upload_newctrl<%=i%>">
+			</div>									
 		</td>
 	</tr> 
 	<%}%>
@@ -105,8 +108,15 @@
 	    </div>
 	</div>
 
+	<div class="formitems">
+		<div class="form-controls">
+			<button type="button" class="btn btn-primary addphoto" style="display:<%if (ismulti=="是") { %>block<% }else{ %>none<%}%>">添加图片</button>
+		</div>
+	</div>
+	
+
 </script>
-<!-- end tpl_material_ctrl -->
+<!-- end tpl_ctrl -->
 
 <script type="text/j-template" id="tpl_con">
 	<div class="coer_img">
@@ -115,17 +125,18 @@
 </script>
 <!-- end tpl_con -->
 
-
 <!-- end script template -->
-	
 
 <script>
 var files;
 var photos;
+
+    var kid = "${obj.goodsid}";
+	var goodsid = "${obj.goodsid}";
+	
 $(function(){
     
-    var kid = "${obj.goodsid}";
-	var goodsid = '${obj.goodsid}';
+
 	
 	function page_getphoto()
 	{
@@ -176,6 +187,7 @@ $(function(){
 		console.log("end photos.");
 		
 		render_ctrl();
+		render_addphoto();
     }
     
     // 渲染上传控件
@@ -195,8 +207,8 @@ $(function(){
 		console.log(aphoto);
 		console.log(aphoto.ctype);
 		
-                var html=_.template($("#tpl_con").html(), aphoto);
-				$(($(".j-render-con")[i])).empty().append(html);		
+        var html=_.template($("#tpl_con").html(), aphoto);
+		$(($(".j-render-con")[i])).empty().append(html);		
 		
 		//选择文件
 
@@ -295,6 +307,53 @@ $(function(){
 		});
 		
 	};
+	
+	function render_addphoto()
+	{
+		$(".addphoto").each(function(i, elment){
+			var aphoto = photos[i];
+			aphoto.goodsid = "";
+			var url = "";
+			var ctype = aphoto.ctype;
+							
+			// 更新图片数据
+			$(this).click(function(){
+			
+				$.ajax({
+					type:'post',
+					url:'${base}/goods/goods/addphoto.action',
+					data:{goodsid:goodsid,ctype:ctype},
+					cache:false,
+					async:true,
+					success:function(data)
+					{
+						console.log(data);
+						if(data=="")
+						{
+							pub_alert("添加图片异常！");
+							return;
+						}
+						var json = eval("(" + data + ")");
+						if(json.state=="success")
+						{
+							// pub_alert("添加图片成功！");
+							page_getphoto();
+						}
+						else
+						{
+							pub_alert(json.message);
+						}
+					},
+					error:function(data)
+					{
+						console.log(data);
+						pub_alert("服务请求异常！");
+					}
+				})
+			})	
+
+		});	
+	}
 	
 	page_getphoto();
 

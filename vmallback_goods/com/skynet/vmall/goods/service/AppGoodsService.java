@@ -313,7 +313,6 @@ public class AppGoodsService extends SkynetDaoService
 		return ro;
 	}
 	
-	// 添加规格型号
 	public Map updatephoto(Map map) throws Exception
 	{
 		String goodsid = (String) map.get("goodsid");
@@ -347,6 +346,25 @@ public class AppGoodsService extends SkynetDaoService
 		ro.setObj("goodsphoto", goodsphoto);
 		return ro;
 	}
+	
+	public Map addphoto(Map map) throws Exception
+	{
+		String goodsid = (String) map.get("goodsid");
+		String ctype = (String) map.get("ctype");
+		String url = (String) map.get("url");
+		GoodsPhoto goodsphoto = new GoodsPhoto();
+		goodsphoto.setId(UUIDGenerator.getInstance().getNextValue());
+		goodsphoto.setCtype(ctype);
+		goodsphoto.setGoodsid(goodsid);
+		goodsphoto.setUrl(url);
+
+		sdao().insert(goodsphoto);			
+
+		DynamicObject ro = new DynamicObject();
+		ro.setAttr("state", "success");
+		ro.setObj("goodsphoto", goodsphoto);
+		return ro;
+	}	
 	
 	public Map getphoto(String goodsid) throws Exception
 	{

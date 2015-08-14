@@ -257,6 +257,14 @@ public class GoodsAction
 	{
 		Map ro = appgoodsService.updatephoto(map);
 		return ro;
+	}
+	
+	@At("/addphoto")
+	@Ok("json")
+	public Map addphoto(@Param("..") Map map) throws Exception
+	{
+		Map ro = appgoodsService.addphoto(map);
+		return ro;
 	}	
 
 	@At("/leftmenu")
