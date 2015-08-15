@@ -1,6 +1,6 @@
 <html>
 <head>
-<title>优品365.首页</title>
+<title>天狗微商城.首页</title>
 </head>
 <body>
 <link rel="stylesheet" href="${base}/page/home/home/home.css">

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.nutz.dao.Cnd;
@@ -165,8 +166,15 @@ public class GoodsAction
 		HttpSession session = Mvcs.getHttpSession(true);
 		DynamicObject login_token = (DynamicObject) session.getAttribute(GlobalConstants.sys_login_token);
 
+		HttpServletRequest request = Mvcs.getReq();
+		
+		String[] pdsaleprice = request.getParameterValues("pdsaleprice");
+		map.put("pdsaleprice", request.getParameterValues("pdsaleprice"));
+		map.put("pdpromoteprice", request.getParameterValues("pdpromoteprice"));
+		map.put("pdallstorenum", request.getParameterValues("pdallstorenum"));
+		
 		String id = appgoodsService.update(map, login_token);
-
+		
 		DynamicObject ro = new DynamicObject();
 
 		ro.setAttr("id", id);

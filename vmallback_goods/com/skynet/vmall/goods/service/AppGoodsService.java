@@ -340,6 +340,13 @@ public class AppGoodsService extends SkynetDaoService
 			goodsphoto.setUrl(weburl);
 			sdao().insert(goodsphoto);			
 		}
+		
+		if("商品缩略图片".equals(ctype))
+		{
+			Goods goods = sdao().fetch(Goods.class, goodsid);
+			goods.setPic(weburl);
+			sdao().update(goods);			
+		}
 
 		DynamicObject ro = new DynamicObject();
 		ro.setAttr("state", "success");

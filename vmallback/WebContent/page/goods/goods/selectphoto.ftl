@@ -1,6 +1,6 @@
 <html>
 <head>
-<title>优品365.商品管理.设置图片</title>
+<title>天狗微商城.商品管理.设置图片</title>
 </head>
 <body>
 

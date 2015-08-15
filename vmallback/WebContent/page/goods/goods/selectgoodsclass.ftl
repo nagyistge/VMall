@@ -1,6 +1,6 @@
 <html>
 <head>
-<title>优品365.商品管理.发布商品</title>
+<title>天狗微商城.商品管理.发布商品</title>
 </head>
 <body>
 <script src="${base}/public/js/dist/lib-min.js"></script>

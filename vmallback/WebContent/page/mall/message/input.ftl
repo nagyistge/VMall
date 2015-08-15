@@ -1,6 +1,6 @@
 <html>
 <head>
-<title>优品365.营销管理.微信群发</title>
+<title>天狗微商城.营销管理.微信群发</title>
 </head>
 <body>
 <link rel="stylesheet" href="/Public/css/dist/home/PubMarketing/pubMarketing.css">

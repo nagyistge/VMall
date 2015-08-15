@@ -1,5 +1,5 @@
 <html>
-<title>优品365.商品管理.发布商品</title>
+<title>天狗微商城.商品管理.发布商品</title>
 <body>
 <link rel="stylesheet" href="${base}/public/plugins/uploadify/uploadify-min.css">
 <link rel="stylesheet" href="${base}/page/goods/goods/input.css">
@@ -226,8 +226,8 @@
             <ul class="img-list clearfix">
                 <li class="img-list-add j-addimg">+</li>
             </ul>
-            <input type="hidden" name="file_path" class="j-imglist-dataset" value="">
-            <span class="fi-help-text">建议上传尺寸640px * 640px</span>
+            <input type="hidden" name="file_path" class="j-imglist-dataset" value="${base}/${obj.goods.pic}">
+            <span class="fi-help-text"><a href="${base}/goods/goods/selectphoto.action?goodsid=${obj.goods.id}">图片</a></span>
         </div>
     </div>
 

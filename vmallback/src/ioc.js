@@ -21,7 +21,7 @@ var ioc={
            driverClassName:'com.mysql.jdbc.Driver',
            url:'jdbc:mysql://localhost/vmall?useUnicode=true&amp;characterEncoding=utf-8',
            username:'root',
-           password:'root'
+           password:'!tiangou2015'
         }
     },
     

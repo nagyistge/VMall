@@ -15,6 +15,7 @@
 <body id="body">
 <div class="viewport">
 <#include "/decorator/include/navmain.ftl">
+<a href="http://mp.weixin.qq.com/s?__biz=MzI5NDAyODY5Mg==&mid=209013408&idx=1&sn=457de9a2babe75837302bcf10b4bac69&scene=0#rd">关注天狗微商城</a>
 
 	<div data-spm="" class="content">
 	
@@ -40,10 +41,10 @@
 	
 	<% if (index%2==0) { %>
 	<a href="${base}/goods/goods/look.action?id=<%=item.id%>" class="waterfall-item auction">
-	<img style="display:block;" class="" src="<%if(item.pic=='') {%>${base}/css/img/default.png<%}else{%><%=item.pic%><%}%>">
+	<img style="display:block;" class="" src="<%if(item.pic=='') {%>${base}/css/img/default.png<%}else{%>${base}/<%=item.pic%><%}%>">
 	<h3 style="font-size:10px;color:#8e8e8e"><%=item.cname%></h3>
 	<p>¥<span class="promote-price"><%=item.promoteprice%></span>¥<del class="cost-price"><%=item.saleprice%></del></p>
-	<p><span class="info-sum">人气：<%=item.popular%>月销：<%=item.sales%></span><span class="info-freight"><#--免运费--></span></p>
+	<p><span class="info-sum">人气：<%=item.popular%>&nbsp;&nbsp;月销：<%=item.sales%></span><span class="info-freight"><#--免运费--></span></p>
 	</a>
 	<% } %>
 	
@@ -53,10 +54,10 @@
 
 	<% if (index%2==1) { %>
 	<a href="${base}/goods/goods/look.action?id=<%=item.id%>" class="waterfall-item auction">
-	<img style="display:block;" class="" src="<%if(item.pic=='') {%>${base}/css/img/default.png<%}else{%><%=item.pic%><%}%>">
+	<img style="display:block;" class="" src="<%if(item.pic=='') {%>${base}/css/img/default.png<%}else{%>${base}/<%=item.pic%><%}%>">
 	<h3 style="font-size:10px;color:#8e8e8e"><%=item.cname%></h3>
 	<p>¥<span class="promote-price"><%=item.promoteprice%></span>¥<del class="cost-price"><%=item.saleprice%></del></p>
-	<p><span class="info-sum">人气：<%=item.popular%>月销：<%=item.sales%></span><span class="info-freight"><#--免运费--></span></p>
+	<p><span class="info-sum">人气：<%=item.popular%>&nbsp;&nbsp;月销：<%=item.sales%></span><span class="info-freight"><#--免运费--></span></p>
 	</a>
 	<% } %>
 	
@@ -132,7 +133,7 @@ wx.ready(function()
 {
 	//config信息验证后会执行ready方法，所有接口调用都必须在config接口获得结果之后，config是一个客户端的异步操作，所以如果需要在页面加载时就调用相关接口，则须把相关接口放在ready函数中调用来确保正确执行。对于用户触发时才调用的接口，则可以直接调用，不需要放在ready函数中。
     wx.onMenuShareAppMessage({
-	    title: '优品365', 
+	    title: '天狗微商城', 
 	    desc: '${obj.shareurl!}', 
 	    link: '${obj.shareurl!}', 
 	    imgUrl: '', 

@@ -2,6 +2,8 @@ package com.skynet.vmall.base.pojo;
 
 import java.math.BigDecimal;
 
+import org.nutz.dao.entity.annotation.ColDefine;
+import org.nutz.dao.entity.annotation.ColType;
 import org.nutz.dao.entity.annotation.Column;
 import org.nutz.dao.entity.annotation.Table;
 
@@ -82,6 +84,7 @@ public class Goods extends IdEntity
 	private BigDecimal volume; // 体积
 
 	@Column
+	@ColDefine(type=ColType.VARCHAR, width=500)
 	private String pic; // 商品图片（URL）
 
 	// 佣金设置

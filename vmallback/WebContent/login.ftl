@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title>优品365维分销平台</title>
+	<title>天狗微商城维分销平台</title>
 	<link rel="stylesheet" type="text/css" href="${base}/css/component-min.css">
 	<link rel="stylesheet" type="text/css" href="${base}/css/jbox-min.css">
 	<link rel="stylesheet" type="text/css" href="${base}/css/common_login_reg.css">
@@ -16,7 +16,7 @@
 		<div class="login-inner">
 		<form action="${base}/author/login/login.action" method="post" class="form-signin" id="loginfrom">
 		<input type="hidden" id="password" name="password">
-			<h1 class="login-title">优品365</h1>
+			<h1 class="login-title">天狗微商城</h1>
 			<div class="login-item mgb20">
 				<input type="text" class="clearError" id="ipt_account" name="loginname" placeholder="请输入账号" tabindex="1">
 				<a href="javascript:;" class="clearIpt j-clearIpt"><i class="gicon-remove"></i></a>
