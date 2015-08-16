@@ -297,6 +297,17 @@ public class GoodsAction extends BaseAction
 		return goods;
 	}
 	
+	// 商品浏览
+	@At("/getphoto")
+	@Ok("json")
+	public Map getphoto(@Param("..") Map map) throws Exception
+	{
+		List<DynamicObject> goodsphotoes = appgoodsService.getphoto(map);
+		Map ro = new DynamicObject();
+		ro.put("goodsphotoes", goodsphotoes);
+		return ro;
+	}	
+	
 	// 活动商品查看
 	@At("/eventlook")
 	@Ok("->:/page/goods/goods/look.ftl")

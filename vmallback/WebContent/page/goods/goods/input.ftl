@@ -109,18 +109,7 @@
             <span class="fi-help-text"></span>
         </div>
     </div>
-    
-     <div class="formitems">
-        <label class="fi-name"><span class="colorRed">*</span>厂商：</label>
-        <div class="form-controls">
-        	<input type="hidden" name="supplierid" value="">
-            <input type="text" class="input xxlarge" name="suppliername" value="">
-           	<a href="javascript:void(0)" class="btn btn-primary" id="bt_selectsupplier">选择</a>
-            <span class="fi-help-text"></span>
-        </div>
-    </div>    
-    
-    <#--
+
     <div class="formitems">
         <label class="fi-name"><span class="colorRed">*</span>经销商：</label>
         <div class="form-controls">
@@ -130,7 +119,16 @@
             <span class="fi-help-text"></span>
         </div>
     </div>  
-    -->  
+    
+    <div class="formitems">
+        <label class="fi-name"><span class="colorRed">*</span>厂商：</label>
+        <div class="form-controls">
+        	<input type="hidden" name="supplierid" value="">
+            <input type="text" class="input xxlarge" name="suppliername" value="">
+           	<a href="javascript:void(0)" class="btn btn-primary" id="bt_selectsupplier">选择</a>
+            <span class="fi-help-text"></span>
+        </div>
+    </div>    
     
     <div class="formitems">
         <label class="fi-name"><span class="colorRed">*</span>原价：</label>
@@ -198,7 +196,7 @@
     <div class="formitems">
         <label class="fi-name"><span class="colorRed">*</span>总库存：</label>
         <div class="form-controls">
-            <input type="text" class="input mini" id="j-totalStock" name="num" value="0">
+            <input type="text" class="input mini" id="j-totalStock" name="allstorenum" value="0">
             <span><input type="text" class="input xmini" name="unit" value="件"></span>
             <span class="fi-help-text"></span>
         </div>
@@ -618,7 +616,9 @@
 				<%for(var i=0;i<dealers.length;i++){%>
 				<% var dealer = dealers[i]; %>
 				<tr>
-					<td><%=dealer.cname%></td>
+					<td dataid="<%=dealer.id%>" cname="<%=dealer.cname%>">
+					<a href="javascript:void(0)" onclick="page_setdealer()"><%=dealer.cname%></a>
+					</td>				
 				</tr>	
 				<%}%>        
             </tbody>

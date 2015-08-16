@@ -133,11 +133,6 @@ public class GoodsAction
 		HttpSession session = Mvcs.getHttpSession(true);
 		DynamicObject login_token = (DynamicObject) session.getAttribute(GlobalConstants.sys_login_token);
 
-		trans_attr(new String[]
-		{ "original_price,saleprice", "price,promoteprice", "basic_sales,basesalenum", "praise_num,basepraisenum", "num,allstorenum" }, map);
-		trans_attr(new String[]
-		{ "directly_money,rebate1", "superior_money,rebate2", "three_money,rebate3", "goods_no,code" }, map);
-
 		String id = appgoodsService.insert(map, login_token);
 
 		DynamicObject ro = new DynamicObject();

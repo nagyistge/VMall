@@ -155,10 +155,10 @@ public class MallAction
 		sql.append("    and defspec = '是' ").append("\n");
 
 		List<DynamicObject> datas = goodsclassService.sdao().queryForList(sql.toString(), 1, 10);
-		if(datas.size()%2==1)
-		{
-			datas.remove(datas.size()-1);
-		}
+//		if(datas.size()%2==1)
+//		{
+//			datas.remove(datas.size()-1);
+//		}
 		return datas;
 	}
 	

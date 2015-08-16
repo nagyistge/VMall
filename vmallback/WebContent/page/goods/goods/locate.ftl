@@ -113,6 +113,16 @@
             <span class="fi-help-text"></span>
         </div>
     </div>
+    
+    <div class="formitems">
+        <label class="fi-name"><span class="colorRed">*</span>经销商：</label>
+        <div class="form-controls">
+        	<input type="hidden" name="dealerid" value="">
+            <input type="text" class="input xxlarge" name="dealername" value="" readonly>
+           	<a href="javascript:void(0)" class="btn btn-primary" id="bt_selectdealer">选择</a>
+            <span class="fi-help-text"></span>
+        </div>
+    </div>     
 
      <div class="formitems">
         <label class="fi-name"><span class="colorRed">*</span>厂商：</label>
@@ -190,7 +200,7 @@
     <div class="formitems">
         <label class="fi-name"><span class="colorRed">*</span>总库存：</label>
         <div class="form-controls">
-            <input type="text" class="input mini" id="j-totalStock" name="num" value="0">
+            <input type="text" class="input mini" id="j-totalStock" name="allstorenum" value="${obj.goods.allstorenum}">
             <span><input type="text" class="input xmini" name="unit" value="件"></span>
             <span class="fi-help-text"></span>
         </div>
@@ -198,7 +208,7 @@
     <div class="formitems">
         <label class="fi-name"><span class="colorRed">*</span>基础销量：</label>
         <div class="form-controls">
-            <input type="text" class="input mini"  name="basesalenum" value="0">
+            <input type="text" class="input mini"  name="basesalenum" value="${obj.goods.basesalenum}">
             <span><span><input type="text" class="input xmini" name="unit" value="件"></span></span>
             <span class="fi-help-text"></span>
         </div>
@@ -206,7 +216,7 @@
     <div class="formitems">
         <label class="fi-name"><span class="colorRed">*</span>基础点赞数：</label>
         <div class="form-controls">
-            <input type="text" class="input mini"  name="basepraisenum" value="0">
+            <input type="text" class="input mini"  name="basepraisenum" value="${obj.goods.basepraisenum}">
             <span class="fi-help-text"></span>
         </div>
     </div>
@@ -580,7 +590,9 @@
 				<%for(var i=0;i<dealers.length;i++){%>
 				<% var dealer = dealers[i]; %>
 				<tr>
-					<td><%=dealer.cname%></td>
+					<td dataid="<%=dealer.id%>" cname="<%=dealer.cname%>">
+					<a href="javascript:void(0)" onclick="page_setdealer()"><%=dealer.cname%></a>
+					</td>
 				</tr>	
 				<%}%>        
             </tbody>

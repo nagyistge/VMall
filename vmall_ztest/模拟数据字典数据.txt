@@ -8,14 +8,12 @@ values(uuid(), 'app.system.attach.webroot', '/upload', '/upload');
 insert into t_sys_dictionary(id, dkey, dvalue, dtext) 
 values(uuid(), 'app.system.material.serverprefix', 'http://www.rbtalking.com/vmall/', 'http://www.rbtalking.com/vmall');
 
-insert into t_sys_dictionary(id, dkey, dvalue, dtext, ordernum) 
-values(uuid(), 'app.goods.goodsphoto.ctype', '商品缩略图片', '商品缩略图片', 1);
+insert into t_sys_dictionary(id, dkey, dvalue, dtext, ordernum) values(uuid(), 'app.goods.goodsphoto.ctype', '商品缩略图片', '商品缩略图片', 11);
+insert into t_sys_dictionary(id, dkey, dvalue, dtext, ordernum) values(uuid(), 'app.goods.goodsphoto.ctype', '商品介绍', '商品介绍', 21);
+insert into t_sys_dictionary(id, dkey, dvalue, dtext, ordernum) values(uuid(), 'app.goods.goodsphoto.ctype', '规格参数', '规格参数', 22);
+insert into t_sys_dictionary(id, dkey, dvalue, dtext, ordernum) values(uuid(), 'app.goods.goodsphoto.ctype', '包装售后', '包装售后', 23);
 
-insert into t_sys_dictionary(id, dkey, dvalue, dtext, ordernum) 
-values(uuid(), 'app.goods.goodsphoto.ctype', '商品详细介绍图片', '商品详细介绍图片', 2);
-
-insert into t_sys_dictionary(id, dkey, dvalue, dtext, ordernum) 
-values(uuid(), 'app.goods.goodsphoto.ismulti', '否', '否', 1);
-
-insert into t_sys_dictionary(id, dkey, dvalue, dtext, ordernum) 
-values(uuid(), 'app.goods.goodsphoto.ismulti', '是', '是', 2);
+insert into t_sys_dictionary(id, dkey, dvalue, dtext, ordernum) values(uuid(), 'app.goods.goodsphoto.ismulti', '否', '否', 11);
+insert into t_sys_dictionary(id, dkey, dvalue, dtext, ordernum) values(uuid(), 'app.goods.goodsphoto.ismulti', '是', '是', 21);
+insert into t_sys_dictionary(id, dkey, dvalue, dtext, ordernum) values(uuid(), 'app.goods.goodsphoto.ismulti', '是', '是', 22);
+insert into t_sys_dictionary(id, dkey, dvalue, dtext, ordernum) values(uuid(), 'app.goods.goodsphoto.ismulti', '是', '是', 23);

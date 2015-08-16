@@ -198,6 +198,20 @@ public class AppGoodsService extends SkynetDaoService
 		return new DynamicObject();
 
 	}
+	
+	public List<DynamicObject> getphoto(Map map) throws Exception
+	{
+		String goodsid = (String)map.get("goodsid");
+		String ctype = (String)map.get("ctype");
+		StringBuffer sql = new StringBuffer();
+		sql.append(" select * from t_app_goodsphoto ").append("\n");
+		sql.append("  where 1 = 1 ").append("\n");
+		sql.append("    and goodsid = ").append(SQLParser.charValue(goodsid)).append("\n");
+		sql.append("    and ctype = ").append(SQLParser.charValue(ctype)).append("\n");	
+		
+		List<DynamicObject> datas = sdao().queryForList(sql.toString());
+		return datas;
+	}
 
 	public DynamicObject getPrice(Map map) throws Exception
 	{

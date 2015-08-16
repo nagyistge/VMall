@@ -418,6 +418,7 @@ public class AppShopCartService extends SkynetDaoService
 
 			// 按照商品厂商重新组织购货商品用于生成订单
 			String dealid = goods.getDealerid();
+			
 			if (deals.containsKey(dealid))
 			{
 				List<DynamicObject> dealcartgoodses = deals.get(dealid);

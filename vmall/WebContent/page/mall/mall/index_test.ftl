@@ -35,7 +35,7 @@
 
 <script type="text/j-template" id="tpl_topgoods">
 <% _.each(topgoods,function(item, index){ %>
-
+	<% console.log("index:"+index); %>
 	<div class="waterfall-column" style="width:50%;" id="waterfall-column1">
 	
 	<% if (index%2==0) { %>

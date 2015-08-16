@@ -1,6 +1,10 @@
 delete from t_sys_organ;
 
-insert into t_sys_organ(id, cname, ctype, parentorganid, internal) values('vmall', '优品365', '商城', 'R0', '00000001');
+insert into t_sys_organ(id, cname, ctype, parentorganid, internal) values('vmall', '天狗微商城', '商城', 'R0', '00000001');
+insert into t_sys_organ(id, cname, ctype, parentorganid, internal) values('vmalldealer', '天狗微商城营销', '总经销商', 'vmall', '0000000100000001');
 
-insert into t_sys_organ(id, cname, ctype, parentorganid, internal) values('12345678abcd1234abcd12345678abcd', '玖希生物科技', '商家', 'vmall', '0000000100000001');
-insert into t_sys_organ(id, cname, ctype, parentorganid, internal) values('00000000efgh0000efgh00000000efgh', '唯品会', '商家', 'vmall', '0000000100000001');                                                                      
+delete from t_app_dealer;
+insert into t_app_dealer(id, cname) values('vmalldealer', '天狗微商城');
+
+delete from t_app_supplier;
+insert into t_app_supplier(id, cname) values(uuid(), '乌鲁木齐丰疆物语网络技术有限公司');

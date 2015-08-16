@@ -25,7 +25,11 @@ $(function () {
                 $.jBox.show({
                     title: html_head,
                     content: html,
-                    btnOK: {show:false},
+                    btnOK: {
+                    	onBtnClick: function(a) {
+                    		$.jBox.close(a);
+                    	}
+                    },
                     btnCancel:{show:false},
                     onOpen:function(jbox){
                         $.jBox.hideloading();
@@ -82,11 +86,21 @@ $(function () {
 
 })
 
-	function page_setsupplier()
-	{
-		var e = event.target;
-		var $e = $(e);
-		$("input[name='supplierid']").val($e.parent().attr("dataid"));
-		$("input[name='suppliername']").val($e.parent().attr("cname"));
-	}
+function page_setdealer()
+{
+	var e = event.target;
+	var $e = $(e);
+	$("input[name='dealerid']").val($e.parent().attr("dataid"));
+	$("input[name='dealername']").val($e.parent().attr("cname"));
+	$.jBox.close(function(a){close()});	
+}
+
+function page_setsupplier()
+{
+	var e = event.target;
+	var $e = $(e);
+	$("input[name='supplierid']").val($e.parent().attr("dataid"));
+	$("input[name='suppliername']").val($e.parent().attr("cname"));
+	$.jBox.close(function(a){close()});	
+}
 

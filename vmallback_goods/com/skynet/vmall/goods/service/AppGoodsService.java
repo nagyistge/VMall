@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.nutz.castor.Castors;
+import org.nutz.dao.Cnd;
 import org.nutz.dao.Dao;
 import org.nutz.dao.Sqls;
 import org.nutz.ioc.annotation.InjectName;
@@ -23,6 +24,7 @@ import com.skynet.vmall.base.pojo.Attach;
 import com.skynet.vmall.base.pojo.Goods;
 import com.skynet.vmall.base.pojo.GoodsClass;
 import com.skynet.vmall.base.pojo.GoodsPhoto;
+import com.skynet.vmall.base.pojo.GoodsPrice;
 import com.skynet.vmall.base.pojo.GoodsProductSpec;
 import com.skynet.vmall.base.pojo.GoodsSpec;
 import com.skynet.vmall.base.pojo.GoodsSpecValue;
@@ -62,6 +64,21 @@ public class AppGoodsService extends SkynetDaoService
 		goods.setState("新建");
 
 		sdao().insert(goods);
+		
+		GoodsPrice goodsprice = new GoodsPrice();
+		goodsprice.setId(UUIDGenerator.getInstance().getNextValue());
+		goodsprice.setGoodsid(goods.getId());
+		goodsprice.setCostprice(goods.getCostprice());
+		goodsprice.setSaleprice(goods.getSaleprice());
+		goodsprice.setPromoteprice(goods.getPromoteprice());
+		goodsprice.setRebate1(goods.getRebate1());
+		goodsprice.setRebate2(goods.getRebate2());
+		goodsprice.setRebate3(goods.getRebate3());
+		goodsprice.setRebate4(goods.getRebate4());
+		goodsprice.setRebate5(goods.getRebate5());
+		goodsprice.setIsdefault("是");
+		
+		sdao().insert(goodsprice);
 
 		return id;
 	}
@@ -70,6 +87,23 @@ public class AppGoodsService extends SkynetDaoService
 	{
 		Goods goods = (Goods) Mapl.maplistToObj(form, Goods.class);
 		sdao().update(goods);
+		
+		sdao().clear(GoodsPrice.class, Cnd.where("goodsid", "=", goods.getId()).andNot("isdefault", "=", "是"));
+		
+		GoodsPrice goodsprice = new GoodsPrice();
+		goodsprice.setId(UUIDGenerator.getInstance().getNextValue());
+		goodsprice.setGoodsid(goods.getId());
+		goodsprice.setCostprice(goods.getCostprice());
+		goodsprice.setSaleprice(goods.getSaleprice());
+		goodsprice.setPromoteprice(goods.getPromoteprice());
+		goodsprice.setRebate1(goods.getRebate1());
+		goodsprice.setRebate2(goods.getRebate2());
+		goodsprice.setRebate3(goods.getRebate3());
+		goodsprice.setRebate4(goods.getRebate4());
+		goodsprice.setRebate5(goods.getRebate5());
+		goodsprice.setIsdefault("是");		
+
+		sdao().insert(goodsprice);
 
 		// 清除之前的货品
 		StringBuffer sql = new StringBuffer();
@@ -107,6 +141,22 @@ public class AppGoodsService extends SkynetDaoService
 			subgoods.setAllstorenum(Types.parseBigDecimal(pdallstorenum[i], new BigDecimal(0)));
 			subgoods.setSalenum(new BigDecimal(0));
 			sdao().insert(subgoods);
+			
+			
+			GoodsPrice subgoodsprice = new GoodsPrice();
+			subgoodsprice.setId(UUIDGenerator.getInstance().getNextValue());
+			subgoodsprice.setGoodsid(subgoods.getId());
+			subgoodsprice.setCostprice(goods.getCostprice());
+			subgoodsprice.setSaleprice(goods.getSaleprice());
+			subgoodsprice.setPromoteprice(goods.getPromoteprice());
+			subgoodsprice.setRebate1(goods.getRebate1());
+			subgoodsprice.setRebate2(goods.getRebate2());
+			subgoodsprice.setRebate3(goods.getRebate3());
+			subgoodsprice.setRebate4(goods.getRebate4());
+			subgoodsprice.setRebate5(goods.getRebate5());
+			subgoodsprice.setIsdefault("是");		
+
+			sdao().insert(subgoodsprice);
 
 			// 新增货品规格
 			for (int j = 0; j < aspecs.size(); j++)
