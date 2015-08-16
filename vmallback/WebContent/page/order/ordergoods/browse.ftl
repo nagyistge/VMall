@@ -30,7 +30,7 @@
     	<input type="hidden" id="state" name="state" value="${obj.state}">
         <div class="tables-searchbox">
             <input type="text" placeholder="输入收货人/手机号/订单号" class="input" name="mobile_orderno" value="">
-            <input type="text" placeholder="输入商品货号" class="input" name="goods_no" value="">
+            <input type="text" placeholder="输入商品货号" class="input" name="code" value="">
             <input type="text" placeholder="输入收货地址" class="input" name="receiver_address" value="">
             <select name="shipping_type" class="select mini">
                 <option value="-1" selected>配送方式</option>

@@ -144,7 +144,7 @@ public class AppGoodsService extends SkynetDaoService
 	{
 		StringBuffer sql = new StringBuffer();
 		sql.append(" select spec.spec, spec.specclass ").append("\n");
-		sql.append("   from t_app_goods goods, t_app_goodsspec spec ").append("\n");
+		sql.append("   from t_app_goods goods, t_app_goodspdspec spec ").append("\n");
 		sql.append("  where 1 = 1 ").append("\n");
 		sql.append("    and goods.id = ").append(SQLParser.charValue(supgoodsid)).append("\n");
 		sql.append("    and goods.id = spec.goodsid ").append("\n");

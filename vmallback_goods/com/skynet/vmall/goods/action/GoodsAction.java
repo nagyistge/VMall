@@ -26,8 +26,10 @@ import com.skynet.vmall.base.service.GoodsClassService;
 import com.skynet.vmall.base.service.GoodsClassSpecService;
 import com.skynet.vmall.base.service.GoodsClassSpecValueService;
 import com.skynet.vmall.base.service.GoodsService;
+import com.skynet.vmall.goods.service.AppDealerService;
 import com.skynet.vmall.goods.service.AppGoodsClassService;
 import com.skynet.vmall.goods.service.AppGoodsService;
+import com.skynet.vmall.goods.service.AppSupplierService;
 
 @IocBean
 @At("/goods/goods")
@@ -47,13 +49,19 @@ public class GoodsAction
 
 	@Inject
 	private GoodsService goodsService;
-
+	
 	@Inject
 	private AppGoodsService appgoodsService;
 
 	@Inject
 	private AppGoodsClassService appgoodsclassService;
 
+	@Inject
+	private AppDealerService appdealerService;
+
+	@Inject
+	private AppSupplierService appsupplierService;
+	
 	@At("/mainframe")
 	@Ok("->:/page/goods/goods/mainframe.ftl")
 	public Map index(@Param("..") Map map) throws Exception
@@ -280,6 +288,52 @@ public class GoodsAction
 	public Map lefmenu(String id) throws Exception
 	{
 		DynamicObject ro = new DynamicObject();
+		return ro;
+	}
+	
+	@At("/selectdealer")
+	@Ok("json")
+	public Map selectdealer(@Param("..") Map map, @Param("_page") String page, @Param("_pagesize") String pagesize) throws Exception
+	{
+		map.put("_page", Types.parseInt(page, 1));
+		map.put("_pagesize", Types.parseInt(pagesize, VMallConstants.pagesize));
+
+		List<DynamicObject> dealers = appdealerService.browse(map);
+	
+		DynamicObject ro = new DynamicObject();
+
+		ro.put("dealers", dealers);
+		ro.setAttr("state", (String)map.get("state"));
+		
+		ro.put("_page", map.get("_page"));
+		ro.put("_pagesize", map.get("_pagesize"));
+		ro.put("_maxpage", map.get("_maxpage"));
+		ro.put("_startpage", map.get("_startpage"));
+		ro.put("_endpage", map.get("_endpage"));
+
+		return ro;
+	}
+	
+	@At("/selectsupplier")
+	@Ok("json")
+	public Map selectsupplier(@Param("..") Map map, @Param("_page") String page, @Param("_pagesize") String pagesize) throws Exception
+	{
+		map.put("_page", Types.parseInt(page, 1));
+		map.put("_pagesize", Types.parseInt(pagesize, VMallConstants.pagesize));
+
+		List<DynamicObject> suppliers = appsupplierService.browse(map);
+	
+		DynamicObject ro = new DynamicObject();
+
+		ro.put("suppliers", suppliers);
+		ro.setAttr("state", (String)map.get("state"));
+		
+		ro.put("_page", map.get("_page"));
+		ro.put("_pagesize", map.get("_pagesize"));
+		ro.put("_maxpage", map.get("_maxpage"));
+		ro.put("_startpage", map.get("_startpage"));
+		ro.put("_endpage", map.get("_endpage"));
+
 		return ro;
 	}
 

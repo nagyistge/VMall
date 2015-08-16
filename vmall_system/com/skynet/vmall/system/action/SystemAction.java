@@ -17,6 +17,7 @@ import com.skynet.vmall.base.pojo.GoodsSpec;
 import com.skynet.vmall.base.pojo.GoodsSpecValue;
 import com.skynet.vmall.base.pojo.OrderGoodsProductSpec;
 import com.skynet.vmall.base.pojo.ShopCartGoodsProductSpec;
+import com.skynet.vmall.base.pojo.Supplier;
 
 @IocBean
 @At("/system/system")
@@ -51,6 +52,8 @@ public class SystemAction extends BaseAction
 //		organService.dao().create(ShopCartGoods.class, true);
 //		organService.dao().create(ShopCartGoodsProduct.class, true);
 		
+		organService.dao().create(Supplier.class, true);
+		
 		organService.dao().create(DrawCash.class, true);
 		organService.dao().create(GoodsClassSpec.class, true);
 		organService.dao().create(GoodsClassSpecValue.class, true);
@@ -59,7 +62,7 @@ public class SystemAction extends BaseAction
 		organService.dao().create(GoodsProductSpec.class, true);	
 		organService.dao().create(OrderGoodsProductSpec.class, true);
 		organService.dao().create(ShopCartGoodsProductSpec.class, true);
-		
+
 //		organService.dao().create(Material.class, true);
 //		organService.dao().create(MaterialItem.class, true);	
 //		

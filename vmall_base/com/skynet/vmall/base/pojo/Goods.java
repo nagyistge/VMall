@@ -36,13 +36,19 @@ public class Goods extends IdEntity
 	private String cno; // 商品编号（系统编号）	
 
 	@Column
-	private String dealerid; // 商家标识（组织机构）
+	private String dealerid; // 经销商家标识（组织机构）
 
 	@Column
-	private String dealername; // 商家名称
+	private String dealername; // 经销商家名称
 
 	@Column
-	private String code; // 商品货号（商家自定义货号）
+	private String code; // 经销商商品货号（商家自定义货号）
+	
+	@Column
+	private String supplierid; // 供货商家标识（组织机构）
+
+	@Column
+	private String suppliername; // 供货商家名称	
 
 	@Column
 	private String brand; // 品牌
@@ -238,6 +244,26 @@ public class Goods extends IdEntity
 	public void setCode(String code)
 	{
 		this.code = code;
+	}
+
+	public String getSupplierid()
+	{
+		return supplierid;
+	}
+
+	public void setSupplierid(String supplierid)
+	{
+		this.supplierid = supplierid;
+	}
+
+	public String getSuppliername()
+	{
+		return suppliername;
+	}
+
+	public void setSuppliername(String suppliername)
+	{
+		this.suppliername = suppliername;
 	}
 
 	public String getBrand()

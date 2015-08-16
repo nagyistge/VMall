@@ -47,6 +47,8 @@
         <label class="fi-name">商品类目：</label>
         <div class="form-controls pdt3">${obj.goodsclass.cname}</div>
     </div>
+
+    <#--
     <div class="formitems">
         <label class="fi-name">
             <span class="colorRed"></span>商品分类：</label>
@@ -57,6 +59,7 @@
             <span class="fi-help-text error"></span>
         </div>
     </div>
+
     <div class="formitems">
         <label class="fi-name">购买方式：</label>
         <div class="form-controls">
@@ -66,6 +69,8 @@
             </div>
         </div>
     </div>
+
+    
     <div class="formitems">
         <label class="fi-name">商品分组：</label>
         <div class="form-controls pdt3">
@@ -77,11 +82,12 @@
                 </a>
                 <div class="droplist-menu">
                     <div class="checkbox-group">
-                                                <label><input type="checkbox" class="j-goodsGroupLabel" data-id="2004831" data-title="分组1" value="2004831" name="group_id[]">分组1</label>                    </div>
+                    <label><input type="checkbox" class="j-goodsGroupLabel" data-id="2004831" data-title="分组1" value="2004831" name="group_id[]">分组1</label>                    </div>
                 </div>
             </div>
         </div>
     </div>
+    -->
 
     <div class="formitems">
         <label class="fi-name">排序：</label>
@@ -104,18 +110,32 @@
         </div>
     </div>
     
-    <!--<div class="formitems">-->
-        <!--<label class="fi-name">分销广告语:</label>-->
-        <!--<div class="form-controls">-->
-            <!--<textarea  class="textarea xxlarge" name="fenxiao_slogan"></textarea>-->
-            <!--<span class="fi-help-text"></span>-->
-        <!--</div>-->
-    <!--</div>-->
-
+     <div class="formitems">
+        <label class="fi-name"><span class="colorRed">*</span>厂商：</label>
+        <div class="form-controls">
+        	<input type="hidden" name="supplierid" value="">
+            <input type="text" class="input xxlarge" name="suppliername" value="">
+           	<a href="javascript:void(0)" class="btn btn-primary" id="bt_selectsupplier">选择</a>
+            <span class="fi-help-text"></span>
+        </div>
+    </div>    
+    
+    <#--
+    <div class="formitems">
+        <label class="fi-name"><span class="colorRed">*</span>经销商：</label>
+        <div class="form-controls">
+        	<input type="hidden" name="dealerid" value="">
+            <input type="text" class="input xxlarge" name="dealername" value="" readonly>
+           	<a href="javascript:void(0)" class="btn btn-primary" id="bt_selectdealer">选择</a>
+            <span class="fi-help-text"></span>
+        </div>
+    </div>  
+    -->  
+    
     <div class="formitems">
         <label class="fi-name"><span class="colorRed">*</span>原价：</label>
         <div class="form-controls">
-            <input type="text" class="input mini" name="original_price"  value="0.00">
+            <input type="text" class="input mini" name="saleprice"  value="0.00">
             <span>元</span>
             
             <span class="fi-help-text"></span>
@@ -125,7 +145,7 @@
     <div class="formitems">
         <label class="fi-name"><span class="colorRed">*</span>现价：</label>
         <div class="form-controls">
-            <input type="text" class="input mini" name="price"  value="0.00">
+            <input type="text" class="input mini" name="promoteprice" value="0.00">
             <span>元</span>
                         <!--设置分销商等级价格-->
             <span class="setfxs-pic">
@@ -186,7 +206,7 @@
     <div class="formitems">
         <label class="fi-name"><span class="colorRed">*</span>基础销量：</label>
         <div class="form-controls">
-            <input type="text" class="input mini"  name="basic_sales" value="0">
+            <input type="text" class="input mini"  name="basesalenum" value="0">
             <span><span><input type="text" class="input xmini" name="unit" value="件"></span></span>
             <span class="fi-help-text"></span>
         </div>
@@ -194,7 +214,7 @@
     <div class="formitems">
         <label class="fi-name"><span class="colorRed">*</span>基础点赞数：</label>
         <div class="form-controls">
-            <input type="text" class="input mini"  name="praise_num" value="0">
+            <input type="text" class="input mini"  name="basepraisenum" value="0">
             <span class="fi-help-text"></span>
         </div>
     </div>
@@ -235,7 +255,7 @@
     <div class="formitems mgt5">
         <label class="fi-name">商家编码：</label>
         <div class="form-controls">
-            <input type="text" class="input j-code-ipt" value="" name="goods_no">
+            <input type="text" class="input j-code-ipt" value="" name="code">
             <span class="fi-help-text"></span>
         </div>
     </div>
@@ -247,7 +267,7 @@
     <div class="formitems">
         <label class="fi-name" style="width:160px;">直属上级能拿到的佣金：</label>
         <div class="form-controls">
-            <input type="text" class="input mini" name="directly_money"  value="0.00">
+            <input type="text" class="input mini" name="rebate1"  value="0.00">
             <span>元&nbsp;&nbsp;或&nbsp;&nbsp;</span>
             <input type="text" class="input mini" name="directly_rate"  value="">
             <span>%</span>
@@ -258,7 +278,7 @@
     <div class="formitems">
         <label class="fi-name" style="width:160px;">二级上级能拿到的佣金：</label>
         <div class="form-controls">
-            <input type="text" class="input mini" name="superior_money"  value="0.00">
+            <input type="text" class="input mini" name="rebate2"  value="0.00">
             <span>元&nbsp;&nbsp;或&nbsp;&nbsp;</span>
             <input type="text" class="input mini" name="superior_rate"  value="">
             <span>%</span>
@@ -269,7 +289,7 @@
     <div class="formitems">
         <label class="fi-name" style="width:160px;">三级上级能拿到的佣金：</label>
         <div class="form-controls">
-            <input type="text" class="input mini" name="three_money"  value="0.00">
+            <input type="text" class="input mini" name="rebate3"  value="0.00">
             <span>元&nbsp;&nbsp;或&nbsp;&nbsp;</span>
             <input type="text" class="input mini" name="three_rate"  value="">
             <span>%</span>
@@ -316,8 +336,6 @@
 
         </div>
     </div>
-
-
 
     <div class="formitems">
         <label class="fi-name"><span class="colorRed">*</span>商品库存：</label>
@@ -585,6 +603,55 @@
         </div>
     </script>
     <!-- end tpl_add_step2_sku -->
+    
+    <script type="text/j-template" id="tpl_selectdealer">
+            <table class="wxtables table-order mgt20">
+            <colgroup>
+                <col width="100%" />
+            </colgroup>
+            <thead>
+                <tr>
+                	<td>经销商名称</td>
+                </tr>
+            </thead>
+            <tbody id="tbody">
+				<%for(var i=0;i<dealers.length;i++){%>
+				<% var dealer = dealers[i]; %>
+				<tr>
+					<td><%=dealer.cname%></td>
+				</tr>	
+				<%}%>        
+            </tbody>
+            
+        </table>
+	    
+    </script>
+    
+    <script type="text/j-template" id="tpl_selectsupplier">
+            <table class="wxtables table-order mgt20">
+            <colgroup>
+                <col width="100%" />
+            </colgroup>
+            <thead>
+                <tr>
+                	<td>厂商</td>
+                </tr>
+            </thead>
+            <tbody id="tbody">
+				<%for(var i=0;i<suppliers.length;i++){%>
+				<% var supplier = suppliers[i]; %>
+				<tr>
+					<td dataid="<%=supplier.id%>" cname="<%=supplier.cname%>">
+					<a href="javascript:void(0)" onclick="page_setsupplier()"><%=supplier.cname%></a>
+					</td>
+				</tr>	
+				<%}%>        
+            </tbody>
+            
+        </table>
+	    
+    </script>
+    
 
 
 <!--end front template  -->

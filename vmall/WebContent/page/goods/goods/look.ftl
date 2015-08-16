@@ -30,7 +30,7 @@
 						<input type="hidden" value="" id="imgs">
 						<div class="detail-price"> 
 							<span id="price" class="p-price">¥${obj.goods.saleprice}</span>
-							<span id="imgpage" class="pagenum">1/5</span> 
+							<span id="imgpage" class="pagenum"></span> 
 							<a id="attention" class="btn-sc"></a> 
 						</div>
 					</div>

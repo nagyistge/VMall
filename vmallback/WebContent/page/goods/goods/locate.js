@@ -5,6 +5,8 @@ $(function(){
 	$("#bt_offsale").click(function() {page_offsale()});
 	
     $("a.addspec").click(function() {page_addspec()}); // 添加规格
+    
+	$("#bt_selectsupplier").click(function() {page_selectsupplier()});    
  
     page_showspecvalue();
 
@@ -400,5 +402,48 @@ $(function(){
 				console.log("服务请求异常！");
 			}
 		})    	
-	}   
+	}
+    
+	function page_selectsupplier()
+	{
+        $.ajax({
+            url: "/vmallback/goods/goods/selectsupplier.action?t="+(new Date().getTime()),
+            type: "post",
+            beforeSend: function() {
+                $.jBox.showloading();
+            	console.log("ajax loading....");
+            },
+            success: function(data) {
+            	console.log(data);
+            	var json = eval("(" + data + ")");
+            	console.log(json);
+            	var html_head="选择厂商";
+            	var html=_.template($("#tpl_selectsupplier").html(), json);
+            	console.log(html);
+            	
+                $.jBox.show({
+                    title: html_head,
+                    content: html,
+                    btnOK: {
+                    	onBtnClick: function(a) {
+                    		$.jBox.close(a);
+                    	}
+                    },
+                    btnCancel:{show:false},
+                    onOpen:function(jbox){
+                        $.jBox.hideloading();
+                    }
+                });
+            	
+            }
+        });
+	}
 })
+
+function page_setsupplier()
+{
+	var e = event.target;
+	var $e = $(e);
+	$("input[name='supplierid']").val($e.parent().attr("dataid"));
+	$("input[name='suppliername']").val($e.parent().attr("cname"));
+}

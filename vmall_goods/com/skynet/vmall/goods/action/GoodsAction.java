@@ -21,7 +21,6 @@ import org.nutz.mvc.annotation.Ok;
 import org.nutz.mvc.annotation.Param;
 
 import com.blue.wxmp.sdk.api.ApiConfigKit;
-import com.blue.wxmp.sdk.encrypt.BlueDes;
 import com.skynet.framework.action.BaseAction;
 import com.skynet.framework.services.db.SQLParser;
 import com.skynet.framework.services.db.dybeans.DynamicObject;
@@ -41,7 +40,6 @@ import com.skynet.vmall.base.service.MemberService;
 import com.skynet.vmall.goods.service.AppGoodsClassService;
 import com.skynet.vmall.goods.service.AppGoodsClassSpecService;
 import com.skynet.vmall.goods.service.AppGoodsService;
-import com.skynet.vmall.member.service.AppMemberService;
 import com.skynet.vmall.wx.action.WXActionHelper;
 
 @IocBean
@@ -71,7 +69,7 @@ public class GoodsAction extends BaseAction
 
 	@Inject
 	private AppGoodsService appgoodsService;
-
+	
 	@Inject
 	private GoodsPhotoService goodsphotoService;
 	

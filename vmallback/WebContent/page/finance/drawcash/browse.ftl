@@ -21,7 +21,7 @@
     	<input type="hidden" id="state" name="state" value="${obj.state}">
         <div class="tables-searchbox">
             <input type="text" placeholder="输入提现人/手机号/提现单号" class="input" name="mobile_cno" value="">
-            <input type="text" placeholder="输入订单号" class="input" name="goods_no" value="">
+            <input type="text" placeholder="输入订单号" class="input" name="code" value="">
 
             <input type="text" autocomplete="off" name="applytimebegin" value="" placeholder="申请时间" class="input Wdate mini" onclick="WdatePicker({ dateFmt:'yyyy-MM-dd'})">
             <span class="mgr5">至</span>
