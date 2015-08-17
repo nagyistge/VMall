@@ -1,0 +1,370 @@
+﻿* {
+    margin: 0;
+    padding: 0;
+}
+
+.qdhd {
+    width: 100%;
+    background: url(http://image.bingjun.cc/index/channelagent/qd_banner.jpg) top center no-repeat #fff;
+    overflow: hidden;
+    font-family: Arial, "微软雅黑";
+}
+
+.qd_banner {
+    margin: 0 auto;
+    width: 1000px;
+    height: 820px;
+    background: url(http://image.bingjun.cc/index/channelagent/qddl01.jpg) no-repeat center top;
+    position: relative;
+    overflow: hidden;
+}
+
+.dq_kh {
+    float: right;
+    width: 460px;
+    height: 300px;
+    margin-right: 25px;
+    margin-top: 130px;
+    position: relative;
+    display: inline;
+}
+
+.dq_gsm {
+    margin-left: 10px;
+    margin-bottom: 15px;
+    position: absolute;
+    margin-left: 70px;
+    margin-top: 13px;
+    overflow: hidden;
+    width: 330px;
+    height: 130px;
+}
+
+    .dq_gsm h4 {
+        font-size: 14px;
+        line-height: 30px;
+        margin-bottom: 10px;
+        color: #333;
+    }
+
+    .dq_gsm p {
+        width: 330px;
+        font-size: 12px;
+        color: #666;
+        line-height: 22px;
+    }
+
+    .dq_gsm img {
+        vertical-align: middle;
+        padding-right: 10px;
+    }
+
+.dq_pl {
+    width: 100%;
+    height: 160px;
+    background: url(http://image.bingjun.cc/index/channelagent/qddl17.png);
+}
+
+    .dq_pl i {
+        float: left;
+        display: block;
+        width: 30px;
+        height: 100px;
+        padding: 0 15px;
+        background: url(http://image.bingjun.cc/index/channelagent/qddl18.png) no-repeat center center;
+        cursor: pointer;
+        margin-top: 50px;
+        display: inline;
+    }
+
+        .dq_pl i.dq_pli2 {
+            margin-left: 340px;
+            background: url(http://image.bingjun.cc/index/channelagent/qddl18-1.png) no-repeat center center;
+            cursor: pointer;
+        }
+
+        .dq_pl i.dq_pli1:hover {
+            background: url(http://image.bingjun.cc/index/channelagent/qddl19-1.png) no-repeat center center;
+        }
+
+        .dq_pl i.dq_pli2:hover {
+            background: url(http://image.bingjun.cc/index/channelagent/qddl19.png) no-repeat center center;
+        }
+
+.dq_button {
+    margin: 0 auto;
+    width: 160px;
+    height: 40px;
+    border-radius: 30px;
+    background: #4FC3AE;
+    border: 1px solid #fff;
+    margin-top: 20px;
+    line-height: 40px;
+    text-align: center;
+    color: #fff;
+    font-weight: bold;
+}
+
+    .dq_button a {
+        color: #fff;
+        font-weight: bold;
+        text-decoration: none;
+    }
+
+    .dq_button:hover {
+        background: #FC6;
+    }
+
+.dq_ms {
+    float: left;
+    width: 330px;
+    font-size: 12px;
+    line-height: 20px;
+    margin-top: 20px;
+    height: 60px;
+}
+
+.dq_con {
+    margin: 0 auto;
+    width: 1000px;
+    overflow: hidden;
+    color: #333;
+    font-family: Arial, "微软雅黑";
+}
+
+.qd_wz {
+    position: absolute;
+    top: 0;
+    width: 1000px;
+    margin-top: 400px;
+    height: 500px;
+    overflow: hidden;
+}
+
+    .qd_wz h2 {
+        text-align: center;
+        line-height: 100px;
+        color: #666666;
+        font-weight: 100;
+        font-size: 30px;
+    }
+
+    .qd_wz ul {
+        margin: 0 auto;
+        width: 800px;
+        overflow: hidden;
+    }
+
+        .qd_wz ul li {
+            float: left;
+            width: 210px;
+            list-style: none;
+            text-align: center;
+            margin: 0 25px;
+            display: inline;
+        }
+
+            .qd_wz ul li h5 {
+                color: #666666;
+                line-height: 45px;
+                font-size: 16px;
+            }
+
+            .qd_wz ul li p {
+                color: #999999;
+                line-height: 24px;
+                font-size: 12px;
+                text-align: left;
+                padding: 0;
+            }
+
+.qd_zc {
+    width: 1000px;
+    /*line-height: 670px;*/
+    background: #EEEEF0;
+    overflow: hidden;
+    color: #2C3E50;
+}
+
+.qd_zclt {
+    float: left;
+    width: 495px;
+    border-right: 1px solid #E7E7E7;
+    height: 690px;
+    margin-bottom: 10px;
+}
+
+.qd_zcrg {
+    float: left;
+    width: 495px;
+    border-left: 1px solid #fff;
+    height: 690px;
+    margin-bottom: 10px;
+}
+
+.qd_zclt ul li {
+    margin-left: 40px;
+    height: 150px;
+    line-height: 30px;
+    list-style: none;
+    padding: 10px 0px;
+}
+
+    .qd_zclt ul li h3 {
+        padding-left: 150px;
+        padding-top: 30px;
+        font-weight: 700;
+        font-size: 14px;
+    }
+
+    .qd_zclt ul li p {
+        padding-left: 150px;
+        font-size: 12px;
+        width: 270px;
+        line-height: 24px;
+    }
+
+.qd_zcrg ul li {
+    margin-left: 40px;
+    height: 150px;
+    line-height: 30px;
+    list-style: none;
+    padding: 10px 0px;
+}
+
+    .qd_zcrg ul li h3 {
+        padding-left: 150px;
+        padding-top: 30px;
+        font-weight: 700;
+        font-size: 14px;
+    }
+
+    .qd_zcrg ul li p {
+        padding-left: 150px;
+        font-size: 12px;
+        width: 270px;
+        line-height: 24px;
+    }
+
+.hzdl_tj {
+    width: 100%;
+    background: url(http://image.bingjun.cc/index/channelagent/qddl13.jpg)top no-repeat;
+    height: 450px;
+    overflow: hidden;
+}
+
+.hzdl_tjlr {
+    margin: 0 auto;
+    width: 730px;
+    height: 300px;
+    margin-top: 150px;
+    overflow: hidden;
+}
+
+    .hzdl_tjlr ul li {
+        float: left;
+        width: 185px;
+        margin: 0 20px;
+        text-align: center;
+        display: inline;
+    }
+
+        .hzdl_tjlr ul li p {
+            font-size: 14px;
+            color: #666;
+            line-height: 24px;
+        }
+
+.hzdl_tjdj {
+    width: 100%;
+    text-align: center;
+    height: 50px;
+}
+
+    .hzdl_tjdj img {
+        margin: 0 3px;
+    }
+
+.hzdl_dls {
+    width: 100%;
+    background: #4FC3AE;
+    overflow: hidden;
+}
+
+    .hzdl_dls h2 {
+        width: 100%;
+        text-align: center;
+        color: #fff;
+        font-weight: 100;
+        font-size: 35px;
+        font-family: Arial, "微软雅黑";
+        padding-bottom: 30px;
+        padding-top: 30px;
+    }
+
+    .hzdl_dls span {
+        color: #FFFFBF;
+        font-size: 16px;
+    }
+
+.hzdl_dlzl {
+    margin: 0 auto;
+    width: 600px;
+    overflow: hidden;
+    color: #fff;
+    font-size: 14px;
+    text-align: left;
+    line-height: 45px;
+}
+
+.hzzl {
+    width: 510px;
+    height: 33px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    margin-left: 5px;
+    text-indent: 10px;
+    float: right;
+    color: #999;
+}
+
+.dzxz {
+    width: 167px;
+    margin-left: 5px;
+    height: 33px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    float: right;
+    color: #999;
+    line-height: 33px;
+    display: inline;
+}
+
+.dl_annu {
+    margin: 0 auto;
+    width: 30%;
+    height: 40px;
+    background: #fff;
+    border-radius: 40px;
+    text-align: center;
+    color: #333;
+    font-size: 16px;
+    line-height: 40px;
+    font-weight: bold;
+    margin-bottom: 25px;
+    margin-top: 15px;
+}
+
+    .dl_annu a {
+        color: #4FC3AE;
+        text-decoration: none;
+    }
+
+    .dl_annu:hover {
+        background: #FC6;
+    }
+
+        .dl_annu:hover a {
+            color: #fff;
+        }
+
