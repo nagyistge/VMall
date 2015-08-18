@@ -19,7 +19,7 @@ var ioc={
         fields : 
         {
            driverClassName:'com.mysql.jdbc.Driver',
-           url:'jdbc:mysql://localhost/vmall?useUnicode=true&amp;characterEncoding=utf-8',
+           url:'jdbc:mysql://123.57.91.98/vmall?useUnicode=true&amp;characterEncoding=utf-8',
            username:'root',
            password:'!tiangou2015'
         }

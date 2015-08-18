@@ -427,9 +427,15 @@
 </form>
 
 <div class="panel-single panel-single-light mgt20 txtCenter">
+	<#if obj.goods.state!="上架">
     <input type="button" class="btn btn-primary" value="保存" id="bt_submit">
+    </#if>
+    <#if obj.goods.state!="上架">
     <input type="button" class="btn btn-primary" value="上架" id="bt_onsale">
+    </#if>
+    <#if obj.goods.state=="上架">
     <input type="button" class="btn btn-primary" value="下架" id="bt_offsale">
+    </#if>
 </div>
 
 
@@ -545,7 +551,7 @@
 			<% _.each(checked_specvalues, function(apdspec,i){%>	
 			<% console.log("apdspec:"+apdspec)%>
 			<% console.log("checked_specclass:"+checked_specclass)%>	
-	    	<tr>
+	    	<tr dataid="<%=apdspec.id%>">
 				<% _.each(checked_specclass,function(aspec,j){ %>
 					<% console.log("j:"+j)%>
 					<% console.log(aspec); %>

@@ -4,7 +4,7 @@ insert into t_sys_organ(id, cname, ctype, parentorganid, internal) values('vmall
 insert into t_sys_organ(id, cname, ctype, parentorganid, internal) values('vmalldealer', '天狗微商城营销', '总经销商', 'vmall', '0000000100000001');
 
 delete from t_app_dealer;
-insert into t_app_dealer(id, cname) values('vmalldealer', '天狗微商城');
+insert into t_app_dealer(id, cname) values('vmalldealer', '天狗微商城营销');
 
 delete from t_app_supplier;
 insert into t_app_supplier(id, cname) values(uuid(), '乌鲁木齐丰疆物语网络技术有限公司');

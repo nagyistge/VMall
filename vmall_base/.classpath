@@ -10,7 +10,7 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/skynet_organ"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/skynet_tools"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/skynet_upload"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/bluemp"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/skynet_log"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/bluemp"/>
 	<classpathentry kind="output" path=""/>
 </classpath>

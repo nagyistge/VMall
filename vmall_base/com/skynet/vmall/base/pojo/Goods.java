@@ -126,24 +126,34 @@ public class Goods extends IdEntity
 	private String defspec; // 缺省规格货品 （是、否）（产品具有多个规格的货品时，缺省显示的规格货品）
 
 	// 物流及其它
+	@Column	
 	private String isfreelogistics; // 是否免物流（是、否）
 
+	@Column
 	private String freightpayer; // 运费设置（包邮、统一运费、运费模板）
-
+	
+	@Column
 	private int fullnummail; // 满件包邮
 
+	@Column
 	private String hidestock; // 库存显示（是、否）
 
+	@Column
 	private int quota; // 每人限购（是、否）
 
+	@Column
 	private int buyneedpoints; // 购买商品所需积分
 
+	@Column
 	private String consumcoupon; // 消费送优惠券 （对应优惠券标识）
 
+	@Column
 	private int consumpoint; // 消费送积分
-
+	
+	@Column
 	private int joinleveldiscount; // 会员等级折扣（开启、关闭）
 	
+	@Column
 	private String state; // （新建、上架、下架);
 
 	public String getClassid()
@@ -605,5 +615,4 @@ public class Goods extends IdEntity
 	{
 		this.state = state;
 	}
-
 }

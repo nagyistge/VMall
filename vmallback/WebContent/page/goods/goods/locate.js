@@ -310,8 +310,8 @@ $(function(){
 				var json = eval("(" + data + ")");
 				if(json.state=="success")
 				{
-					pub_alert("商品成功上架！");
-					//window.location.reload();
+					// pub_alert("商品成功上架！");
+					window.location.reload();
 				}
 				else
 				{
@@ -349,8 +349,8 @@ $(function(){
 				var json = eval("(" + data + ")");
 				if(json.state=="success")
 				{
-					pub_alert("商品下架完成！");
-					//window.location.reload();
+					// pub_alert("商品下架完成！");
+					window.location.reload();
 				}
 				else
 				{
