@@ -42,7 +42,7 @@
 	<% if (index%2==0) { %>
 	<a href="${base}/goods/goods/look.action?id=<%=item.id%>" class="waterfall-item auction">
 	<img style="display:block;" class="" src="<%if(item.pic=='') {%>${base}/css/img/default.png<%}else{%>${base}/<%=item.pic%><%}%>">
-	<h3 style="font-size:10px;color:#8e8e8e"><%=item.cname%></h3>
+	<p style="font-size:10px;color:#8e8e8e"><%=item.cname%></p>
 	<p>¥<span class="promote-price"><%=item.promoteprice%></span>¥<del class="cost-price"><%=item.saleprice%></del></p>
 	<p><span class="info-sum">人气：<%=item.popular%>&nbsp;&nbsp;月销：<%=item.sales%></span><span class="info-freight"><#--免运费--></span></p>
 	</a>
@@ -55,7 +55,7 @@
 	<% if (index%2==1) { %>
 	<a href="${base}/goods/goods/look.action?id=<%=item.id%>" class="waterfall-item auction">
 	<img style="display:block;" class="" src="<%if(item.pic=='') {%>${base}/css/img/default.png<%}else{%>${base}/<%=item.pic%><%}%>">
-	<h3 style="font-size:10px;color:#8e8e8e"><%=item.cname%></h3>
+	<p style="font-size:10px;color:#8e8e8e"><%=item.cname%></p>
 	<p>¥<span class="promote-price"><%=item.promoteprice%></span>¥<del class="cost-price"><%=item.saleprice%></del></p>
 	<p><span class="info-sum">人气：<%=item.popular%>&nbsp;&nbsp;月销：<%=item.sales%></span><span class="info-freight"><#--免运费--></span></p>
 	</a>
