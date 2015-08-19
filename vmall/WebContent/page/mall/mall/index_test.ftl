@@ -16,6 +16,10 @@
 <div class="viewport">
 <#include "/decorator/include/navmain.ftl">
 
+<a href="http://mp.weixin.qq.com/s?__biz=MzI5NDAyODY5Mg==&mid=209013408&idx=1&sn=457de9a2babe75837302bcf10b4bac69&scene=0#rd">
+<img src="${base}/image/vmall_logo.jpg" style="weigth:48px;height:48px;">亲，请关注<span style="color:#6060bb">【天狗微商城】</span>公众号。
+</a>
+
 	<div data-spm="" class="content">
 	
 		<section class="waterfall">
@@ -30,7 +34,12 @@
 	
 	
 	</div>
-
+	
+	<footer class="jd-footer">
+	<div class="jd-1px-line-up"></div>
+	<div class="jd-footer-copyright" style="font-size:8pt;text-align:center">Copyright © 2015 西安可可西里 tiangouvmall.com 版权所有</div>
+	
+	</footer>
 </div>
 
 <script type="text/j-template" id="tpl_topgoods">
