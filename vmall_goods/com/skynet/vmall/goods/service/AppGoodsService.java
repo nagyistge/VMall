@@ -9,6 +9,7 @@ import org.nutz.dao.Dao;
 import org.nutz.ioc.annotation.InjectName;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
+import org.nutz.mvc.annotation.Param;
 
 import com.skynet.framework.service.SkynetDaoService;
 import com.skynet.framework.services.db.SQLParser;
@@ -247,5 +248,18 @@ public class AppGoodsService extends SkynetDaoService
 		DynamicObject goodsprice = goodspriceService.queryForMap(sql.toString());
 
 		return goodsprice;
+	}
+	
+	public List<DynamicObject> topgoods(@Param("..") Map map) throws Exception
+	{
+		StringBuffer sql = new StringBuffer();
+		sql.append(" select goods.* ").append("\n");
+		sql.append("   from t_app_goods goods ").append("\n");
+		sql.append("  where 1 = 1 ").append("\n");
+		sql.append("    and ctype = '货品' ").append("\n");
+		sql.append("    and defspec = '是' ").append("\n");
+
+		List<DynamicObject> datas = sdao().queryForList(sql.toString(), 0, 20);
+		return datas;
 	}
 }

@@ -1,0 +1,117 @@
+delete from t_app_goodsclass;
+
+insert into t_app_goodsclass(id, cname, supid, internal, dealerid) values('0001', '潮流女装', 'R0', '0001', 'vmall');
+insert into t_app_goodsclass(id, cname, supid, internal, dealerid) values('0002', '品牌男装', 'R0', '0002', 'vmall');
+insert into t_app_goodsclass(id, cname, supid, internal, dealerid) values('0003', '内衣配饰', 'R0', '0003', 'vmall');
+insert into t_app_goodsclass(id, cname, supid, internal, dealerid) values('0004', '电脑办公', 'R0', '0004', 'vmall');
+insert into t_app_goodsclass(id, cname, supid, internal, dealerid) values('0005', '手机数码', 'R0', '0005', 'vmall');
+insert into t_app_goodsclass(id, cname, supid, internal, dealerid) values('0006', '母婴频道', 'R0', '0005', 'vmall');
+insert into t_app_goodsclass(id, cname, supid, internal, dealerid) values('0007', '食品生鲜', 'R0', '0005', 'vmall');
+insert into t_app_goodsclass(id, cname, supid, internal, dealerid) values('0008', '家用电器', 'R0', '0005', 'vmall');
+insert into t_app_goodsclass(id, cname, supid, internal, dealerid) values('0009', '家具建材', 'R0', '0005', 'vmall');
+insert into t_app_goodsclass(id, cname, supid, internal, dealerid) values('0010', '居家生活', 'R0', '0005', 'vmall');
+
+insert into t_app_goodsclass(id, cname, supid, internal, dealerid) values('0011', '鞋靴箱包', 'R0', '0011', 'vmall');
+insert into t_app_goodsclass(id, cname, supid, internal, dealerid) values('0012', '个护化妆', 'R0', '0012', 'vmall');
+insert into t_app_goodsclass(id, cname, supid, internal, dealerid) values('0013', '家用电器', 'R0', '0013', 'vmall');
+insert into t_app_goodsclass(id, cname, supid, internal, dealerid) values('0014', '运动户外', 'R0', '0014', 'vmall');
+insert into t_app_goodsclass(id, cname, supid, internal, dealerid) values('0015', '玩具乐器', 'R0', '0016', 'vmall');
+
+insert into t_app_goodsclass(id, cname, supid, internal, dealerid) values('0016', '酒水饮料', 'R0', '0017', 'vmall');
+insert into t_app_goodsclass(id, cname, supid, internal, dealerid) values('0017', '家具建材', 'R0', '0018', 'vmall');
+insert into t_app_goodsclass(id, cname, supid, internal, dealerid) values('0018', '家居家纺', 'R0', '0019', 'vmall');
+insert into t_app_goodsclass(id, cname, supid, internal, dealerid) values('0019', '整车车品', 'R0', '0020', 'vmall');
+insert into t_app_goodsclass(id, cname, supid, internal, dealerid) values('0020', '图书', 'R0', '0021', 'vmall');
+insert into t_app_goodsclass(id, cname, supid, internal, dealerid) values('0022', '营养保健', 'R0', '0022', 'vmall');
+
+
+insert into t_app_goodsclass(id, cname, supid, internal, dealerid) values('00070001', '进口食品', '0007', '00070001', 'vmall');
+insert into t_app_goodsclass(id, cname, supid, internal, dealerid) values('00070002', '产地直供', '0007', '00070002', 'vmall');
+insert into t_app_goodsclass(id, cname, supid, internal, dealerid) values('00070003', '水果蔬菜', '0007', '00070003', 'vmall');
+insert into t_app_goodsclass(id, cname, supid, internal, dealerid) values('00070004', '海鲜水产', '0007', '00070004', 'vmall');
+insert into t_app_goodsclass(id, cname, supid, internal, dealerid) values('00070005', '休闲食品', '0007', '00070005', 'vmall');
+insert into t_app_goodsclass(id, cname, supid, internal, dealerid) values('00070006', '肉禽蛋奶', '0007', '00070006', 'vmall');
+insert into t_app_goodsclass(id, cname, supid, internal, dealerid) values('00070007', '熟食辣味', '0007', '00070007', 'vmall');
+insert into t_app_goodsclass(id, cname, supid, internal, dealerid) values('00070008', '粮油调味', '0007', '00070008', 'vmall');
+insert into t_app_goodsclass(id, cname, supid, internal, dealerid) values('00070009', '食品礼券', '0007', '00070009', 'vmall');
+insert into t_app_goodsclass(id, cname, supid, internal, dealerid) values('00070010', '地方特产', '0007', '00070010', 'vmall');
+
+insert into t_app_goodsclass(id, cname, supid, internal, dealerid) values('00120001', '面部护肤', '0012', '00120001', 'vmall');
+insert into t_app_goodsclass(id, cname, supid, internal, dealerid) values('00120002', '身体护肤', '0012', '00120002', 'vmall');
+insert into t_app_goodsclass(id, cname, supid, internal, dealerid) values('00120003', '口腔护理', '0012', '00120003', 'vmall');
+insert into t_app_goodsclass(id, cname, supid, internal, dealerid) values('00120004', '女性护理', '0012', '00120004', 'vmall');
+insert into t_app_goodsclass(id, cname, supid, internal, dealerid) values('00120005', '洗发护发', '0012', '00120005', 'vmall');
+insert into t_app_goodsclass(id, cname, supid, internal, dealerid) values('00120006', '香水彩妆', '0012', '00120006', 'vmall');
+
+insert into t_app_goodsclass(id, cname, supid, internal, dealerid) values('00220001', '传统滋补', '0022', '00220001', 'vmall');
+insert into t_app_goodsclass(id, cname, supid, internal, dealerid) values('00220002', '营养成分', '0022', '00220002', 'vmall');
+insert into t_app_goodsclass(id, cname, supid, internal, dealerid) values('00220003', '保健器械', '0022', '00220003', 'vmall');
+insert into t_app_goodsclass(id, cname, supid, internal, dealerid) values('00220004', '卫生护理', '0022', '00220004', 'vmall');
+insert into t_app_goodsclass(id, cname, supid, internal, dealerid) values('00220005', '营养健康', '0022', '00220005', 'vmall');
+
+insert into t_app_goodsclass(id, cname, supid, internal, dealerid) values('001200060001', '香水', '00120006', '001200060001', 'vmall');
+insert into t_app_goodsclass(id, cname, supid, internal, dealerid) values('001200060002', '底妆', '00120006', '001200060002', 'vmall');
+insert into t_app_goodsclass(id, cname, supid, internal, dealerid) values('001200060003', '腮红', '00120006', '001200060003', 'vmall');
+insert into t_app_goodsclass(id, cname, supid, internal, dealerid) values('001200060004', '眼部', '00120006', '001200060004', 'vmall');
+insert into t_app_goodsclass(id, cname, supid, internal, dealerid) values('001200060005', '唇部', '00120006', '001200060005', 'vmall');
+insert into t_app_goodsclass(id, cname, supid, internal, dealerid) values('001200060006', '美甲', '00120006', '001200060006', 'vmall');
+insert into t_app_goodsclass(id, cname, supid, internal, dealerid) values('001200060007', '美容工具', '00120006', '001200060007', 'vmall');
+insert into t_app_goodsclass(id, cname, supid, internal, dealerid) values('001200060008', '套装', '00120006', '001200060008', 'vmall');
+
+
+insert into t_app_goodsclass(id, cname, supid, internal, dealerid) values('000700100001', '其它特产', '00070010', '000700100001', 'vmall');
+insert into t_app_goodsclass(id, cname, supid, internal, dealerid) values('000700100002', '新疆', '00070010', '000700100002', 'vmall');
+insert into t_app_goodsclass(id, cname, supid, internal, dealerid) values('000700100003', '北京', '00070010', '000700100003', 'vmall');
+insert into t_app_goodsclass(id, cname, supid, internal, dealerid) values('000700100004', '山西', '00070010', '000700100004', 'vmall');
+insert into t_app_goodsclass(id, cname, supid, internal, dealerid) values('000700100005', '内蒙古', '00070010', '000700100005', 'vmall');
+insert into t_app_goodsclass(id, cname, supid, internal, dealerid) values('000700100006', '福建', '00070010', '000700100006', 'vmall');
+insert into t_app_goodsclass(id, cname, supid, internal, dealerid) values('000700100007', '湖南', '00070010', '000700100007', 'vmall');
+insert into t_app_goodsclass(id, cname, supid, internal, dealerid) values('000700100008', '四川', '00070010', '000700100008', 'vmall');
+insert into t_app_goodsclass(id, cname, supid, internal, dealerid) values('000700100009', '云南', '00070010', '000700100009', 'vmall');
+insert into t_app_goodsclass(id, cname, supid, internal, dealerid) values('000700100010', '东北', '00070010', '000700100010', 'vmall');
+
+insert into t_app_goodsclass(id, cname, supid, internal, dealerid) values('00010001', '女装', '0001', '00010001', 'vmall');
+insert into t_app_goodsclass(id, cname, supid, internal, dealerid) values('000100010001', '连衣裙', '00010001', '000100010001', 'vmall');
+insert into t_app_goodsclass(id, cname, supid, internal, dealerid) values('000100010002', 'T恤', '00010001', '000100010002', 'vmall');
+insert into t_app_goodsclass(id, cname, supid, internal, dealerid) values('000100010003', '雪纺衫', '00010001', '000100010003', 'vmall');
+insert into t_app_goodsclass(id, cname, supid, internal, dealerid) values('000100010004', '衬衫', '00010001', '000100010004', 'vmall');
+insert into t_app_goodsclass(id, cname, supid, internal, dealerid) values('000100010005', '牛仔裤', '00010001', '000100010005', 'vmall');
+insert into t_app_goodsclass(id, cname, supid, internal, dealerid) values('000100010006', '针织衫', '00010001', '000100010006', 'vmall');
+insert into t_app_goodsclass(id, cname, supid, internal, dealerid) values('000100010007', '短外套', '00010001', '000100010007', 'vmall');
+insert into t_app_goodsclass(id, cname, supid, internal, dealerid) values('000100010008', '小西装', '00010001', '000100010008', 'vmall');
+
+insert into t_app_goodsclass(id, cname, supid, internal, dealerid) values('00110001', '流行男鞋', '0001', '00110001', 'vmall');
+insert into t_app_goodsclass(id, cname, supid, internal, dealerid) values('00110002', '时尚女鞋', '0001', '00110002', 'vmall');
+insert into t_app_goodsclass(id, cname, supid, internal, dealerid) values('00110003', '潮流女包', '0001', '00110003', 'vmall');
+insert into t_app_goodsclass(id, cname, supid, internal, dealerid) values('00110004', '精品男包', '0001', '00110004', 'vmall');
+insert into t_app_goodsclass(id, cname, supid, internal, dealerid) values('00110005', '功能箱包', '0001', '00110005', 'vmall');
+
+insert into t_app_goodsclass(id, cname, supid, internal, dealerid) values('001100010001', '休闲鞋', '00110001', '001100010001', 'vmall');
+insert into t_app_goodsclass(id, cname, supid, internal, dealerid) values('001100010002', '商务休闲鞋', '00110001', '001100010002', 'vmall');
+insert into t_app_goodsclass(id, cname, supid, internal, dealerid) values('001100010003', '正装鞋', '00110001', '001100010003', 'vmall');
+insert into t_app_goodsclass(id, cname, supid, internal, dealerid) values('001100010004', '帆布鞋', '00110001', '001100010004', 'vmall');
+insert into t_app_goodsclass(id, cname, supid, internal, dealerid) values('001100010005', '凉鞋沙滩鞋', '00110001', '001100010005', 'vmall');
+insert into t_app_goodsclass(id, cname, supid, internal, dealerid) values('001100010006', '增高鞋', '00110001', '001100010006', 'vmall');
+insert into t_app_goodsclass(id, cname, supid, internal, dealerid) values('001100010007', '拖鞋人字拖', '00110001', '001100010007', 'vmall');
+insert into t_app_goodsclass(id, cname, supid, internal, dealerid) values('001100010008', '男靴', '00110001', '001100010008', 'vmall');
+insert into t_app_goodsclass(id, cname, supid, internal, dealerid) values('001100010009', '订制鞋', '00110001', '001100010009', 'vmall');
+
+insert into t_app_goodsclass(id, cname, supid, internal, dealerid) values('001100020001', '单鞋', '00110002', '001100020001', 'vmall');
+insert into t_app_goodsclass(id, cname, supid, internal, dealerid) values('001100020002', '休闲鞋', '00110002', '001100020002', 'vmall');
+insert into t_app_goodsclass(id, cname, supid, internal, dealerid) values('001100020003', '坡跟鞋', '00110002', '001100020003', 'vmall');
+insert into t_app_goodsclass(id, cname, supid, internal, dealerid) values('001100020004', '帆布鞋', '00110002', '001100020004', 'vmall');
+insert into t_app_goodsclass(id, cname, supid, internal, dealerid) values('001100020005', '鱼嘴鞋', '00110002', '001100020005', 'vmall');
+insert into t_app_goodsclass(id, cname, supid, internal, dealerid) values('001100020006', '高跟鞋', '00110002', '001100020006', 'vmall');
+insert into t_app_goodsclass(id, cname, supid, internal, dealerid) values('001100020007', '凉鞋', '00110002', '001100020007', 'vmall');
+insert into t_app_goodsclass(id, cname, supid, internal, dealerid) values('001100020008', '防水台', '00110002', '001100020008', 'vmall');
+insert into t_app_goodsclass(id, cname, supid, internal, dealerid) values('001100020009', '内增高', '00110002', '001100020009', 'vmall');
+
+insert into t_app_goodsclass(id, cname, supid, internal, dealerid) values('002200010001', '冬虫夏草', '00220001', '002200010001', 'vmall');
+insert into t_app_goodsclass(id, cname, supid, internal, dealerid) values('002200010002', '参类', '00220001', '002200010002', 'vmall');
+insert into t_app_goodsclass(id, cname, supid, internal, dealerid) values('002200010003', '燕窝', '00220001', '002200010003', 'vmall');
+insert into t_app_goodsclass(id, cname, supid, internal, dealerid) values('002200010004', '阿胶', '00220001', '002200010004', 'vmall');
+insert into t_app_goodsclass(id, cname, supid, internal, dealerid) values('002200010005', '海参', '00220001', '002200010005', 'vmall');
+insert into t_app_goodsclass(id, cname, supid, internal, dealerid) values('002200010006', '养生茶饮', '00220001', '002200010006', 'vmall');
+insert into t_app_goodsclass(id, cname, supid, internal, dealerid) values('002200010007', '鹿茸', '00220001', '002200010007', 'vmall');
+insert into t_app_goodsclass(id, cname, supid, internal, dealerid) values('002200010008', '灵芝', '00220001', '002200010008', 'vmall');
+insert into t_app_goodsclass(id, cname, supid, internal, dealerid) values('002200010009', '药食同源', '00220001', '002200010009', 'vmall');

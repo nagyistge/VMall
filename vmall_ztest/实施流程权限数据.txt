@@ -1,0 +1,30 @@
+delete from t_sys_groupuser where groupid = 'HY' and userid <> 'vmall';
+insert into t_sys_groupuser(id, groupname, groupid, grouptype, username, loginname, userid)
+select uuid(),'会员','HY','ROLE',cname,loginname,id from t_sys_user where wxopenid is not null and cname is not null;
+
+insert into t_sys_role(id, cno, cname) values('HY', 'HY', '会员');
+insert into t_sys_role(id, cno, cname) values('DDSK', 'DDSK', '订单收款');
+insert into t_sys_role(id, cno, cname) values('DDFH', 'DDFH', '订单发货');
+insert into t_sys_role(id, cno, cname) values('DDSH', 'DDSH', '订单收货');
+insert into t_sys_role(id, cno, cname) values('DDJS', 'DDJS', '订单结算');
+
+insert into t_sys_role(id, cno, cname) values('TXSL', 'TXSL', '提现受理');
+insert into t_sys_role(id, cno, cname) values('TXSH', 'TXSH', '提现审核');
+insert into t_sys_role(id, cno, cname) values('TXFK', 'TXFK', '提现付款');
+
+insert into t_sys_role(id, cno, cname) values('HY', 'HY', '会员');
+insert into t_sys_role(id, cno, cname) values('DDSK', 'DDSK', '订单收款');
+insert into t_sys_role(id, cno, cname) values('DDFH', 'DDFH', '订单发货');
+insert into t_sys_role(id, cno, cname) values('DDSH', 'DDSH', '订单收货');
+insert into t_sys_role(id, cno, cname) values('DDJS', 'DDJS', '订单结算');
+
+insert into t_sys_groupuser(id, groupname, groupid, grouptype, username, loginname, userid) values(uuid(),'订单收款','DDSK','ROLE','蒲剑','pujian','pujian');
+insert into t_sys_groupuser(id, groupname, groupid, grouptype, username, loginname, userid) values(uuid(),'订单发货','DDFH','ROLE','蒲剑','pujian','pujian');
+insert into t_sys_groupuser(id, groupname, groupid, grouptype, username, loginname, userid) values(uuid(),'订单结算','DDJS','ROLE','蒲剑','pujian','pujian');
+
+insert into t_sys_groupuser(id, groupname, groupid, grouptype, username, loginname, userid) values(uuid(),'提现受理','TXSL','ROLE','蒲剑','pujian','pujian');
+insert into t_sys_groupuser(id, groupname, groupid, grouptype, username, loginname, userid) values(uuid(),'提现审核','TXSH','ROLE','蒲剑','pujian','pujian');
+insert into t_sys_groupuser(id, groupname, groupid, grouptype, username, loginname, userid) values(uuid(),'提现付款','TXFK','ROLE','蒲剑','pujian','pujian');
+
+
+

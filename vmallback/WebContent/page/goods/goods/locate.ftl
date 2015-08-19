@@ -117,8 +117,8 @@
     <div class="formitems">
         <label class="fi-name"><span class="colorRed">*</span>经销商：</label>
         <div class="form-controls">
-        	<input type="hidden" name="dealerid" value="">
-            <input type="text" class="input xxlarge" name="dealername" value="" readonly>
+        	<input type="hidden" name="dealerid" value="${obj.goods.dealerid}">
+            <input type="text" class="input xxlarge" name="dealername" value="${obj.goods.dealername}" readonly>
            	<a href="javascript:void(0)" class="btn btn-primary" id="bt_selectdealer">选择</a>
             <span class="fi-help-text"></span>
         </div>

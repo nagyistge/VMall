@@ -142,7 +142,8 @@ public class AppGoodsClassService extends SkynetDaoService
 			sql.append("   from t_app_goodsspec spec, t_app_goodsspecval specvalue ").append("\n");
 			sql.append("  where 1 = 1 ").append("\n");
 			sql.append("    and spec.specclass = specvalue.specclass ").append("\n");
-			sql.append("    and spec.specclass = " + SQLParser.charValue(specclass)).append("\n");	
+			sql.append("    and spec.specclass = " + SQLParser.charValue(specclass)).append("\n");
+			sql.append("    and spec.goodsid = " + SQLParser.charValue(goodsid)).append("\n");
 			sql.append("  order by cvalue  ").append("\n");
 			
 			List<DynamicObject> specvalues = sdao().queryForList(sql.toString());

@@ -14,6 +14,8 @@ import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.json.Json;
 import org.nutz.mapl.Mapl;
 
+import com.skynet.framework.common.generator.FormatKey;
+import com.skynet.framework.common.generator.RandomGenerator;
 import com.skynet.framework.common.generator.UUIDGenerator;
 import com.skynet.framework.service.SkynetDaoService;
 import com.skynet.framework.services.db.SQLParser;
@@ -50,8 +52,9 @@ public class AppGoodsService extends SkynetDaoService
 
 	public String insert(Map form, DynamicObject login_token) throws Exception
 	{
-		String id = UUIDGenerator.getInstance().getNextValue();
+		// String id = UUIDGenerator.getInstance().getNextValue();
 		String classid = (String) form.get("classid");
+		String id =  classid + "-" + FormatKey.format(RandomGenerator.getValue(4), 4);
 		GoodsClass goodsclass = sdao().fetch(GoodsClass.class, classid);
 		String classinternal = goodsclass.getInternal();
 
@@ -133,7 +136,9 @@ public class AppGoodsService extends SkynetDaoService
 			// 新增货品
 			Goods subgoods = Castors.me().castTo(Json.toJson(goods), Goods.class);
 
-			subgoods.setId(UUIDGenerator.getInstance().getNextValue());
+			String subid = goods.getId() + "-" + FormatKey.format(RandomGenerator.getValue(4), 4);
+			
+			subgoods.setId(subid);
 			subgoods.setSupid(goods.getId());
 			subgoods.setCtype("货品");
 			subgoods.setSaleprice(Types.parseBigDecimal(pdsaleprice[i], new BigDecimal(0)));

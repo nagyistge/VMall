@@ -2,13 +2,30 @@ package com.skynet.vmall.test.main;
 
 import com.skynet.framework.common.encrypt.DES;
 import com.skynet.framework.common.encrypt.MD5;
+import com.skynet.framework.common.generator.RandomGenerator;
 
 public class TestSecurity
 {
 
 	public static void main(String[] args) throws Exception
 	{
-		System.out.println(MD5.GenMD5("kkxl7608"));
+		int len = 6;
+		String[] users = {"pujian","zhangkang","renkefeng","zhaojingjing","houpeishan"};
+		String[] susers = {"pj","zhangk","renkf","zhaojj","houps"};
+		String[] passes = new String[users.length];
+		String pass = "";
+		
+		for(int i=0;i<users.length;i++)
+		{
+			pass = "!"+RandomGenerator.getValue(len)+"@"+susers[i];
+			passes[i] = pass;
+			System.out.println("update t_sys_user set password = '"+MD5.GenMD5(passes[i])+"' where loginname = '"+users[i]+"';");
+		}
+		
+		for(int i=0;i<users.length;i++)
+		{
+			System.out.println("users:" + users[i] + " password:"+passes[i]);
+		}
 		//test();
 	}
 	

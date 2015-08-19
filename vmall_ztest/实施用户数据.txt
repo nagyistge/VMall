@@ -1,0 +1,27 @@
+delete from t_sys_organ;
+delete from t_sys_user;
+delete from t_sys_groupuser;
+
+insert into t_sys_organ(id, cname, ctype, parentorganid, internal) values('vmall', '天狗微商城', '商城', 'R0', '00000001');
+insert into t_sys_organ(id, cname, ctype, parentorganid, internal) values('vmalldealer', '天狗微商城营销', '总经销商', 'vmall', '0000000100000001');
+
+delete from t_app_dealer;
+insert into t_app_dealer(id, cname) values('vmalldealer', '天狗微商城营销');
+
+insert into t_sys_user(id, loginname, cname) values('pujian','pujian','蒲剑');
+insert into t_sys_user(id, loginname, cname) values('zhaojingjing','zhaojingjing','赵晶晶');
+insert into t_sys_user(id, loginname, cname) values('renkefeng','renkefeng','任科丰');
+insert into t_sys_user(id, loginname, cname) values('houpeishan','houpeishan','侯佩珊');
+insert into t_sys_user(id, loginname, cname) values('zhangkang','zhangkang','张康');
+
+update t_sys_user set password = 'bd65940a2a2389e14b99c4bddba05f4b' where loginname = 'pujian';
+update t_sys_user set password = '641c8b1d24fe6c803ce5aa4ab6f7790e' where loginname = 'zhangkang';
+update t_sys_user set password = 'c083df22b6f2c4ee4e1c49ce28243b05' where loginname = 'renkefeng';
+update t_sys_user set password = '16851eaad0ae29b34f5bb79f457d792a' where loginname = 'zhaojingjing';
+update t_sys_user set password = '9b1688ecdba86509c78487f493dd2507' where loginname = 'houpeishan';
+
+insert into t_sys_groupuser(id, groupname, groupid, grouptype, username, loginname, userid) values(uuid(),'天狗微商城','00000000','DEPT','蒲剑','pujian','pujian');
+insert into t_sys_groupuser(id, groupname, groupid, grouptype, username, loginname, userid) values(uuid(),'天狗微商城','00000000','DEPT','张康','zhangkang','zhangkang');
+insert into t_sys_groupuser(id, groupname, groupid, grouptype, username, loginname, userid) values(uuid(),'天狗微商城','00000000','DEPT','任科丰','renkefeng','renkefeng');
+insert into t_sys_groupuser(id, groupname, groupid, grouptype, username, loginname, userid) values(uuid(),'天狗微商城','00000000','DEPT','赵晶晶','zhaojingjing','zhaojingjing');
+insert into t_sys_groupuser(id, groupname, groupid, grouptype, username, loginname, userid) values(uuid(),'天狗微商城','00000000','DEPT','侯佩珊','houpeishan','houpeishan');

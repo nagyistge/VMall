@@ -1,9 +1,29 @@
+delete from t_app_supplier;
+insert into t_app_supplier(id, cname) values(uuid(), '乌鲁木齐丰疆物语网络技术有限公司');
+
 delete from t_app_goodsclassspec;
 delete from t_app_goodsclassspecval;
 delete from t_app_goods;
 delete from t_app_goodschange;
 delete from t_app_goodsspec;
 
+insert into t_app_goods(id, cname, classid, ctype)  values('000700100002-0001','西域美农野生和田红枣','000700100002','商品');
+insert into t_app_goods(id, supid, cname, classid, ctype, costprice, saleprice, promoteprice, rebate1, rebate2, rebate3)  
+values('000700100002-0001-0001','000700100002-0001','西域美农野生和田红枣【250gX4袋】','000700100002','货品',10,10,10,1,1,1);
 
-insert into t_app_goodsclassspec(id, goodsclassid, sno, specclass) values('0007001000020001','000700100002',1,'说明');
-insert into t_app_goodsclassspecval(id, goodsclassid, goodsclassspecid, sno, cvalue) values('00070010000200010001','000700100002','0007001000020001',1,'分类1');
+insert into t_app_goods(id, cname, classid, ctype)  values('000700100001-0001','含笑半步颠高寒青稞麦片','000700100001','商品');
+insert into t_app_goods(id, supid, cname, classid, ctype, costprice, saleprice, promoteprice, rebate1, rebate2, rebate3)  
+values('000700100001-0001-0001','000700100001-0001','含笑半步颠高寒青稞麦片【600g】','000700100001','货品',10,10,10,1,1,1);
+
+insert into t_app_goods(id, cname, classid, ctype)  values('000700100001-0001','含笑半步颠高寒青稞麦片','000700100001','商品');
+insert into t_app_goods(id, supid, cname, classid, ctype, costprice, saleprice, promoteprice, rebate1, rebate2, rebate3)  
+values('000700100001-0001-0001','000700100001-0001','含笑半步颠高寒青稞麦片【600g】','000700100001','货品',10,10,10,1,1,1);
+
+insert into t_app_goods(id, cname, classid, ctype)  values('001200060006-0001','97#水性可剥指甲油','001200060006','商品');
+insert into t_app_goods(id, cname, classid, ctype)  values('001200060006-0001','97#水性可剥指甲油','001200060006','商品');
+
+
+insert into t_app_goods(id, supid, cname, classid, ctype, costprice, saleprice, promoteprice, rebate1, rebate2, rebate3)  
+values('001200060006-0001-0001','001200060006-0001','97#水性可剥指甲油【巴洛克】','001200060006','货品',10,10,10,1,1,1);
+insert into t_app_goods(id, supid, cname, classid, ctype, costprice, saleprice, promoteprice, rebate1, rebate2, rebate3)  
+values('001200060006-0001-0002','001200060006-0001','97#水性可剥指甲油【非常糖果】','001200060006','货品',10,10,10,1,1,1);

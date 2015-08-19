@@ -19,8 +19,6 @@ import org.nutz.mvc.annotation.Param;
 import com.blue.wxmp.sdk.api.ApiConfigKit;
 import com.blue.wxmp.sdk.api.WxApi;
 import com.blue.wxmp.sdk.encrypt.BlueDes;
-import com.skynet.framework.action.BaseAction;
-import com.skynet.framework.services.db.SQLParser;
 import com.skynet.framework.services.db.dybeans.DynamicObject;
 import com.skynet.framework.services.function.StringToolKit;
 import com.skynet.vmall.base.pojo.Event;
@@ -30,7 +28,9 @@ import com.skynet.vmall.base.service.EventItemGoodsService;
 import com.skynet.vmall.base.service.EventItemService;
 import com.skynet.vmall.base.service.EventService;
 import com.skynet.vmall.base.service.GoodsClassService;
+import com.skynet.vmall.base.service.GoodsService;
 import com.skynet.vmall.base.service.TagService;
+import com.skynet.vmall.goods.service.AppGoodsService;
 import com.skynet.vmall.wx.action.WXActionHelper;
 
 @IocBean
@@ -44,7 +44,13 @@ public class MallAction
 	WXActionHelper myWxHelper;
 	
 	@Inject
+	private GoodsService goodsService;
+	
+	@Inject
 	private GoodsClassService goodsclassService;
+	
+	@Inject
+	private AppGoodsService appgoodsService;	
 
 	@Inject
 	private TagService tagService;
@@ -147,18 +153,7 @@ public class MallAction
 	@Ok("json")
 	public List<DynamicObject> topgoods(@Param("..") Map map) throws Exception
 	{
-		StringBuffer sql = new StringBuffer();
-		sql.append(" select goods.* ").append("\n");
-		sql.append("   from t_app_goods goods ").append("\n");
-		sql.append("  where 1 = 1 ").append("\n");
-		sql.append("    and ctype = '货品' ").append("\n");
-		sql.append("    and defspec = '是' ").append("\n");
-
-		List<DynamicObject> datas = goodsclassService.sdao().queryForList(sql.toString(), 1, 10);
-//		if(datas.size()%2==1)
-//		{
-//			datas.remove(datas.size()-1);
-//		}
+		List<DynamicObject> datas = appgoodsService.topgoods(map);
 		return datas;
 	}
 	
