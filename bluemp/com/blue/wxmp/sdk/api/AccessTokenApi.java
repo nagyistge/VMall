@@ -59,8 +59,8 @@ public class AccessTokenApi {
 	
 	public static void main(String[] args) throws IOException {
 		ApiConfig ac = new ApiConfig();
-		ac.setAppId("wxd986013eeb54f390");
-		ac.setAppSecret("65b2afd314e5ef8f4d3a514413ad8907");
+		ac.setAppId("wx430148bcf35a3f89");
+		ac.setAppSecret("b664bc7107e78f980121fd0285f77d09");
 		ApiConfigKit akt = new ApiConfigKit();
 		akt.setApiConfig(ac);
 		AccessToken at = getAccessToken();

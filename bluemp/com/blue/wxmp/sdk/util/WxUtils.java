@@ -431,7 +431,7 @@ public class WxUtils {
 
 	public static void main(String[] args) throws UnsupportedEncodingException, NoSuchAlgorithmException {
 
-//		String myString = "appid=wxd986013eeb54f390&body=测试订单&mch_id=1247511701&nonce_str=FtPp34fiGWyesf5Jh4SD_-&notify_url=http://www.rbtalking.com/vmall/test&openid=ofcJis8jiU2TmU97p-sbOVZYtehs&out_trade_no=order00010000001&spbill_create_ip=10.0.0.1&total_fee=1&trade_type=JSAPI&key=arv2v6PHLmaVFDsXOH3vORzHvC7QcDvK";
+//		String myString = "appid=wxd986013eeb54f390&body=测试订单&mch_id=1247511701&nonce_str=FtPp34fiGWyesf5Jh4SD_-&notify_url=http://www.tiangouvmall.com/vmall/test&openid=ofcJis8jiU2TmU97p-sbOVZYtehs&out_trade_no=order00010000001&spbill_create_ip=10.0.0.1&total_fee=1&trade_type=JSAPI&key=arv2v6PHLmaVFDsXOH3vORzHvC7QcDvK";
 //
 //		byte[] bytesOfMessage = myString.getBytes("UTF-8");
 //
