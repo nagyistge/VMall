@@ -19,8 +19,11 @@ import org.nutz.mvc.annotation.Param;
 import com.blue.wxmp.sdk.api.ApiConfigKit;
 import com.blue.wxmp.sdk.api.WxApi;
 import com.blue.wxmp.sdk.encrypt.BlueDes;
+import com.skynet.app.dictionary.service.DictionaryService;
 import com.skynet.framework.services.db.dybeans.DynamicObject;
 import com.skynet.framework.services.function.StringToolKit;
+import com.skynet.framework.spec.GlobalConstants;
+import com.skynet.vmall.base.constants.VMallConstants;
 import com.skynet.vmall.base.pojo.Event;
 import com.skynet.vmall.base.pojo.EventItem;
 import com.skynet.vmall.base.pojo.Member;
@@ -42,6 +45,9 @@ public class MallAction
 
 	@Inject
 	WXActionHelper myWxHelper;
+	
+	@Inject
+	private DictionaryService dictionaryService;	
 	
 	@Inject
 	private GoodsService goodsService;
@@ -66,20 +72,11 @@ public class MallAction
 
 	@At("/wxindex")
 	@Ok("->:/page/mall/mall/index.ftl")
-	public Map wxindex(@Param("..") Map map) throws Exception
+	public Map wxindex(String info) throws Exception
 	{
 		// 系统微信配置信息
 		HttpServletRequest req = Mvcs.getReq();
-		HttpSession session = Mvcs.getHttpSession(true);
-		String info = req.getParameter("info");
-		Map wxinfo = myWxHelper.wx_minfo(info, req);
-
-		DynamicObject ro = new DynamicObject();
-		ro.put("jscfg", wxinfo.get("jscfg"));
-		ro.put("shareurl", wxinfo.get("shareurl"));
-		ro.put("openid", wxinfo.get("openid"));
-		ro.put("recommender", wxinfo.get("recommender"));
-
+		Map map = myWxHelper.decrypt_info(info);
 		return index(map);
 	}
 	
@@ -87,58 +84,46 @@ public class MallAction
 	@Ok("->:/page/mall/mall/index.ftl")
 	public Map index(@Param("..") Map map) throws Exception
 	{
-//		// 查询首页海报1级分类
-//		StringBuffer sql = new StringBuffer();
-//		sql.append(" select goodsclass.* ").append("\n");
-//		sql.append("   from t_app_goodsclass goodsclass, t_app_tag tag ").append("\n");
-//		sql.append("  where 1 = 1 ").append("\n");
-//		sql.append("    and goodsclass.id = tag.objid ").append("\n");
-//		sql.append("    and tag.title = '首页海报1级分类' ").append("\n");
-//		sql.append("    and tag.objclass = 'GoodsClass' ").append("\n");
-//
-//		List<DynamicObject> goodsclasses = goodsclassService.sdao().queryForList(sql.toString());
-//
-//		for (int i = 0; i < goodsclasses.size(); i++)
-//		{
-//			DynamicObject goodsclass = goodsclasses.get(i);
-//
-//			// 查询首页海报3级分类
-//			sql = new StringBuffer();
-//			sql.append(" select goodsclass.* ").append("\n");
-//			sql.append("   from t_app_goodsclass goodsclass, t_app_tag tag ").append("\n");
-//			sql.append("  where 1 = 1 ").append("\n");
-//			sql.append("    and goodsclass.internal like ").append(SQLParser.charLikeRightValue(goodsclass.getFormatAttr("internal"))).append("\n");
-//			sql.append("    and goodsclass.id = tag.objid ").append("\n");
-//			sql.append("    and tag.title = '首页海报3级分类' ").append("\n");
-//			sql.append("    and tag.objclass = 'GoodsClass' ").append("\n");
-//
-//			List<DynamicObject> subpostgoodsclasses = goodsclassService.sdao().queryForList(sql.toString());
-//
-//			// 查询首页3级分类
-//			sql = new StringBuffer();
-//			sql.append(" select goodsclass.* ").append("\n");
-//			sql.append("   from t_app_goodsclass goodsclass, t_app_tag tag ").append("\n");
-//			sql.append("  where 1 = 1 ").append("\n");
-//			sql.append("    and goodsclass.internal like ").append(SQLParser.charLikeRightValue(goodsclass.getFormatAttr("internal"))).append("\n");
-//			sql.append("    and goodsclass.id = tag.objid ").append("\n");
-//			sql.append("    and tag.title = '首页3级分类' ").append("\n");
-//			sql.append("    and tag.objclass = 'GoodsClass' ").append("\n");
-//
-//			List<DynamicObject> subgoodsclasses = goodsclassService.sdao().queryForList(sql.toString());
-//
-//			// List<DynamicObject> subgoodsclasses =
-//			// goodsclassService.findByCond(Cnd.where("supid", "=",
-//			// goodsclass.getFormatAttr("id")));
-//			goodsclass.setObj("subpostgoodsclasses", subpostgoodsclasses);
-//			goodsclass.setObj("subgoodsclasses", subgoodsclasses);
-//		}
-//
-//		DynamicObject ro = new DynamicObject();
-//		ro.put("goodsclasses", goodsclasses);
-		
 		DynamicObject ro = new DynamicObject();
+		
+		ro.put("jscfg", jscfg());
+		ro.put("wxshare", shareurl_wxindex(map));
+		
+		String jsdebug = StringToolKit.formatText(dictionaryService.locateBy(Cnd.where("dkey", "=", "app.system.weixin.jsdebug")).getFormatAttr("dvalue"),"false");		
+		ro.put("jsdebug", jsdebug);		
 		return ro;
+	}	
+	
+	protected Map jscfg() throws Exception
+	{
+		HttpServletRequest req = Mvcs.getReq();
+		String uri = myWxHelper.wx_uri(req);
+		NutMap jscfg =  myWxHelper.wx_jsconfig(uri);
+		return jscfg;
 	}
+	
+	protected Map shareurl_wxindex(Map map) throws Exception
+	{
+		HttpSession session = Mvcs.getHttpSession(true);
+		DynamicObject login_token = (DynamicObject) session.getAttribute(GlobalConstants.sys_login_token);
+		String userwxopenid = login_token.getFormatAttr(GlobalConstants.sys_login_userwxopenid);
+		map.put("openid", userwxopenid);		
+
+		String shareurl =  myWxHelper.wx_shareurl("author/login/wxlogin.action", userwxopenid);
+
+		String title = VMallConstants.vmallname;
+		String imgurl = ApiConfigKit.apiConfig.getServercontext() + "/image/vmall_logo.jpg";
+		String desc = "好朋友，上天狗。 还等什么呢，现在就关注我们，开始一段轻松愉快的购物吧。";
+		DynamicObject wxshare = new DynamicObject();
+		wxshare.put("title", StringToolKit.formatText(title));
+		wxshare.put("desc", StringToolKit.formatText(desc));
+		wxshare.put("imgUrl", StringToolKit.formatText(imgurl));
+		wxshare.put("shareurl", shareurl);
+		
+		return wxshare;
+	}
+	
+
 	
 	@At("/index_test")
 	@Ok("->:/page/mall/mall/index_test.ftl")

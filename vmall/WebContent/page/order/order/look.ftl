@@ -124,7 +124,7 @@ var targetUrl=location.href.split("#")[0];
 // alert("target url is:" + targetUrl);
 
 wx.config({
-    debug: true,
+    debug: ${obj.jsdebug},
     appId: '${obj.jscfg.appId!}',
     timestamp: ${obj.jscfg.timestamp!},
     nonceStr: '${obj.jscfg.nonceStr!}',
@@ -312,6 +312,7 @@ function page_takeover()
 	window.location = "${base}/order/order/inputtakeover.action?id="+orderid;
 }
 
+<#--
 
 // 没有微信支付环境下的测试
 function page_testpay()
@@ -351,6 +352,7 @@ function page_testpay()
 	})
 }
 
+-->
 
 </script> 
 

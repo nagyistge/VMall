@@ -50,7 +50,7 @@ public final class StringUitls {
 		String[] hashes = (url.split("\\?")[1]).split("\\&");
 		
 		for (int i = 0; i < hashes.length; i++) {
-			String[] hash = hashes[i].split("=");
+			String[] hash = hashes[i].split("=",-1);
 			rmap.put(hash[0], hash[1]);
 		}
 		return (rmap);
@@ -58,5 +58,7 @@ public final class StringUitls {
 	public static void main(String[] args) {
 		
 		System.out.println(Json.toJson(parseFromUrl("/index?a=1")));
+		System.out.println(Json.toJson(parseFromUrl("/wxlogin.action?recommender=&openid=")));
+			
 	}
 }

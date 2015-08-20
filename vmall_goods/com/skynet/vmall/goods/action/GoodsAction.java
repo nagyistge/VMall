@@ -21,6 +21,7 @@ import org.nutz.mvc.annotation.Ok;
 import org.nutz.mvc.annotation.Param;
 
 import com.blue.wxmp.sdk.api.ApiConfigKit;
+import com.skynet.app.dictionary.service.DictionaryService;
 import com.skynet.framework.action.BaseAction;
 import com.skynet.framework.services.db.SQLParser;
 import com.skynet.framework.services.db.dybeans.DynamicObject;
@@ -48,6 +49,9 @@ public class GoodsAction extends BaseAction
 {
 	@Inject
 	WXActionHelper myWxHelper;
+	
+	@Inject
+	private DictionaryService dictionaryService;	
 	
 	@Inject
 	private MemberService memberService;
@@ -189,8 +193,6 @@ public class GoodsAction extends BaseAction
 		String userwxopenid = login_token.getFormatAttr(GlobalConstants.sys_login_userwxopenid);
 		map.put("openid", userwxopenid);
 		
-	
-
 		String id = StringToolKit.formatText((String) map.get("id")); // 商品标识
 		// 记录浏览人气值
 		DynamicObject goods = goodsService.locate(id);
@@ -217,13 +219,16 @@ public class GoodsAction extends BaseAction
 
 		DynamicObject member = memberService.locateBy(Cnd.where("wxopenid", "=", userwxopenid));
 
-		
 		String goodsname = goods.getFormatAttr("cname");
+		String promoteprice = goods.getFormatAttr("promoteprice");
 		String pic = goods.getFormatAttr("pic");
 		
 		ro.put("jscfg", jscfg());
-		ro.put("wxshare", shareurl_look(goodsname, pic, map));
+		ro.put("wxshare", shareurl_look(goodsname + "【￥" + promoteprice + "】" , pic, map));
 
+		String jsdebug = StringToolKit.formatText(dictionaryService.locateBy(Cnd.where("dkey", "=", "app.system.weixin.jsdebug")).getFormatAttr("dvalue"),"false");		
+		ro.put("jsdebug", jsdebug);
+		
 		ro.put("member", member);
 		ro.put("goods", goods);
 		ro.put("goodsclassspeces", goodsclassspeces);

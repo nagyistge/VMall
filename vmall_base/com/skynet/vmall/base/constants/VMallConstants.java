@@ -2,7 +2,7 @@ package com.skynet.vmall.base.constants;
 
 public class VMallConstants
 {
-	public final static String vmallname = "四季豆.微商城"; // 商城名称
+	public final static String vmallname = "天狗.微商城"; // 商城名称
 	
 	public static int pagesize = 10; // 单页显示记录行数
 	

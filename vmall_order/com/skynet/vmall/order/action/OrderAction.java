@@ -31,6 +31,7 @@ import org.w3c.dom.Element;
 
 import com.blue.wxmp.sdk.api.ApiConfigKit;
 import com.blue.wxmp.sdk.api.WxApi;
+import com.skynet.app.dictionary.service.DictionaryService;
 import com.skynet.app.organ.pojo.User;
 import com.skynet.framework.action.BaseAction;
 import com.skynet.framework.common.generator.RandomGenerator;
@@ -65,6 +66,9 @@ public class OrderAction extends BaseAction
 
 	@Inject
 	WXActionHelper myWxHelper;
+	
+	@Inject
+	private DictionaryService dictionaryService;	
 	
 	@Inject
 	MemberService memberService;
@@ -109,7 +113,10 @@ public class OrderAction extends BaseAction
 
 		Map wxinfo = myWxHelper.wx_jsconfig(myWxHelper.wx_uri(req));
 		ro.put("jscfg", wxinfo);
-
+		
+		String jsdebug = StringToolKit.formatText(dictionaryService.locateBy(Cnd.where("dkey", "=", "app.system.weixin.jsdebug")).getFormatAttr("dvalue"),"false");		
+		ro.put("jsdebug", jsdebug);
+		
 		DynamicObject order = orderService.locate(id);
 		List<DynamicObject> ordergoodses = appordergoodsService.list(new DynamicObject("orderid", id));
 

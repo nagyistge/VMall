@@ -324,7 +324,7 @@
 <#if obj.jscfg??>
  
 wx.config({
-	debug: true,
+	debug: ${obj.jsdebug},
 	appId: '${obj.jscfg.appId!}',
 	timestamp: ${obj.jscfg.timestamp!},
 	nonceStr: '${obj.jscfg.nonceStr!}',

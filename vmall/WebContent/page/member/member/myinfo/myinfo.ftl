@@ -45,8 +45,8 @@
         </div>        
     	<div class="info pd">
     	<div class="tbl-type">
-        	<span class="tbl-cell w70"><span>昵称：</span></span>
-            <span class="tbl-cell"><span><input type="text" maxlength="50" class="new-input" name="wxnickname" id="wxnickname" value="${obj.member.wxnickname}" title="昵称" required></span></span>
+        	<span class="tbl-cell w70"><span>微信昵称：</span></span>
+            <span class="tbl-cell"><span><input type="text" maxlength="50" class="new-input" name="wxnickname" id="wxnickname" value="${obj.member.wxnickname}" title="昵称" required readonly></span></span>
         </div>
     </div>
 

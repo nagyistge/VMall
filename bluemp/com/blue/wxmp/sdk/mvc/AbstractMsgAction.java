@@ -66,7 +66,7 @@ public abstract class AbstractMsgAction
 				url += "?";
 			}
 			
-			url += "openid=" + ac.get("openid");
+			url += "openid=" + StringToolKit.formatText(ac.get("openid"));
 			log.debugf("url=%s", url);
 
 			HashMap<String, String> murl = StringUitls.parseFromUrl(url);

@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.nutz.dao.Cnd;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
+import org.nutz.json.Json;
 import org.nutz.mvc.Mvcs;
 
 import com.blue.wxmp.sdk.bean.WxInMsg;
@@ -44,6 +45,7 @@ public class MyHandle extends AbstractWxHandle
 		{
 			String fromusername = msg.getFromUserName();
 			String tousername = msg.getToUserName();
+			
 
 			log.debugf("关注消息来啦！%s,关注人的openid是[%s]", msg, fromusername);
 			

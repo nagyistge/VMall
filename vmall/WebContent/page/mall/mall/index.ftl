@@ -121,7 +121,7 @@ page_topgoods();
 <#if obj.jscfg??>
  
 wx.config({
-	debug: true,
+	debug: ${obj.jsdebug},
 	appId: '${obj.jscfg.appId!}',
 	timestamp: ${obj.jscfg.timestamp!},
 	nonceStr: '${obj.jscfg.nonceStr!}',
@@ -136,16 +136,16 @@ wx.config({
 
 </#if>   
 
-<#if obj.shareurl??>
+<#if obj.wxshare??>
 
 wx.ready(function()
 {
 	//config信息验证后会执行ready方法，所有接口调用都必须在config接口获得结果之后，config是一个客户端的异步操作，所以如果需要在页面加载时就调用相关接口，则须把相关接口放在ready函数中调用来确保正确执行。对于用户触发时才调用的接口，则可以直接调用，不需要放在ready函数中。
     wx.onMenuShareAppMessage({
-	    title: '天狗微商城', 
-	    desc: '${obj.shareurl!}', 
-	    link: '${obj.shareurl!}', 
-	    imgUrl: '', 
+	    title: '${obj.wxshare.title!}', 
+	    desc: '${obj.wxshare.desc!}', 
+	    link: '${obj.wxshare.shareurl!}', 
+	    imgUrl: '${obj.wxshare.imgUrl!}', 
 	    type: '', 
 	    dataUrl: '', 
 	    success: function () { 
@@ -156,7 +156,7 @@ wx.ready(function()
 	});
 });
   	
-</#if>	
+</#if>
 
 </script>
 
