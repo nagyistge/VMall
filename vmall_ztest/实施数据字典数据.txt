@@ -1,0 +1,25 @@
+delete from t_sys_dictionary;
+insert into t_sys_dictionary(id, dkey, dvalue, dtext) 
+values(uuid(), 'app.system.attach.root', 'e:\\upload', 'e:\\upload');
+
+insert into t_sys_dictionary(id, dkey, dvalue, dtext) 
+values(uuid(), 'app.system.attach.webroot', '/upload', '/upload');
+
+insert into t_sys_dictionary(id, dkey, dvalue, dtext) 
+values(uuid(), 'app.system.material.serverprefix', 'http://www.tiangouvmall.com/vmall/', 'http://www.tiangouvmall.com/vmall');
+
+insert into t_sys_dictionary(id, dkey, dvalue, dtext) 
+values(uuid(), 'app.system.weixin.jsdebug', 'false', '否');
+
+insert into t_sys_dictionary(id, dkey, dvalue, dtext) 
+values(uuid(), 'app.system.weixin.publicdesc', '好朋友，上天狗。这里有美肤美颜，时尚健康，绿色农果等各类宝贝，让您买的放心，用的开心。 还等什么呢，现在就关注我们，开始一段轻松愉快的购物吧。', '好朋友，上天狗。这里有美肤美颜，时尚健康，绿色农果等各类宝贝，让您买的放心，用的开心。 还等什么呢，现在就关注我们，开始一段轻松愉快的购物吧。');
+
+insert into t_sys_dictionary(id, dkey, dvalue, dtext, ordernum) values(uuid(), 'app.goods.goodsphoto.ctype', '商品缩略图片', '商品缩略图片', 11);
+insert into t_sys_dictionary(id, dkey, dvalue, dtext, ordernum) values(uuid(), 'app.goods.goodsphoto.ctype', '商品介绍', '商品介绍', 21);
+insert into t_sys_dictionary(id, dkey, dvalue, dtext, ordernum) values(uuid(), 'app.goods.goodsphoto.ctype', '规格参数', '规格参数', 22);
+insert into t_sys_dictionary(id, dkey, dvalue, dtext, ordernum) values(uuid(), 'app.goods.goodsphoto.ctype', '包装售后', '包装售后', 23);
+
+insert into t_sys_dictionary(id, dkey, dvalue, dtext, ordernum) values(uuid(), 'app.goods.goodsphoto.ismulti', '否', '否', 11);
+insert into t_sys_dictionary(id, dkey, dvalue, dtext, ordernum) values(uuid(), 'app.goods.goodsphoto.ismulti', '是', '是', 21);
+insert into t_sys_dictionary(id, dkey, dvalue, dtext, ordernum) values(uuid(), 'app.goods.goodsphoto.ismulti', '是', '是', 22);
+insert into t_sys_dictionary(id, dkey, dvalue, dtext, ordernum) values(uuid(), 'app.goods.goodsphoto.ismulti', '是', '是', 23);
