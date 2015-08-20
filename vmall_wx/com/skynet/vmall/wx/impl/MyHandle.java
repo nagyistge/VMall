@@ -12,6 +12,7 @@ import org.nutz.mvc.Mvcs;
 import com.blue.wxmp.sdk.bean.WxInMsg;
 import com.blue.wxmp.sdk.bean.WxOutMsg;
 import com.blue.wxmp.sdk.handle.AbstractWxHandle;
+import com.blue.wxmp.sdk.util.WxUtils;
 import com.skynet.app.log.pojo.Log;
 import com.skynet.app.log.service.LogService;
 import com.skynet.app.organ.pojo.User;
@@ -79,6 +80,11 @@ public class MyHandle extends AbstractWxHandle
 		// 记录
 
 		return super.eventScan(msg);
+	}
+	
+	@Override
+	public WxOutMsg defaultMsg(WxInMsg msg) {
+		return WxUtils.respText(null, "谢谢您的关注，欢迎来到天狗微商城：）");
 	}
 	
 	protected void log_user(WxInMsg msg, String actionname)

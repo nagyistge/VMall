@@ -213,25 +213,25 @@ public class WXActionHelper
 	{
 		String uri = "";
 		
-		uri = "http://www.rbtalking.com/vmall/mall/mall/index.action";
+		uri = "http://www.tiangouvmall.com/vmall/mall/mall/index.action";
 		System.out.println(recommender(uri, "ABC"));
 		
-		uri = "http://www.rbtalking.com/vmall/mall/mall/index.action?recommender=XYZ";
+		uri = "http://www.tiangouvmall.com/vmall/mall/mall/index.action?recommender=XYZ";
 		System.out.println(recommender(uri, "ABC"));
 		
-		uri = "http://www.rbtalking.com/vmall/mall/mall/index.action?recommender=XYZ&p1=v1";
+		uri = "http://www.tiangouvmall.com/vmall/mall/mall/index.action?recommender=XYZ&p1=v1";
 		System.out.println(recommender(uri, "ABC"));		
 		
-		uri = "http://www.rbtalking.com/vmall/mall/mall/index.action?recommender=ABC";
+		uri = "http://www.tiangouvmall.com/vmall/mall/mall/index.action?recommender=ABC";
 		System.out.println(recommender(uri, "ABC"));		
 
-		uri = "http://www.rbtalking.com/vmall/mall/mall/index.action?p1=v1";
+		uri = "http://www.tiangouvmall.com/vmall/mall/mall/index.action?p1=v1";
 		System.out.println(recommender(uri, "ABC"));
 
-		uri = "http://www.rbtalking.com/vmall/mall/mall/index.action?p1=v1&recommender=XYZ";
+		uri = "http://www.tiangouvmall.com/vmall/mall/mall/index.action?p1=v1&recommender=XYZ";
 		System.out.println(recommender(uri, "ABC"));
 		
-		uri = "http://www.rbtalking.com/vmall/mall/mall/index.action?p1=v1&recommender=XYZ&p2=v2";
+		uri = "http://www.tiangouvmall.com/vmall/mall/mall/index.action?p1=v1&recommender=XYZ&p2=v2";
 		System.out.println(recommender(uri, "ABC"));
 
 	}

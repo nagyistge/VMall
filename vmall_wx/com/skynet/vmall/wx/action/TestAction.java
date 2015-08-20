@@ -128,7 +128,7 @@ public class TestAction {
 		String amt = "1";
 		 
 //		myWxApi.getPrepayId(body, notifyurl, orderno, mchid, amt, spbill_create_ip, openId, payKey)
-		return myWxApi.getPrepayId("测试订单1", "http://www.rbtalking.com/vmall/test", orderno, ApiConfigKit.apiConfig.getMchid(), amt, "10.0.0.1", openid, ApiConfigKit.apiConfig.getKey());
+		return myWxApi.getPrepayId("测试订单1", "http://www.tiangouvmall.com/vmall/test", orderno, ApiConfigKit.apiConfig.getMchid(), amt, "10.0.0.1", openid, ApiConfigKit.apiConfig.getKey());
 		
 	}
 }

@@ -3,10 +3,8 @@ delete from t_sys_user where id <> 'vmall' and wxopenid is not null;
 delete from t_app_follow;
 delete from t_sys_groupuser where groupname='会员' and grouptype='ROLE' and userid<> 'vmall';
 
-
-
 insert into t_app_member(id, wxopenid, wxnickname, cname, supid, internal, ctype, cno, level) 
-values('vmall','gh_ab334eaf81b4','天狗微商城', '天狗微商城', 'R0', '0001', '商城', '20150101-00000000', 1);
+values('vmall','gh_6d3eb8c255bf','天狗微商城', '天狗微商城', 'R0', '0001', '商城', '20150101-00000000', 1);
 
 update t_app_member set createtime = now();
 update t_app_member set score = 0;

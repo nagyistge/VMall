@@ -6,7 +6,7 @@ insert into t_sys_dictionary(id, dkey, dvalue, dtext)
 values(uuid(), 'app.system.attach.webroot', '/upload', '/upload');
 
 insert into t_sys_dictionary(id, dkey, dvalue, dtext) 
-values(uuid(), 'app.system.material.serverprefix', 'http://www.rbtalking.com/vmall/', 'http://www.rbtalking.com/vmall');
+values(uuid(), 'app.system.material.serverprefix', 'http://www.tiangouvmall.com/vmall/', 'http://www.tiangouvmall.com/vmall');
 
 insert into t_sys_dictionary(id, dkey, dvalue, dtext, ordernum) values(uuid(), 'app.goods.goodsphoto.ctype', '商品缩略图片', '商品缩略图片', 11);
 insert into t_sys_dictionary(id, dkey, dvalue, dtext, ordernum) values(uuid(), 'app.goods.goodsphoto.ctype', '商品介绍', '商品介绍', 21);

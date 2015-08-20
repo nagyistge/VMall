@@ -27,7 +27,7 @@ public class VMallConstants
 	
 	public static final String flow_backward = "退回";
 	
-	public static final String svr_domianname = "www.rbtalking.com";
+	public static final String svr_domianname = "www.tiangouvmall.com";
 	
 	public static final String app_webcontext = "vmall";
 }
