@@ -19,7 +19,6 @@ import org.nutz.mvc.annotation.Ok;
 import org.nutz.mvc.annotation.Param;
 import org.nutz.mvc.filter.CheckSession;
 
-import com.skynet.framework.action.BaseAction;
 import com.skynet.framework.services.db.dybeans.DynamicObject;
 import com.skynet.framework.spec.GlobalConstants;
 import com.skynet.vmall.base.author.AuthorService;
@@ -32,7 +31,7 @@ import com.skynet.vmall.wx.action.WXActionHelper;
 @IocBean
 @At("/order/shopcart")
 @Filters({@By(type=CheckSession.class, args={"sys_login_token", "/checksession.html"})})	
-public class ShopCartAction extends BaseAction
+public class ShopCartAction
 {
 	@Inject
 	WXActionHelper myWxHelper;
@@ -59,6 +58,7 @@ public class ShopCartAction extends BaseAction
 		map.put("memberid", userid);
 		List<DynamicObject> shopcartgoods = appshopcartService.browse(map);
 
+		DynamicObject ro = new DynamicObject();
 		ro.put("keysignature", keysignature);		
 		ro.put("shopcartgoods", shopcartgoods);
 		return ro;

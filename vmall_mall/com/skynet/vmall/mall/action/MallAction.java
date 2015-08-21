@@ -112,6 +112,7 @@ public class MallAction
 		String shareurl =  myWxHelper.wx_shareurl("author/login/wxlogin.action", userwxopenid);
 
 		String title = VMallConstants.vmallname;
+		// String imgurl = "http://" + VMallConstants.svr_domianname + "/" + ApiConfigKit.apiConfig.getServercontext() + "/image/vmall_logo.jpg";
 		String imgurl = ApiConfigKit.apiConfig.getServercontext() + "/image/vmall_logo.jpg";
 		String desc = "好朋友，上天狗。 还等什么呢，现在就关注我们，开始一段轻松愉快的购物吧。";
 		DynamicObject wxshare = new DynamicObject();

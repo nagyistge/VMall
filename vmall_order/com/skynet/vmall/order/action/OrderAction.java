@@ -57,7 +57,7 @@ import com.skynet.vmall.wx.action.WXActionHelper;
 @Filters(
 { @By(type = CheckSession.class, args =
 { "sys_login_token", "/checksession.html" }) })
-public class OrderAction extends BaseAction
+public class OrderAction
 {
 	private Log log = Logs.get();
 
@@ -95,6 +95,7 @@ public class OrderAction extends BaseAction
 	@Ok("->:/page/order/order/index.ftl")
 	public Map index(@Param("..") Map map) throws Exception
 	{
+		DynamicObject ro = new DynamicObject();
 		return ro;
 	}
 
@@ -108,9 +109,11 @@ public class OrderAction extends BaseAction
 		String userwxopenid = login_token.getFormatAttr(GlobalConstants.sys_login_userwxopenid);
 		String keysignature = AuthorService.encode(AuthorService.gentext(AuthorService.getip(Mvcs.getReq()), userwxopenid));
 
+		DynamicObject ro = new DynamicObject();
+		
 		// 支付接口
 		HttpServletRequest req = Mvcs.getReq();
-
+		
 		Map wxinfo = myWxHelper.wx_jsconfig(myWxHelper.wx_uri(req));
 		ro.put("jscfg", wxinfo);
 		
@@ -138,6 +141,8 @@ public class OrderAction extends BaseAction
 		DynamicObject order = orderService.locate(id);
 		List<DynamicObject> ordergoodses = appordergoodsService.list(new DynamicObject("orderid", id));
 
+		DynamicObject ro = new DynamicObject();
+		
 		ro.put("order", order);
 		ro.put("ordergoodses", ordergoodses);
 
@@ -220,6 +225,8 @@ public class OrderAction extends BaseAction
 	{
 		String id = (String) map.get("id"); // 订单编号
 		DynamicObject order = orderService.locate(id);
+		
+		DynamicObject ro = new DynamicObject();
 		ro.put("order", order);
 
 		return ro;
@@ -241,6 +248,8 @@ public class OrderAction extends BaseAction
 	{
 		String id = (String) map.get("id"); // 订单编号
 		DynamicObject order = orderService.locate(id);
+		
+		DynamicObject ro = new DynamicObject();
 		ro.put("order", order);
 		return ro;
 	}
@@ -492,7 +501,8 @@ public class OrderAction extends BaseAction
 	{
 		String id = (String) map.get("id"); //
 		DynamicObject order = orderService.locate(id);
-		ro.clear();
+		
+		DynamicObject ro = new DynamicObject();
 		ro.put("id", id);
 		ro.put("order", order);
 		return ro;
@@ -507,7 +517,7 @@ public class OrderAction extends BaseAction
 		String id = ordergoods.getFormatAttr("orderid");
 		DynamicObject order = orderService.locate(id);
 
-		ro.clear();
+		DynamicObject ro = new DynamicObject();
 		ro.put("id", id);
 		ro.put("ordergoodsid", ordergoodsid);
 		ro.put("order", order);

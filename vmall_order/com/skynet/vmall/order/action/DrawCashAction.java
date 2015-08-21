@@ -5,8 +5,6 @@ import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
-import org.nutz.dao.Chain;
-import org.nutz.dao.Cnd;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.mvc.Mvcs;
@@ -17,15 +15,11 @@ import org.nutz.mvc.annotation.Ok;
 import org.nutz.mvc.annotation.Param;
 import org.nutz.mvc.filter.CheckSession;
 
-import com.skynet.app.flow.pojo.RFlow;
-import com.skynet.framework.action.BaseAction;
 import com.skynet.framework.services.db.dybeans.DynamicObject;
 import com.skynet.framework.spec.GlobalConstants;
 import com.skynet.vmall.base.author.AuthorService;
-import com.skynet.vmall.base.constants.VMallConstants;
 import com.skynet.vmall.base.filter.LogFilter;
 import com.skynet.vmall.base.pojo.DrawCash;
-import com.skynet.vmall.base.pojo.Order;
 import com.skynet.vmall.base.service.DrawCashService;
 import com.skynet.vmall.base.service.MemberService;
 import com.skynet.vmall.member.service.AppMemberService;
@@ -36,7 +30,7 @@ import com.skynet.vmall.order.service.AppDrawCashService;
 @Filters(
 { @By(type = CheckSession.class, args =
 { "sys_login_token", "/checksession.html" }) })
-public class DrawCashAction extends BaseAction
+public class DrawCashAction
 {
 	@Inject
 	private DrawCashService drawcashService;
@@ -59,6 +53,8 @@ public class DrawCashAction extends BaseAction
 		String userid = login_token.getFormatAttr(GlobalConstants.sys_login_userid);
 		map.put("memberid", userid);
 		List<DynamicObject> drawcashs = appdrawcashService.browse(map);
+		
+		DynamicObject ro = new DynamicObject();
 		ro.put("drawcashs", drawcashs);
 		return ro;
 	}
@@ -129,6 +125,7 @@ public class DrawCashAction extends BaseAction
 
 		DynamicObject drawcash = drawcashService.locate(id);
 		
+		DynamicObject ro = new DynamicObject();
 		ro.put("keysignature", keysignature);
 		ro.put("drawcash", drawcash);
 

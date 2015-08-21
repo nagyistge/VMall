@@ -45,7 +45,7 @@ import com.skynet.vmall.wx.action.WXActionHelper;
 
 @IocBean
 @At("/goods/goods")
-public class GoodsAction extends BaseAction
+public class GoodsAction
 {
 	@Inject
 	WXActionHelper myWxHelper;
@@ -91,6 +91,7 @@ public class GoodsAction extends BaseAction
 	public Map index(@Param("..") Map map) throws Exception
 	{
 		List<DynamicObject> goods = appgoodsService.browse(map);
+		DynamicObject ro = new DynamicObject();
 		ro.put("goods", goods);
 		return ro;
 	}
@@ -103,6 +104,7 @@ public class GoodsAction extends BaseAction
 		map.put("_pagesize", Strings.sNull(pagesize, "5"));
 		map.put("state", "新建");
 		List<DynamicObject> goods = appgoodsService.browse(map);
+		DynamicObject ro = new DynamicObject();
 		ro.put("goods", goods);
 		ro.put("_page", page);
 		ro.put("_pagesize", pagesize);
@@ -119,7 +121,7 @@ public class GoodsAction extends BaseAction
 		DynamicObject goodsclass = goodsclassService.locate(classid);
 		DynamicObject supgoodsclass = goodsclassService.locateBy(Cnd.where("id", "=", goodsclass.getFormatAttr("supid")));
 		List<DynamicObject> subgoodsclasses = goodsclassService.findByCond(Cnd.where("supid", "=", classid));
-
+		DynamicObject ro = new DynamicObject();
 		ro.put("supgoodsclass", supgoodsclass);
 		ro.put("goodsclass", goodsclass);
 		ro.put("subgoodsclasses", subgoodsclasses);
@@ -145,7 +147,7 @@ public class GoodsAction extends BaseAction
 		map.put("defspec", "是");
 		map.put("internal", goodsclass.getFormatAttr("internal"));
 		List<DynamicObject> goodses = appgoodsService.channel(map);
-
+		DynamicObject ro = new DynamicObject();
 		ro.put("supgoodsclass", supgoodsclass);
 		ro.put("goodsclass", goodsclass);
 		ro.put("subgoodsclasses", subgoodsclasses);
@@ -176,6 +178,7 @@ public class GoodsAction extends BaseAction
 		map.put("_page", Strings.sNull(page, "1"));
 		map.put("_pagesize", Strings.sNull(pagesize, "5"));
 		List<DynamicObject> goods = appgoodsService.browse(map);
+		DynamicObject ro = new DynamicObject();
 		ro.put("goods", goods);
 		ro.put("_page", page);
 		ro.put("_pagesize", pagesize);
@@ -200,6 +203,7 @@ public class GoodsAction extends BaseAction
 		
 		String eventitemgoodsid = StringToolKit.formatText((String) map.get("eventitemgoodsid")); //活动项目商品标识
 		
+		DynamicObject ro = new DynamicObject();
 		ro.put("eventitemgoodsid", eventitemgoodsid);
 		
 		// 如果从参与活动入口，产品价格按照参与活动价格为准。
@@ -258,6 +262,7 @@ public class GoodsAction extends BaseAction
 	public Map guestlike(@Param("..") Map map) throws Exception
 	{
 		List<DynamicObject> likegoodses = appgoodsService.guestlike(map);
+		DynamicObject ro = new DynamicObject();
 		ro.put("likegoodses", likegoodses);
 		return ro;
 	}
@@ -275,7 +280,7 @@ public class GoodsAction extends BaseAction
 		sql.append("  where 1 = 1 ");
 		sql.append("    and goodsid = ").append(SQLParser.charValue(id));
 		List goodsphotoes = goodsphotoService.queryForList(sql.toString());
-
+		DynamicObject ro = new DynamicObject();
 		ro.put("goods", goods);
 		ro.put("goodsphotoes", goodsphotoes);
 		return ro;

@@ -35,7 +35,7 @@ import com.skynet.vmall.member.service.AppMemberService;
 @Filters(
 { @By(type = CheckSession.class, args =
 { "sys_login_token", "/checksession.html" }) })
-public class MemberAction extends BaseAction
+public class MemberAction
 {
 	@Inject
 	WxApi myWxApi;
@@ -54,6 +54,7 @@ public class MemberAction extends BaseAction
 		DynamicObject login_token = (DynamicObject) session.getAttribute(GlobalConstants.sys_login_token);
 		String userid = login_token.getFormatAttr(GlobalConstants.sys_login_userid);
 		DynamicObject member = memberService.locate(userid);
+		DynamicObject ro = new DynamicObject();
 		ro.put("member", member);
 		return ro;
 	}
@@ -62,6 +63,7 @@ public class MemberAction extends BaseAction
 	@Ok("json")
 	public Map follow(String swxopenid, String swxnickname, String dwxopenid, String dwxnickname) throws Exception
 	{
+		DynamicObject ro = new DynamicObject();
 		try
 		{
 			appmemberService.follow(swxopenid, swxnickname, dwxopenid, dwxnickname);
@@ -84,6 +86,8 @@ public class MemberAction extends BaseAction
 		DynamicObject login_token = (DynamicObject) session.getAttribute(GlobalConstants.sys_login_token);
 		String userid = login_token.getFormatAttr(GlobalConstants.sys_login_userid);
 		DynamicObject member = memberService.locate(userid);
+		
+		DynamicObject ro = new DynamicObject();
 		ro.put("member", member);
 		return ro;
 	}
@@ -120,6 +124,7 @@ public class MemberAction extends BaseAction
 		DynamicObject login_token = (DynamicObject) session.getAttribute(GlobalConstants.sys_login_token);
 		String userid = login_token.getFormatAttr(GlobalConstants.sys_login_userid);
 		DynamicObject member = memberService.locate(userid);
+		DynamicObject ro = new DynamicObject();
 		ro.put("member", member);
 		return ro;
 	}
@@ -137,7 +142,7 @@ public class MemberAction extends BaseAction
 		map.put("memberid", userid);
 
 		List<DynamicObject> orders = appmemberService.showmyorder(map);
-
+		DynamicObject ro = new DynamicObject();
 		ro.put("orders", orders);
 		return ro;
 	}
@@ -151,6 +156,7 @@ public class MemberAction extends BaseAction
 		String userid = login_token.getFormatAttr(GlobalConstants.sys_login_userid);
 		map.put("memberid", userid);
 		List<DynamicObject> ordergoodses = appmemberService.showmyordergoods(map);
+		DynamicObject ro = new DynamicObject();
 		ro.put("ordergoodses", ordergoodses);
 		return ro;
 	}
@@ -163,6 +169,7 @@ public class MemberAction extends BaseAction
 		DynamicObject login_token = (DynamicObject) session.getAttribute(GlobalConstants.sys_login_token);
 		String userid = login_token.getFormatAttr(GlobalConstants.sys_login_userid);
 		DynamicObject member = memberService.locate(userid);
+		DynamicObject ro = new DynamicObject();
 		ro.put("member", member);
 		return ro;
 	}
@@ -176,6 +183,7 @@ public class MemberAction extends BaseAction
 		String userid = login_token.getFormatAttr(GlobalConstants.sys_login_userid);
 		map.put("memberid", userid);
 		List<DynamicObject> draws = appmemberService.browsemydraw(map);
+		DynamicObject ro = new DynamicObject();
 		ro.put("draws", draws);
 		return ro;
 	}
@@ -188,6 +196,7 @@ public class MemberAction extends BaseAction
 		DynamicObject login_token = (DynamicObject) session.getAttribute(GlobalConstants.sys_login_token);
 		String userid = login_token.getFormatAttr(GlobalConstants.sys_login_userid);
 		DynamicObject member = memberService.locate(userid);
+		DynamicObject ro = new DynamicObject();
 		ro.put("member", member);
 		return ro;
 	}
@@ -201,6 +210,7 @@ public class MemberAction extends BaseAction
 		String userid = login_token.getFormatAttr(GlobalConstants.sys_login_userid);
 		map.put("memberid", userid);
 		List<DynamicObject> members = appmemberService.findmembers(userid);
+		DynamicObject ro = new DynamicObject();
 		ro.put("members", members);
 		return ro;
 	}
@@ -211,7 +221,7 @@ public class MemberAction extends BaseAction
 	{
 		String id = (String) map.get("id");
 		int nums = memberService.count(Cnd.where("supid", "=", id));
-		ro.clear();
+		DynamicObject ro = new DynamicObject();
 		ro.put("nums", nums);
 		ro.put("id", id);
 		return ro;
@@ -223,6 +233,7 @@ public class MemberAction extends BaseAction
 	{
 		String userid = (String) map.get("id");
 		DynamicObject member = memberService.locate(userid);
+		DynamicObject ro = new DynamicObject();
 		ro.put("member", member);
 		return ro;
 	}
@@ -235,6 +246,7 @@ public class MemberAction extends BaseAction
 		DynamicObject login_token = (DynamicObject) session.getAttribute(GlobalConstants.sys_login_token);
 		String userid = login_token.getFormatAttr(GlobalConstants.sys_login_userid);
 		DynamicObject member = memberService.locate(userid);
+		DynamicObject ro = new DynamicObject();
 		ro.put("member", member);
 		return ro;
 	}
@@ -249,6 +261,7 @@ public class MemberAction extends BaseAction
 		String userid = login_token.getFormatAttr(GlobalConstants.sys_login_userid);
 		map.put("memberid", userid);
 		List<DynamicObject> rebates = appmemberService.myrebateshowbygroup(map);
+		DynamicObject ro = new DynamicObject();
 		ro.put("rebates", rebates);
 		return ro;
 	}
@@ -263,6 +276,7 @@ public class MemberAction extends BaseAction
 		String userid = login_token.getFormatAttr(GlobalConstants.sys_login_userid);
 		map.put("memberid", userid);
 		List<DynamicObject> rebates = appmemberService.myrebateshowbygoods(map);
+		DynamicObject ro = new DynamicObject();
 		ro.put("rebates", rebates);
 		return ro;
 	}
@@ -277,6 +291,7 @@ public class MemberAction extends BaseAction
 		String userid = login_token.getFormatAttr(GlobalConstants.sys_login_userid);
 		map.put("memberid", userid);
 		List<DynamicObject> rebates = appmemberService.myrebateshowbyorder(map);
+		DynamicObject ro = new DynamicObject();
 		ro.put("rebates", rebates);
 		return ro;
 	}

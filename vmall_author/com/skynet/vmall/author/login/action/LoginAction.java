@@ -27,7 +27,7 @@ import com.skynet.vmall.wx.action.WXActionHelper;
 
 @IocBean
 @At("/author/login")
-public class LoginAction extends BaseAction
+public class LoginAction
 {
 	private Log log = Logs.getLog(LoginAction.class);
 	
@@ -72,6 +72,8 @@ public class LoginAction extends BaseAction
 	{
 		HttpSession session = Mvcs.getHttpSession(true);
 		session.removeAttribute(GlobalConstants.sys_login_token);
+		
+		DynamicObject ro = new DynamicObject(); 
 
 		int num = userService.count(Cnd.where("loginname", "=", loginname).and("password", "=", password));
 		

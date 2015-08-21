@@ -9,6 +9,7 @@ import org.nutz.mvc.annotation.Ok;
 
 import com.skynet.app.organ.service.OrganService;
 import com.skynet.framework.action.BaseAction;
+import com.skynet.framework.services.db.dybeans.DynamicObject;
 import com.skynet.vmall.base.pojo.DrawCash;
 import com.skynet.vmall.base.pojo.Goods;
 import com.skynet.vmall.base.pojo.GoodsClassSpec;
@@ -22,7 +23,7 @@ import com.skynet.vmall.base.pojo.Supplier;
 
 @IocBean
 @At("/system/system")
-public class SystemAction extends BaseAction
+public class SystemAction
 {
 	@Inject
 	private OrganService organService;
@@ -74,7 +75,7 @@ public class SystemAction extends BaseAction
 //		organService.dao().create(RunFlowLog.class, true);
 		
 //		Daos.createTablesInPackage(organService.dao(), "com.skynet.app.flow.pojo", true);
-		
+		DynamicObject ro = new DynamicObject();
 		return ro;
 	}
 
